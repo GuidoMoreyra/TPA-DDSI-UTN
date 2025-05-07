@@ -6,15 +6,16 @@ public class Hecho {
   private String titulo;
   private String descripcion;
   private String categoria;
-  private String contenidoMultimedia;
-  private Double latitud;
-  private Double longitud;
+  public String contenidoMultimedia;
+  private double latitud;
+  private double longitud;
   private LocalDate fechaDelHecho;
   private OrigenHecho origen;
 
   ////CONSTRUCTOR///
 
-  public Hecho(String titulo, String descripcion, String categoria, Double latitud, Double longitud, LocalDate fechaDelHecho, OrigenHecho origen) {
+  public Hecho(String titulo, String descripcion, String categoria, double latitud,
+               double longitud, LocalDate fechaDelHecho, OrigenHecho origen) {
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
@@ -29,6 +30,7 @@ public class Hecho {
   public String getCategoria() {
     return categoria;
   }
+
   public LocalDate getFechaDelHecho() {
     return fechaDelHecho;
   }

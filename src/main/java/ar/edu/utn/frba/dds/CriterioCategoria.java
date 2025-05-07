@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds;
 
-public class CriterioCategoria implements Criterio{
+public class CriterioCategoria implements Criterio {
   private String categoria;
 
   public CriterioCategoria(String categoria) {

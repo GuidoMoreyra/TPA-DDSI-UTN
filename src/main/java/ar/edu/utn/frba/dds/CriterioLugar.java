@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds;
 
-public class CriterioLugar implements Criterio{
+public class CriterioLugar implements Criterio {
   private Double latitud;
   private Double longitud;
 

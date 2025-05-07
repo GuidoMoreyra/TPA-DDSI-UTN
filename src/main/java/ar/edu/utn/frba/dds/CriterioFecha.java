@@ -2,9 +2,9 @@ package ar.edu.utn.frba.dds;
 
 import java.time.LocalDate;
 
-public class CriterioFecha implements Criterio{
-  private LocalDate desde;
-  private LocalDate hasta;
+public class CriterioFecha implements Criterio {
+  private final LocalDate desde;
+  private final LocalDate hasta;
 
   public CriterioFecha(LocalDate desde, LocalDate hasta) {
     this.desde = desde;
@@ -13,7 +13,7 @@ public class CriterioFecha implements Criterio{
 
   @Override
   public Boolean cumple(Hecho hecho) {
-    return !hecho.getFechaDelHecho().isBefore(this.desde) &&
-        !hecho.getFechaDelHecho().isAfter(this.hasta) ;
+    return !hecho.getFechaDelHecho().isBefore(this.desde)
+        && !hecho.getFechaDelHecho().isAfter(this.hasta);
   }
 }
