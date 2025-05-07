@@ -1,8 +1,29 @@
 package ar.edu.utn.frba.dds;
 
-public abstract class Visualizador {
+import static ar.edu.utn.frba.dds.EstadoSolicitudEliminacion.PENDIENTE;
 
-  public abstract void subirHecho(Hecho hecho);
+public class Visualizador {
 
-  public abstract void solicitarEliminarUnHecho(Hecho hecho);
+  private Integer id;
+  private String nombre;
+  private String apellido;
+  private Integer edad;
+
+  ////CONSTRUCTOR
+
+  public Visualizador(Integer id, String nombre, String apellido, Integer edad) {
+    this.id = id;
+    this.nombre = nombre;
+    this.apellido = apellido;
+    this.edad = edad;
+  }
+
+  public void subirHecho(Hecho hecho) {
+    //TODO
+  };
+
+  public void solicitarEliminarUnHecho(Hecho hecho, String justificacion) {
+    SolicitudEliminacion solicitud =
+        new SolicitudEliminacion(PENDIENTE, hecho,this , justificacion);
+  }
 }

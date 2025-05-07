@@ -43,3 +43,5 @@ public class Coleccion {
     return criterios.stream().allMatch(c -> c.cumple(hecho));
   }
 }
+
+//TODO - se tienen que filtrar los hechos por estado y quedarse con los estado = activo
