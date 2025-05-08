@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FuentesCsv implements LectorDeFuentes {
+public class FuentesCsv {
   private final String rutaArchivo;
 
   public FuentesCsv(String rutaArchivo) {

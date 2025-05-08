@@ -1,6 +1,10 @@
-package ar.edu.utn.frba.dds;
+package ar.edu.utn.frba.dds.usuario.models;
 
-public class Administrador {
+import ar.edu.utn.frba.dds.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.SolicitudEliminacion;
+import ar.edu.utn.frba.dds.usuario.contracts.GestorHechos;
+
+public class Administrador implements GestorHechos {
   private Integer legajo;
   private String nombre;
   private String apellido;
@@ -16,10 +20,6 @@ public class Administrador {
 
   ////METODOS
   public void crearColeccion(){}
-
-  public void subirHecho(){
-    //TODO
-  }
 
   public void importarCSV(/*csv*/){
     //TODO

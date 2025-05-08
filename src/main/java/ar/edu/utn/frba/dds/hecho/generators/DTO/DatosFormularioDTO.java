@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.hecho.generators.DTO;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.hecho.models.DatosGeneradorHecho;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class DatosFormularioDTO extends DatosGeneradorHecho {
   public String titulo;
@@ -11,8 +11,7 @@ public class DatosFormularioDTO extends DatosGeneradorHecho {
   public String categoria;
   public String contenidoMultimedia;
   public String lugar;
-  public Date fechaAcontecimiento;
-  public Date fechaCreacion;
+  public LocalDate fechaAcontecimiento;
   public OrigenHecho origenHecho;
 
   public DatosFormularioDTO(
@@ -21,8 +20,7 @@ public class DatosFormularioDTO extends DatosGeneradorHecho {
       String categoria,
       String contenidoMultimedia,
       String lugar,
-      Date fechaAcontecimiento,
-      Date fechaCreacion
+      LocalDate fechaAcontecimiento
   ) {
     this.titulo = titulo;
     this.descripcion = descripcion;
@@ -30,7 +28,6 @@ public class DatosFormularioDTO extends DatosGeneradorHecho {
     this.contenidoMultimedia = contenidoMultimedia;
     this.lugar = lugar;
     this.fechaAcontecimiento = fechaAcontecimiento;
-    this.fechaCreacion = fechaCreacion;
     this.origenHecho = OrigenHecho.DINAMICA;
   }
 }
