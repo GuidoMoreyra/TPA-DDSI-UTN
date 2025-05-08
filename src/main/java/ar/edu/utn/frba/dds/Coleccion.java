@@ -4,17 +4,23 @@ import ar.edu.utn.frba.dds.hecho.models.Hecho;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Coleccion {
   private String titulo;
   private List<Criterio> criterios = new ArrayList<>();
-  private List<Hecho> hechos = new ArrayList<>();
-
+  //private List<Hecho> hechos = new ArrayList<>();
+  private Fuente fuente;
   ////CONSTRUCTOR///
 
-  public Coleccion(String titulo, List<Criterio> criterios) {
+  //de esta manera me permite que se cree sin pasarle como parametro
+  //la lista de criterios y me crea una vacia
+  // y que despues se agreguen
+  public Coleccion(String titulo,Fuente fuente, List<Criterio> criterios) {
     this.titulo = titulo;
-    this.criterios = criterios;
+    this.criterios = (criterios != null ? criterios : new ArrayList<>());
+    this.fuente = fuente;
+
     //no se incluyen los hechos porque la coleccion se puede crear vacia
   }
 
@@ -32,17 +38,29 @@ public class Coleccion {
     return criterios.contains(criterio);
   }
 
-  public void cargarHechos(List<Hecho> hechosDisponibles) {
+  /*public void cargarHechos(List<Hecho> hechosDisponibles) {
     List<Hecho> hechosFiltrados = hechosDisponibles.stream()
         .filter(this::cumpleTodosLosCriterios)
         .toList();
 
-    this.hechos.addAll(hechosFiltrados);
+    this.hechos.addAll(hechosFiltrados);}*/
+
+  public void mostrarColeccion(){
+    for(Map<String, String> hecho: fuente.leerCsv()){
+      if(cumpleTodosLosCriterios(hecho)){
+        imprimirColeccion(hecho);
+      }
+    }
   }
 
-  private boolean cumpleTodosLosCriterios(Hecho hecho) {
-    return criterios.stream().allMatch(c -> c.cumple(hecho));
+  private boolean cumpleTodosLosCriterios(Map<String,String> hecho) {
+    return criterios.stream().allMatch(unCriterio -> unCriterio.seCumpleCriterio(hecho));
+  }
+  private void imprimirColeccion(Map<String,String> hecho){
+    hecho.forEach((clave,valor)->System.out.println(" "+clave+" "+valor));
+    System.out.println();
   }
 }
+
 
 //TODO - se tienen que filtrar los hechos por estado y quedarse con los estado = activo

@@ -1,10 +1,10 @@
-id_Hecho;titulo;Descripcion;Categoria;Latitud;Longitud;Fecha_Del_Hecho;Hora_Hecho
-13001;Incendio en la Patagonia;Se desconoce las causas del incendio;Incendio Forestales;36;38;5/1/2017;08:30:00
-13002;Incendio en Esquel;Campistas no apagaron debidamente los brazas;Incendio Forestales;-42;-71;10/3/2018;12:35:00
+id_Hecho;titulo;descripcion;categoria;latitud;longitud;fecha_Del_Hecho;Hora_Hecho
+13001;Incendio en la Patagonia;Se desconoce las causas del incendio;Incendio Forestal;-36;-38;5/1/2017;08:30:00
+13002;Incendio en Esquel;Campistas no apagaron debidamente los brazas;Incendio Forestal;-42;-71;5/1/2017;12:35:00
 13003;Desaparicion en Jujuy;Se acusa a la policia local de desaparecer a un hombre;Desaparicion vinculada al gobierno;-24;-65;21/9/1988;02:50:00
 13004;Choque en ruta nacional 9;Se produjo un choque entre un colectivo y un auto particular en cordoba;Siniestro vial;-31;-63;25/12/2002;04:00:00
-13005;Incendio en Cerro Llao Llao;Se desconoce las causas del incendio;Incendio Forestales;-41;-72;4/3/2025;10:30:00
-13006;Incendio en el Parque Nacional Nahuel Huapi;Campistas no apagaron debidamente los brazas;Incendio Forestales;-40;-71;12/9/2022;12:35:00
+13005;Incendio en Cerro Llao Llao;Se desconoce las causas del incendio;Incendio Forestal;-41;-72;4/3/2025;10:30:00
+13006;Incendio en el Parque Nacional Nahuel Huapi;Campistas no apagaron debidamente los brazas;Incendio Forestal;-40;-71;12/9/2022;12:35:00
 13007;Argentina Campeon;El equipo de futbol nacional gano la copa del mundo en mexico;deportivo;19;99;11/6/1986;17:54:00
 13008;Choque en ruta nacional 9;Se produjo un choque entre un colectivo y un auto particular en cordoba;Siniestro vial;-31;-63;19/7/1988;10:00:00
 13009;Desaparicion en buenos aires;Se acusa a al gobierno de la desaparicion de un grupo de estudiantes;Desaparicion vinculada al gobierno;-34;-58;29/5/1978;12:45:00

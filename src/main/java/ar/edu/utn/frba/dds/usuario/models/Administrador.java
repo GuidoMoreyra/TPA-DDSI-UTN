@@ -1,14 +1,19 @@
 package ar.edu.utn.frba.dds.usuario.models;
 
+import ar.edu.utn.frba.dds.Coleccion;
+import ar.edu.utn.frba.dds.Criterio;
 import ar.edu.utn.frba.dds.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.Fuente;
 import ar.edu.utn.frba.dds.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.usuario.contracts.GestorHechos;
+import java.util.List;
 
 public class Administrador implements GestorHechos {
   private Integer legajo;
   private String nombre;
   private String apellido;
   private Integer edad;
+
 
   ////CONSTRUCTOR///
   public Administrador(Integer legajo, String nombre, String apellido, Integer edad) {
@@ -19,8 +24,6 @@ public class Administrador implements GestorHechos {
   }
 
   ////METODOS
-  public void crearColeccion(){}
-
   public void importarCSV(/*csv*/){
     //TODO
   }
@@ -43,6 +46,12 @@ public class Administrador implements GestorHechos {
     solicitud.getHecho().desactivar();
   }
 
+  public Coleccion crearColeccion(String titulo, Fuente fuente, List<Criterio> criterios) {
+    return new Coleccion(titulo, fuente, criterios);
+  }
 
-
+  @Override
+  public void mostrarColeccion(Coleccion coleccion) {
+    coleccion.mostrarColeccion();
+  }
 }

@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.usuario.contracts;
 
+import ar.edu.utn.frba.dds.Coleccion;
 import ar.edu.utn.frba.dds.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.hecho.contracts.GeneradorHecho;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
@@ -28,4 +29,5 @@ public interface GestorHechos {
 
         return solicitud;
     }
+    void mostrarColeccion(Coleccion coleccion);
 }

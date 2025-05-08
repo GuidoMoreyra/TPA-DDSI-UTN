@@ -6,22 +6,20 @@ import java.time.LocalDate;
 import java.util.Map;
 
 public class CriterioFecha implements Criterio {
-  private final LocalDate desde;
-  private final LocalDate hasta;
+    private String fecha;
 
-  public CriterioFecha(LocalDate desde, LocalDate hasta) {
-    this.desde = desde;
-    this.hasta = hasta;
+    public CriterioFecha(String fecha) {
+      this.fecha = fecha;
+    }
+    @Override
+    public Boolean cumple(Hecho hecho){
+     return true;
+    }
+    //en un futuro deberia cambiarse usando localDate
+    @Override
+    public Boolean seCumpleCriterio(Map<String, String> hecho) {
+      return fecha.equals(hecho.get("fecha_Del_Hecho"));  // Comparación directa
+    }
   }
 
-  @Override
-  public Boolean cumple(Hecho hecho) {
-    return !hecho.getFechaDelHecho().isBefore(this.desde)
-        && !hecho.getFechaDelHecho().isAfter(this.hasta);
-  }
 
-  @Override
-  public Boolean seCumpleCriterio(Map<String, String> unHecho) {
-    return null;
-  }
-}

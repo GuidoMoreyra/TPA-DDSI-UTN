@@ -20,7 +20,7 @@ public class CriterioLugar implements Criterio{
 
   @Override
   public Boolean cumple(Hecho hecho) {
-    return null;
+    return true;
     //TODO - falta API que devuelva una localidad
   }
 
