@@ -1,8 +1,9 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.hecho.models.Hecho;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Coleccion {
   private String titulo;

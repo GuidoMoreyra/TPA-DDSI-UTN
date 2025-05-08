@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.hecho.models.Hecho;
+
 import static ar.edu.utn.frba.dds.EstadoSolicitudEliminacion.PENDIENTE;
 
 public class Visualizador {
@@ -10,7 +12,6 @@ public class Visualizador {
   private Integer edad;
 
   ////CONSTRUCTOR
-
   public Visualizador(Integer id, String nombre, String apellido, Integer edad) {
     this.id = id;
     this.nombre = nombre;

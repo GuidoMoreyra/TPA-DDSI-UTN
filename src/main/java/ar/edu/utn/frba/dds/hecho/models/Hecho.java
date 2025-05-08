@@ -1,4 +1,6 @@
-package ar.edu.utn.frba.dds;
+package ar.edu.utn.frba.dds.hecho.models;
+
+import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 
 import java.time.LocalDate;
 

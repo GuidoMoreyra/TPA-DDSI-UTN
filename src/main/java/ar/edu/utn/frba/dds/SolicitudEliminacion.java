@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.hecho.models.Hecho;
+
 public class SolicitudEliminacion {
   private EstadoSolicitudEliminacion estado;
   private Hecho hecho;

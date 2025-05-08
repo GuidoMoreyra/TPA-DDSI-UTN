@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds;
 
-public class CriterioCategoria implements Criterio {
+import ar.edu.utn.frba.dds.hecho.models.Hecho;
+
+public class CriterioCategoria implements Criterio{
   private String categoria;
 
   public CriterioCategoria(String categoria) {

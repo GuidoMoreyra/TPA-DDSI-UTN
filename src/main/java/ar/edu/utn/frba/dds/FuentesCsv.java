@@ -1,5 +1,8 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.hecho.models.Hecho;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
