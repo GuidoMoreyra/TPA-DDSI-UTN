@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.hecho.models;
 
-import ar.edu.utn.frba.dds.EstadoDelHecho;
+import ar.edu.utn.frba.dds.hecho.enums.EstadoDelHecho;
 import ar.edu.utn.frba.dds.hecho.DTO.HechoLugarDTO;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 
@@ -39,12 +39,40 @@ public class Hecho {
 
   ////GETTERS///
 
+  public String getTitulo() {
+    return titulo;
+  }
+
+  public String getDescripcion() {
+    return descripcion;
+  }
+
   public String getCategoria() {
     return categoria;
   }
 
+  public String getContenidoMultimedia() {
+    return contenidoMultimedia;
+  }
+
+  public HechoLugarDTO getLugar() {
+    return lugar;
+  }
+
   public LocalDate getFechaDelHecho() {
     return fechaDelHecho;
+  }
+
+  public LocalDate getFechaCreacion() {
+    return fechaCreacion;
+  }
+
+  public OrigenHecho getOrigen() {
+    return origen;
+  }
+
+  public EstadoDelHecho getEstado() {
+    return estado;
   }
 
   ////METODOS///
