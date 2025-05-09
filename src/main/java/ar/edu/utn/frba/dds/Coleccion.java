@@ -60,7 +60,14 @@ public class Coleccion {
     hecho.forEach((clave, valor) -> System.out.println(" " + clave + " " + valor));
     System.out.println();
   }
+
+  public String getTitulo() {
+    return titulo;
+  }
 }
+
+
+
 
 
 //TODO - se tienen que filtrar los hechos por estado y quedarse con los estado = activo

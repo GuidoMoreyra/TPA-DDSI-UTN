@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import ar.edu.utn.frba.dds.hecho.models.Hecho;
 import ar.edu.utn.frba.dds.usuario.models.Administrador;
 import ar.edu.utn.frba.dds.usuario.models.Visualizador;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class ColeccionTest {
   }
 
   @Test
-  public void AdministradorCreaUnaColeccion(){
+  public void AdministradorCreaUnaColeccionImportandoDatosDesdeUnCsv(){
     Administrador admin = new Administrador(163205,"Fernando","Rossi",27);
     Fuente fuente = new FuenteEstatica("formatoTp.csv");
     List<Criterio> criterios = new ArrayList<>();
@@ -47,6 +48,9 @@ public class ColeccionTest {
     Criterio criterioFecha = new CriterioFecha("5/1/2017");
     Coleccion coleccion = admin.crearColeccion("Hechos de incendios", fuente, criterios);
     visualizador.filtrarColeccion(coleccion, criterioFecha);
+
+    // Validaciones
+    //assertNotNull(hechosFiltrados);
 
 
   }

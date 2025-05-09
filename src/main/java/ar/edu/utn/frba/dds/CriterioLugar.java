@@ -29,4 +29,16 @@ public class CriterioLugar implements Criterio {
   public Boolean seCumpleCriterio(Map<String, String> unHecho) {
     return this.tipoLugar.equals(unHecho.get("tipo_lugar"));
   }
+
+  public Double getLatitud() {
+    return latitud;
+  }
+
+  public Double getLongitud() {
+    return longitud;
+  }
+
+  public String getTipoLugar() {
+    return tipoLugar;
+  }
 }
