@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ar.edu.utn.frba.dds.hecho.DTO.HechoLugarDTO;
+import ar.edu.utn.frba.dds.hecho.dto.HechoLugarDto;
 import ar.edu.utn.frba.dds.hecho.enums.EstadoDelHecho;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
@@ -19,7 +19,7 @@ public class AdministradorTest {
   private Hecho hecho;
   private Hecho otroHecho;
   private Administrador admin;
-  private HechoLugarDTO lugar;
+  private HechoLugarDto lugar;
   private String justificacionLarga;
   private Visualizador solicitante;
 
@@ -27,7 +27,7 @@ public class AdministradorTest {
   @BeforeEach
   public void setUp() {
     // Instancias que se crean antes de cada test
-    lugar = new HechoLugarDTO(1.0, 1.0);
+    lugar = new HechoLugarDto(1.0, 1.0);
     hecho
         = new Hecho("Título de prueba",
         "Descripción del hecho de prueba",

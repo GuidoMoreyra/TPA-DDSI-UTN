@@ -1,15 +1,17 @@
 package ar.edu.utn.frba.dds;
+
 import java.util.Map;
 
 public class FuenteEstatica implements Fuente {
 
   private String archivo; //podria ser final
-                          //guarda el hombre del archivo csv
+  //guarda el nombre del archivo csv
   //este se encuentra en src/main/resources
 
   public FuenteEstatica(String archivo) {
     this.archivo = archivo;
   }
+
   public void mostrarHechos() {
     for (Map<String, String> hecho : this.leerCsv()) {
       imprimirHechos(hecho, "Hecho: ");
@@ -24,6 +26,7 @@ public class FuenteEstatica implements Fuente {
       }
     }
   }
+
   private void imprimirHechos(Map<String, String> hecho, String mensaje) {
     System.out.println(mensaje);
     hecho.forEach((clave, valor) -> System.out.println("  " + clave + ": " + valor));

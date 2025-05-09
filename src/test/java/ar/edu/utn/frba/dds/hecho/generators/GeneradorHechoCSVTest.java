@@ -1,6 +1,6 @@
 package ar.edu.utn.frba.dds.hecho.generators;
 
-import ar.edu.utn.frba.dds.hecho.generators.DTO.DatosCSVDTO;
+import ar.edu.utn.frba.dds.hecho.generators.dto.DatosCsvDto;
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +14,8 @@ public class GeneradorHechoCSVTest {
     public void retornaUnHechoValido() {
         // Arrange
         String fila = "titulo,descripcion,categoria,lugar,2023-01-01";
-        DatosCSVDTO datosCSV = new DatosCSVDTO(fila);
-        GeneradorHechoCSV generador = new GeneradorHechoCSV(datosCSV);
+        DatosCsvDto datosCSV = new DatosCsvDto(fila);
+        GeneradorHechoCsv generador = new GeneradorHechoCsv(datosCSV);
 
         // Act
         Hecho hecho = generador.generarHecho();
@@ -32,8 +32,8 @@ public class GeneradorHechoCSVTest {
     public void fallaSiLaLineaDelCSVNoTieneLaCantidadDeDatosRequeridos() {
         // Arrange
         String fila = "titulo,descripcion,categoria,lugar";
-        DatosCSVDTO datosCSV = new DatosCSVDTO(fila);
-        GeneradorHechoCSV generador = new GeneradorHechoCSV(datosCSV);
+        DatosCsvDto datosCSV = new DatosCsvDto(fila);
+        GeneradorHechoCsv generador = new GeneradorHechoCsv(datosCSV);
 
         // Act + Assert
         assertThrows(

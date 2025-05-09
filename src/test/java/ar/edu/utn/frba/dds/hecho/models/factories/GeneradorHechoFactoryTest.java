@@ -2,13 +2,12 @@ package ar.edu.utn.frba.dds.hecho.models.factories;
 
 import ar.edu.utn.frba.dds.hecho.contracts.GeneradorHecho;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
-import ar.edu.utn.frba.dds.hecho.generators.GeneradorHechoAPI;
-import ar.edu.utn.frba.dds.hecho.generators.GeneradorHechoCSV;
+import ar.edu.utn.frba.dds.hecho.generators.GeneradorHechoApi;
+import ar.edu.utn.frba.dds.hecho.generators.GeneradorHechoCsv;
 import ar.edu.utn.frba.dds.hecho.generators.GeneradorHechoFormulario;
-import ar.edu.utn.frba.dds.hecho.generators.DTO.DatosAPIDTO;
-import ar.edu.utn.frba.dds.hecho.generators.DTO.DatosCSVDTO;
-import ar.edu.utn.frba.dds.hecho.generators.DTO.DatosFormularioDTO;
-import ar.edu.utn.frba.dds.hecho.models.Hecho;
+import ar.edu.utn.frba.dds.hecho.generators.dto.DatosApiDto;
+import ar.edu.utn.frba.dds.hecho.generators.dto.DatosCsvDto;
+import ar.edu.utn.frba.dds.hecho.generators.dto.DatosFormularioDto;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,14 +17,14 @@ public class GeneradorHechoFactoryTest {
     @Test
     public void origenEstaticoRetornaGeneradorCSV() {
         // Arrange
-        DatosCSVDTO datos = new DatosCSVDTO("fila de prueba");
+        DatosCsvDto datos = new DatosCsvDto("fila de prueba");
 
         // Act
         GeneradorHecho generador = GeneradorHechoFactory.crear(OrigenHecho.ESTATICA, datos);
 
         // Assert
         assertInstanceOf(
-                GeneradorHechoCSV.class,
+                GeneradorHechoCsv.class,
                 generador,
                 "El generador debería ser una instancia de GeneradorHechoCSV"
         );
@@ -34,7 +33,7 @@ public class GeneradorHechoFactoryTest {
     @Test
     public void origenDinamicoRetornaGeneradorFormulario() {
         // Arrange
-        DatosFormularioDTO datos = new DatosFormularioDTO(
+        DatosFormularioDto datos = new DatosFormularioDto(
             "Título", "Descripción", "Categoría", "URL", "Lugar", LocalDate.now()
         );
 
@@ -52,14 +51,14 @@ public class GeneradorHechoFactoryTest {
     @Test
     public void origenIntermedioRetornaGeneradorAPI() {
         // Arrange
-        DatosAPIDTO datos = new DatosAPIDTO(new Object());
+        DatosApiDto datos = new DatosApiDto(new Object());
 
         // Act
         GeneradorHecho generador = GeneradorHechoFactory.crear(OrigenHecho.INTERMEDIA, datos);
 
         // Assert
         assertInstanceOf(
-                GeneradorHechoAPI.class,
+                GeneradorHechoApi.class,
                 generador,
                 "El generador debería ser una instancia de GeneradorHechoAPI"
         );

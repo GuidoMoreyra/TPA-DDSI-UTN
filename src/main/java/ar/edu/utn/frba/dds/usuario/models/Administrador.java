@@ -24,11 +24,13 @@ public class Administrador implements GestorHechos {
   }
 
   ////METODOS
-  public void importarCSV(/*csv*/){
+  public void importarCsv(String ruta){
     //TODO
   }
 
-  public SolicitudEliminacion solicitudesEliminacionPendientes(SolicitudEliminacion solicitud, EstadoSolicitudEliminacion estado) {
+  public SolicitudEliminacion solicitudesEliminacionPendientes(
+      SolicitudEliminacion solicitud, EstadoSolicitudEliminacion estado
+  ) {
     //TODO
     return null;
   }

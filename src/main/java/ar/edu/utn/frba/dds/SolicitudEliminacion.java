@@ -11,7 +11,7 @@ public class SolicitudEliminacion {
 
   ///CONSTRUCTOR///
 
-  public SolicitudEliminacion (
+  public SolicitudEliminacion(
        Hecho hecho,
        GestorHechos gestor,
        String justificacion
@@ -45,9 +45,15 @@ public class SolicitudEliminacion {
     return hecho;
   }
 
-  public GestorHechos getSolicitante() { return gestor; }
+  public GestorHechos getSolicitante() {
+    return gestor;
+  }
 
-  public String getJustificacion() { return justificacion; }
+  public String getJustificacion() {
+    return justificacion;
+  }
 
-  public EstadoSolicitudEliminacion getEstado() { return estado; }
+  public EstadoSolicitudEliminacion getEstado() {
+    return estado;
+  }
 }

@@ -1,11 +1,11 @@
-package ar.edu.utn.frba.dds.hecho.generators.DTO;
+package ar.edu.utn.frba.dds.hecho.generators.dto;
 
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.hecho.models.DatosGeneradorHecho;
-
 import java.time.LocalDate;
 
-public class DatosFormularioDTO extends DatosGeneradorHecho {
+
+public class DatosFormularioDto extends DatosGeneradorHecho {
   public String titulo;
   public String descripcion;
   public String categoria;
@@ -14,7 +14,7 @@ public class DatosFormularioDTO extends DatosGeneradorHecho {
   public LocalDate fechaAcontecimiento;
   public OrigenHecho origenHecho;
 
-  public DatosFormularioDTO(
+  public DatosFormularioDto(
       String titulo,
       String descripcion,
       String categoria,

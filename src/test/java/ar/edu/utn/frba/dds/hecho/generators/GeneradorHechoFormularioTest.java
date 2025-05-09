@@ -1,11 +1,9 @@
 package ar.edu.utn.frba.dds.hecho.generators;
 
-import ar.edu.utn.frba.dds.hecho.generators.DTO.DatosFormularioDTO;
+import ar.edu.utn.frba.dds.hecho.generators.dto.DatosFormularioDto;
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
-import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,8 +18,8 @@ public class GeneradorHechoFormularioTest {
         String contenidoMultimedia = "URL de prueba";
         String lugar = "Lugar de prueba";
         LocalDate fechaAcontecimiento = LocalDate.of(2023, 1, 1);
-        
-        DatosFormularioDTO datosFormulario = new DatosFormularioDTO(
+
+        DatosFormularioDto datosFormulario = new DatosFormularioDto(
             titulo, descripcion, categoria, contenidoMultimedia, lugar, fechaAcontecimiento
         );
         

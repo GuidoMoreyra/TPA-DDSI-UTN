@@ -1,9 +1,8 @@
 package ar.edu.utn.frba.dds.hecho.models;
 
+import ar.edu.utn.frba.dds.hecho.dto.HechoLugarDto;
 import ar.edu.utn.frba.dds.hecho.enums.EstadoDelHecho;
-import ar.edu.utn.frba.dds.hecho.DTO.HechoLugarDTO;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
-
 import java.time.LocalDate;
 
 public class Hecho {
@@ -11,7 +10,7 @@ public class Hecho {
   private String descripcion;
   private String categoria;
   public String contenidoMultimedia;
-  private HechoLugarDTO lugar;
+  private HechoLugarDto lugar;
   private LocalDate fechaDelHecho;
   private LocalDate fechaCreacion;
   private OrigenHecho origen;
@@ -23,7 +22,7 @@ public class Hecho {
           String titulo,
           String descripcion,
           String categoria,
-          HechoLugarDTO lugar,
+          HechoLugarDto lugar,
           LocalDate fechaDelHecho,
           OrigenHecho origen
   ) {
@@ -55,7 +54,7 @@ public class Hecho {
     return contenidoMultimedia;
   }
 
-  public HechoLugarDTO getLugar() {
+  public HechoLugarDto getLugar() {
     return lugar;
   }
 

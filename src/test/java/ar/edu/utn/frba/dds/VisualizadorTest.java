@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import ar.edu.utn.frba.dds.hecho.DTO.HechoLugarDTO;
+import ar.edu.utn.frba.dds.hecho.dto.HechoLugarDto;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
 import ar.edu.utn.frba.dds.usuario.contracts.GestorHechos;
@@ -19,7 +19,7 @@ public class VisualizadorTest {
 
     // Arrange
     GestorHechos visualizador = new Visualizador(1, "Juan", "Pérez", 35);
-    HechoLugarDTO lugar = new HechoLugarDTO(1.0, 1.0);
+    HechoLugarDto lugar = new HechoLugarDto(1.0, 1.0);
     Hecho hecho = new Hecho("Título de prueba",
         "Descripción del hecho de prueba",
         "Categoría ejemplo",
