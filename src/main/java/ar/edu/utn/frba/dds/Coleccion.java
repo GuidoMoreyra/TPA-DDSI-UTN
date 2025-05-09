@@ -11,6 +11,7 @@ public class Coleccion {
   private List<Criterio> criterios = new ArrayList<>();
   //private List<Hecho> hechos = new ArrayList<>();
   private Fuente fuente;
+
   ////CONSTRUCTOR///
 
   //de esta manera me permite que se cree sin pasarle como parametro
@@ -20,7 +21,6 @@ public class Coleccion {
     this.titulo = titulo;
     this.criterios = (criterios != null ? criterios : new ArrayList<>());
     this.fuente = fuente;
-
     //no se incluyen los hechos porque la coleccion se puede crear vacia
   }
 

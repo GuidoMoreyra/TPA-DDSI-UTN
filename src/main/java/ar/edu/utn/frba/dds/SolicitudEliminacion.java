@@ -44,4 +44,10 @@ public class SolicitudEliminacion {
   public Hecho getHecho() {
     return hecho;
   }
+
+  public GestorHechos getSolicitante() { return gestor; }
+
+  public String getJustificacion() { return justificacion; }
+
+  public EstadoSolicitudEliminacion getEstado() { return estado; }
 }

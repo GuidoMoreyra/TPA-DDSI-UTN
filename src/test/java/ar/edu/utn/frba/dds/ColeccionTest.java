@@ -1,5 +1,9 @@
 package ar.edu.utn.frba.dds;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import ar.edu.utn.frba.dds.usuario.models.Administrador;
 import ar.edu.utn.frba.dds.usuario.models.Visualizador;
 import org.junit.jupiter.api.Test;
@@ -8,12 +12,16 @@ import java.util.List;
 
 public class ColeccionTest {
   @Test
-  public void SecreaUnaColeccionSinCriterioDespuesSeAgregan(){
+  public void SecreaUnaColeccionSinHechosDespuesSeAgregan(){
     Fuente fuenteTest = new FuenteEstatica("formatoTp.csv");
     Coleccion coleccionUnCriterio = new Coleccion("Deportivos Argentina",fuenteTest,null);
     CriterioCategoria criterioCategoria = new CriterioCategoria("deportivo");
     coleccionUnCriterio.agregarCriterio(criterioCategoria);
-    coleccionUnCriterio.mostrarColeccion();
+    //coleccionUnCriterio.mostrarColeccion();
+
+    // Assert
+    assertTrue(coleccionUnCriterio.tieneCriterio(criterioCategoria), "La colección tiene el criterio deportivo");
+
   }
 
   @Test
@@ -23,7 +31,10 @@ public class ColeccionTest {
     List<Criterio> criterios = new ArrayList<>();
     criterios.add(new CriterioCategoria("Incendio Forestal"));
     Coleccion coleccion = admin.crearColeccion("Hechos de incendios", fuente, criterios);
-    coleccion.mostrarColeccion(); // Muestra los hechos filtrados según los criterios.
+    //coleccion.mostrarColeccion(); // Muestra los hechos filtrados según los criterios.
+
+    // Validaciones
+    assertNotNull(coleccion, "La colección no debería ser nula");
 
   }
   @Test

@@ -1,4 +1,6 @@
 package ar.edu.utn.frba.dds;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Test;
 
 public class FuenteEstaticaTest {
@@ -7,6 +9,7 @@ public class FuenteEstaticaTest {
     public void mostarArchivoCsv() {
       FuenteEstatica fuente = new FuenteEstatica("formatoTp.csv");
       //fuente.mostrarHechos();
+      assertNotNull(fuente);
     }
 
     @Test
