@@ -56,4 +56,23 @@ public class Administrador implements GestorHechos {
   public void mostrarColeccion(Coleccion coleccion) {
     coleccion.mostrarColeccion();
   }
+
+  //GETTERS
+
+
+  public Integer getLegajo() {
+    return legajo;
+  }
+
+  public String getNombre() {
+    return nombre;
+  }
+
+  public String getApellido() {
+    return apellido;
+  }
+
+  public Integer getEdad() {
+    return edad;
+  }
 }

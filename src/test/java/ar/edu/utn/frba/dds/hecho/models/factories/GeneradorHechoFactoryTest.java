@@ -34,7 +34,7 @@ public class GeneradorHechoFactoryTest {
     public void origenDinamicoRetornaGeneradorFormulario() {
         // Arrange
         DatosFormularioDto datos = new DatosFormularioDto(
-            "Título", "Descripción", "Categoría", "URL", "Lugar", LocalDate.now()
+            "Título", "Descripción", "Categoría", "Lugar", LocalDate.now()
         );
 
         // Act

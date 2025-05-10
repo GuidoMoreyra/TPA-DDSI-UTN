@@ -15,12 +15,11 @@ public class GeneradorHechoFormularioTest {
         String titulo = "Título de prueba";
         String descripcion = "Descripción de prueba";
         String categoria = "Categoría de prueba";
-        String contenidoMultimedia = "URL de prueba";
         String lugar = "Lugar de prueba";
         LocalDate fechaAcontecimiento = LocalDate.of(2023, 1, 1);
 
         DatosFormularioDto datosFormulario = new DatosFormularioDto(
-            titulo, descripcion, categoria, contenidoMultimedia, lugar, fechaAcontecimiento
+            titulo, descripcion, categoria, lugar, fechaAcontecimiento
         );
         
         GeneradorHechoFormulario generador = new GeneradorHechoFormulario(datosFormulario);

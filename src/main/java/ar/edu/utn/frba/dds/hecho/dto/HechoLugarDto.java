@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.hecho.dto;
 
 public class HechoLugarDto {
-  public Double latitud;
-  public Double longitud;
+  private Double latitud;
+  private Double longitud;
 
   public HechoLugarDto(
       Double latitud,
@@ -10,5 +10,13 @@ public class HechoLugarDto {
   ) {
     this.latitud = latitud;
     this.longitud = longitud;
+  }
+
+  public Double getLatitud() {
+    return latitud;
+  }
+
+  public Double getLongitud() {
+    return longitud;
   }
 }

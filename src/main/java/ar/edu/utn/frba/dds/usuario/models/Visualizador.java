@@ -29,4 +29,23 @@ public class Visualizador implements GestorHechos {
     coleccion.agregarCriterio(criterio);  // Agregar el nuevo criterio de filtro a la colección
     coleccion.mostrarColeccion();  // Muestra la colección filtrada
   }
+
+  //GETTERS
+
+
+  public Integer getId() {
+    return id;
+  }
+
+  public String getNombre() {
+    return nombre;
+  }
+
+  public String getApellido() {
+    return apellido;
+  }
+
+  public Integer getEdad() {
+    return edad;
+  }
 }

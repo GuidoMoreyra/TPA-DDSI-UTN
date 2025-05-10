@@ -27,7 +27,7 @@ public class GeneradorHechoCsv implements GeneradorHecho {
     String titulo = datosSeparados[0];
     String descripcion = datosSeparados[1];
     String categoria = datosSeparados[2];
-    String lugar = datosSeparados[3];
+    //String lugar = datosSeparados[3];
     LocalDate fechaDelHecho = LocalDate.parse(datosSeparados[4]);
 
     HechoLugarDto hechoLugar = new HechoLugarDto(0.0, 0.0);

@@ -9,7 +9,7 @@ public class DatosFormularioDto extends DatosGeneradorHecho {
   public String titulo;
   public String descripcion;
   public String categoria;
-  public String contenidoMultimedia;
+  //public String contenidoMultimedia;
   public String lugar;
   public LocalDate fechaAcontecimiento;
   public OrigenHecho origenHecho;
@@ -18,14 +18,14 @@ public class DatosFormularioDto extends DatosGeneradorHecho {
       String titulo,
       String descripcion,
       String categoria,
-      String contenidoMultimedia,
+      //String contenidoMultimedia,
       String lugar,
       LocalDate fechaAcontecimiento
   ) {
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
-    this.contenidoMultimedia = contenidoMultimedia;
+    //this.contenidoMultimedia = contenidoMultimedia;
     this.lugar = lugar;
     this.fechaAcontecimiento = fechaAcontecimiento;
     this.origenHecho = OrigenHecho.DINAMICA;

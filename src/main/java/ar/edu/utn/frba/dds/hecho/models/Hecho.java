@@ -9,7 +9,7 @@ public class Hecho {
   private String titulo;
   private String descripcion;
   private String categoria;
-  public String contenidoMultimedia;
+  //private String contenidoMultimedia;
   private HechoLugarDto lugar;
   private LocalDate fechaDelHecho;
   private LocalDate fechaCreacion;
@@ -48,10 +48,6 @@ public class Hecho {
 
   public String getCategoria() {
     return categoria;
-  }
-
-  public String getContenidoMultimedia() {
-    return contenidoMultimedia;
   }
 
   public HechoLugarDto getLugar() {
