@@ -14,10 +14,10 @@ public class CriterioCategoria implements Criterio {
   public Boolean cumple(Hecho hecho) {
     return this.categoria.equals(hecho.getCategoria());
   }
-
+  /*
   public Boolean seCumpleCriterio(Map<String, String> unHecho) {
     return this.categoria.equals(unHecho.get("categoria"));
-  }
+  }*/
 
 }
 

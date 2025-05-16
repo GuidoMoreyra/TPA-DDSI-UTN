@@ -1,5 +1,5 @@
 package ar.edu.utn.frba.dds.hecho.dto;
-
+/*
 public class HechoLugarDto {
   private Double latitud;
   private Double longitud;
@@ -19,4 +19,4 @@ public class HechoLugarDto {
   public Double getLongitud() {
     return longitud;
   }
-}
+}*/

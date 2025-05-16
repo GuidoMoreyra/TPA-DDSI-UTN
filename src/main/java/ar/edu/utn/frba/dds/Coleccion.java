@@ -45,19 +45,19 @@ public class Coleccion {
     this.hechos.addAll(hechosFiltrados);}*/
 
   public void mostrarColeccion() {
-    for (Map<String, String> hecho : fuente.leerCsv()) {
+    for (Hecho hecho : fuente.obtenerHechos()) {
       if (cumpleTodosLosCriterios(hecho)) {
         imprimirColeccion(hecho);
       }
     }
   }
 
-  private boolean cumpleTodosLosCriterios(Map<String, String> hecho) {
-    return criterios.stream().allMatch(unCriterio -> unCriterio.seCumpleCriterio(hecho));
+  private boolean cumpleTodosLosCriterios(Hecho hecho) {
+    return criterios.stream().allMatch(unCriterio -> unCriterio.cumple(hecho));
   }
 
-  private void imprimirColeccion(Map<String, String> hecho) {
-    hecho.forEach((clave, valor) -> System.out.println(" " + clave + " " + valor));
+  private void imprimirColeccion(Hecho hecho) {
+
     System.out.println();
   }
 

@@ -8,5 +8,5 @@ public interface Criterio {
 
   public Boolean cumple(Hecho hecho);
 
-  public Boolean seCumpleCriterio(Map<String, String> unHecho);
+  //public Boolean seCumpleCriterio(Hecho unHecho);
 }

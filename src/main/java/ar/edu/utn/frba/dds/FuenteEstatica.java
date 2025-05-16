@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.hecho.models.Hecho;
 import java.util.Map;
 
 public class FuenteEstatica implements Fuente {
@@ -13,29 +14,37 @@ public class FuenteEstatica implements Fuente {
   }
 
   public void mostrarHechos() {
-    for (Map<String, String> hecho : this.leerCsv()) {
+    for (Hecho hecho : this.obtenerHechos()) {
       imprimirHechos(hecho, "Hecho: ");
     }
   }
 
   public void mostrarHechosQueCumplen(Criterio unCriterio) {
     //se usa internamente el CsvIterator para recorrer los datos línea por línea.
-    for (Map<String, String> hecho : this.leerCsv()) {
-      if (unCriterio.seCumpleCriterio(hecho)) {
+    for (Hecho hecho : this.obtenerHechos()) {
+      if (unCriterio.cumple(hecho)) {
         imprimirHechos(hecho, "Hecho que cumple con un criterio: ");
       }
     }
   }
 
-  private void imprimirHechos(Map<String, String> hecho, String mensaje) {
+  private void imprimirHechos(Hecho hecho, String mensaje) {
     System.out.println(mensaje);
-    hecho.forEach((clave, valor) -> System.out.println("  " + clave + ": " + valor));
+    System.out.println("  Título: " + hecho.getTitulo());
+    System.out.println("  Descripción: " + hecho.getDescripcion());
+    System.out.println("  Categoría: " + hecho.getCategoria());
+    System.out.println("  Latitud: " + hecho.getLatitud());
+    System.out.println("  Longitud: " + hecho.getLongitud());
+    System.out.println("  Fecha del Hecho: " + hecho.getFechaDelHecho());
+    System.out.println("  Fecha de Creación: " + hecho.getFechaCreacion());
+    //System.out.println("  Origen: " + hecho.getOrigen());
+    System.out.println("  Estado: " + hecho.getEstado());
     System.out.println();
   }
 
 
   @Override
-  public Iterable<Map<String, String>> leerCsv() {
+  public Iterable<Hecho> obtenerHechos() {
     return new CsvIterable(archivo);
   }
 

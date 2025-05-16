@@ -5,9 +5,9 @@ import ar.edu.utn.frba.dds.Criterio;
 import ar.edu.utn.frba.dds.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.Fuente;
 import ar.edu.utn.frba.dds.SolicitudEliminacion;
-import ar.edu.utn.frba.dds.usuario.contracts.GestorHechos;
+//import ar.edu.utn.frba.dds.usuario.contracts.GestorHechos;
 import java.util.List;
-
+/*
 public class Administrador implements GestorHechos {
   private Integer legajo;
   private String nombre;
@@ -75,4 +75,4 @@ public class Administrador implements GestorHechos {
   public Integer getEdad() {
     return edad;
   }
-}
+}*/

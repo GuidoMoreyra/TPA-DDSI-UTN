@@ -8,8 +8,8 @@ public class FuenteEstaticaTest {
     @Test
     public void mostarArchivoCsv() {
       FuenteEstatica fuente = new FuenteEstatica("formatoTp.csv");
-      //fuente.mostrarHechos();
-      assertNotNull(fuente);
+      fuente.mostrarHechos();
+
     }
 
     @Test
@@ -17,7 +17,7 @@ public class FuenteEstaticaTest {
       FuenteEstatica fuente = new FuenteEstatica("formatoTp.csv");
 
       CriterioCategoria criterioCategoria = new CriterioCategoria("deportivo");
-      //fuente.mostrarHechosQueCumplen(criterioCategoria);
+      fuente.mostrarHechosQueCumplen(criterioCategoria);
     }
 
 

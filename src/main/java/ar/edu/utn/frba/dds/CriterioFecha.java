@@ -16,11 +16,12 @@ public class CriterioFecha implements Criterio {
     return true;
   }
 
-  //En un futuro deberia cambiarse usando localDate
+  /*
+  En un futuro deberia cambiarse usando localDate
   @Override
   public Boolean seCumpleCriterio(Map<String, String> hecho) {
     return fecha.equals(hecho.get("fecha_Del_Hecho"));  // Comparación directa
-  }
+  }*/
 }
 
 

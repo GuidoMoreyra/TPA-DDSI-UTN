@@ -1,24 +1,24 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
-import ar.edu.utn.frba.dds.usuario.contracts.GestorHechos;
+//import ar.edu.utn.frba.dds.usuario.contracts.GestorHechos;
 
 public class SolicitudEliminacion {
   private EstadoSolicitudEliminacion estado;
   private Hecho hecho;
-  private GestorHechos gestor;
+  //private GestorHechos gestor;
   private String justificacion;
 
   ///CONSTRUCTOR///
 
   public SolicitudEliminacion(
        Hecho hecho,
-       GestorHechos gestor,
+    //   GestorHechos gestor,
        String justificacion
   ) {
     this.estado = EstadoSolicitudEliminacion.PENDIENTE;
     this.hecho = hecho;
-    this.gestor = gestor;
+    //this.gestor = gestor;
 
     if (justificacion.length() < 500) {
       throw new IllegalArgumentException(
@@ -44,10 +44,10 @@ public class SolicitudEliminacion {
   public Hecho getHecho() {
     return hecho;
   }
-
+/*
   public GestorHechos getSolicitante() {
     return gestor;
-  }
+  }*/
 
   public String getJustificacion() {
     return justificacion;

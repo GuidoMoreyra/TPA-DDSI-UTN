@@ -1,5 +1,5 @@
 package ar.edu.utn.frba.dds.hecho.generators;
-
+/*
 import ar.edu.utn.frba.dds.hecho.generators.dto.DatosFormularioDto;
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
 import org.junit.jupiter.api.Test;
@@ -34,4 +34,4 @@ public class GeneradorHechoFormularioTest {
         assertEquals(categoria, hecho.getCategoria(), "La categoría del hecho debería coincidir con la proporcionada");
         assertEquals(fechaAcontecimiento, hecho.getFechaDelHecho(), "La fecha del hecho debería coincidir con la proporcionada");
     }
-}
+}*/

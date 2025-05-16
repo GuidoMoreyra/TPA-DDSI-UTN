@@ -24,11 +24,11 @@ public class CriterioLugar implements Criterio {
     return true;
     //TODO - falta API que devuelva una localidad
   }
-
+  /*
   @Override
   public Boolean seCumpleCriterio(Map<String, String> unHecho) {
     return this.tipoLugar.equals(unHecho.get("tipo_lugar"));
-  }
+  }*/
 
   public Double getLatitud() {
     return latitud;

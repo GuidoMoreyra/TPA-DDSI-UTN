@@ -1,44 +1,73 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.hecho.models.Hecho;
+
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader; //para leer linea por linea
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException; //capturas de errores del formato CSV sin esto me tira error
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap; //ambas se usan para representar
 import java.util.Iterator; //porque la clase implementa esta interfaz
 import java.util.Map;    //cada fila como calve-valor
 
 
-public class CsvIterator implements Iterator<Map<String, String>> {
+public class CsvIterator implements Iterator<Hecho> {
 
-  private final InputStream entradaArchivoCsv;
+  private CSVReader lector;
+  //herramienta de openCsv para leer el archivo
+ // private final InputStream entradaArchivoCsv;
+  private String[] encabezado;
+  //guarda los nombres de columnas (primera fila del CSV)
+  private String[] proximaLinea;
+  //representa la proxima linea a procesar
 
 
-  public CsvIterator(InputStream entradaArchivoCsv)
-      throws IOException, CsvValidationException {
-    this.entradaArchivoCsv = entradaArchivoCsv;
+  public CsvIterator(InputStream entradaArchivoCsv) throws IOException, CsvValidationException {
+    //this.entradaArchivoCsv = entradaArchivoCsv;
+    this.lector = new CSVReaderBuilder(
+        new InputStreamReader(
+            entradaArchivoCsv, StandardCharsets.UTF_8))
+            .withCSVParser(new CSVParserBuilder().withSeparator(';').build())
+            .build();
+    //se construye el CSVREADER con utf-8 y separador ;
+    this.encabezado = lector.readNext();
+    //primera linea: nombre de columans
+    // se asume que hay encabezado
+    this.proximaLinea = lector.readNext();
+    //se posiciona en la proxima fila de datos
+    //ahora se hace una sola vez y se mantiene el estado correctamente
   }
 
 
   @Override
   public boolean hasNext() {
-    return false;
+    //devuelve true si hay una linea por leer
+    //permite recorrer linea por linea
+    return proximaLinea !=null;
   }
 
   @Override
-  public Map<String, String> next() {
-    //crea un nuevo HashMap para
-    //almacenar el par <encabezado,valor>
+  public Hecho next() {
+    //metodo que devuelve el proximo Hecho
+    //del tipo clase Hecho
     //trim() se usa para eliminar los espacios en blanc
     //al principio y al final de una cadena de texto
-    Map<String, String> map = new HashMap<>();
+
 
     try {
+      Hecho hecho = this.convertirFilaHecho(proximaLinea);//new HashMap<>();
+      proximaLinea = lector.readNext();//avanza a la proxima línea
+      return hecho;
+      /* esto ya no va
       //lectorDeFilas lee el archivo csv linea por linea
       CSVReader lectorDeFilas = new CSVReaderBuilder(
           new InputStreamReader(entradaArchivoCsv, StandardCharsets.UTF_8)
@@ -59,11 +88,42 @@ public class CsvIterator implements Iterator<Map<String, String>> {
             siguienteLinea = lectorDeFilas.readNext();
           }
         }
-      }
+      }*/
     } catch (IOException | CsvValidationException e) {
       //estuve obligado a ponerlas porque sino me tira error
       throw new RuntimeException("Error al leer la siguiente línea del CSV", e);
     }
-    return map;
+
+  }
+
+  private Hecho convertirFilaHecho(String[] fila) {
+    String titulo = obtenerValor("titulo", fila);
+    String descripcion = obtenerValor("descripcion", fila);
+    String categoria = obtenerValor("categoria", fila);
+    String latitud = obtenerValor("latitud",fila);
+    String longitud = obtenerValor("longitud",fila);
+    String fechaStr = obtenerValor("fecha_Del_Hecho", fila);
+    //String origenStr = obtenerValor("origen", fila);
+
+    Double unaLatitud = Double.parseDouble(latitud);
+    Double unaLongitud = Double.parseDouble(longitud);
+    //por el momento es el formato que tiene el csv de prueba futuras entregas a cambiar
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDate fechaDelHecho = LocalDate.parse(fechaStr, formatter);
+
+    Hecho hecho = new Hecho(titulo,descripcion,categoria,unaLatitud,unaLongitud,fechaDelHecho);
+
+    return hecho;
+  }
+  private String obtenerValor(String campo, String[] fila) {
+    String valor = "";
+    for (int i = 0; i < encabezado.length; i++) {
+      if (encabezado[i].equalsIgnoreCase(campo)) {
+        valor = i < fila.length ? fila[i].trim() : "";
+        break;
+
+      }
+    }
+    return valor;
   }
 }

@@ -2,8 +2,8 @@ package ar.edu.utn.frba.dds.usuario.models;
 
 import ar.edu.utn.frba.dds.Coleccion;
 import ar.edu.utn.frba.dds.Criterio;
-import ar.edu.utn.frba.dds.usuario.contracts.GestorHechos;
-
+//import ar.edu.utn.frba.dds.usuario.contracts.GestorHechos;
+/*
 public class Visualizador implements GestorHechos {
 
   private Integer id;
@@ -49,3 +49,4 @@ public class Visualizador implements GestorHechos {
     return edad;
   }
 }
+*/

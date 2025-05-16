@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.hecho.models.Hecho;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -11,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
 
-public class CsvIterable implements Iterable<Map<String, String>> {
+public class CsvIterable implements Iterable<Hecho> {
 
   private final String archivo;
 
@@ -20,7 +21,7 @@ public class CsvIterable implements Iterable<Map<String, String>> {
   }
 
   @Override
-  public Iterator<Map<String, String>> iterator() {
+  public Iterator<Hecho> iterator() {
     try {
       InputStream entradaArchivoCsv = obtenerInputStreamDelArchivo();
 

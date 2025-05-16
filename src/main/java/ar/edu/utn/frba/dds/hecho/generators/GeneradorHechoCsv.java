@@ -1,12 +1,12 @@
 package ar.edu.utn.frba.dds.hecho.generators;
 
 import ar.edu.utn.frba.dds.hecho.contracts.GeneradorHecho;
-import ar.edu.utn.frba.dds.hecho.dto.HechoLugarDto;
+//import ar.edu.utn.frba.dds.hecho.dto.HechoLugarDto;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.hecho.generators.dto.DatosCsvDto;
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
 import java.time.LocalDate;
-
+/*
 public class GeneradorHechoCsv implements GeneradorHecho {
   private final DatosCsvDto datos;
 
@@ -35,4 +35,4 @@ public class GeneradorHechoCsv implements GeneradorHecho {
     return
         new Hecho(titulo, descripcion, categoria, hechoLugar, fechaDelHecho, OrigenHecho.ESTATICA);
   }
-}
+}*/

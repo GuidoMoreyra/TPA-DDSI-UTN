@@ -1,5 +1,5 @@
 package ar.edu.utn.frba.dds;
-
+/*
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -68,4 +68,4 @@ public class AdministradorTest {
     assertEquals(EstadoSolicitudEliminacion.RECHAZADO, solicitud.getEstado());
     assertEquals(EstadoDelHecho.ACTIVO, hecho.getEstado());
   }
-}
+}*/

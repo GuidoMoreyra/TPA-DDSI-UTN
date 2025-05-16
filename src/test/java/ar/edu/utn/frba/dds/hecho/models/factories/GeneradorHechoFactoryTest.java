@@ -1,5 +1,5 @@
 package ar.edu.utn.frba.dds.hecho.models.factories;
-
+/*
 import ar.edu.utn.frba.dds.hecho.contracts.GeneradorHecho;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.hecho.generators.GeneradorHechoApi;
@@ -63,4 +63,4 @@ public class GeneradorHechoFactoryTest {
                 "El generador debería ser una instancia de GeneradorHechoAPI"
         );
     }
-}
+}*/

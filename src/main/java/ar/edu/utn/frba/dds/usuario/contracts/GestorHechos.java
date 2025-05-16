@@ -6,8 +6,8 @@ import ar.edu.utn.frba.dds.hecho.contracts.GeneradorHecho;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.hecho.generators.dto.DatosFormularioDto;
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
-import ar.edu.utn.frba.dds.hecho.models.factories.GeneradorHechoFactory;
-
+//import ar.edu.utn.frba.dds.hecho.models.factories.GeneradorHechoFactory;
+/*
 public interface GestorHechos {
   default Hecho subirHecho(DatosFormularioDto datosFormulario) {
     GeneradorHecho generadorHecho = GeneradorHechoFactory.crear(
@@ -33,4 +33,4 @@ public interface GestorHechos {
   }
 
   void mostrarColeccion(Coleccion coleccion);
-}
+}*/
