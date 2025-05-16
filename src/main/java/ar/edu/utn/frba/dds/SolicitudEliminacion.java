@@ -13,7 +13,7 @@ public class SolicitudEliminacion {
 
   public SolicitudEliminacion(
        Hecho hecho,
-    //   GestorHechos gestor,
+       //GestorHechos gestor,
        String justificacion
   ) {
     this.estado = EstadoSolicitudEliminacion.PENDIENTE;
@@ -44,7 +44,7 @@ public class SolicitudEliminacion {
   public Hecho getHecho() {
     return hecho;
   }
-/*
+  /*
   public GestorHechos getSolicitante() {
     return gestor;
   }*/

@@ -1,17 +1,14 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
-
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader; //para leer linea por linea
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException; //capturas de errores del formato CSV sin esto me tira error
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -24,7 +21,7 @@ public class CsvIterator implements Iterator<Hecho> {
 
   private CSVReader lector;
   //herramienta de openCsv para leer el archivo
- // private final InputStream entradaArchivoCsv;
+  // private final InputStream entradaArchivoCsv;
   private String[] encabezado;
   //guarda los nombres de columnas (primera fila del CSV)
   private String[] proximaLinea;
@@ -52,7 +49,7 @@ public class CsvIterator implements Iterator<Hecho> {
   public boolean hasNext() {
     //devuelve true si hay una linea por leer
     //permite recorrer linea por linea
-    return proximaLinea !=null;
+    return proximaLinea != null;
   }
 
   @Override
@@ -64,8 +61,8 @@ public class CsvIterator implements Iterator<Hecho> {
 
 
     try {
-      Hecho hecho = this.convertirFilaHecho(proximaLinea);//new HashMap<>();
-      proximaLinea = lector.readNext();//avanza a la proxima línea
+      Hecho hecho = this.convertirFilaHecho(proximaLinea); //new HashMap<>();
+      proximaLinea = lector.readNext(); //avanza a la proxima línea
       return hecho;
       /* esto ya no va
       //lectorDeFilas lee el archivo csv linea por linea
@@ -100,8 +97,8 @@ public class CsvIterator implements Iterator<Hecho> {
     String titulo = obtenerValor("titulo", fila);
     String descripcion = obtenerValor("descripcion", fila);
     String categoria = obtenerValor("categoria", fila);
-    String latitud = obtenerValor("latitud",fila);
-    String longitud = obtenerValor("longitud",fila);
+    String latitud = obtenerValor("latitud", fila);
+    String longitud = obtenerValor("longitud", fila);
     String fechaStr = obtenerValor("fecha_Del_Hecho", fila);
     //String origenStr = obtenerValor("origen", fila);
 
@@ -111,10 +108,11 @@ public class CsvIterator implements Iterator<Hecho> {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     LocalDate fechaDelHecho = LocalDate.parse(fechaStr, formatter);
 
-    Hecho hecho = new Hecho(titulo,descripcion,categoria,unaLatitud,unaLongitud,fechaDelHecho);
+    Hecho hecho = new Hecho(titulo, descripcion, categoria, unaLatitud, unaLongitud, fechaDelHecho);
 
     return hecho;
   }
+
   private String obtenerValor(String campo, String[] fila) {
     String valor = "";
     for (int i = 0; i < encabezado.length; i++) {

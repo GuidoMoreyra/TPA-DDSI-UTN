@@ -42,8 +42,8 @@ public class Coleccion {
   }
 
   public void cargarHechos() {
-    for(Hecho unHecho : fuente.obtenerHechos()){
-      if(cumpleTodosLosCriterios(unHecho)){
+    for (Hecho unHecho : fuente.obtenerHechos()) {
+      if (cumpleTodosLosCriterios(unHecho)) {
         hechos.add(unHecho);
       }
     }
@@ -57,10 +57,9 @@ public class Coleccion {
   }
 
   //por el momento son criterios pero se pueden crear filtros especificos para los usuarios
-  public List<Hecho> cargarHechosConFiltros( List<Criterio> nuevosCriterios) {
-    return hechos.stream().filter(unhecho ->
-        nuevosCriterios.stream().allMatch(criterio->
-            criterio.cumple(unhecho)))
+  public List<Hecho> cargarHechosConFiltros(List<Criterio> nuevosCriterios) {
+    return hechos.stream().filter(unhecho -> nuevosCriterios.stream()
+            .allMatch(criterio -> criterio.cumple(unhecho)))
             .collect(Collectors.toList());
   }
 
@@ -82,8 +81,11 @@ public class Coleccion {
     return titulo;
   }
 
+  //se modifico por presencia de code smells
+  //ahora solo devuelve una copia que es modificable
+  //pero no la interna
   public List<Hecho> getHechos() {
-    return hechos;
+    return new ArrayList<>(hechos);
   }
 }
 

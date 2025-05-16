@@ -26,8 +26,7 @@ public class Hecho {
           String categoria,
           Double latitud,
           Double longitud,
-          LocalDate fechaDelHecho
-          //OrigenHecho origen
+          LocalDate fechaDelHecho//OrigenHecho origen
   ) {
     this.titulo = titulo;
     this.descripcion = descripcion;
@@ -61,6 +60,7 @@ public class Hecho {
   public Double getLatitud() {
     return latitud;
   }
+
   public Double getLongitud() {
     return longitud;
   }

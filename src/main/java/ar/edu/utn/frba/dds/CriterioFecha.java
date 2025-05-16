@@ -15,7 +15,7 @@ public class CriterioFecha implements Criterio {
   @Override
   public Boolean cumple(Hecho hecho) {
 
-    return fecha.equals(hecho.getFechaDelHecho()) ;
+    return fecha.equals(hecho.getFechaDelHecho());
   }
 
   /*
