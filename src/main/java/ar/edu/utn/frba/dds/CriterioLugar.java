@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
-import java.util.Map;
 
 
 
@@ -24,11 +23,6 @@ public class CriterioLugar implements Criterio {
     return true;
     //TODO - falta API que devuelva una localidad
   }
-  /*
-  @Override
-  public Boolean seCumpleCriterio(Map<String, String> unHecho) {
-    return this.tipoLugar.equals(unHecho.get("tipo_lugar"));
-  }*/
 
   public Double getLatitud() {
     return latitud;

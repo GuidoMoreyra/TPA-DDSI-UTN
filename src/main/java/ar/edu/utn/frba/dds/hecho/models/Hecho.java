@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds.hecho.models;
 
-//import ar.edu.utn.frba.dds.hecho.dto.HechoLugarDto;
 import ar.edu.utn.frba.dds.hecho.enums.EstadoDelHecho;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
 import java.time.LocalDate;
@@ -52,10 +51,7 @@ public class Hecho {
   public String getCategoria() {
     return categoria;
   }
-  /*
-  public HechoLugarDto getLugar() {
-    return lugar;
-  }*/
+
 
   public Double getLatitud() {
     return latitud;
@@ -72,10 +68,7 @@ public class Hecho {
   public LocalDate getFechaCreacion() {
     return fechaCreacion;
   }
-  /*
-  public OrigenHecho getOrigen() {
-    return origen;
-  }*/
+
 
   public EstadoDelHecho getEstado() {
     return estado;

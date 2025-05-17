@@ -1,11 +1,9 @@
 package ar.edu.utn.frba.dds;
 
-import static java.util.stream.Collectors.toList;
 
 import ar.edu.utn.frba.dds.hecho.models.Hecho;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -63,19 +61,9 @@ public class Coleccion {
             .collect(Collectors.toList());
   }
 
-  /*
-  public void mostrarColeccion() {
-    hechos.forEach(hecho -> {imprimirColeccion(hecho);});
-  }*/
-
   private boolean cumpleTodosLosCriterios(Hecho hecho) {
     return criterios.stream().allMatch(unCriterio -> unCriterio.cumple(hecho));
   }
-  /*
-  private void imprimirColeccion(Hecho hecho) {
-
-    System.out.println();
-  }*/
 
   public String getTitulo() {
     return titulo;

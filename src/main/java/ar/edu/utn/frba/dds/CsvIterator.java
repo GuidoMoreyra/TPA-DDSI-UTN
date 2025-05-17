@@ -11,10 +11,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap; //ambas se usan para representar
 import java.util.Iterator; //porque la clase implementa esta interfaz
-import java.util.Map;    //cada fila como calve-valor
 
 
 public class CsvIterator implements Iterator<Hecho> {
@@ -64,28 +61,7 @@ public class CsvIterator implements Iterator<Hecho> {
       Hecho hecho = this.convertirFilaHecho(proximaLinea); //new HashMap<>();
       proximaLinea = lector.readNext(); //avanza a la proxima línea
       return hecho;
-      /* esto ya no va
-      //lectorDeFilas lee el archivo csv linea por linea
-      CSVReader lectorDeFilas = new CSVReaderBuilder(
-          new InputStreamReader(entradaArchivoCsv, StandardCharsets.UTF_8)
-      )
-          .withCSVParser(new CSVParserBuilder().withSeparator(';').build())
-          .build();
-      //forma un string con la primera fila donde indica que columnas se tiene
-      String[] encabezado = lectorDeFilas.readNext();
 
-      if (encabezado != null) {
-        String[] siguienteLinea = lectorDeFilas.readNext();
-
-        while (siguienteLinea != null) {
-          for (int i = 0; i < encabezado.length; i++) {
-            map.put(encabezado[0].trim(), encabezado[i].trim());
-            //por cada posicion valida,
-            //agrega al mapa una entrada <columna,valor>
-            siguienteLinea = lectorDeFilas.readNext();
-          }
-        }
-      }*/
     } catch (IOException | CsvValidationException e) {
       //estuve obligado a ponerlas porque sino me tira error
       throw new RuntimeException("Error al leer la siguiente línea del CSV", e);
