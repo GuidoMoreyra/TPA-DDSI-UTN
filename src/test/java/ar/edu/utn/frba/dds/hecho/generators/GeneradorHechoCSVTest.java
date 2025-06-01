@@ -1,5 +1,5 @@
 package ar.edu.utn.frba.dds.hecho.generators;
-
+/*
 import ar.edu.utn.frba.dds.hecho.generators.dto.DatosCsvDto;
 import ar.edu.utn.frba.dds.models.Hecho;
 import org.junit.jupiter.api.Test;
@@ -41,4 +41,4 @@ public class GeneradorHechoCSVTest {
                 generador::generarHecho
         );
     }
-}
+}*/

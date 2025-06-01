@@ -1,61 +1,55 @@
 package ar.edu.utn.frba.dds;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import ar.edu.utn.frba.dds.models.Coleccion;
-import ar.edu.utn.frba.dds.models.criterios.Criterio;
-import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
-import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
-import ar.edu.utn.frba.dds.repositories.fuentes.Fuente;
-import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
-import ar.edu.utn.frba.dds.usuario.models.Administrador;
-import ar.edu.utn.frba.dds.usuario.models.Visualizador;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ColeccionTest {
   @Test
-  public void SecreaUnaColeccionSinHechosDespuesSeAgregan(){
+  public void SecreaUnaColeccionDondeSoloUnHechoCumpleElCriterio(){
     Fuente fuenteTest = new FuenteEstatica("formatoTp.csv");
-    Coleccion coleccionUnCriterio = new Coleccion("Deportivos Argentina",fuenteTest,null);
+    Coleccion coleccionUnCriterio = new Coleccion("Deporte Argentino",fuenteTest,null);
     CriterioCategoria criterioCategoria = new CriterioCategoria("deportivo");
     coleccionUnCriterio.agregarCriterio(criterioCategoria);
-    //coleccionUnCriterio.mostrarColeccion();
+    coleccionUnCriterio.cargarHechos();
 
-    // Assert
-    assertTrue(coleccionUnCriterio.tieneCriterio(criterioCategoria), "La colección tiene el criterio deportivo");
+    assertEquals(coleccionUnCriterio.getHechos().size(),1);
 
   }
 
   @Test
-  public void AdministradorCreaUnaColeccionImportandoDatosDesdeUnCsv(){
-    Administrador admin = new Administrador(163205,"Fernando","Rossi",27);
-    Fuente fuente = new FuenteEstatica("formatoTp.csv");
-    List<Criterio> criterios = new ArrayList<>();
-    criterios.add(new CriterioCategoria("Incendio Forestal"));
-    Coleccion coleccion = admin.crearColeccion("Hechos de incendios", fuente, criterios);
-    //coleccion.mostrarColeccion(); // Muestra los hechos filtrados según los criterios.
+  public void SeCreaUnacoleccionConVariosHechosCumpliendoElCriterio(){
+    Fuente fuenteTest = new FuenteEstatica("formatoTp.csv");
 
-    // Validaciones
-    assertNotNull(coleccion, "La colección no debería ser nula");
+    List<Criterio> criteriosForestal = new ArrayList<>();
+    criteriosForestal.add(new CriterioCategoria("Incendio Forestal"));
+    Coleccion coleccionConVarioshechos = new Coleccion("Incendio Forestal",fuenteTest,criteriosForestal);
+    coleccionConVarioshechos.cargarHechos();
+
+     assertEquals(coleccionConVarioshechos.getHechos().size(),4);
+
+
+
+
+
 
   }
   @Test
   public void VisualizadorAplicaFiltrosAunaColeccion(){
-    Administrador admin = new Administrador(163205,"Fernando","Rossi",27);
-    Visualizador visualizador = new Visualizador(1234,"Sofia","Gallardo",28);
     Fuente fuente = new FuenteEstatica("formatoTp.csv");
     List<Criterio> criterios = new ArrayList<>();
     criterios.add(new CriterioCategoria("Incendio Forestal"));
-    Criterio criterioFecha = new CriterioFecha("5/1/2017");
-    Coleccion coleccion = admin.crearColeccion("Hechos de incendios", fuente, criterios);
-    visualizador.filtrarColeccion(coleccion, criterioFecha);
+    Coleccion coleccion = new Coleccion("Incendio Forestal",fuente,criterios);
+    Criterio criterioFecha = new CriterioFecha("05/01/2017");
+    List<Criterio> criteriosVisualizador = new ArrayList<>();
+    criteriosVisualizador.add(criterioFecha);
+    coleccion.cargarHechos();
 
-    // Validaciones
-    //assertNotNull(hechosFiltrados);
+
+
+
+    assertEquals(coleccion.cargarHechosConFiltros(criteriosVisualizador).size(),2);
 
 
   }
