@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
+import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
 import org.junit.jupiter.api.Test;
 
 public class FuenteEstaticaTest {

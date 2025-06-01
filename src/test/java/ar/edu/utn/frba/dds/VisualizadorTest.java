@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import ar.edu.utn.frba.dds.hecho.dto.HechoLugarDto;
 import ar.edu.utn.frba.dds.hecho.enums.OrigenHecho;
-import ar.edu.utn.frba.dds.hecho.models.Hecho;
+import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.usuario.contracts.GestorHechos;
 import ar.edu.utn.frba.dds.usuario.models.Visualizador;
 import org.junit.jupiter.api.Test;

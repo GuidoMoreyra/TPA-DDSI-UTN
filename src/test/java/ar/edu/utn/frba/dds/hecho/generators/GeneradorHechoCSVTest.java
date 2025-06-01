@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.hecho.generators;
 
 import ar.edu.utn.frba.dds.hecho.generators.dto.DatosCsvDto;
-import ar.edu.utn.frba.dds.hecho.models.Hecho;
+import ar.edu.utn.frba.dds.models.Hecho;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

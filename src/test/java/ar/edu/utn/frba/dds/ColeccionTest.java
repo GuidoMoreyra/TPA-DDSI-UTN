@@ -4,7 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ar.edu.utn.frba.dds.hecho.models.Hecho;
+import ar.edu.utn.frba.dds.models.Coleccion;
+import ar.edu.utn.frba.dds.models.criterios.Criterio;
+import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
+import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
+import ar.edu.utn.frba.dds.repositories.fuentes.Fuente;
+import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
 import ar.edu.utn.frba.dds.usuario.models.Administrador;
 import ar.edu.utn.frba.dds.usuario.models.Visualizador;
 import org.junit.jupiter.api.Test;

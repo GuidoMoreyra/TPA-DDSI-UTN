@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.hecho.models.Hecho;
+import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.models.criterios.Criterio;
 import java.util.Map;
 
 public class CriterioCategoria implements Criterio {
@@ -10,7 +11,7 @@ public class CriterioCategoria implements Criterio {
     this.categoria = categoria;
   }
 
-  @Override
+
   public Boolean cumple(Hecho hecho) {
     return this.categoria.equals(hecho.getCategoria());
   }
@@ -20,5 +21,4 @@ public class CriterioCategoria implements Criterio {
   }
 
 }
-
 
