@@ -4,8 +4,10 @@ import ar.edu.utn.frba.dds.dto.HechoCsvDto;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -39,7 +41,8 @@ public class NormalizadorCsv {
     // 3. Sobrescribir el archivo original con los datos estandarizados
     File tempFile = File.createTempFile("normalized-", ".csv");
     try (Writer writer = new FileWriter(tempFile)) {
-      StatefulBeanToCsv<HechoCsvDto> beanToCsv = new StatefulBeanToCsvBuilder<HechoCsvDto>(writer).build();
+      StatefulBeanToCsv<HechoCsvDto> beanToCsv =
+              new StatefulBeanToCsvBuilder<HechoCsvDto>(writer).build();
       beanToCsv.write(hechos);
     }
 

@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.repositories;
 
-import ar.edu.utn.frba.dds.dto.SolicitudEliminacionDTO;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.dto.SolicitudEliminacionDto;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
+import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class SolicitudRepositorySingleton {
   private List<SolicitudEliminacion> rechazados;
   private int biggestId;
 
-  private SolicitudRepositorySingleton(){
+  private SolicitudRepositorySingleton() {
     pendientes = new ArrayList<>();
     aprobados = new ArrayList<>();
     rechazados = new ArrayList<>();
@@ -23,7 +23,7 @@ public class SolicitudRepositorySingleton {
 
   ///Agrega una nueva solicitud  dado el dto.
   ///Se asume que el dto es valido.
-  public void agregarSolicitud(SolicitudEliminacionDTO dto){
+  public void agregarSolicitud(SolicitudEliminacionDto dto) {
     var nuevaSolicitud = new SolicitudEliminacion(
         ++biggestId,
         dto.hecho,
@@ -36,11 +36,20 @@ public class SolicitudRepositorySingleton {
       EstadoSolicitudEliminacion estado
   ) {
     switch (estado) {
-      case RECHAZADO -> {return new ArrayList<>(rechazados);}
-      case APROBADO -> {return new ArrayList<>(aprobados);}
-      case PENDIENTE -> {return new ArrayList<>(pendientes);}
+      case RECHAZADO -> {
+        return new ArrayList<>(rechazados);
+      }
+
+      case APROBADO -> {
+        return new ArrayList<>(aprobados);
+      }
+
+      case PENDIENTE -> {
+        return new ArrayList<>(pendientes);
+      }
+
+      default -> throw new RuntimeException("Estado invalido");
     }
-    throw new RuntimeException("Estado invalido");
   }
 
 
@@ -50,37 +59,38 @@ public class SolicitudRepositorySingleton {
       var solicitudRechazada =
           pendientes
               .stream()
-              .filter(s-> s.getId() == idSolicitud)
+              .filter(s -> s.getId() == idSolicitud)
               .findFirst()
-              .orElseThrow(()->new NoSuchObjectException("Id inválido"));
+              .orElseThrow(() -> new NoSuchObjectException("Id inválido"));
 
       pendientes.remove(solicitudRechazada);
       rechazados.add(solicitudRechazada);
 
-    }catch (NoSuchObjectException e){
+    } catch (NoSuchObjectException e) {
       throw new RuntimeException("No se encontro la solicitud");
     }
   }
 
   ///Acepta la solicitud y elimina el hecho
-  public void aceptarSolicitud(int idSolicitud){
+  public void aceptarSolicitud(int idSolicitud) {
     try {
       var solicitudAceptada =
           pendientes
               .stream()
-              .filter(s-> s.getId() == idSolicitud)
+              .filter(s -> s.getId() == idSolicitud)
               .findFirst()
-              .orElseThrow(()->new NoSuchObjectException("Id inválido"));
+              .orElseThrow(() -> new NoSuchObjectException("Id inválido"));
 
       pendientes.remove(solicitudAceptada);
       aprobados.add(solicitudAceptada);
 
       //Aca deberia agregarse una funcion para eliminarlo de todos lados
 
-    }catch (NoSuchObjectException e){
+    } catch (NoSuchObjectException e) {
       throw new RuntimeException("No se encontro la solicitud");
     }
   }
 }
+
 
 

@@ -6,6 +6,6 @@ import java.util.Map;
 
 public interface Criterio {
 
-  Boolean cumple (Hecho hecho);
+  Boolean cumple(Hecho hecho);
 
 }

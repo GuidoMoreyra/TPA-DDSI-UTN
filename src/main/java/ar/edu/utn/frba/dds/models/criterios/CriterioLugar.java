@@ -17,7 +17,7 @@ public class CriterioLugar implements Criterio {
   ///   se paso al criterio  contiene la de la cordenada.
   /// Ej: Argentina contiene a CABA , La Pampa , Cordoba etc.
   /// Por el momento solo los comparo.
-  public Boolean cumple (Hecho hecho) {
+  public Boolean cumple(Hecho hecho) {
     return localidad.equals(hecho.getLugar().localidad);
   }
 

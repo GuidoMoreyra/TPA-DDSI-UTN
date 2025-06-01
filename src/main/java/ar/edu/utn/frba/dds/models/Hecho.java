@@ -30,7 +30,7 @@ public class Hecho {
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
-    cordenadas = new Coordenada(longitud,latitud);
+    cordenadas = new Coordenada(longitud, latitud);
     this.fechaDelHecho = fechaDelHecho;
     this.fechaCreacion = LocalDate.now();
     this.origen = origen;

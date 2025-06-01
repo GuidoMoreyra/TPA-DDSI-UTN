@@ -1,14 +1,13 @@
 package ar.edu.utn.frba.dds.models;
 
-import ar.edu.utn.frba.dds.CriterioCategoria;
+import ar.edu.utn.frba.dds.models.criterios.Criterio;
+import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
 import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
 import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
 import ar.edu.utn.frba.dds.repositories.fuentes.Fuente;
-import ar.edu.utn.frba.dds.models.criterios.Criterio;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Coleccion {
   private static int globalCount;
@@ -22,14 +21,15 @@ public class Coleccion {
   ////CONSTRUCTOR///
 
 
-  ///  La coleccion siempre se carga con los 3 criterios de pertenencia (titulo , fecha , localidad) que
+  ///  La coleccion siempre se carga con los 3 criterios de pertenencia
+  ///  (titulo , fecha , localidad) que
   ///   sirven para cargar los hechos desde el archivo.
   ///
   /// Los criterios del Usuario se cargaran previamente mediante
   ///   otras llamadas a la coleccion.
 
   public Coleccion(Fuente fuente, String localidad,
-                   LocalDate fechaInicial,LocalDate fechaFinal,
+                   LocalDate fechaInicial, LocalDate fechaFinal,
                    String categoria) {
     id = globalCount++;
     this.categoria = categoria;
@@ -44,7 +44,7 @@ public class Coleccion {
 
     criteriosDeUsuario.add(new CriterioCategoria(categoria));
     hechos = fuente
-              .ObtenerHechos()
+              .obtenerHechos()
               .stream()
               .filter(hecho -> hecho.getEstado() == true)
               .toList();
@@ -52,9 +52,11 @@ public class Coleccion {
 
   ////METODOS///
 
-  public void agregarCriterio(Criterio criterio) {
-    if (criteriosDeUsuario.contains(criterio)) {
 
+  public void agregarCriterio(Criterio criterio) {
+    if (!criteriosDeUsuario.contains(criterio)) {
+      criteriosDeUsuario.add(criterio);
+      
     }
 
   }

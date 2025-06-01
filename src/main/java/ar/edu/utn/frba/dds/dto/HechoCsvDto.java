@@ -4,8 +4,6 @@ import com.opencsv.bean.CsvBindByName;
 import java.time.LocalDate;
 
 public class HechoCsvDto {
-  @CsvBindByName
-  public int id_Hecho;
 
   @CsvBindByName
   public String titulo;

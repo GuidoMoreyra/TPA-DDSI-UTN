@@ -1,10 +1,7 @@
 package ar.edu.utn.frba.dds.models.criterios;
 
-
 import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.models.criterios.Criterio;
 import java.time.LocalDate;
-import java.util.Map;
 
 public class CriterioFecha implements Criterio {
   private LocalDate fechaInicial;
@@ -15,8 +12,8 @@ public class CriterioFecha implements Criterio {
     this.fechaFinal = fechaFinal;
   }
 
-  public Boolean cumple(){
-    return
+  public Boolean cumple(Hecho hecho) {
+    return true;
   }
 
 }

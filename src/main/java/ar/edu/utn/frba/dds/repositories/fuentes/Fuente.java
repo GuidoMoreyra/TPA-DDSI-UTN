@@ -5,5 +5,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface Fuente {
-  List<Hecho> ObtenerHechos();
+  List<Hecho> obtenerHechos();
 }

@@ -13,7 +13,7 @@ public class SolicitudEliminacion {
        String justificacion
   ) {
     this.hecho = hecho;
-    this.id= id;
+    this.id = id;
     if (justificacion.length() < 500) {
       throw new IllegalArgumentException(
         "La justificacion de una solicitud de eliminación no puede ser menor a 500 caracteres"
@@ -32,7 +32,7 @@ public class SolicitudEliminacion {
     return justificacion;
   }
 
-  public int getId(){
+  public int getId() {
     return id;
   }
 
