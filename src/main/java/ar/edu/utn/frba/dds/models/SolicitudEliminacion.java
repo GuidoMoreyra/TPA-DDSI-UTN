@@ -1,6 +1,9 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
+
 public class SolicitudEliminacion {
+  private EstadoSolicitudEliminacion estado;
   private Hecho hecho;
   private String justificacion;
   private int id;
@@ -20,6 +23,7 @@ public class SolicitudEliminacion {
       );
     }
     this.justificacion = justificacion;
+    this.estado = EstadoSolicitudEliminacion.PENDIENTE;
   }
 
   ///GETTERS///

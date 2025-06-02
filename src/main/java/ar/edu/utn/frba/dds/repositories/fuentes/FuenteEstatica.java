@@ -21,7 +21,7 @@ public class FuenteEstatica implements Fuente {
   }
 
   /// Se asume que los archivos fueron previamente normalizados.
-  /// La ruta del archivo debeser src/main/resources,
+  /// La ruta del archivo debe ser src/main/resources,
   ///  si no se lanzara una exepcion de tipo InvalidPathException.
   @Override
   public List<Hecho> obtenerHechos() {

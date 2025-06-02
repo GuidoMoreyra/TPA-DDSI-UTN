@@ -12,12 +12,14 @@ public class SolicitudRepositorySingleton {
   private List<SolicitudEliminacion> pendientes;
   private List<SolicitudEliminacion> aprobados;
   private List<SolicitudEliminacion> rechazados;
+  private List<SolicitudEliminacion> rechazadosAutomaticamente;
   private int biggestId;
 
   private SolicitudRepositorySingleton() {
     pendientes = new ArrayList<>();
     aprobados = new ArrayList<>();
     rechazados = new ArrayList<>();
+    rechazadosAutomaticamente = new ArrayList<>();
     biggestId = 0;
   }
 
@@ -46,6 +48,10 @@ public class SolicitudRepositorySingleton {
 
       case PENDIENTE -> {
         return new ArrayList<>(pendientes);
+      }
+
+      case RECHAZADO_AUTOMATICAMENTE -> {
+        return new ArrayList<>(rechazadosAutomaticamente);
       }
 
       default -> throw new RuntimeException("Estado invalido");

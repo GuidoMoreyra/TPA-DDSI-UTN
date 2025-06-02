@@ -56,15 +56,12 @@ public class Coleccion {
   public void agregarCriterio(Criterio criterio) {
     if (!criteriosDeUsuario.contains(criterio)) {
       criteriosDeUsuario.add(criterio);
-      
     }
-
   }
 
   public void quitarCriterio(Criterio criterio) {
     criteriosDeUsuario.remove(criterio);
   }
-
 
 
 
