@@ -25,6 +25,7 @@ public class FuenteEstatica implements Fuente {
   ///  si no se lanzara una exepcion de tipo InvalidPathException.
   @Override
   public List<Hecho> obtenerHechos() {
+
     //Creo la ruta al archivo
     String rutaArchivo = "src/main/resources/" + archivo + ".csv";
 

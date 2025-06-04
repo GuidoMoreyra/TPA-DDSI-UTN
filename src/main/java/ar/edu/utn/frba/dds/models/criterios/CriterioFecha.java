@@ -16,4 +16,12 @@ public class CriterioFecha implements Criterio {
     return true;
   }
 
+  public LocalDate getFechaInicial() {
+    return fechaInicial;
+  }
+
+  public LocalDate getFechaFinal() {
+    return fechaFinal;
+  }
+
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class AdaptadorFuenteDemo implements Fuente{
+public class AdaptadorFuenteDemo implements Fuente {
 
   private Conexion conexion;
   private URL url;
@@ -23,16 +23,18 @@ public class AdaptadorFuenteDemo implements Fuente{
   private Duration intervaloDeEspera;
   private List<Hecho> hechosObtenidos = new ArrayList<>();
 
-  public AdaptadorFuenteDemo(Conexion conexion, String url, Duration intervaloDeEspera, LocalDateTime ultimaConsulta) {
+  public AdaptadorFuenteDemo(Conexion conexion, String url,
+                             Duration intervaloDeEspera,
+                             LocalDateTime ultimaConsulta) {
     validarUltimaConsulta(ultimaConsulta);
     this.conexion = conexion;
-    this.url = validarUrl( url);
+    this.url = validarUrl(url);
     this.intervaloDeEspera = intervaloDeEspera;
     this.ultimaConsulta = ultimaConsulta;
 
   }
 
-  private URL validarUrl(String url){
+  private URL validarUrl(String url) {
     try {
       return new URL(url);
     } catch (MalformedURLException e) {
@@ -40,33 +42,33 @@ public class AdaptadorFuenteDemo implements Fuente{
     }
   }
 
-  private void validarUltimaConsulta(LocalDateTime ultimaConsulta){
-    if(ultimaConsulta == null){
+  private void validarUltimaConsulta(LocalDateTime ultimaConsulta) {
+    if (ultimaConsulta == null) {
       throw new UltimaConsultaException("ultimaConsulta no puede ser null");
     }
   }
 
   @Override
-  public List<Hecho> obtenerHechos(){
+  public List<Hecho> obtenerHechos() {
 
-    if(deboActualizar()){
+    if (deboActualizar()) {
       List<Hecho> hechos = new ArrayList<Hecho>();
       Map<String, Object> datos;
 
-      while((datos = conexion.siguienteHecho(url,ultimaConsulta)) !=null){
+      while ((datos = conexion.siguienteHecho(url, ultimaConsulta)) != null) {
         Hecho hecho = construirHechoDesde(datos);
         hechos.add(hecho);
 
       }
-      this.hechosObtenidos=hechos;
-      this.ultimaConsulta=LocalDateTime.now();
+      this.hechosObtenidos = hechos;
+      this.ultimaConsulta = LocalDateTime.now();
     }
-    return hechosObtenidos;
+    return new ArrayList<>(hechosObtenidos);
   }
 
-  private boolean deboActualizar(){
-    return ultimaConsulta == null ||
-            ultimaConsulta.plus(intervaloDeEspera)
+  private boolean deboActualizar() {
+    return ultimaConsulta == null
+        || ultimaConsulta.plus(intervaloDeEspera)
             .isBefore(LocalDateTime.now());
   }
 
@@ -80,7 +82,10 @@ public class AdaptadorFuenteDemo implements Fuente{
     Double longitud = (Double) datos.get("longitud");
     OrigenHecho origen = OrigenHecho.INTERMEDIO;
     LocalDate fechaOcurrido = (LocalDate) datos.get("fecha");
-    Hecho hecho = new Hecho(titulo, descripcion, categoria,  latitud, longitud, fechaOcurrido,origen, contenidoMultimedia);
+    Hecho hecho = new Hecho(
+        titulo, descripcion, categoria,
+        latitud, longitud, fechaOcurrido, origen,
+        contenidoMultimedia);
     return hecho;
   }
 

@@ -26,6 +26,7 @@ public class Hecho {
   public Hecho(String titulo, String descripcion, String categoria,
                double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen,
                String contenidoMultimedia) {
+
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
     this.descripcion = descripcion;
@@ -35,8 +36,13 @@ public class Hecho {
     this.fechaCreacion = LocalDate.now();
     this.origen = origen;
     this.estaActivo =  true; //El hecho por defecto está activo
-    this.id = contadorGlobal++;
+    this.id = generarNuevoId();
   }
+
+  private static synchronized int generarNuevoId() {
+    return contadorGlobal++;
+  }
+
 
   ////GETTERS///
 
@@ -71,6 +77,15 @@ public class Hecho {
   public Boolean getEstado() {
     return estaActivo;
   }
+
+  public String getContenidoMultimedia() {
+    return contenidoMultimedia;
+  }
+
+  public int getId() {
+    return id;
+  }
+
 
   ////METODOS///
 

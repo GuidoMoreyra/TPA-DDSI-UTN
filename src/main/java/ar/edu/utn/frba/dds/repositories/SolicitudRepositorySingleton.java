@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SolicitudRepositorySingleton {
-  private SolicitudRepositorySingleton intancia = null;
+
+  private SolicitudRepositorySingleton instancia = null;
   private List<SolicitudEliminacion> pendientes;
   private List<SolicitudEliminacion> aprobados;
   private List<SolicitudEliminacion> rechazados;

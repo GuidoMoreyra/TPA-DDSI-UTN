@@ -13,8 +13,8 @@ public class FuenteIntermedia implements Fuente {
     this.fuenteQueSeUsa = fuenteQueSeUsa;
   }
 
-  public void validacionFuente(Fuente unaFuente){
-    if(unaFuente == null){
+  public void validacionFuente(Fuente unaFuente) {
+    if (unaFuente == null) {
       throw new FuenteProxyException("configuracion incorrecta de la fuente que se usa");
     }
   }
