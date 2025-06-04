@@ -25,7 +25,3 @@ public class FuenteDinamica implements Fuente {
         .collect(Collectors.toList());
   }
 }
-
-//TO DO - Contribuyente anonimo - identificado
-//TO DO - Formato texto - multimedia
-//TO DO - PARA TODOS HACER TESTS
