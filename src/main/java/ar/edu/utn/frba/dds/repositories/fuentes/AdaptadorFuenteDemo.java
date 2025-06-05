@@ -20,16 +20,15 @@ public class AdaptadorFuenteDemo implements Fuente {
   private Conexion conexion;
   private URL url;
   private LocalDateTime ultimaConsulta;
-  private Duration intervaloDeEspera;
+  //private Duration intervaloDeEspera;
   private List<Hecho> hechosObtenidos = new ArrayList<>();
 
   public AdaptadorFuenteDemo(Conexion conexion, String url,
-                             Duration intervaloDeEspera,
                              LocalDateTime ultimaConsulta) {
     validarUltimaConsulta(ultimaConsulta);
     this.conexion = conexion;
     this.url = validarUrl(url);
-    this.intervaloDeEspera = intervaloDeEspera;
+    //this.intervaloDeEspera = intervaloDeEspera;
     this.ultimaConsulta = ultimaConsulta;
 
   }
@@ -51,26 +50,26 @@ public class AdaptadorFuenteDemo implements Fuente {
   @Override
   public List<Hecho> obtenerHechos() {
 
-    if (deboActualizar()) {
-      List<Hecho> hechos = new ArrayList<Hecho>();
-      Map<String, Object> datos;
+    List<Hecho> hechos = new ArrayList<>();
+    Map<String, Object> datos;
 
-      while ((datos = conexion.siguienteHecho(url, ultimaConsulta)) != null) {
-        Hecho hecho = construirHechoDesde(datos);
-        hechos.add(hecho);
+    while ((datos = conexion.siguienteHecho(url, ultimaConsulta)) != null) {
+      Hecho hecho = construirHechoDesde(datos);
+      hechos.add(hecho);
 
-      }
-      this.hechosObtenidos = hechos;
-      this.ultimaConsulta = LocalDateTime.now();
     }
+    this.hechosObtenidos = hechos;
+    this.ultimaConsulta = LocalDateTime.now();
+
+
     return new ArrayList<>(hechosObtenidos);
   }
-
+  /*
   private boolean deboActualizar() {
     return ultimaConsulta == null
         || ultimaConsulta.plus(intervaloDeEspera)
             .isBefore(LocalDateTime.now());
-  }
+  }*/
 
   private Hecho construirHechoDesde(Map<String, Object> datos) {
     //Primera opcion parciando los datos
