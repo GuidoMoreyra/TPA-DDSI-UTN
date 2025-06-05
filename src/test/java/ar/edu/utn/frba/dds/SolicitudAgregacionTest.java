@@ -24,7 +24,7 @@ public class SolicitudAgregacionTest {
 
   @Test
   void alAceptarUnaSolicitudCambiaEstadoAAceptado() {
-    SolicitudAgregacion solicitud = new SolicitudAgregacion(hechoMock, false);
+    SolicitudAgregacion solicitud = new SolicitudAgregacion(4, hechoMock, false);
 
     solicitud.aceptarSolicitud();
 
@@ -33,7 +33,7 @@ public class SolicitudAgregacionTest {
 
   @Test
   void alRechazarSolicitudCambiaEstadoARechazado() {
-    SolicitudAgregacion solicitud = new SolicitudAgregacion(hechoMock, false);
+    SolicitudAgregacion solicitud = new SolicitudAgregacion(5, hechoMock, false);
 
     solicitud.rechazarSolicitud();
 
@@ -41,7 +41,7 @@ public class SolicitudAgregacionTest {
   }
   @Test
   void alAceptarConSugerenciasSeAplicanCambiosYEstadoEsAceptadoConSugerencias() {
-    SolicitudAgregacion solicitud = new SolicitudAgregacion(hechoMock, false);
+    SolicitudAgregacion solicitud = new SolicitudAgregacion(6, hechoMock, false);
     CambiosHechoDto cambios = new CambiosHechoDto();
     cambios.setDescripcion("Nueva descripción");
 
@@ -53,21 +53,21 @@ public class SolicitudAgregacionTest {
 
   @Test
   void puedeEditarDevuelveTrueSiNoEsAnonimoYFechaReciente() {
-    SolicitudAgregacion solicitud = new SolicitudAgregacion(hechoMock, false);
+    SolicitudAgregacion solicitud = new SolicitudAgregacion(7, hechoMock, false);
 
     assertTrue(solicitud.puedeEditar());
   }
 
   @Test
   void puedeEditarDevuelveFalseSiEsAnonimo() {
-    SolicitudAgregacion solicitud = new SolicitudAgregacion(hechoMock, true);
+    SolicitudAgregacion solicitud = new SolicitudAgregacion(8, hechoMock, true);
 
     assertFalse(solicitud.puedeEditar());
   }
 
   @Test
   void puedeEditarDevuelveFalseSiPasaronMasDe7Dias() {
-    SolicitudAgregacion solicitud = new SolicitudAgregacion(hechoMock, false);
+    SolicitudAgregacion solicitud = new SolicitudAgregacion(9, hechoMock, false);
     // Forzamos la fecha a hace más de 7 días usando un constructor especial para testing
     var fechaAntigua = LocalDate.now().minusDays(8);
     // Se agregás un constructor especial solo para el test

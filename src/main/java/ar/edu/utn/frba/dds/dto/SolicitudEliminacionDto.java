@@ -6,11 +6,8 @@ public class SolicitudEliminacionDto {
   public String justificacion;
   public Hecho hecho;
 
-  public void setJustificacion(String justificacion) {
+  public SolicitudEliminacionDto(String justificacion, Hecho hecho) {
     this.justificacion = justificacion;
-  }
-
-  public void setHecho(Hecho hecho) {
     this.hecho = hecho;
   }
 }

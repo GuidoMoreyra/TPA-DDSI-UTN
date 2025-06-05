@@ -1,11 +1,13 @@
 package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
+import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.repositories.SolicitudAgregacionRepository;
 import java.time.LocalDate;
 
 public class Hecho {
-  private static int contadorGlobal;
+  private int contadorGlobal;
   private int id;
   private String titulo;
   private String descripcion;
@@ -16,18 +18,22 @@ public class Hecho {
   private LocalDate fechaCreacion;
   private OrigenHecho origen;
   private Boolean estaActivo;
-  private Boolean tieneSugerencias;
+  private Integer idSolicitudAgregacion;
 
   ////CONSTRUCTOR///
 
   public Hecho(String titulo, String descripcion, String categoria,
-               double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen) {
-    this(titulo, descripcion, categoria,  latitud,  longitud, fechaDelHecho, origen, null);
+               double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen,
+              Integer idSolicitudAgregacion) {
+    this(
+        titulo, descripcion, categoria,  latitud,  longitud,
+        fechaDelHecho, origen, null, idSolicitudAgregacion
+    );
   }
 
   public Hecho(String titulo, String descripcion, String categoria,
                double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen,
-               String contenidoMultimedia) {
+               String contenidoMultimedia, Integer idSolicitudAgregacion) {
     this.id = contadorGlobal++;
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
@@ -38,8 +44,7 @@ public class Hecho {
     this.fechaCreacion = LocalDate.now();
     this.origen = origen;
     this.estaActivo =  true; //El hecho por defecto está activo
-    this.tieneSugerencias = false; //Por defecto no hay sugerencias sobre el hecho
-
+    this.idSolicitudAgregacion = idSolicitudAgregacion;
   }
 
   ////GETTERS///
@@ -76,6 +81,14 @@ public class Hecho {
     return estaActivo;
   }
 
+  public int getId() {
+    return id;
+  }
+
+  public String getContenidoMultimedia() {
+    return contenidoMultimedia;
+  }
+
   ////METODOS///
 
   public void desactivar() {
@@ -102,6 +115,15 @@ public class Hecho {
       this.origen = cambios.getOrigen();
     }
   }
+
+  public Boolean tieneSugerencias() {
+
+    return SolicitudAgregacionRepository.getInstance()
+        .obtenerSolicitudesSegunEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
+        .stream()
+        .anyMatch(s -> s.getId().equals(this.idSolicitudAgregacion));
+  }
+
 
 }
 

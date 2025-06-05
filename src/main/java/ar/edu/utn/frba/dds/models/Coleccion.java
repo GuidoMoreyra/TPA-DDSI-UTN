@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Coleccion {
-  private static int globalCount;
+  private int globalCount;
   private final int id;
   public final String categoria;
-  private List<Criterio> criteriosDeCreacion = new ArrayList<>();
+  //private List<Criterio> criteriosDeCreacion = new ArrayList<>(); //no se usa y se considera bug
   private List<Criterio> criteriosDeUsuario = new ArrayList<>();
   private final List<Hecho> hechos;
   private final Fuente fuente;

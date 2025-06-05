@@ -13,7 +13,7 @@ public class FuenteDinamica implements Fuente {
 
   //CONSTRUCTOR
   public FuenteDinamica(List<SolicitudAgregacion> solicitudes) {
-    this.solicitudes = solicitudes;
+    this.solicitudes = new ArrayList<>(solicitudes);
   }
 
   @Override

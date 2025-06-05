@@ -47,7 +47,10 @@ public class FuenteEstatica implements Fuente {
               dto.longitud,
               dto.latitud,
               dto.fechaDelHecho,
-              OrigenHecho.ESTATICO
+              OrigenHecho.ESTATICO,
+              dto.contenidoMultimedia,
+              dto.idSolicitudAgregacion
+
           ))
           .toList();
 

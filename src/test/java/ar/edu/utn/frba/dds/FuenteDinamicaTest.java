@@ -29,9 +29,9 @@ public class FuenteDinamicaTest {
 
     CambiosHechoDto sugerenciaDtoMock = mock(CambiosHechoDto.class);
 
-    SolicitudAgregacion s1 = new SolicitudAgregacion(hechoMock1, true);
-    SolicitudAgregacion s2 = new SolicitudAgregacion(hechoMock2, true);
-    SolicitudAgregacion s3 = new SolicitudAgregacion(hechoMock3, true);
+    SolicitudAgregacion s1 = new SolicitudAgregacion(1, hechoMock1, true);
+    SolicitudAgregacion s2 = new SolicitudAgregacion(2, hechoMock2, true);
+    SolicitudAgregacion s3 = new SolicitudAgregacion(3, hechoMock3, true);
 
     s1.aceptarSolicitud(); // debe incluirse
     s2.rechazarSolicitud(); // no debe incluirse

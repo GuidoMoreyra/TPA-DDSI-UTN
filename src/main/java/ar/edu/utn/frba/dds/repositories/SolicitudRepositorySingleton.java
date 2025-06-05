@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SolicitudRepositorySingleton {
-  private SolicitudRepositorySingleton intancia = null;
+  private static SolicitudRepositorySingleton instancia = null;
   private List<SolicitudEliminacion> pendientes;
   private List<SolicitudEliminacion> aprobados;
   private List<SolicitudEliminacion> rechazados;
@@ -21,6 +21,13 @@ public class SolicitudRepositorySingleton {
     rechazados = new ArrayList<>();
     rechazadosAutomaticamente = new ArrayList<>();
     biggestId = 0;
+  }
+
+  public static SolicitudRepositorySingleton getInstance() {
+    if (instancia == null) {
+      instancia = new SolicitudRepositorySingleton();
+    }
+    return instancia;
   }
 
   ///Agrega una nueva solicitud  dado el dto.
@@ -41,7 +48,6 @@ public class SolicitudRepositorySingleton {
       case RECHAZADO -> {
         return new ArrayList<>(rechazados);
       }
-
       case APROBADO -> {
         return new ArrayList<>(aprobados);
       }
@@ -69,6 +75,7 @@ public class SolicitudRepositorySingleton {
               .findFirst()
               .orElseThrow(() -> new NoSuchObjectException("Id inválido"));
 
+      solicitudRechazada.rechazarSolicitud();
       pendientes.remove(solicitudRechazada);
       rechazados.add(solicitudRechazada);
 
@@ -87,6 +94,7 @@ public class SolicitudRepositorySingleton {
               .findFirst()
               .orElseThrow(() -> new NoSuchObjectException("Id inválido"));
 
+      solicitudAceptada.aprobarSolicitud();
       pendientes.remove(solicitudAceptada);
       aprobados.add(solicitudAceptada);
 

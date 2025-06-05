@@ -8,7 +8,7 @@ public class FuenteIntermedia implements Fuente {
   private List<Hecho> listaVacia = new ArrayList<>();
 
   public List<Hecho> obtenerHechos() {
-    return listaVacia;
+    return new ArrayList<>(listaVacia);
   }
 
 }
