@@ -71,7 +71,6 @@ public class SolicitudAgregacionRepository {
   //Aceptar la solicitud
 
   public void aceptarSolicitud(Integer id) {
-    try {
       var solicitudAceptada =
           pendientes
               .stream()
@@ -82,9 +81,6 @@ public class SolicitudAgregacionRepository {
       solicitudAceptada.aceptarSolicitud();
       pendientes.remove(solicitudAceptada);
       aceptadas.add(solicitudAceptada);
-    } catch (NoSuchObjectException e) {
-      throw new RuntimeException("No se encontró la solicitud");
-    }
   }
 
   //Aceptar con sugerencias
