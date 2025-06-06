@@ -21,6 +21,7 @@ public class FuenteIntermedia implements Fuente {
 
   public List<Hecho> obtenerHechos() {
     return fuenteQueSeUsa.obtenerHechos();
+
   }
 
 }

@@ -1,6 +1,11 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
+import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
+import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
+
 public class SolicitudEliminacion {
+  private EstadoSolicitudEliminacion estado;
   private Hecho hecho;
   private String justificacion;
   private int id;
@@ -20,6 +25,7 @@ public class SolicitudEliminacion {
       );
     }
     this.justificacion = justificacion;
+    this.estado = EstadoSolicitudEliminacion.PENDIENTE;
   }
 
   ///GETTERS///
@@ -35,5 +41,18 @@ public class SolicitudEliminacion {
   public int getId() {
     return id;
   }
+
+  public EstadoSolicitudEliminacion getEstado() {
+    return estado;
+  }
+
+  /// METODOS ///
+  //Estados Solicitudes
+  public void modificarEstado(EstadoSolicitudEliminacion nuevoEstado) {
+    this.estado = nuevoEstado;
+  }
+
+
+
 
 }
