@@ -30,7 +30,7 @@ public class Coleccion {
   public Coleccion(Fuente fuente, String localidad,
                    LocalDate fechaInicial, LocalDate fechaFinal,
                    String categoria) {
-    id = globalCount++;
+    id = generarNuevoId();
     this.categoria = categoria;
 
     /// Se asume que la fuente es valida.
@@ -50,6 +50,10 @@ public class Coleccion {
   }
 
   ////METODOS///
+
+  private static synchronized int generarNuevoId() {
+    return globalCount++;
+  }
 
 
   public void agregarCriterio(Criterio criterio) {
@@ -77,6 +81,12 @@ public class Coleccion {
   public int getId() {
     return id;
   }
+
+  public List<Criterio> getCriteriosDeCreacion() {
+    return new ArrayList<>(criteriosDeCreacion);
+  }
+
+
 }
 
 

@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SolicitudRepositorySingleton {
+
   private static SolicitudRepositorySingleton instancia = null;
   private List<SolicitudEliminacion> pendientesEliminacion;
+
   private List<SolicitudEliminacion> aprobados;
   private List<SolicitudEliminacion> rechazados;
   private List<SolicitudEliminacion> rechazadosAutomaticamente;

@@ -23,4 +23,5 @@ public class CriterioFecha implements Criterio {
   public LocalDate getFechaFinal() {
     return fechaFinal;
   }
+
 }
