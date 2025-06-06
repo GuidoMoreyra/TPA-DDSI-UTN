@@ -19,8 +19,12 @@ public class FuenteDinamica implements Fuente {
   @Override
   public List<Hecho> obtenerHechos() {
     return solicitudes.stream()
-        .filter(s -> s.getEstado() == EstadoSolicitudAgregacion.ACEPTADO
-            || s.getEstado() == EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
+        .filter(
+            s -> List.of(
+                EstadoSolicitdAgregacion.ACEPTADO, 
+                EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
+            )
+            .contains(s.getEstado())
         .map(SolicitudAgregacion::getHecho)
         .collect(Collectors.toList());
   }
