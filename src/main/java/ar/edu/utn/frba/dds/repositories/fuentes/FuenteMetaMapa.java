@@ -18,11 +18,11 @@ public class FuenteMetaMapa {
 
   private FuenteMetaMapa() {
     rutaApi = "link de la api";
-    instancia = this ;
+    instancia = this;
   }
 
   public FuenteMetaMapa getInstancia() {
-    if(instancia == null) {
+    if (instancia == null) {
       return new FuenteMetaMapa();
     }
     return instancia;

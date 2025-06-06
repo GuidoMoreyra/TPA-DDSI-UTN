@@ -51,7 +51,7 @@ public class Coleccion {
 
   ////METODOS///
 
-  private static synchronized int generarNuevoId() {
+  private  synchronized int generarNuevoId() {
     return globalCount++;
   }
 
@@ -82,9 +82,13 @@ public class Coleccion {
     return id;
   }
 
+  /*
+
   public List<Criterio> getCriteriosDeCreacion() {
     return new ArrayList<>(criteriosDeCreacion);
   }
+
+   */
 
 
 }

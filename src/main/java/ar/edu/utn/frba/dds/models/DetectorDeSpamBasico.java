@@ -39,7 +39,7 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
         SolicitudRepositorySingleton.getInstance();
 
     List<SolicitudEliminacion> solicitudesRechazadas =
-        repositorioDeSolicitudes.obtenerSolicitudesSegunEstado(
+        repositorioDeSolicitudes.obtenerSolicitudesEliminacionSegunEstado(
             EstadoSolicitudEliminacion.APROBADO
         );
 
@@ -70,10 +70,25 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
    * El TF-IDF es una medida que evalúa la importancia de una palabra
    * en un documento en relación con un corpus
    */
+
+
   private Map<String, Double> calcularTfIdf(String texto, List<String> corpus) {
     Map<String, Double> tf = calcularTf(texto);
     Map<String, Double> tfidf = new HashMap<>();
 
+    for (Map.Entry<String, Double> entrada : tf.entrySet()) {
+      String palabra = entrada.getKey();
+      double tfValor = entrada.getValue();
+
+      int frecuenciaEnDocumento = (int) corpus.stream()
+          .filter(documento -> tokenizar(documento).contains(palabra))
+          .count();
+      double idf = Math.log((double) (corpus.size() + 1) / (frecuenciaEnDocumento + 1));
+
+      tfidf.put(palabra, tfValor * idf);
+    }
+
+    /*
     for (String palabra : tf.keySet()) {
       int frecuenciaEnDocumento =
           (int) corpus.stream()
@@ -88,7 +103,10 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
           palabra,
           tf.get(palabra) * idf
       );
+
+
     }
+    */
 
     return tfidf;
   }
