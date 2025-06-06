@@ -7,11 +7,11 @@ import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
-import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SolicitudRepositorySingleton {
+
 
   private static SolicitudRepositorySingleton instancia = null;
   private List<SolicitudEliminacion> pendientesEliminacion;
@@ -46,6 +46,7 @@ public class SolicitudRepositorySingleton {
     return instancia;
   }
 
+
   public static void resetInstance() {
     instancia = new SolicitudRepositorySingleton();
   }
@@ -53,6 +54,7 @@ public class SolicitudRepositorySingleton {
   /// SOLICITUDES ELIMINACION
 
   public void agregarSolicitudEliminacion(SolicitudEliminacionDto dto) {
+
     var nuevaSolicitud = new SolicitudEliminacion(
         ++id,
         dto.hecho,
@@ -83,6 +85,7 @@ public class SolicitudRepositorySingleton {
       default -> throw new RuntimeException("Estado invalido");
     }
   }
+
 
 
   ///Dado el id de la solicitud lo cambia a la lista de rechazados.
@@ -145,6 +148,7 @@ public class SolicitudRepositorySingleton {
 
       default -> throw new RuntimeException("Estado invalido");
     }
+
   }
 
   public void aceptarSolicitud(Integer id) {

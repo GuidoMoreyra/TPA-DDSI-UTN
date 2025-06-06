@@ -6,6 +6,7 @@ import java.util.List;
 
 public class FuenteIntermedia implements Fuente {
 
+
   private Fuente fuenteQueSeUsa;
 
   public void configurarFuenteIntermedia(Fuente fuenteQueSeUsa) {
