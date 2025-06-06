@@ -3,8 +3,12 @@ package ar.edu.utn.frba.dds.models;
 import ar.edu.utn.frba.dds.contracts.DetectorDeSpam;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DetectorDeSpamBasico implements DetectorDeSpam {
@@ -14,10 +18,10 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
   @Override
   public boolean esSpam(String texto) {
     List<String> corpus = corpus();
-    Map<String, Double> tfidfTexto = calcularTFIDF(texto, corpus);
+    Map<String, Double> tfidfTexto = calcularTfIdf(texto, corpus);
 
     for (String aprobado : corpus) {
-      Map<String, Double> tfidfAprobado = calcularTFIDF(aprobado, corpus);
+      Map<String, Double> tfidfAprobado = calcularTfIdf(aprobado, corpus);
 
       if (similitudCoseno(tfidfTexto, tfidfAprobado) > DetectorDeSpamBasico.UMBRAL_SIMILITUD) {
         return false;
@@ -31,10 +35,13 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
    * Devuelve un listado de textos aprobados que se utilizarán como corpus para el detector de spam
    */
   private List<String> corpus() {
-    SolicitudRepositorySingleton repositorioDeSolicitudes = SolicitudRepositorySingleton.getInstance();
-    List<SolicitudEliminacion> solicitudesRechazadas = repositorioDeSolicitudes.obtenerSolicitudesSegunEstado(
-        EstadoSolicitudEliminacion.APROBADO
-    );
+    SolicitudRepositorySingleton repositorioDeSolicitudes =
+        SolicitudRepositorySingleton.getInstance();
+
+    List<SolicitudEliminacion> solicitudesRechazadas =
+        repositorioDeSolicitudes.obtenerSolicitudesSegunEstado(
+            EstadoSolicitudEliminacion.APROBADO
+        );
 
     return solicitudesRechazadas.isEmpty()
         ? corpusPorDefault()
@@ -64,8 +71,8 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
    * El TF-IDF es una medida que evalúa la importancia de una palabra
    * en un documento en relación con un corpus
    */
-  private Map<String, Double> calcularTFIDF(String texto, List<String> corpus) {
-    Map<String, Double> tf = calcularTF(texto);
+  private Map<String, Double> calcularTfIdf(String texto, List<String> corpus) {
+    Map<String, Double> tf = calcularTf(texto);
     Map<String, Double> tfidf = new HashMap<>();
 
     for (String palabra : tf.keySet()) {
@@ -91,7 +98,7 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
    * Calcula el Term Frequency (TF) de un texto, que es la frecuencia de cada palabra en el texto
    * normalizada por el número total de palabras
    */
-  private Map<String, Double> calcularTF(String texto) {
+  private Map<String, Double> calcularTf(String texto) {
     Map<String, Double> tf = new HashMap<>();
     List<String> tokens = tokenizar(texto);
 
@@ -110,7 +117,8 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
   }
 
   /**
-   * Divide el texto en palabras, eliminando puntuación, palabras cortas y convirtiendo a minúsculas.
+   * Divide el texto en palabras, eliminando puntuación,
+   * palabras cortas y convirtiendo a minúsculas
    */
   private List<String> tokenizar(String texto) {
     return Arrays.stream(
@@ -136,7 +144,9 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
     todas.addAll(vector1.keySet());
     todas.addAll(vector2.keySet());
 
-    double dot = 0.0, mag1 = 0.0, mag2 = 0.0;
+    double dot = 0.0;
+    double mag1 = 0.0;
+    double mag2 = 0.0;
 
     for (String palabra : todas) {
       double a = vector1.getOrDefault(palabra, 0.0);
