@@ -48,16 +48,8 @@ public class SolicitudEliminacion {
 
   /// METODOS ///
   //Estados Solicitudes
-  public void aprobarSolicitud() {
-    this.estado = EstadoSolicitudEliminacion.APROBADO;
-  }
-
-  public void rechazarSolicitud() {
-    this.estado = EstadoSolicitudEliminacion.RECHAZADO;
-  }
-
-  public void rechazarAutomaticamenteSolicitud() {
-    this.estado = EstadoSolicitudEliminacion.RECHAZADO_AUTOMATICAMENTE;
+  public void modificarEstado(EstadoSolicitudEliminacion nuevoEstado) {
+      this.estado = nuevoEstado;
   }
 
 
