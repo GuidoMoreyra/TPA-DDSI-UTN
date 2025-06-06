@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FuenteDinamica implements Fuente {
-  //private List<Hecho> hechosFiltrados = new ArrayList<>();
   private List<SolicitudAgregacion> solicitudes;
 
   //CONSTRUCTOR
@@ -21,10 +20,10 @@ public class FuenteDinamica implements Fuente {
     return solicitudes.stream()
         .filter(
             s -> List.of(
-                EstadoSolicitdAgregacion.ACEPTADO, 
+                EstadoSolicitudAgregacion.ACEPTADO,
                 EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
-            )
-            .contains(s.getEstado())
+
+            .contains(s.getEstado()))
         .map(SolicitudAgregacion::getHecho)
         .collect(Collectors.toList());
   }

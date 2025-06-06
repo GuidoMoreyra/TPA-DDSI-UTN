@@ -6,10 +6,8 @@ import static org.mockito.Mockito.mock;
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.dto.SolicitudAgregacionDto;
 import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
-import ar.edu.utn.frba.dds.repositories.SolicitudAgregacionRepository;
+import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -17,7 +15,7 @@ import java.time.LocalDate;
 public class Hecho2Test {
   @BeforeEach
   public void resetRepository() {
-    SolicitudAgregacionRepository.resetInstance();
+    SolicitudRepositorySingleton.resetInstance();
   }
 
   @Test
@@ -33,11 +31,11 @@ public class Hecho2Test {
     // Armar DTO y agregar solicitud al repositorio
     SolicitudAgregacionDto dto = new SolicitudAgregacionDto(false, hecho);
 
-    SolicitudAgregacionRepository repo = SolicitudAgregacionRepository.getInstance();
-    repo.agregarSolicitud(dto);
+    SolicitudRepositorySingleton repo = SolicitudRepositorySingleton.getInstance();
+    repo.agregarSolicitudAgregacion(dto);
 
     // Obtener el ID generado automáticamente (es 1 en este caso)
-    int id = 1; // porque empieza en biggestId = 0 y se incrementa al agregar
+    int id = 1; // porque empieza en id = 0 y se incrementa al agregar
 
     repo.aceptarSolicitudConSugerencias(id, sugerencias);
 

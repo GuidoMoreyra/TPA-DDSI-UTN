@@ -49,7 +49,7 @@ public class SolicitudEliminacion {
   /// METODOS ///
   //Estados Solicitudes
   public void modificarEstado(EstadoSolicitudEliminacion nuevoEstado) {
-      this.estado = nuevoEstado;
+    this.estado = nuevoEstado;
   }
 
 

@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.models;
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
-import ar.edu.utn.frba.dds.repositories.SolicitudAgregacionRepository;
+import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
 import java.time.LocalDate;
 
 public class Hecho {
@@ -118,8 +118,8 @@ public class Hecho {
 
   public Boolean tieneSugerencias() {
 
-    return SolicitudAgregacionRepository.getInstance()
-        .obtenerSolicitudesSegunEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
+    return SolicitudRepositorySingleton.getInstance()
+        .obtenerSolicitudesAgregacionSegunEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
         .stream()
         .anyMatch(s -> s.getId().equals(this.idSolicitudAgregacion));
   }
