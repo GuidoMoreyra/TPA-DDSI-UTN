@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class DetectorDeSpamBasico implements DetectorDeSpam {
   private static final int LIMITE_CORPUS = 50;
-  private static final double UMBRAL_SIMILITUD = 0.2;
+  private static final double UMBRAL_SIMILITUD = 0.3;
 
   @Override
   public boolean esSpam(String texto) {
@@ -23,7 +23,7 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
     for (String aprobado : corpus) {
       Map<String, Double> tfidfAprobado = calcularTfIdf(aprobado, corpus);
 
-      if (similitudCoseno(tfidfTexto, tfidfAprobado) > DetectorDeSpamBasico.UMBRAL_SIMILITUD) {
+      if (similitudCoseno(tfidfTexto, tfidfAprobado) >= DetectorDeSpamBasico.UMBRAL_SIMILITUD) {
         return false;
       }
     }
@@ -53,16 +53,15 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
 
   private List<String> corpusPorDefault() {
     return List.of(
-        "spam",
-        "oferta",
-        "gratis",
-        "promocion",
-        "descuento",
-        "ganar dinero",
-        "click aqui",
-        "haz clic aqui",
-        "haz click aqui",
-        "haz clic en este enlace"
+        "Solicito la eliminación de este hecho porque fue un error de carga.",
+        "El hecho ya no corresponde a la situación actual.",
+        "Se ingresó por equivocación y no refleja lo ocurrido.",
+        "La ubicación fue mal registrada y es incorrecta.",
+        "Ya no tiene validez y debe ser eliminado.",
+        "Fue reportado por accidente y deseo que se retire.",
+        "El contenido no representa la realidad del hecho.",
+        "Pedí eliminarlo porque contiene datos incorrectos.",
+        "El hecho está duplicado en otra entrada."
     );
   }
 
