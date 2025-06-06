@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Coleccion {
-  private int globalCount;
+  private static int globalCount;
   private final int id;
   public final String categoria;
+  private List<Criterio> criteriosDeCreacion = new ArrayList<>();
   private List<Criterio> criteriosDeUsuario = new ArrayList<>();
   private final List<Hecho> hechos;
   private final Fuente fuente;
@@ -36,12 +37,12 @@ public class Coleccion {
     /// Se asume que la fuente es valida.
     this.fuente = fuente;
 
-    criteriosDeUsuario.add(new CriterioLugar(localidad));
+    criteriosDeCreacion.add(new CriterioLugar(localidad));
 
     /// Habria que verificar que fecha 1 sea anterior a fecha 2
-    criteriosDeUsuario.add(new CriterioFecha(fechaInicial, fechaFinal));
+    criteriosDeCreacion.add(new CriterioFecha(fechaInicial, fechaFinal));
 
-    criteriosDeUsuario.add(new CriterioCategoria(categoria));
+    criteriosDeCreacion.add(new CriterioCategoria(categoria));
     hechos = fuente
               .obtenerHechos()
               .stream()
@@ -51,7 +52,7 @@ public class Coleccion {
 
   ////METODOS///
 
-  private  synchronized int generarNuevoId() {
+  private static synchronized int generarNuevoId() {
     return globalCount++;
   }
 

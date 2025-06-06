@@ -116,6 +116,9 @@ public class SolicitudRepositorySingleton {
     pendientesEliminacion.remove(solicitudAceptada);
     aprobados.add(solicitudAceptada);
 
+    //Llamar a la fuente el hechp
+
+
   }
 
   /// SOLICITUDES AGREGACION
