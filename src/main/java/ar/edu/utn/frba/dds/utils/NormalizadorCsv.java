@@ -4,10 +4,17 @@ import ar.edu.utn.frba.dds.dto.HechoCsvDto;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -25,7 +32,9 @@ public class NormalizadorCsv {
   public void normalizarCsv(File csvFile) throws Exception {
     // 1. Leer el CSV original
     List<HechoCsvDto> hechos =
-        new CsvToBeanBuilder<HechoCsvDto>(new FileReader(csvFile))
+        new CsvToBeanBuilder<HechoCsvDto>(new BufferedReader(
+            new InputStreamReader(new FileInputStream(csvFile), StandardCharsets.UTF_8)
+        ))
         .withType(HechoCsvDto.class)
         .withIgnoreLeadingWhiteSpace(true)
         .build()
@@ -40,7 +49,9 @@ public class NormalizadorCsv {
 
     // 3. Sobrescribir el archivo original con los datos estandarizados
     File tempFile = File.createTempFile("normalized-", ".csv");
-    try (Writer writer = new FileWriter(tempFile)) {
+    try (BufferedWriter writer = new BufferedWriter(
+        new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.UTF_8)
+    );) {
       StatefulBeanToCsv<HechoCsvDto> beanToCsv =
               new StatefulBeanToCsvBuilder<HechoCsvDto>(writer).build();
       beanToCsv.write(hechos);

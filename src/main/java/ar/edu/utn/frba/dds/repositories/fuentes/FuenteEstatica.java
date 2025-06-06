@@ -4,10 +4,14 @@ import ar.edu.utn.frba.dds.dto.HechoCsvDto;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
 import com.opencsv.bean.CsvToBeanBuilder;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +29,14 @@ public class FuenteEstatica implements Fuente {
   ///  si no se lanzara una exepcion de tipo InvalidPathException.
   @Override
   public List<Hecho> obtenerHechos() {
+
     //Creo la ruta al archivo
     String rutaArchivo = "src/main/resources/" + archivo + ".csv";
 
     //Creamos el reader para leer el archivo
-    try (Reader reader = new FileReader(rutaArchivo)) {
+    try (BufferedReader reader = new BufferedReader(
+        new InputStreamReader(new FileInputStream(rutaArchivo), StandardCharsets.UTF_8)
+    );) {
       //Usamos la libreria OpenCsv para leer todos los hechos del csv
       // y pasarlos a una lista de DTOs
       List<HechoCsvDto> dtos = new CsvToBeanBuilder<HechoCsvDto>(reader)
@@ -47,7 +54,10 @@ public class FuenteEstatica implements Fuente {
               dto.longitud,
               dto.latitud,
               dto.fechaDelHecho,
-              OrigenHecho.ESTATICO
+              OrigenHecho.ESTATICO,
+              dto.contenidoMultimedia,
+              dto.idSolicitudAgregacion
+
           ))
           .toList();
 

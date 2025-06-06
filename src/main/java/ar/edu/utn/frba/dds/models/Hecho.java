@@ -1,42 +1,54 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
+import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
 import java.time.LocalDate;
 
 public class Hecho {
-  private static int contadorGlobal;
+  private int contadorGlobal;
   private int id;
   private String titulo;
   private String descripcion;
   private String categoria;
   private String contenidoMultimedia;
-  private Coordenada cordenadas;
+  private Coordenada coordenadas;
   private LocalDate fechaDelHecho;
   private LocalDate fechaCreacion;
   private OrigenHecho origen;
   private Boolean estaActivo;
+  private Integer idSolicitudAgregacion;
 
   ////CONSTRUCTOR///
 
   public Hecho(String titulo, String descripcion, String categoria,
-               double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen) {
-    this(titulo, descripcion, categoria,  latitud,  longitud, fechaDelHecho, origen, null);
+               double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen,
+              Integer idSolicitudAgregacion) {
+    this(
+        titulo, descripcion, categoria,  latitud,  longitud,
+        fechaDelHecho, origen, null, idSolicitudAgregacion
+    );
   }
 
   public Hecho(String titulo, String descripcion, String categoria,
                double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen,
-               String contenidoMultimedia) {
+               String contenidoMultimedia, Integer idSolicitudAgregacion) {
+    
+    this.id = contadorGlobal++;
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
-    cordenadas = new Coordenada(longitud, latitud);
+    this.coordenadas = new Coordenada(longitud, latitud);
     this.fechaDelHecho = fechaDelHecho;
     this.fechaCreacion = LocalDate.now();
     this.origen = origen;
     this.estaActivo =  true; //El hecho por defecto está activo
-    this.id = contadorGlobal++;
+    this.idSolicitudAgregacion = idSolicitudAgregacion;
+
   }
+
 
   ////GETTERS///
 
@@ -53,7 +65,7 @@ public class Hecho {
   }
 
   public Coordenada getLugar() {
-    return cordenadas;
+    return coordenadas;
   }
 
   public LocalDate getFechaDelHecho() {
@@ -72,10 +84,49 @@ public class Hecho {
     return estaActivo;
   }
 
+
+  public int getId() {
+    return id;
+  }
+
+  public String getContenidoMultimedia() {
+    return contenidoMultimedia;
+  }
+
+
   ////METODOS///
 
   public void desactivar() {
     this.estaActivo = false;
+  }
+
+  public void aplicarCambios(CambiosHechoDto cambios) {
+    if (cambios.getTitulo() != null) {
+      this.titulo = cambios.getTitulo();
+    }
+    if (cambios.getDescripcion() != null) {
+      this.descripcion = cambios.getDescripcion();
+    }
+    if (cambios.getCategoria() != null) {
+      this.categoria = cambios.getCategoria();
+    }
+    if (cambios.getContenidoMultimedia() != null) {
+      this.contenidoMultimedia = cambios.getContenidoMultimedia();
+    }
+    if (cambios.getCoordenadas() != null) {
+      this.coordenadas = cambios.getCoordenadas();
+    }
+    if (cambios.getOrigen() != null) {
+      this.origen = cambios.getOrigen();
+    }
+  }
+
+  public Boolean tieneSugerencias() {
+
+    return SolicitudRepositorySingleton.getInstance()
+        .obtenerSolicitudesAgregacionSegunEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
+        .stream()
+        .anyMatch(s -> s.getId().equals(this.idSolicitudAgregacion));
   }
 
 

@@ -25,4 +25,8 @@ public class HechoCsvDto {
 
   @CsvBindByName
   public LocalDate horaHecho;
+
+  // Nuevos campos agregados
+  public String contenidoMultimedia = "";
+  public Integer idSolicitudAgregacion = null;
 }
