@@ -20,15 +20,15 @@ public class AdaptadorFuenteDemo implements Fuente {
   private Conexion conexion;
   private URL url;
   private LocalDateTime ultimaConsulta;
-  //private Duration intervaloDeEspera;
+  private Integer intervaloDeEspera;
   private List<Hecho> hechosObtenidos = new ArrayList<>();
 
   public AdaptadorFuenteDemo(Conexion conexion, String url,
-                             LocalDateTime ultimaConsulta) {
+                             LocalDateTime ultimaConsulta, Integer intervaloDeEspera) {
     validarUltimaConsulta(ultimaConsulta);
     this.conexion = conexion;
     this.url = validarUrl(url);
-    //this.intervaloDeEspera = intervaloDeEspera;
+    this.intervaloDeEspera = intervaloDeEspera;
     this.ultimaConsulta = ultimaConsulta;
 
   }
@@ -50,20 +50,31 @@ public class AdaptadorFuenteDemo implements Fuente {
   @Override
   public List<Hecho> obtenerHechos() {
 
-    List<Hecho> hechos = new ArrayList<>();
+    if (!esMomentoDeObtenerHechos()) {
+      return new ArrayList<>(hechosObtenidos);
+    }
+
+
     Map<String, Object> datos;
 
     while ((datos = conexion.siguienteHecho(url, ultimaConsulta)) != null) {
       Hecho hecho = construirHechoDesde(datos);
-      hechos.add(hecho);
+      hechosObtenidos.add(hecho);
 
     }
-    this.hechosObtenidos = hechos;
+
     this.ultimaConsulta = LocalDateTime.now();
 
 
     return new ArrayList<>(hechosObtenidos);
   }
+
+  private boolean esMomentoDeObtenerHechos() {
+    Duration duracion = Duration.between(ultimaConsulta, LocalDateTime.now());
+    return duracion.toMinutes() >= intervaloDeEspera;
+  }
+
+
   /*
   private boolean deboActualizar() {
     return ultimaConsulta == null

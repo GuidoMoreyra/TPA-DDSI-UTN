@@ -54,13 +54,11 @@ public class FuenteMetaMapa {
 
     } catch (IOException e) {
       logger.severe("IO error al acceder a la API: " + e.getMessage());
+      throw new RuntimeException(e);
     } catch (InterruptedException e) {
       logger.warning("La solicitud fue interrumpida.");
-      Thread.currentThread().interrupt();
-    } catch (HttpNotFoundException e) {
-      logger.warning("[404 NOT FOUND] " + e.getMessage());
+      throw new RuntimeException(e);
     }
-    return null;
   }
 
 

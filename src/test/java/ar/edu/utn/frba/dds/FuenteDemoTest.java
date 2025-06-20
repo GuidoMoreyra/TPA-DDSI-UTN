@@ -23,15 +23,12 @@ public class FuenteDemoTest {
   private Conexion conexionConResultados;
 
   @BeforeEach
-  void conexionMockSinResultados() {
+  void setup() {
     conexionSinResultados = mock(Conexion.class);
     // simular una respuesta con null para solo probar la construcción
     when(conexionSinResultados.siguienteHecho(any(URL.class), any(LocalDateTime.class)))
         .thenReturn(null);
-  }
 
-  @BeforeEach
-  void conexionMockParaobtenerHechos(){
     Map<String, Object> unHecho = new HashMap<>();
     unHecho.put("titulo", "Titulo demo");
     unHecho.put("descripcion", "Descripción demo");
@@ -45,6 +42,11 @@ public class FuenteDemoTest {
     when(conexionConResultados.siguienteHecho(any(URL.class), any(LocalDateTime.class)))
         .thenReturn(unHecho)
         .thenReturn(null);
+  }
+
+  @BeforeEach
+  void conexionMockParaobtenerHechos(){
+
 
   }
 
@@ -54,9 +56,10 @@ public class FuenteDemoTest {
 
     String url = "http://demotest.org/api";
     LocalDateTime ultimaConsultaTest = LocalDateTime.now().minusHours(1);
+    Integer intervaloDeEspera = 60;
     //Duration duracion = Duration.ofSeconds(30);
     AdaptadorFuenteDemo adaptador = new AdaptadorFuenteDemo(conexionSinResultados, url,
-        ultimaConsultaTest);
+        ultimaConsultaTest,intervaloDeEspera);
 
     assertNotNull(adaptador);
   }
@@ -65,11 +68,12 @@ public class FuenteDemoTest {
   @DisplayName("No se puede crear un adapter de fuente demo sin una ultimaConsulta")
   void crearFuenteDemoSinUnaUltimaConsulta(){
     String url = "http://demotest.org/api";
+    Integer intervaloDeEspera = 60;
     //Duration duracion = Duration.ofSeconds(30);
 
     Assertions.assertThrows(UltimaConsultaException.class, ()->
         new AdaptadorFuenteDemo(conexionSinResultados, url,
-            null));
+            null,intervaloDeEspera));
 
   }
 
@@ -79,21 +83,23 @@ public class FuenteDemoTest {
     String url = "";
     LocalDateTime ultimaConsultaTest = LocalDateTime.now().minusHours(1);
     //Duration duracion = Duration.ofSeconds(30);
+    Integer intervaloDeEspera = 60;
 
     Assertions.assertThrows(InvalidoUrlExeception.class, ()->
         new AdaptadorFuenteDemo(conexionSinResultados, url,
-            ultimaConsultaTest));
+            ultimaConsultaTest,intervaloDeEspera));
   }
 
   @Test
   @DisplayName("se obtiene un hecho de una fuente demo")
   void obtenerHechoDeUnaFuenteDemo(){
     String url = "http://demotest.org/api";
-    LocalDateTime ultimaConsultaTest = LocalDateTime.now().minusHours(1);
+    LocalDateTime ultimaConsultaTest = LocalDateTime.now().minusMinutes(61);
     //Duration duracion = Duration.ofSeconds(30);
+    Integer intervaloDeEspera = 60;
 
     AdaptadorFuenteDemo adapterTest = new AdaptadorFuenteDemo(
-        conexionConResultados, url, ultimaConsultaTest);
+        conexionConResultados, url, ultimaConsultaTest,intervaloDeEspera);
 
     Assertions.assertEquals(1,adapterTest.obtenerHechos().size());
   }
@@ -102,12 +108,13 @@ public class FuenteDemoTest {
   @DisplayName("No se obtiene hechos de una fuente demo")
   void noseObtieneHechosDeUnaFuenteDemo(){
     String url = "http://demotest.org/api";
-    LocalDateTime ultimaConsultaTest = LocalDateTime.now().minusHours(1);
+    LocalDateTime ultimaConsultaTest = LocalDateTime.now();
     //Duration duracion = Duration.ofSeconds(30);
+    Integer intervaloDeEspera = 60;
 
     AdaptadorFuenteDemo adapterTest = new AdaptadorFuenteDemo(
-      conexionSinResultados, url, ultimaConsultaTest
-    );
+      conexionSinResultados, url, ultimaConsultaTest,
+        intervaloDeEspera);
     Assertions.assertEquals(0,adapterTest.obtenerHechos().size());
   }
 
