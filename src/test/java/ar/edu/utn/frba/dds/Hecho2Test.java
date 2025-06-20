@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.dto.SolicitudAgregacionDto;
 import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,15 +30,15 @@ public class Hecho2Test {
     CambiosHechoDto sugerencias = new CambiosHechoDto();
 
     // Armar DTO y agregar solicitud al repositorio
-    SolicitudAgregacionDto dto = new SolicitudAgregacionDto(false, hecho);
+    SolicitudAgregacion solicitudAgregacion = new SolicitudAgregacion(hecho, false);
 
     SolicitudRepositorySingleton repo = SolicitudRepositorySingleton.getInstance();
-    repo.agregarSolicitudAgregacion(dto);
+    repo.agregarSolicitudAgregacion(solicitudAgregacion);
 
     // Obtener el ID generado automáticamente (es 1 en este caso)
     int id = 1; // porque empieza en id = 0 y se incrementa al agregar
 
-    repo.aceptarSolicitudConSugerencias(id, sugerencias);
+    repo.aceptarSolicitudConSugerencias(solicitudAgregacion, sugerencias);
 
     assertTrue(hecho.tieneSugerencias());
   }

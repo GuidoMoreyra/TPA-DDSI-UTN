@@ -122,11 +122,10 @@ public class Hecho {
   }
 
   public Boolean tieneSugerencias() {
-
     return SolicitudRepositorySingleton.getInstance()
         .obtenerSolicitudesAgregacionSegunEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
         .stream()
-        .anyMatch(s -> s.getId().equals(this.idSolicitudAgregacion));
+        .anyMatch(s -> s.getHecho().equals(this));
   }
 
 

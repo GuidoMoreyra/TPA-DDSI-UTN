@@ -11,7 +11,6 @@ import java.util.List;
 
 public class Coleccion {
   private static int globalCount;
-  private final int id;
   public final String categoria;
   private List<Criterio> criteriosDeCreacion = new ArrayList<>();
   private List<Criterio> criteriosDeUsuario = new ArrayList<>();
@@ -31,7 +30,6 @@ public class Coleccion {
   public Coleccion(Fuente fuente, String localidad,
                    LocalDate fechaInicial, LocalDate fechaFinal,
                    String categoria) {
-    id = generarNuevoId();
     this.categoria = categoria;
 
     /// Se asume que la fuente es valida.
@@ -77,10 +75,6 @@ public class Coleccion {
 
   public List<Hecho> getHechos() {
     return new ArrayList<>(hechos);
-  }
-
-  public int getId() {
-    return id;
   }
 
   /*

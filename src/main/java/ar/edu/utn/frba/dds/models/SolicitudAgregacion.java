@@ -5,15 +5,13 @@ import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import java.time.LocalDate;
 
 public class SolicitudAgregacion {
-  private Integer id;
   private EstadoSolicitudAgregacion estado;
   private Hecho hecho;
   private Boolean esAnonimo;
   private LocalDate fechaCreacion;
 
   //CONSTRUCTOR
-  public SolicitudAgregacion(Integer id, Hecho hecho, Boolean esAnonimo) {
-    this.id = id;
+  public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo) {
     this.estado = EstadoSolicitudAgregacion.PENDIENTE;
     this.hecho = hecho;
     this.esAnonimo = esAnonimo;
@@ -38,9 +36,6 @@ public class SolicitudAgregacion {
     return hecho;
   }
 
-  public Integer getId() {
-    return id;
-  }
 
   //METODOS
 

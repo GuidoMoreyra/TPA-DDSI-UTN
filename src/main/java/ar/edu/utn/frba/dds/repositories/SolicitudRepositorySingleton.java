@@ -53,14 +53,8 @@ public class SolicitudRepositorySingleton {
 
   /// SOLICITUDES ELIMINACION
 
-  public void agregarSolicitudEliminacion(SolicitudEliminacionDto dto) {
-
-    var nuevaSolicitud = new SolicitudEliminacion(
-        ++id,
-        dto.hecho,
-        dto.justificacion
-    );
-    pendientesEliminacion.add(nuevaSolicitud);
+  public void agregarSolicitudEliminacion(SolicitudEliminacion solicitud) {
+    pendientesEliminacion.add(solicitud);
   }
 
   public List<SolicitudEliminacion> obtenerSolicitudesEliminacionSegunEstado(
@@ -86,50 +80,29 @@ public class SolicitudRepositorySingleton {
     }
   }
 
-
-
-  ///Dado el id de la solicitud lo cambia a la lista de rechazados.
-  public void rechazarSolicitudEliminacion(int idSolicitud) {
-    var solicitudRechazada =
-        pendientesEliminacion
-            .stream()
-            .filter(s -> s.getId() == idSolicitud)
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Id inválido"));
-
-    solicitudRechazada.modificarEstado(EstadoSolicitudEliminacion.RECHAZADO);
-    pendientesEliminacion.remove(solicitudRechazada);
-    rechazados.add(solicitudRechazada);
-
+  public void rechazarSolicitudEliminacion(SolicitudEliminacion solicitud) {
+    if (!pendientesEliminacion.remove(solicitud)) {
+      throw new IllegalArgumentException("La solicitud no está pendiente");
+    }
+    solicitud.modificarEstado(EstadoSolicitudEliminacion.RECHAZADO);
+    rechazados.add(solicitud);
   }
 
   ///Acepta la solicitud y elimina el hecho
-  public void aceptarSolicitudEliminacion(int idSolicitud) {
-    var solicitudAceptada =
-        pendientesEliminacion
-            .stream()
-            .filter(s -> s.getId() == idSolicitud)
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Id inválido"));
+  public void aceptarSolicitudEliminacion(SolicitudEliminacion solicitud) {
+    if (!pendientesEliminacion.remove(solicitud)) {
+      throw new IllegalArgumentException("La solicitud no está pendiente");
+    }
+    solicitud.modificarEstado(EstadoSolicitudEliminacion.APROBADO);
+    aprobados.add(solicitud);
 
-    solicitudAceptada.modificarEstado(EstadoSolicitudEliminacion.APROBADO);
-    pendientesEliminacion.remove(solicitudAceptada);
-    aprobados.add(solicitudAceptada);
-
-    //Llamar a la fuente el hechp
-
-
+    // TODO: Agregar aquí la lógica que elimina el hecho de la fuente
   }
 
   /// SOLICITUDES AGREGACION
 
-  public void agregarSolicitudAgregacion(SolicitudAgregacionDto dto) {
-    var nuevaSolicitud = new SolicitudAgregacion(
-        ++id,
-        dto.hecho,
-        dto.esAnonimo
-    );
-    pendientesAgregacion.add(nuevaSolicitud);
+  public void agregarSolicitudAgregacion(SolicitudAgregacion solicitud) {
+    pendientesAgregacion.add(solicitud);
   }
 
   public List<SolicitudAgregacion> obtenerSolicitudesAgregacionSegunEstado(
@@ -154,49 +127,29 @@ public class SolicitudRepositorySingleton {
 
   }
 
-  public void aceptarSolicitud(Integer id) {
-    var solicitudAceptada =
-        pendientesAgregacion
-            .stream()
-            .filter(s -> s.getId().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Id inválido"));
-
-    solicitudAceptada.aceptarSolicitud();
-    pendientesAgregacion.remove(solicitudAceptada);
-    aceptadas.add(solicitudAceptada);
+  public void aceptarSolicitud(SolicitudAgregacion solicitud) {
+    if (!pendientesAgregacion.remove(solicitud)) {
+      throw new IllegalArgumentException("La solicitud no está pendiente");
+    }
+    solicitud.aceptarSolicitud();
+    aceptadas.add(solicitud);
   }
 
-  public void aceptarSolicitudConSugerencias(Integer id, CambiosHechoDto sugerencias) {
-    var solicitudAprobadaConSugerencias =
-        pendientesAgregacion
-            .stream()
-            .filter(s -> s.getId().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Id inválido"));
-
-    solicitudAprobadaConSugerencias.aceptarSolicitudConSugerencias(sugerencias);
-    pendientesAgregacion.remove(solicitudAprobadaConSugerencias);
-    aceptadasConSugerencias.add(solicitudAprobadaConSugerencias);
-
+  public void aceptarSolicitudConSugerencias(SolicitudAgregacion solicitud, CambiosHechoDto sugerencias) {
+    if (!pendientesAgregacion.remove(solicitud)) {
+      throw new IllegalArgumentException("La solicitud no está pendiente");
+    }
+    solicitud.aceptarSolicitudConSugerencias(sugerencias);
+    aceptadasConSugerencias.add(solicitud);
   }
 
-  public void rechazarSolicitudAgregacion(Integer id) {
-
-    var solicitudRechazada =
-        pendientesAgregacion
-            .stream()
-            .filter(s -> s.getId().equals(id))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Id inválido"));
-
-    solicitudRechazada.rechazarSolicitud();
-    pendientesAgregacion.remove(solicitudRechazada);
-    rechazadas.add(solicitudRechazada);
+  public void rechazarSolicitudAgregacion(SolicitudAgregacion solicitud) {
+    if (!pendientesAgregacion.remove(solicitud)) {
+      throw new IllegalArgumentException("La solicitud no está pendiente");
+    }
+    solicitud.rechazarSolicitud();
+    rechazadas.add(solicitud);
   }
-
-
-
 }
 
 
