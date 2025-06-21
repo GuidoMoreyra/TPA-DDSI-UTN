@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
+import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
 import java.time.LocalDate;
@@ -17,7 +18,6 @@ public class Hecho {
   private LocalDate fechaDelHecho;
   private LocalDate fechaCreacion;
   private OrigenHecho origen;
-  private Boolean estaActivo;
   private Integer idSolicitudAgregacion;
 
   ////CONSTRUCTOR///
@@ -44,7 +44,6 @@ public class Hecho {
     this.fechaDelHecho = fechaDelHecho;
     this.fechaCreacion = LocalDate.now();
     this.origen = origen;
-    this.estaActivo =  true; //El hecho por defecto está activo
     this.idSolicitudAgregacion = idSolicitudAgregacion;
 
   }
@@ -80,10 +79,16 @@ public class Hecho {
     return origen;
   }
 
-  public Boolean getEstado() {
-    return estaActivo;
+  public Boolean estaActivo() {
+    return SolicitudRepositorySingleton.getInstance()
+        .obtenerSolicitudesEliminacionSegunEstado(
+            EstadoSolicitudEliminacion.APROBADO
+        )
+        .stream()
+        .noneMatch(
+            solicitud -> solicitud.esParaElHecho(this)
+        );
   }
-
 
   public int getId() {
     return id;
@@ -95,10 +100,6 @@ public class Hecho {
 
 
   ////METODOS///
-
-  public void desactivar() {
-    this.estaActivo = false;
-  }
 
   public void aplicarCambios(CambiosHechoDto cambios) {
     if (cambios.getTitulo() != null) {

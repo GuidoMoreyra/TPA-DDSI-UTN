@@ -14,7 +14,6 @@ public class Coleccion {
   public final String categoria;
   private List<Criterio> criteriosDeCreacion = new ArrayList<>();
   private List<Criterio> criteriosDeUsuario = new ArrayList<>();
-  private final List<Hecho> hechos;
   private final Fuente fuente;
 
   ////CONSTRUCTOR///
@@ -41,11 +40,6 @@ public class Coleccion {
     criteriosDeCreacion.add(new CriterioFecha(fechaInicial, fechaFinal));
 
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
-    hechos = fuente
-              .obtenerHechos()
-              .stream()
-              .filter(hecho -> hecho.getEstado() == true)
-              .toList();
   }
 
   ////METODOS///
@@ -65,27 +59,17 @@ public class Coleccion {
     criteriosDeUsuario.remove(criterio);
   }
 
-
-
-  /// Getters
-
   public String getCategoria() {
     return categoria;
   }
 
   public List<Hecho> getHechos() {
-    return new ArrayList<>(hechos);
+    return fuente
+        .obtenerHechos()
+        .stream()
+        .filter(Hecho::estaActivo)
+        .toList();
   }
-
-  /*
-
-  public List<Criterio> getCriteriosDeCreacion() {
-    return new ArrayList<>(criteriosDeCreacion);
-  }
-
-   */
-
-
 }
 
 

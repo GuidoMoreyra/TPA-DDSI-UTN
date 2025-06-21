@@ -45,7 +45,8 @@ public class SolicitudEliminacion {
     this.estado = nuevoEstado;
   }
 
-
-
-
+  public boolean esParaElHecho(Hecho hecho) {
+    return this.hecho
+        .equals(hecho);
+  }
 }
