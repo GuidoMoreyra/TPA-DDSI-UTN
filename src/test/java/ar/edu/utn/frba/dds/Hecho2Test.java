@@ -1,10 +1,8 @@
 package ar.edu.utn.frba.dds;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
-import ar.edu.utn.frba.dds.dto.SolicitudAgregacionDto;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
@@ -24,7 +22,7 @@ public class Hecho2Test {
     // Instancia real de Hecho
     Hecho hecho = new Hecho(
         "titulo", "descripcion", "categoria",
-        0.00, 0.00, LocalDate.now(), OrigenHecho.ESTATICO, "", 1
+        0.00, 0.00, LocalDate.now(), OrigenHecho.ESTATICO, ""
     );
 
     CambiosHechoDto sugerencias = new CambiosHechoDto();

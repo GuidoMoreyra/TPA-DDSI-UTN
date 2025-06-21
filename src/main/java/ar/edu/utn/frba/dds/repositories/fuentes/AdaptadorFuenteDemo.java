@@ -95,7 +95,7 @@ public class AdaptadorFuenteDemo implements Fuente {
     Hecho hecho = new Hecho(
         titulo, descripcion, categoria,
         latitud, longitud, fechaOcurrido, origen,
-        contenidoMultimedia, 0);
+        contenidoMultimedia);
     return hecho;
   }
 

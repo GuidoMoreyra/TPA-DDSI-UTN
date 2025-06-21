@@ -1,8 +1,6 @@
 package ar.edu.utn.frba.dds.repositories;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
-import ar.edu.utn.frba.dds.dto.SolicitudAgregacionDto;
-import ar.edu.utn.frba.dds.dto.SolicitudEliminacionDto;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
@@ -25,8 +23,6 @@ public class SolicitudRepositorySingleton {
   private List<SolicitudAgregacion> aceptadasConSugerencias;
   private List<SolicitudAgregacion> rechazadas;
 
-  private int id;
-
   private SolicitudRepositorySingleton() {
     pendientesEliminacion = new ArrayList<>();
     aprobados = new ArrayList<>();
@@ -36,7 +32,6 @@ public class SolicitudRepositorySingleton {
     aceptadas = new ArrayList<>();
     aceptadasConSugerencias = new ArrayList<>();
     rechazadas = new ArrayList<>();
-    id = 0;
   }
 
   public static SolicitudRepositorySingleton getInstance() {
@@ -135,7 +130,10 @@ public class SolicitudRepositorySingleton {
     aceptadas.add(solicitud);
   }
 
-  public void aceptarSolicitudConSugerencias(SolicitudAgregacion solicitud, CambiosHechoDto sugerencias) {
+  public void aceptarSolicitudConSugerencias(
+      SolicitudAgregacion solicitud,
+      CambiosHechoDto sugerencias
+  ) {
     if (!pendientesAgregacion.remove(solicitud)) {
       throw new IllegalArgumentException("La solicitud no está pendiente");
     }

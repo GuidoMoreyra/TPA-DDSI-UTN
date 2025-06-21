@@ -19,7 +19,9 @@ public class FuenteDinamica implements Fuente {
         repo.obtenerSolicitudesAgregacionSegunEstado(EstadoSolicitudAgregacion.ACEPTADO);
 
     List<SolicitudAgregacion> aceptadasConSugerencias =
-        repo.obtenerSolicitudesAgregacionSegunEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS);
+        repo.obtenerSolicitudesAgregacionSegunEstado(
+            EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS
+        );
 
     return Stream.concat(aceptadas.stream(), aceptadasConSugerencias.stream())
         .map(SolicitudAgregacion::getHecho)

@@ -18,22 +18,20 @@ public class Hecho {
   private LocalDate fechaDelHecho;
   private LocalDate fechaCreacion;
   private OrigenHecho origen;
-  private Integer idSolicitudAgregacion;
 
   ////CONSTRUCTOR///
 
   public Hecho(String titulo, String descripcion, String categoria,
-               double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen,
-              Integer idSolicitudAgregacion) {
+               double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen) {
     this(
         titulo, descripcion, categoria,  latitud,  longitud,
-        fechaDelHecho, origen, null, idSolicitudAgregacion
+        fechaDelHecho, origen, null
     );
   }
 
   public Hecho(String titulo, String descripcion, String categoria,
                double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen,
-               String contenidoMultimedia, Integer idSolicitudAgregacion) {
+               String contenidoMultimedia) {
     
     this.id = contadorGlobal++;
     this.contenidoMultimedia = contenidoMultimedia;
@@ -44,7 +42,6 @@ public class Hecho {
     this.fechaDelHecho = fechaDelHecho;
     this.fechaCreacion = LocalDate.now();
     this.origen = origen;
-    this.idSolicitudAgregacion = idSolicitudAgregacion;
 
   }
 
