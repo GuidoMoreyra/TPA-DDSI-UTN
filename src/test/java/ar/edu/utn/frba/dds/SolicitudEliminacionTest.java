@@ -39,12 +39,22 @@ public class SolicitudEliminacionTest {
   }
 
   @Test
-  void permiteModificarElEstado() {
+  void permiteModificarElEstadoAAprobado() {
 
     SolicitudEliminacion solicitud = new SolicitudEliminacion(hechoMock, justificacion);
     solicitud.modificarEstado(EstadoSolicitudEliminacion.APROBADO);
 
     assertEquals(EstadoSolicitudEliminacion.APROBADO, solicitud.getEstado());
+
+  }
+
+  @Test
+  void permiteModificarElEstadoARechazado() {
+
+    SolicitudEliminacion solicitud = new SolicitudEliminacion(hechoMock, justificacion);
+    solicitud.modificarEstado(EstadoSolicitudEliminacion.RECHAZADO);
+
+    assertEquals(EstadoSolicitudEliminacion.RECHAZADO, solicitud.getEstado());
 
   }
 }

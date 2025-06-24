@@ -5,28 +5,25 @@ import java.time.LocalDate;
 
 public class HechoCsvDto {
 
-  @CsvBindByName
+  @CsvBindByName(column = "titulo")
   public String titulo;
 
-  @CsvBindByName
+  @CsvBindByName(column = "descripcion")
   public String descripcion;
 
-  @CsvBindByName
+  @CsvBindByName(column = "categoria")
   public String categoria;
 
-  @CsvBindByName
+  @CsvBindByName(column = "latitud")
   public double latitud;
 
-  @CsvBindByName
+  @CsvBindByName(column = "longitud")
   public double longitud;
 
-  @CsvBindByName
+  @CsvBindByName(column = "fecha_Del_Hecho")
   public LocalDate fechaDelHecho;
 
-  @CsvBindByName
-  public LocalDate horaHecho;
-
-  // Nuevos campos agregados
   public String contenidoMultimedia = "";
-  public Integer idSolicitudAgregacion = null;
+
+
 }

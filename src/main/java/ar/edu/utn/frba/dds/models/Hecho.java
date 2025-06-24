@@ -8,8 +8,6 @@ import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
 import java.time.LocalDate;
 
 public class Hecho {
-  private int contadorGlobal;
-  private int id;
   private String titulo;
   private String descripcion;
   private String categoria;
@@ -21,19 +19,12 @@ public class Hecho {
 
   ////CONSTRUCTOR///
 
-  public Hecho(String titulo, String descripcion, String categoria,
-               double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen) {
-    this(
-        titulo, descripcion, categoria,  latitud,  longitud,
-        fechaDelHecho, origen, null
-    );
-  }
+
 
   public Hecho(String titulo, String descripcion, String categoria,
-               double latitud, double longitud, LocalDate fechaDelHecho, OrigenHecho origen,
-               String contenidoMultimedia) {
-    
-    this.id = contadorGlobal++;
+               double latitud, double longitud,
+               LocalDate fechaDelHecho, OrigenHecho origen, String contenidoMultimedia) {
+
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
     this.descripcion = descripcion;
@@ -42,9 +33,7 @@ public class Hecho {
     this.fechaDelHecho = fechaDelHecho;
     this.fechaCreacion = LocalDate.now();
     this.origen = origen;
-
   }
-
 
   ////GETTERS///
 
@@ -64,7 +53,12 @@ public class Hecho {
     return coordenadas;
   }
 
+  public String getLocalidad() {
+    return coordenadas.getLocalidad();
+  }
+
   public LocalDate getFechaDelHecho() {
+
     return fechaDelHecho;
   }
 
@@ -87,10 +81,6 @@ public class Hecho {
         );
   }
 
-  public int getId() {
-    return id;
-  }
-
   public String getContenidoMultimedia() {
     return contenidoMultimedia;
   }
@@ -111,9 +101,9 @@ public class Hecho {
     if (cambios.getContenidoMultimedia() != null) {
       this.contenidoMultimedia = cambios.getContenidoMultimedia();
     }
-    if (cambios.getCoordenadas() != null) {
-      this.coordenadas = cambios.getCoordenadas();
-    }
+    //    if (cambios.getCoordenadas() != null) {
+    //      this.coordenadas = cambios.getCoordenadas();
+    //    }
     if (cambios.getOrigen() != null) {
       this.origen = cambios.getOrigen();
     }

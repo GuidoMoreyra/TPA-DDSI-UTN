@@ -9,8 +9,20 @@ public class Coordenada {
     this.longitud = longitud;
     this.latitud = latitud;
 
-    /// Aca la estoy asignando manualmente
+    /// TODO - Aca la estoy asignando manualmente
     ///  pero la idea seria que se utilize alguna api para obtenerla
-    localidad = "Argentina";
+    localidad = "Buenos Aires";
+  }
+
+  public String getLocalidad() {
+    return localidad;
+  }
+
+  public double getLongitud() {
+    return longitud;
+  }
+
+  public double getLatitud() {
+    return latitud;
   }
 }

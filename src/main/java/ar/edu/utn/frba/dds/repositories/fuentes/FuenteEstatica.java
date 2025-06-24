@@ -15,9 +15,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class FuenteEstatica implements Fuente {
 
-  private final String archivo; ///Guarda el nombre del archivo
+  private final String archivo;
+
+  /// Guarda el nombre del archivo
 
 
   public FuenteEstatica(String archivo) {
@@ -64,8 +67,9 @@ public class FuenteEstatica implements Fuente {
     } catch (IOException e) {
       throw new RuntimeException("Error al leer el archivo: ", e);
     }
-
   }
 }
+
+
 
 

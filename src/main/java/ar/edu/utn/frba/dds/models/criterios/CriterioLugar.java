@@ -13,13 +13,16 @@ public class CriterioLugar implements Criterio {
     this.localidad = localidad;
   }
 
-  /// Aca deberiamos usar la api del mapa para ver si la localidad que
+  /// TODO - Aca deberiamos usar la api del mapa para ver si la localidad que
   ///   se paso al criterio  contiene la de la cordenada.
   /// Ej: Argentina contiene a CABA , La Pampa , Cordoba etc.
   /// Por el momento solo los comparo.
   public Boolean cumple(Hecho hecho) {
-    return localidad.equals(hecho.getLugar().localidad);
+    //se usa localidad para poder testear mientras no tengamos la API
+    return localidad.equals(hecho.getLocalidad());
   }
 
-
+  public String getLocalidad() {
+    return localidad;
+  }
 }

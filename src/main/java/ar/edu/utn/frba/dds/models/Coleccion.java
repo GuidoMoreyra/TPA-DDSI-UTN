@@ -26,7 +26,7 @@ public class Coleccion {
 
     this.fuente = fuente;
 
-    /// Habria que verificar que fecha 1 sea anterior a fecha 2
+    /// TODO - Habria que verificar que fecha 1 sea anterior a fecha 2
     criteriosDeCreacion.add(new CriterioFecha(fechaInicial, fechaFinal));
 
     criteriosDeCreacion.add(new CriterioLugar(localidad));
@@ -37,21 +37,29 @@ public class Coleccion {
 
   ////METODOS///
 
-  private Boolean cumpleCriterios(Hecho hecho , List<Criterio> criterios){
+  public Boolean cumpleCriterios(Hecho hecho, List<Criterio> criterios) {
     return criterios.stream().allMatch(criterio -> criterio.cumple(hecho));
   }
 
-  public List<Hecho> obtenerColeccion(List<Criterio> criterios){
+  public List<Hecho> obtenerColeccion() {
 
     ///  La fuente deberia devolver solo hechos activos.
-    return fuente.
-        obtenerHechos().
-        stream().
-        filter((Hecho h) ->
-            this.cumpleCriterios(h, criteriosDeCreacion) && this.cumpleCriterios(h, criterios)
+    return fuente
+        .obtenerHechos()
+        .stream()
+        .filter((Hecho h) ->
+            this.cumpleCriterios(h, criteriosDeCreacion)
         ).toList();
-
-
   }
 
+  public List<Hecho> obtenerColeccionConCriteriosAdicionales(List<Criterio> criterios) {
+
+    ///  La fuente deberia devolver solo hechos activos.
+    return fuente
+        .obtenerHechos()
+        .stream()
+        .filter((Hecho h) ->
+            this.cumpleCriterios(h, criteriosDeCreacion) && this.cumpleCriterios(h, criterios)
+        ).toList();
+  }
 }

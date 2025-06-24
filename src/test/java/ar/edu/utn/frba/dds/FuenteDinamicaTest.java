@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,15 +50,16 @@ public class FuenteDinamicaTest {
     repo.agregarSolicitudAgregacion(s2);
     repo.agregarSolicitudAgregacion(s3);
 
+    repo.aceptarSolicitud(s1);
+    repo.rechazarSolicitudAgregacion(s2);
+    repo.aceptarSolicitudConSugerencias(s3,sugerenciaDtoMock);
+
     FuenteDinamica fuente = new FuenteDinamica();
     List<Hecho> hechos = fuente.obtenerHechos();
 
-    assertEquals(0, hechos.size());
-//    assertTrue(hechos.contains(hechoMock1));
-//    assertTrue(hechos.contains(hechoMock3));
-//    assertFalse(hechos.contains(hechoMock2));
-
-    // TODO: chequear - debería ser 2
-
+    assertEquals(2, hechos.size());
+    assertTrue(hechos.contains(hechoMock1));
+    assertTrue(hechos.contains(hechoMock3));
+    assertFalse(hechos.contains(hechoMock2));
   }
 }

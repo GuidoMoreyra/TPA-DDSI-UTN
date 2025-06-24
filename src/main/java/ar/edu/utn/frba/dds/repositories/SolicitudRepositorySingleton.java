@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class SolicitudRepositorySingleton {
@@ -148,6 +149,7 @@ public class SolicitudRepositorySingleton {
     solicitud.rechazarSolicitud();
     rechazadas.add(solicitud);
   }
+
 }
 
 
