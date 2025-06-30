@@ -1,6 +1,10 @@
 package ar.edu.utn.frba.dds.repositories.fuentes;
 
-import ar.edu.utn.frba.dds.utils.HttpNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.HttpNotFoundException;
+import ar.edu.utn.frba.dds.models.Hecho;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -8,40 +12,35 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 public class FuenteMetaMapa {
-  private final Logger logger = Logger.getLogger(FuenteMetaMapa.class.getName());
+
   private final String rutaApi;
-  private static FuenteMetaMapa instancia = null;
+  private final HttpClient cliente;
 
-  private FuenteMetaMapa() {
-    rutaApi = "link de la api";
-    instancia = this;
+  public FuenteMetaMapa (String rutaApi_ , HttpClient cliente_) {
+    rutaApi = rutaApi_;
+    cliente = cliente_;
   }
 
-  public FuenteMetaMapa getInstancia() {
-    if (instancia == null) {
-      return new FuenteMetaMapa();
-    }
-    return instancia;
-  }
+
 
 
   //Obtenemos los hechos sin filtrar , se podria mejorar haciendo  que los filtros
   // se apliquen directamente desde la fuente y se entreguen filtrados en la coleccion
-  public String obtenerHechos() {
+  public List<Hecho> obtenerHechos() {
     String url = rutaApi + "/hechos";
 
     try {
-      HttpClient client = HttpClient.newHttpClient();
       HttpRequest request = HttpRequest.newBuilder()
           .uri(URI.create(url))
             .GET()
             .build();
 
-      HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+      HttpResponse<String> response = cliente.send(request, HttpResponse.BodyHandlers.ofString());
       int status = response.statusCode();
 
       if (status == 404) {
@@ -50,13 +49,12 @@ public class FuenteMetaMapa {
         throw new RuntimeException("Error HTTP " + status + " al acceder a: " + url);
       }
 
-      return response.body();
+      ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(response.body(), new TypeReference<List<Hecho>>() {});
 
     } catch (IOException e) {
-      logger.severe("IO error al acceder a la API: " + e.getMessage());
       throw new RuntimeException(e);
     } catch (InterruptedException e) {
-      logger.warning("La solicitud fue interrumpida.");
       throw new RuntimeException(e);
     }
   }
