@@ -1,14 +1,16 @@
 package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import java.time.LocalDate;
+import lombok.Getter;
 
-public class SolicitudAgregacion {
+@Getter
+public final class SolicitudAgregacion {
   private EstadoSolicitudAgregacion estado;
-  private Hecho hecho;
-  private Boolean esAnonimo;
-  private LocalDate fechaCreacion;
+  private final Hecho hecho;
+  private final Boolean esAnonimo;
+  private final LocalDate fechaCreacion;
 
   //CONSTRUCTOR
   public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo) {
@@ -25,19 +27,6 @@ public class SolicitudAgregacion {
     this.esAnonimo = esAnonimo;
     this.fechaCreacion = fechaCreacion;
   }
-
-  //GETTERS
-
-  public EstadoSolicitudAgregacion getEstado() {
-    return estado;
-  }
-
-  public Hecho getHecho() {
-    return hecho;
-  }
-
-
-  //METODOS
 
   //Estados Solicitudes
   public void aceptarSolicitud() {

@@ -1,72 +1,42 @@
 package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
-import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import java.time.LocalDate;
+import lombok.Getter;
 
+@Getter
 public class Hecho {
   private String titulo;
   private String descripcion;
   private String categoria;
   private String contenidoMultimedia;
-  private Coordenada coordenadas;
-  private LocalDate fechaDelHecho;
-  private LocalDate fechaCreacion;
+  private final Coordenada coordenadas;
+  private final LocalDate fechaDelHecho;
+  private final LocalDate fechaCreacion = LocalDate.now();
   private OrigenHecho origen;
 
-  ////CONSTRUCTOR///
-
-  public Hecho(String titulo, String descripcion, String categoria,
-               double latitud, double longitud,
-               LocalDate fechaDelHecho, OrigenHecho origen, String contenidoMultimedia) {
-
+  public Hecho(
+      String titulo,
+      String descripcion,
+      String categoria,
+      double latitud,
+      double longitud,
+      LocalDate fechaDelHecho,
+      OrigenHecho origen,
+      String contenidoMultimedia
+  ) {
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
-    this.coordenadas = new Coordenada(longitud, latitud);
+    this.coordenadas = new Coordenada(longitud, latitud, "Buenos Aires"); // TODO: cambiar luego
     this.fechaDelHecho = fechaDelHecho;
-    this.fechaCreacion = LocalDate.now();
     this.origen = origen;
-  }
-
-  ////GETTERS///
-
-  public String getTitulo() {
-    return titulo;
-  }
-
-  public String getDescripcion() {
-    return descripcion;
-  }
-
-  public String getCategoria() {
-    return categoria;
-  }
-
-  public Coordenada getLugar() {
-    return coordenadas;
-  }
-
-  public String getLocalidad() {
-    return coordenadas.getLocalidad();
-  }
-
-  public LocalDate getFechaDelHecho() {
-
-    return fechaDelHecho;
-  }
-
-  public LocalDate getFechaCreacion() {
-    return fechaCreacion;
-  }
-
-  public OrigenHecho getOrigen() {
-    return origen;
   }
 
   public Boolean estaActivo() {
@@ -76,13 +46,6 @@ public class Hecho {
         .stream()
         .noneMatch(solicitud -> solicitud.esParaElHecho(this));
   }
-
-  public String getContenidoMultimedia() {
-    return contenidoMultimedia;
-  }
-
-
-  ////METODOS///
 
   public void aplicarCambios(CambiosHechoDto cambios) {
     if (cambios.getTitulo() != null) {
@@ -113,7 +76,4 @@ public class Hecho {
         .anyMatch(s -> s.getHecho().equals(this));
   }
 
-
 }
-
-

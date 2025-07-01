@@ -1,7 +1,6 @@
-package ar.edu.utn.frba.dds.models.criterios;
+package ar.edu.utn.frba.dds.contracts;
 
 import ar.edu.utn.frba.dds.models.Hecho;
-
 
 public interface Criterio {
 

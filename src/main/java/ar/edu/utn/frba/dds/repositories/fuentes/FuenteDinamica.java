@@ -1,14 +1,15 @@
 package ar.edu.utn.frba.dds.repositories.fuentes;
 
+import ar.edu.utn.frba.dds.contracts.Fuente;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FuenteDinamica implements Fuente {
+public final class FuenteDinamica implements Fuente {
 
   @Override
   public List<Hecho> obtenerHechos() {
@@ -29,4 +30,5 @@ public class FuenteDinamica implements Fuente {
         .map(SolicitudAgregacion::getHecho)
         .collect(Collectors.toList());
   }
+
 }

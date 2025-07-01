@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.repositories;
 
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

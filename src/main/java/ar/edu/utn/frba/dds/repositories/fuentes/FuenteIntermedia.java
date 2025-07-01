@@ -1,11 +1,11 @@
 package ar.edu.utn.frba.dds.repositories.fuentes;
 
+import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.exceptions.FuenteProxyException;
 import ar.edu.utn.frba.dds.models.Hecho;
 import java.util.List;
 
-public class FuenteIntermedia implements Fuente {
-
+public final class FuenteIntermedia implements Fuente {
 
   private Fuente fuenteQueSeUsa;
 

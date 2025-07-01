@@ -9,11 +9,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -27,7 +24,7 @@ import java.util.List;
 // Se lo normaliza a este formato:
 //    Título, Descripción, Categoría, Latitud, Longitud, Fecha del hecho
 
-public class NormalizadorCsv {
+public final class NormalizadorCsv {
 
   public void normalizarCsv(File csvFile) throws Exception {
     // 1. Leer el CSV original
@@ -42,9 +39,13 @@ public class NormalizadorCsv {
 
     // 2. Aplicar transformación / limpieza si hiciera falta
     hechos.forEach(hecho -> {
-      hecho.descripcion = hecho.descripcion.trim();
-      hecho.categoria = hecho.categoria.trim().toUpperCase(); // Ejemplo de estandarización
-      // Otros cambios que quieras
+      hecho.setDescripcion(
+          hecho.getDescripcion().trim()
+      );
+
+      hecho.setCategoria(
+          hecho.getCategoria().trim().toUpperCase()
+      );
     });
 
     // 3. Sobrescribir el archivo original con los datos estandarizados

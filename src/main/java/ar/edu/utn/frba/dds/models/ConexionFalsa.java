@@ -1,12 +1,13 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.contracts.Conexion;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConexionFalsa implements Conexion {
+public final class ConexionFalsa implements Conexion {
   private int contador = 0;
 
   @Override

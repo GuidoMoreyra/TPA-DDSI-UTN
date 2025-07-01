@@ -8,12 +8,12 @@ import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
-import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-import static org.mockito.Mockito.*;
 
 public class HechoTest {
 
@@ -37,9 +37,9 @@ public class HechoTest {
     assertEquals(LocalDate.of(2023, 10, 5), hecho.getFechaDelHecho());
     assertEquals(OrigenHecho.ESTATICO, hecho.getOrigen());
 
-    Coordenada coord = hecho.getLugar();
-    assertEquals(-34.6, coord.getLatitud());
-    assertEquals(-58.4, coord.getLongitud());
+    Coordenada coord = hecho.getCoordenadas();
+    assertEquals(-34.6, coord.latitud());
+    assertEquals(-58.4, coord.longitud());
   }
 
   @Test

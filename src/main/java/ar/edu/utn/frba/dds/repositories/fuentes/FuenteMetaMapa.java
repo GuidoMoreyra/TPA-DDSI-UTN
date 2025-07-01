@@ -8,10 +8,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.logging.Logger;
 
-public class FuenteMetaMapa {
+public final class FuenteMetaMapa {
   private final Logger logger = Logger.getLogger(FuenteMetaMapa.class.getName());
   private final String rutaApi;
-  private static FuenteMetaMapa instancia = null;
+  private static FuenteMetaMapa instancia = new FuenteMetaMapa();
 
   private FuenteMetaMapa() {
     rutaApi = "link de la api";
@@ -19,12 +19,8 @@ public class FuenteMetaMapa {
   }
 
   public FuenteMetaMapa getInstancia() {
-    if (instancia == null) {
-      return new FuenteMetaMapa();
-    }
     return instancia;
   }
-
 
   //Obtenemos los hechos sin filtrar , se podria mejorar haciendo  que los filtros
   // se apliquen directamente desde la fuente y se entreguen filtrados en la coleccion
@@ -33,10 +29,11 @@ public class FuenteMetaMapa {
 
     try {
       HttpClient client = HttpClient.newHttpClient();
-      HttpRequest request = HttpRequest.newBuilder()
+      HttpRequest request = HttpRequest
+          .newBuilder()
           .uri(URI.create(url))
-            .GET()
-            .build();
+          .GET()
+          .build();
 
       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
       int status = response.statusCode();
@@ -57,6 +54,5 @@ public class FuenteMetaMapa {
       throw new RuntimeException(e);
     }
   }
-
 
 }

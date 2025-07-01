@@ -2,28 +2,29 @@ package ar.edu.utn.frba.dds.dto;
 
 import com.opencsv.bean.CsvBindByName;
 import java.time.LocalDate;
+import lombok.Data;
 
-public class HechoCsvDto {
+@Data
+public final class HechoCsvDto {
 
   @CsvBindByName(column = "titulo")
-  public String titulo;
+  private String titulo;
 
   @CsvBindByName(column = "descripcion")
-  public String descripcion;
+  private String descripcion;
 
   @CsvBindByName(column = "categoria")
-  public String categoria;
+  private String categoria;
 
   @CsvBindByName(column = "latitud")
-  public double latitud;
+  private double latitud;
 
   @CsvBindByName(column = "longitud")
-  public double longitud;
+  private double longitud;
 
   @CsvBindByName(column = "fecha_Del_Hecho")
-  public LocalDate fechaDelHecho;
+  private LocalDate fechaDelHecho;
 
-  public String contenidoMultimedia = "";
-
+  private String contenidoMultimedia = "";
 
 }

@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.dds.models;
+package ar.edu.utn.frba.dds.contracts;
 
 import java.net.URL;
 import java.time.LocalDateTime;

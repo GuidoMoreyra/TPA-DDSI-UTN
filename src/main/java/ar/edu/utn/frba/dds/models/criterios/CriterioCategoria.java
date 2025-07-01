@@ -1,22 +1,22 @@
 package ar.edu.utn.frba.dds.models.criterios;
 
+import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.models.Hecho;
 import java.util.Map;
 
-public class CriterioCategoria implements Criterio {
-  private String categoria;
-
-  public CriterioCategoria(String categoria) {
-    this.categoria = categoria;
-  }
+public record CriterioCategoria(String categoria) implements Criterio {
 
   @Override
   public Boolean cumple(Hecho hecho) {
-    return this.categoria.equals(hecho.getCategoria());
+    return this.categoria.equals(
+        hecho.getCategoria()
+    );
   }
 
   public Boolean seCumpleCriterio(Map<String, String> unHecho) {
-    return this.categoria.equals(unHecho.get("categoria"));
+    return this.categoria.equals(
+        unHecho.get("categoria")
+    );
   }
 
 }

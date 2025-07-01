@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.repositories;
 
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

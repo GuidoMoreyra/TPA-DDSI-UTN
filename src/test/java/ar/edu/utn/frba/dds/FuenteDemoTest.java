@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import ar.edu.utn.frba.dds.exceptions.InvalidoUrlExeception;
 import ar.edu.utn.frba.dds.exceptions.UltimaConsultaException;
-import ar.edu.utn.frba.dds.models.Conexion;
+import ar.edu.utn.frba.dds.contracts.Conexion;
 import ar.edu.utn.frba.dds.repositories.fuentes.AdaptadorFuenteDemo;
 import org.junit.jupiter.api.Assertions;
 import static org.mockito.Mockito.*;

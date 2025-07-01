@@ -10,7 +10,7 @@ import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
 import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
 import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
-import ar.edu.utn.frba.dds.repositories.fuentes.Fuente;
+import ar.edu.utn.frba.dds.contracts.Fuente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -56,9 +56,13 @@ public class ColeccionTest {
   @Test
   public void coleccionDevuelveHechosQueCumplenConCriteriosDeCreacion() {
     Hecho hechoMock = mock(Hecho.class);
+    Coordenada coordenadaMock = mock(Coordenada.class);
+
+    when(coordenadaMock.localidad()).thenReturn("Buenos Aires");
+    when(hechoMock.getCoordenadas()).thenReturn(coordenadaMock);
 
     // Cumple todos los criterios de creación
-    when(hechoMock.getLocalidad()).thenReturn("Buenos Aires");
+    when(hechoMock.getCoordenadas().localidad()).thenReturn("Buenos Aires");
     when(hechoMock.getCategoria()).thenReturn("Educación");
     when(hechoMock.getFechaDelHecho()).thenReturn(LocalDate.of(2024, 6, 1));
     when(fuenteMock.obtenerHechos()).thenReturn(List.of(hechoMock));
@@ -84,12 +88,17 @@ public class ColeccionTest {
     Hecho hecho1 = mock(Hecho.class);
     Hecho hecho2 = mock(Hecho.class);
     Hecho hecho3 = mock(Hecho.class);
+    Coordenada coordenadaMock = mock(Coordenada.class);
 
-    when(criterioLugarMock.getLocalidad()).thenReturn("Buenos Aires");
+    when(coordenadaMock.localidad()).thenReturn("Buenos Aires");
+    when(hecho1.getCoordenadas()).thenReturn(coordenadaMock);
+    when(hecho2.getCoordenadas()).thenReturn(coordenadaMock);
+    when(hecho3.getCoordenadas()).thenReturn(coordenadaMock);
+    when(criterioLugarMock.localidad()).thenReturn("Buenos Aires");
 
-    when(hecho1.getLocalidad()).thenReturn("Buenos Aires");
-    when(hecho2.getLocalidad()).thenReturn("Buenos Aires");
-    when(hecho3.getLocalidad()).thenReturn("Buenos Aires");
+    when(hecho1.getCoordenadas().localidad()).thenReturn("Buenos Aires");
+    when(hecho2.getCoordenadas().localidad()).thenReturn("Buenos Aires");
+    when(hecho3.getCoordenadas().localidad()).thenReturn("Buenos Aires");
 
     when(hecho1.getCategoria()).thenReturn("Educación");
     when(hecho2.getCategoria()).thenReturn("Educación");
