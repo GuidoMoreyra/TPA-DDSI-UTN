@@ -6,7 +6,6 @@ import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteDinamica;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,16 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-
 public class FuenteDinamicaTest {
-
-  @BeforeEach
-  public void setup() {
-    SolicitudRepositorySingleton.resetInstance();
-  }
 
   @Test
   public void obtenerHechosDevuelveSoloSolicitudesAceptadas() {

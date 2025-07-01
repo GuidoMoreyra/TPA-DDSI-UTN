@@ -11,16 +11,10 @@ import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-import static org.mockito.Mockito.*;
 
 public class HechoTest {
-  @BeforeEach
-  public void resetRepository() {
-    SolicitudRepositorySingleton.resetInstance();
-  }
 
   @Test
   public void sePuedeCrearUnHechoYConsultarDatos() {

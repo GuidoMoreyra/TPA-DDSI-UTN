@@ -11,8 +11,7 @@ import java.util.List;
 
 public class SolicitudRepositorySingleton {
 
-
-  private static SolicitudRepositorySingleton instancia = null;
+  private static final SolicitudRepositorySingleton instancia = new SolicitudRepositorySingleton();
   private List<SolicitudEliminacion> pendientesEliminacion;
 
   private List<SolicitudEliminacion> aprobados;
@@ -36,15 +35,7 @@ public class SolicitudRepositorySingleton {
   }
 
   public static SolicitudRepositorySingleton getInstance() {
-    if (instancia == null) {
-      instancia = new SolicitudRepositorySingleton();
-    }
     return instancia;
-  }
-
-
-  public static void resetInstance() {
-    instancia = new SolicitudRepositorySingleton();
   }
 
   /// SOLICITUDES ELIMINACION
