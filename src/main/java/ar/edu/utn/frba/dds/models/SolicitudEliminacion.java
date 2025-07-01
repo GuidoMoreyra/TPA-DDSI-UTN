@@ -1,7 +1,5 @@
 package ar.edu.utn.frba.dds.models;
 
-import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
 
 public class SolicitudEliminacion {

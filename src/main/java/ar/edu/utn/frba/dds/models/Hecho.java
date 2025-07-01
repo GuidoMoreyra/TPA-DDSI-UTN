@@ -4,7 +4,8 @@ import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
-import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
+import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
+import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import java.time.LocalDate;
 
 public class Hecho {
@@ -18,8 +19,6 @@ public class Hecho {
   private OrigenHecho origen;
 
   ////CONSTRUCTOR///
-
-
 
   public Hecho(String titulo, String descripcion, String categoria,
                double latitud, double longitud,
@@ -71,14 +70,11 @@ public class Hecho {
   }
 
   public Boolean estaActivo() {
-    return SolicitudRepositorySingleton.getInstance()
-        .obtenerSolicitudesEliminacionSegunEstado(
-            EstadoSolicitudEliminacion.APROBADO
-        )
+    return SolicitudesEliminacionRepository
+        .getInstance()
+        .obtenerSolicitudesConEstado(EstadoSolicitudEliminacion.APROBADO)
         .stream()
-        .noneMatch(
-            solicitud -> solicitud.esParaElHecho(this)
-        );
+        .noneMatch(solicitud -> solicitud.esParaElHecho(this));
   }
 
   public String getContenidoMultimedia() {
@@ -110,8 +106,9 @@ public class Hecho {
   }
 
   public Boolean tieneSugerencias() {
-    return SolicitudRepositorySingleton.getInstance()
-        .obtenerSolicitudesAgregacionSegunEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
+    return SolicitudesAgregacionRepository
+        .getInstance()
+        .obtenerSolicitudesConEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
         .stream()
         .anyMatch(s -> s.getHecho().equals(this));
   }

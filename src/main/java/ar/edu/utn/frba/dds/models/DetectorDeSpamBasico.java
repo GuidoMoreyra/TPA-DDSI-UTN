@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.contracts.DetectorDeSpam;
 import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
-import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
+import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,11 +35,11 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
    * Devuelve un listado de textos aprobados que se utilizarán como corpus para el detector de spam
    */
   private List<String> corpus() {
-    SolicitudRepositorySingleton repositorioDeSolicitudes =
-        SolicitudRepositorySingleton.getInstance();
+    SolicitudesEliminacionRepository repositorioDeSolicitudes =
+        SolicitudesEliminacionRepository.getInstance();
 
     List<SolicitudEliminacion> solicitudesRechazadas =
-        repositorioDeSolicitudes.obtenerSolicitudesEliminacionSegunEstado(
+        repositorioDeSolicitudes.obtenerSolicitudesConEstado(
             EstadoSolicitudEliminacion.APROBADO
         );
 

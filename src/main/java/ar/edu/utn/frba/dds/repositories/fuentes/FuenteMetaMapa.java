@@ -1,14 +1,11 @@
 package ar.edu.utn.frba.dds.repositories.fuentes;
 
-import ar.edu.utn.frba.dds.utils.HttpNotFoundException;
+import ar.edu.utn.frba.dds.exceptions.HttpNotFoundException;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class FuenteMetaMapa {
