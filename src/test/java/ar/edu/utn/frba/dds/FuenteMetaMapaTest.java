@@ -48,7 +48,7 @@ public class FuenteMetaMapaTest {
     when(clienteHttp.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
         .thenReturn(respuestaHttp);
 
-    FuenteMetaMapa fuente = new FuenteMetaMapa("rutafake", clienteHttp);
+    FuenteMetaMapa fuente = new FuenteMetaMapa("http://fake-api.com", clienteHttp);
 
     List<Hecho> hechos = fuente.obtenerHechos();
 

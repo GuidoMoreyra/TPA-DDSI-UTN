@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.exceptions.HttpNotFoundException;
 import ar.edu.utn.frba.dds.models.Hecho;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -21,12 +21,10 @@ public class FuenteMetaMapa {
   private final String rutaApi;
   private final HttpClient cliente;
 
-  public FuenteMetaMapa (String rutaApi_ , HttpClient cliente_) {
-    rutaApi = rutaApi_;
-    cliente = cliente_;
+  public FuenteMetaMapa(String rutaApi, HttpClient cliente) {
+    this.rutaApi = rutaApi;
+    this.cliente = cliente;
   }
-
-
 
 
   //Obtenemos los hechos sin filtrar , se podria mejorar haciendo  que los filtros
@@ -37,8 +35,8 @@ public class FuenteMetaMapa {
     try {
       HttpRequest request = HttpRequest.newBuilder()
           .uri(URI.create(url))
-            .GET()
-            .build();
+          .GET()
+          .build();
 
       HttpResponse<String> response = cliente.send(request, HttpResponse.BodyHandlers.ofString());
       int status = response.statusCode();
@@ -50,7 +48,9 @@ public class FuenteMetaMapa {
       }
 
       ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(response.body(), new TypeReference<List<Hecho>>() {});
+      mapper.registerModule(new JavaTimeModule());
+      return mapper.readValue(response.body(), new TypeReference<List<Hecho>>() {
+      });
 
     } catch (IOException e) {
       throw new RuntimeException(e);

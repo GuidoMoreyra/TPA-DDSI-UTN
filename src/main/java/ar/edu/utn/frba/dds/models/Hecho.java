@@ -20,6 +20,7 @@ public class Hecho {
   ////CONSTRUCTOR///
 
 
+  public Hecho() {}
 
   public Hecho(String titulo, String descripcion, String categoria,
                double latitud, double longitud,
@@ -49,12 +50,16 @@ public class Hecho {
     return categoria;
   }
 
-  public Coordenada getLugar() {
+  public Coordenada getCoordenadas() {
     return coordenadas;
   }
 
+  public Coordenada getLugar() {
+    return new Coordenada(coordenadas.longitud, coordenadas.latitud);
+  }
+
   public String getLocalidad() {
-    return coordenadas.getLocalidad();
+    return this.coordenadas.getLocalidad();
   }
 
   public LocalDate getFechaDelHecho() {
