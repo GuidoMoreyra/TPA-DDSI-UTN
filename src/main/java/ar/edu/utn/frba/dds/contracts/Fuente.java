@@ -5,4 +5,9 @@ import java.util.List;
 
 public interface Fuente {
   List<Hecho> obtenerHechos();
+
+  public boolean existe(Hecho hecho);
+
+  public Hecho buscar(Hecho hecho);
+
 }

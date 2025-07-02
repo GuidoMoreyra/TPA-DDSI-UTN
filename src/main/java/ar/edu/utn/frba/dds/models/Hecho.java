@@ -76,4 +76,18 @@ public class Hecho {
         .anyMatch(s -> s.getHecho().equals(this));
   }
 
+  public boolean compararRigurosa(Hecho hechoCompar) {
+    return this.getTitulo().equals(hechoCompar.getTitulo())
+        && this.getDescripcion().equals(hechoCompar.getDescripcion())
+        && this.getCategoria().equals(hechoCompar.getCategoria())
+        && this.getCoordenadas().equals(hechoCompar.getCoordenadas())
+        && this.getFechaDelHecho() == hechoCompar.getFechaDelHecho();
+  }
+
+
+
+  public boolean compararHecho(Hecho h) {
+    return this.getTitulo().equals(h.getTitulo());
+  }
+
 }

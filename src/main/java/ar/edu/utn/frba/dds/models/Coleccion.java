@@ -8,10 +8,13 @@ import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+
 
 public final class Coleccion {
 
   private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
+  @Getter
   private final Fuente fuente;
 
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
@@ -62,4 +65,5 @@ public final class Coleccion {
             this.cumpleCriterios(h, criteriosDeCreacion) && this.cumpleCriterios(h, criterios)
         ).toList();
   }
+
 }
