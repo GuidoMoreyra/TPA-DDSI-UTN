@@ -15,24 +15,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public final class AdaptadorFuenteDemo implements Fuente {
+public final class AdaptadorFuenteDemo {
 
   private final Conexion conexion;
   private final URL url;
   private LocalDateTime ultimaConsulta;
-  private final Integer intervaloDeEspera;
+  //private final Integer intervaloDeEspera;
   private final List<Hecho> hechosObtenidos = new ArrayList<>();
 
   public AdaptadorFuenteDemo(
       Conexion conexion,
       String url,
-      LocalDateTime ultimaConsulta,
-      Integer intervaloDeEspera
+      LocalDateTime ultimaConsulta
+  //intervaloDeespera
   ) {
     validarUltimaConsulta(ultimaConsulta);
     this.conexion = conexion;
     this.url = validarUrl(url);
-    this.intervaloDeEspera = intervaloDeEspera;
     this.ultimaConsulta = ultimaConsulta;
   }
 
@@ -50,28 +49,20 @@ public final class AdaptadorFuenteDemo implements Fuente {
     }
   }
 
-  @Override
+
   public List<Hecho> obtenerHechos() {
-    if (!esMomentoDeObtenerHechos()) {
-      return new ArrayList<>(hechosObtenidos);
-    }
 
-    Map<String, Object> datos;
-
-    while ((datos = conexion.siguienteHecho(url, ultimaConsulta)) != null) {
-      Hecho hecho = construirHechoDesde(datos);
-      hechosObtenidos.add(hecho);
-    }
-
-    this.ultimaConsulta = LocalDateTime.now();
     return new ArrayList<>(hechosObtenidos);
   }
 
+  /*
   private boolean esMomentoDeObtenerHechos() {
     Duration duracion = Duration.between(ultimaConsulta, LocalDateTime.now());
     return duracion.toMinutes() >= intervaloDeEspera;
   }
 
+
+   */
 
   /*
   private boolean deboActualizar() {
@@ -101,5 +92,18 @@ public final class AdaptadorFuenteDemo implements Fuente {
         origen,
         contenidoMultimedia
     );
+  }
+
+  public void actualizar() {
+
+    Map<String, Object> datos;
+
+    while ((datos = conexion.siguienteHecho(url, ultimaConsulta)) != null) {
+      Hecho hecho = construirHechoDesde(datos);
+      hechosObtenidos.add(hecho);
+    }
+
+    this.ultimaConsulta = LocalDateTime.now();
+
   }
 }

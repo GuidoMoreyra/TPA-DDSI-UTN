@@ -47,7 +47,7 @@ public class ColeccionTest {
     // Colección con criterios de creación (fecha, lugar, categoría)
     LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
     LocalDate fechaFin = LocalDate.of(2024, 12, 31);
-    Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación");
+    Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación",null);
 
     Boolean cumple = coleccion.cumpleCriterios(hecho1, List.of(criterioLugarMock));
     assertTrue(cumple);
@@ -73,7 +73,7 @@ public class ColeccionTest {
 
     LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
     LocalDate fechaFin = LocalDate.of(2024, 12, 31);
-    Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación");
+    Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación",null);
 
     List<Hecho> resultado = coleccion.obtenerColeccion();
 
@@ -114,7 +114,7 @@ public class ColeccionTest {
     // Colección con criterios de creación (fecha, lugar, categoría)
     LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
     LocalDate fechaFin = LocalDate.of(2024, 12, 31);
-    Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación");
+    Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación",null);
 
     // Se setea qué hechos cumplen qué criterios
 

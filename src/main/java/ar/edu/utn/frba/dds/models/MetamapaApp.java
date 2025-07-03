@@ -13,8 +13,7 @@ public final class MetamapaApp {
     AdaptadorFuenteDemo fuente = new AdaptadorFuenteDemo(
         conexion,
         "http://fakeurl.com/api",
-        LocalDateTime.now().minusMinutes(1),
-        1
+        LocalDateTime.now().minusMinutes(1)
     );
     TimerTask task = new TimerTask() {
       @Override
