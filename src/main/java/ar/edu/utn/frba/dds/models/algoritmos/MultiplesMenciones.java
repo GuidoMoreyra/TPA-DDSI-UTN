@@ -4,32 +4,36 @@ import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.Hecho;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MultiplesMenciones implements AlgoritmoDeConsenso {
 
-  private Fuente fuentePrincipal;
 
-  public  MultiplesMenciones(Coleccion coleccion) {
-    fuentePrincipal = coleccion.getFuente();
+  private List<Fuente> fuentesActivas;
+
+  public  MultiplesMenciones(List<Fuente> fuentes) {
+
+    fuentesActivas =  new ArrayList<>(fuentes);
   }
 
-  private boolean distintaFuente(Fuente fuente) {
-    return fuente != fuentePrincipal;
+  private boolean distintaFuente(Fuente fuenteAbuscar,
+                                 Fuente fuenteAcomparar) {
+    return fuenteAbuscar != fuenteAcomparar;
   }
 
-  private List<Fuente> fuentesAbuscar(List<Fuente> fuentes) {
+  private List<Fuente> fuentesAbuscar(List<Fuente> fuentes, Fuente fuente) {
 
     return fuentes.stream()
-        .filter(fuenteAbuscar -> distintaFuente(fuenteAbuscar))
+        .filter(fuenteAbuscar -> distintaFuente(fuenteAbuscar, fuente))
         .collect(Collectors.toList());
   }
 
   @Override
-  public boolean estaConsensuado(Hecho hecho, List<Fuente> fuentes) {
+  public boolean estaConsensuado(Hecho hecho, Fuente fuente) {
 
-    List<Fuente> fuentesSinPrincipal = fuentesAbuscar(fuentes);
+    List<Fuente> fuentesSinPrincipal = fuentesAbuscar(fuentesActivas, fuente);
     List<Hecho> coincidenciaHecho = this.transformarFuentesahechos(hecho, fuentesSinPrincipal);
 
     Integer coincidencia = 0;

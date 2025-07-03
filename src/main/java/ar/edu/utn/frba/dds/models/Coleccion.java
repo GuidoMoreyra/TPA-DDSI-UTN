@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
@@ -8,6 +9,7 @@ import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 
 
@@ -15,7 +17,8 @@ public final class Coleccion {
 
   private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
   @Getter
-  private final Fuente fuente;
+  private  Fuente fuente;
+  private  AlgoritmoDeConsenso algoritmoDeConseso;
 
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
   ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
@@ -25,10 +28,12 @@ public final class Coleccion {
       String localidad,
       LocalDate fechaInicial,
       LocalDate fechaFinal,
-      String categoria
+      String categoria,
+      AlgoritmoDeConsenso algoritmo
   ) {
 
     this.fuente = fuente;
+    this.algoritmoDeConseso = algoritmo;
 
     /// TODO - Habria que verificar que fecha 1 sea anterior a fecha 2
     criteriosDeCreacion.add(new CriterioFecha(fechaInicial, fechaFinal));
@@ -64,6 +69,29 @@ public final class Coleccion {
         .filter((Hecho h) ->
             this.cumpleCriterios(h, criteriosDeCreacion) && this.cumpleCriterios(h, criterios)
         ).toList();
+  }
+
+  private AlgoritmoDeConsenso getAlgoritmoDeConsenso() {
+    return algoritmoDeConseso;
+  }
+
+
+  public List<Hecho> aplicarAlgoritmoDeConsenso(Coleccion coleccion) {
+
+    List<Hecho> hechosActuales;
+
+    //entra cuando tengamos asociado algun consenso a la coleccion
+    if (coleccion.getAlgoritmoDeConsenso() != null) {
+      hechosActuales = fuente
+          .obtenerHechos().stream()
+          .filter(unHecho -> algoritmoDeConseso.estaConsensuado(unHecho,
+              fuente))
+          .toList();
+    } else {
+      //entra cuando no se tenga ningun algoritmo asociado
+      hechosActuales = coleccion.obtenerColeccion();
+    }
+    return hechosActuales;
   }
 
 }

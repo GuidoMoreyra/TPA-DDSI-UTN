@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface AlgoritmoDeConsenso {
 
-  public boolean estaConsensuado(Hecho hecho, List<Fuente> fuentes);
+  public boolean estaConsensuado(Hecho hecho, Fuente fuente);
 
 }
