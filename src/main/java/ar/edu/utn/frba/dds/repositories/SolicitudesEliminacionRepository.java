@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.repositories;
 
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,5 +33,18 @@ public final class SolicitudesEliminacionRepository {
 
   public void agregarSolicitud(SolicitudEliminacion solicitud) {
     this.solicitudes.add(solicitud);
+  }
+
+  public void rechazarAutomaticamente(List<SolicitudEliminacion> solicitudesDeEliminacion) {
+    DetectorDeSpamBasico detectorDeSpam = new DetectorDeSpamBasico();
+
+    solicitudesDeEliminacion.stream()
+        .filter(s -> s.getEstado() == EstadoSolicitudEliminacion.PENDIENTE)
+        .filter(s -> detectorDeSpam.esSpam(s.getJustificacion()))
+        .forEach(s -> s.modificarEstado(EstadoSolicitudEliminacion.RECHAZADO_AUTOMATICAMENTE));
+  }
+
+  public void rechazarAutomaticamente() {
+    rechazarAutomaticamente(solicitudes);
   }
 }
