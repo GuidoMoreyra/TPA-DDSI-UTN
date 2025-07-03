@@ -11,8 +11,16 @@ public class Curada implements ModoDeNavegacion {
 
   @Override
   public List<Hecho> navegar(Coleccion coleccion) {
-    hechosLocales = coleccion.aplicarAlgoritmoDeConsenso(coleccion);
+    //hechosLocales = coleccion.aplicarAlgoritmoDeConsenso();
 
     return new ArrayList<>(hechosLocales);
   }
+
+  /* si se pudiera tener la lista de hechosConsensuados dentro de la coleccion
+  *public List<Hecho> navegar(Coleccion coleccion) {
+  *  return new ArrayList<>(coleccion.getHechosConsensuados()); // devuelve la copia actual
+  *  } de esta manera todavia sigue recolectando hechos cada vez que se necesita.
+  *
+  * */
+
 }

@@ -9,7 +9,6 @@ import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Getter;
 
 
@@ -63,35 +62,13 @@ public final class Coleccion {
 
   public List<Hecho> obtenerColeccionConCriteriosAdicionales(List<Criterio> criterios) {
     ///  La fuente deberia devolver solo hechos activos.
-    return fuente
-        .obtenerHechos()
+    return this.obtenerColeccion()
         .stream()
         .filter((Hecho h) ->
-            this.cumpleCriterios(h, criteriosDeCreacion) && this.cumpleCriterios(h, criterios)
+             this.cumpleCriterios(h, criterios)
         ).toList();
   }
 
-  private AlgoritmoDeConsenso getAlgoritmoDeConsenso() {
-    return algoritmoDeConseso;
-  }
 
-
-  public List<Hecho> aplicarAlgoritmoDeConsenso(Coleccion coleccion) {
-
-    List<Hecho> hechosActuales;
-
-    //entra cuando tengamos asociado algun consenso a la coleccion
-    if (coleccion.getAlgoritmoDeConsenso() != null) {
-      hechosActuales = fuente
-          .obtenerHechos().stream()
-          .filter(unHecho -> algoritmoDeConseso.estaConsensuado(unHecho,
-              fuente))
-          .toList();
-    } else {
-      //entra cuando no se tenga ningun algoritmo asociado
-      hechosActuales = coleccion.obtenerColeccion();
-    }
-    return hechosActuales;
-  }
 
 }

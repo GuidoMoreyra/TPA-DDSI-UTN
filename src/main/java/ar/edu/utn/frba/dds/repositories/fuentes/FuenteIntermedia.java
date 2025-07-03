@@ -7,14 +7,14 @@ import java.util.List;
 
 public final class FuenteIntermedia implements Fuente {
 
-  private Fuente fuenteQueSeUsa;
+  private  AdaptadorFuenteDemo fuenteQueSeUsa;
 
-  public void configurarFuenteIntermedia(Fuente fuenteQueSeUsa) {
+  public void configurarFuenteIntermedia(AdaptadorFuenteDemo fuenteQueSeUsa) {
     validacionFuente(fuenteQueSeUsa);
     this.fuenteQueSeUsa = fuenteQueSeUsa;
   }
 
-  public void validacionFuente(Fuente unaFuente) {
+  public void validacionFuente(AdaptadorFuenteDemo unaFuente) {
     if (unaFuente == null) {
       throw new FuenteProxyException("configuracion incorrecta de la fuente que se usa");
     }
@@ -27,12 +27,12 @@ public final class FuenteIntermedia implements Fuente {
 
   @Override
   public boolean existe(Hecho hecho) {
-    return this.obtenerHechos().contains(hecho);
+    return fuenteQueSeUsa.obtenerHechos().contains(hecho);
   }
 
   @Override
   public Hecho buscar(Hecho hecho) {
-    return this.obtenerHechos()
+    return fuenteQueSeUsa.obtenerHechos()
         .stream()
         .filter(unHechoFuente -> hecho.compararHecho(unHechoFuente))
         .findFirst()
