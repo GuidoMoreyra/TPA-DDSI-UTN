@@ -17,7 +17,7 @@ public final class Coleccion {
   private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
   @Getter
   private  Fuente fuente;
-  private  AlgoritmoDeConsenso algoritmoDeConseso;
+  /// private  AlgoritmoDeConsenso algoritmoDeConseso; //comento porque se considera bug
 
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
   ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
@@ -32,7 +32,7 @@ public final class Coleccion {
   ) {
 
     this.fuente = fuente;
-    this.algoritmoDeConseso = algoritmo;
+    //this.algoritmoDeConseso = algoritmo; //se comenta porque por el momento es bug
 
     /// TODO - Habria que verificar que fecha 1 sea anterior a fecha 2
     criteriosDeCreacion.add(new CriterioFecha(fechaInicial, fechaFinal));

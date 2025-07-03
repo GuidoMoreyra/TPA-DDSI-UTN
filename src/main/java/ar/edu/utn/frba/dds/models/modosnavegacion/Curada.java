@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Curada implements ModoDeNavegacion {
-  private List<Hecho> hechosLocales;
+  private List<Hecho> hechosLocales = new ArrayList<>();
 
   @Override
   public List<Hecho> navegar(Coleccion coleccion) {
