@@ -1,10 +1,11 @@
 package ar.edu.utn.frba.dds.repositories.fuentes;
 
+import ar.edu.utn.frba.dds.contracts.Conexion;
+import ar.edu.utn.frba.dds.contracts.Fuente;
+import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.exceptions.InvalidoUrlExeception;
 import ar.edu.utn.frba.dds.exceptions.UltimaConsultaException;
-import ar.edu.utn.frba.dds.models.Conexion;
 import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
@@ -14,23 +15,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+public final class AdaptadorFuenteDemo {
 
-public class AdaptadorFuenteDemo implements Fuente {
-
-  private Conexion conexion;
-  private URL url;
+  private final Conexion conexion;
+  private final URL url;
   private LocalDateTime ultimaConsulta;
-  private Integer intervaloDeEspera;
-  private List<Hecho> hechosObtenidos = new ArrayList<>();
+  //private final Integer intervaloDeEspera;
+  private final List<Hecho> hechosObtenidos = new ArrayList<>();
 
-  public AdaptadorFuenteDemo(Conexion conexion, String url,
-                             LocalDateTime ultimaConsulta, Integer intervaloDeEspera) {
+  public AdaptadorFuenteDemo(
+      Conexion conexion,
+      String url,
+      LocalDateTime ultimaConsulta
+  //intervaloDeespera
+  ) {
     validarUltimaConsulta(ultimaConsulta);
     this.conexion = conexion;
     this.url = validarUrl(url);
-    this.intervaloDeEspera = intervaloDeEspera;
     this.ultimaConsulta = ultimaConsulta;
-
   }
 
   private URL validarUrl(String url) {
@@ -47,33 +49,20 @@ public class AdaptadorFuenteDemo implements Fuente {
     }
   }
 
-  @Override
+
   public List<Hecho> obtenerHechos() {
-
-    if (!esMomentoDeObtenerHechos()) {
-      return new ArrayList<>(hechosObtenidos);
-    }
-
-
-    Map<String, Object> datos;
-
-    while ((datos = conexion.siguienteHecho(url, ultimaConsulta)) != null) {
-      Hecho hecho = construirHechoDesde(datos);
-      hechosObtenidos.add(hecho);
-
-    }
-
-    this.ultimaConsulta = LocalDateTime.now();
-
 
     return new ArrayList<>(hechosObtenidos);
   }
 
+  /*
   private boolean esMomentoDeObtenerHechos() {
     Duration duracion = Duration.between(ultimaConsulta, LocalDateTime.now());
     return duracion.toMinutes() >= intervaloDeEspera;
   }
 
+
+   */
 
   /*
   private boolean deboActualizar() {
@@ -92,11 +81,29 @@ public class AdaptadorFuenteDemo implements Fuente {
     Double longitud = (Double) datos.get("longitud");
     OrigenHecho origen = OrigenHecho.INTERMEDIO;
     LocalDate fechaOcurrido = (LocalDate) datos.get("fecha");
-    Hecho hecho = new Hecho(
-        titulo, descripcion, categoria,
-        latitud, longitud, fechaOcurrido, origen,
-        contenidoMultimedia);
-    return hecho;
+
+    return new Hecho(
+        titulo,
+        descripcion,
+        categoria,
+        latitud,
+        longitud,
+        fechaOcurrido,
+        origen,
+        contenidoMultimedia
+    );
   }
 
+  public void actualizar() {
+
+    Map<String, Object> datos;
+
+    while ((datos = conexion.siguienteHecho(url, ultimaConsulta)) != null) {
+      Hecho hecho = construirHechoDesde(datos);
+      hechosObtenidos.add(hecho);
+    }
+
+    this.ultimaConsulta = LocalDateTime.now();
+
+  }
 }

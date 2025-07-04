@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models;
 
+
 public class Coordenada {
   public double longitud;
   public double latitud;

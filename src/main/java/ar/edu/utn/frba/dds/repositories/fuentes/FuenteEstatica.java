@@ -1,31 +1,23 @@
 package ar.edu.utn.frba.dds.repositories.fuentes;
 
+import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.dto.HechoCsvDto;
+import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 
-
-public class FuenteEstatica implements Fuente {
+@AllArgsConstructor
+public final class FuenteEstatica implements Fuente {
 
   private final String archivo;
-
-  /// Guarda el nombre del archivo
-
-
-  public FuenteEstatica(String archivo) {
-    this.archivo = archivo;
-  }
 
   /// Se asume que los archivos fueron previamente normalizados.
   /// La ruta del archivo debe ser src/main/resources,
@@ -37,9 +29,11 @@ public class FuenteEstatica implements Fuente {
     String rutaArchivo = "src/main/resources/" + archivo + ".csv";
 
     //Creamos el reader para leer el archivo
-    try (BufferedReader reader = new BufferedReader(
-        new InputStreamReader(new FileInputStream(rutaArchivo), StandardCharsets.UTF_8)
-    );) {
+    try (
+        BufferedReader reader = new BufferedReader(
+            new InputStreamReader(new FileInputStream(rutaArchivo), StandardCharsets.UTF_8)
+        );
+    ) {
       //Usamos la libreria OpenCsv para leer todos los hechos del csv
       // y pasarlos a una lista de DTOs
       List<HechoCsvDto> dtos = new CsvToBeanBuilder<HechoCsvDto>(reader)
@@ -49,16 +43,17 @@ public class FuenteEstatica implements Fuente {
           .parse();
 
       //Creamos los hechos debidamente a partir de los datos del archivo
-      return dtos.stream()
+      return dtos
+          .stream()
           .map(dto -> new Hecho(
-              dto.titulo,
-              dto.descripcion,
-              dto.categoria,
-              dto.longitud,
-              dto.latitud,
-              dto.fechaDelHecho,
+              dto.getTitulo(),
+              dto.getDescripcion(),
+              dto.getCategoria(),
+              dto.getLongitud(),
+              dto.getLatitud(),
+              dto.getFechaDelHecho(),
               OrigenHecho.ESTATICO,
-              dto.contenidoMultimedia
+              dto.getContenidoMultimedia()
           ))
           .toList();
 
@@ -68,6 +63,21 @@ public class FuenteEstatica implements Fuente {
       throw new RuntimeException("Error al leer el archivo: ", e);
     }
   }
+
+  @Override
+  public boolean existe(Hecho hecho) {
+    return this.obtenerHechos().contains(hecho);
+  }
+
+  @Override
+  public Hecho buscar(Hecho hecho) {
+    return this.obtenerHechos()
+        .stream()
+        .filter(unHechoFuente -> hecho.compararHecho(unHechoFuente))
+        .findFirst()
+        .orElse(null);
+  }
+
 }
 
 

@@ -8,19 +8,14 @@ import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
-import ar.edu.utn.frba.dds.models.enums.OrigenHecho;
-import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-import static org.mockito.Mockito.*;
 
 public class HechoTest {
-  @BeforeEach
-  public void resetRepository() {
-    SolicitudRepositorySingleton.resetInstance();
-  }
 
   @Test
   public void sePuedeCrearUnHechoYConsultarDatos() {
@@ -42,9 +37,9 @@ public class HechoTest {
     assertEquals(LocalDate.of(2023, 10, 5), hecho.getFechaDelHecho());
     assertEquals(OrigenHecho.ESTATICO, hecho.getOrigen());
 
-    Coordenada coord = hecho.getLugar();
-    assertEquals(-34.6, coord.getLatitud());
-    assertEquals(-58.4, coord.getLongitud());
+    Coordenada coord = hecho.getCoordenadas();
+    assertEquals(-34.6, coord.latitud());
+    assertEquals(-58.4, coord.longitud());
   }
 
   @Test
@@ -110,13 +105,13 @@ public class HechoTest {
     // Armar DTO y agregar solicitud al repositorio
     SolicitudAgregacion solicitudAgregacion = new SolicitudAgregacion(hecho, false);
 
-    SolicitudRepositorySingleton repo = SolicitudRepositorySingleton.getInstance();
-    repo.agregarSolicitudAgregacion(solicitudAgregacion);
+    SolicitudesAgregacionRepository repo = SolicitudesAgregacionRepository.getInstance();
+    repo.agregarSolicitud(solicitudAgregacion);
 
     // Obtener el ID generado automáticamente (es 1 en este caso)
     int id = 1; // porque empieza en id = 0 y se incrementa al agregar
 
-    repo.aceptarSolicitudConSugerencias(solicitudAgregacion, sugerencias);
+    solicitudAgregacion.aceptarSolicitudConSugerencias(sugerencias);
 
     assertTrue(hecho.tieneSugerencias());
   }

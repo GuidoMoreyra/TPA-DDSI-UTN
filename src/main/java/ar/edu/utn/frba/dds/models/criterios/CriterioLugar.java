@@ -1,17 +1,9 @@
 package ar.edu.utn.frba.dds.models.criterios;
 
-import ar.edu.utn.frba.dds.models.Coordenada;
+import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.models.Hecho;
-import java.util.Map;
 
-
-
-public class CriterioLugar implements Criterio {
-  private String localidad;
-
-  public CriterioLugar(String localidad) {
-    this.localidad = localidad;
-  }
+public record CriterioLugar(String localidad) implements Criterio {
 
   /// TODO - Aca deberiamos usar la api del mapa para ver si la localidad que
   ///   se paso al criterio  contiene la de la cordenada.
@@ -19,10 +11,9 @@ public class CriterioLugar implements Criterio {
   /// Por el momento solo los comparo.
   public Boolean cumple(Hecho hecho) {
     //se usa localidad para poder testear mientras no tengamos la API
-    return localidad.equals(hecho.getLocalidad());
+    return localidad.equals(
+        hecho.getCoordenadas().localidad()
+    );
   }
 
-  public String getLocalidad() {
-    return localidad;
-  }
 }

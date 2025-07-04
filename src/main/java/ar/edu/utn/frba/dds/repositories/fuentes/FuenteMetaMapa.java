@@ -1,13 +1,14 @@
 package ar.edu.utn.frba.dds.repositories.fuentes;
 
 import ar.edu.utn.frba.dds.exceptions.HttpNotFoundException;
+
 import ar.edu.utn.frba.dds.models.Hecho;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import java.io.IOException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -18,14 +19,15 @@ import java.util.logging.Logger;
 
 public class FuenteMetaMapa {
 
+
   private final String rutaApi;
   private final HttpClient cliente;
 
   public FuenteMetaMapa(String rutaApi, HttpClient cliente) {
     this.rutaApi = rutaApi;
     this.cliente = cliente;
-  }
 
+  }
 
   //Obtenemos los hechos sin filtrar , se podria mejorar haciendo  que los filtros
   // se apliquen directamente desde la fuente y se entreguen filtrados en la coleccion
@@ -33,7 +35,9 @@ public class FuenteMetaMapa {
     String url = rutaApi + "/hechos";
 
     try {
+
       HttpRequest request = HttpRequest.newBuilder()
+
           .uri(URI.create(url))
           .GET()
           .build();
@@ -58,6 +62,5 @@ public class FuenteMetaMapa {
       throw new RuntimeException(e);
     }
   }
-
 
 }

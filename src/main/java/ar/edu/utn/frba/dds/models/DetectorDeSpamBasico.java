@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.contracts.DetectorDeSpam;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
-import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DetectorDeSpamBasico implements DetectorDeSpam {
+public final class DetectorDeSpamBasico implements DetectorDeSpam {
   private static final int LIMITE_CORPUS = 50;
   private static final double UMBRAL_SIMILITUD = 0.3;
 
@@ -35,11 +35,11 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
    * Devuelve un listado de textos aprobados que se utilizarán como corpus para el detector de spam
    */
   private List<String> corpus() {
-    SolicitudRepositorySingleton repositorioDeSolicitudes =
-        SolicitudRepositorySingleton.getInstance();
+    SolicitudesEliminacionRepository repositorioDeSolicitudes =
+        SolicitudesEliminacionRepository.getInstance();
 
     List<SolicitudEliminacion> solicitudesRechazadas =
-        repositorioDeSolicitudes.obtenerSolicitudesEliminacionSegunEstado(
+        repositorioDeSolicitudes.obtenerSolicitudesConEstado(
             EstadoSolicitudEliminacion.APROBADO
         );
 
@@ -70,8 +70,6 @@ public class DetectorDeSpamBasico implements DetectorDeSpam {
    * El TF-IDF es una medida que evalúa la importancia de una palabra
    * en un documento en relación con un corpus
    */
-
-
   private Map<String, Double> calcularTfIdf(String texto, List<String> corpus) {
     Map<String, Double> tf = calcularTf(texto);
     Map<String, Double> tfidf = new HashMap<>();

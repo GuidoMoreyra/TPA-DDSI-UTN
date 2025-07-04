@@ -1,20 +1,19 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.contracts.Conexion;
 import ar.edu.utn.frba.dds.repositories.fuentes.AdaptadorFuenteDemo;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MetamapaApp {
+public final class MetamapaApp {
   public static void main(String[] args) {
     Conexion conexion = new ConexionFalsa(); // implementación fake
     AdaptadorFuenteDemo fuente = new AdaptadorFuenteDemo(
         conexion,
         "http://fakeurl.com/api",
-        LocalDateTime.now().minusMinutes(1),
-        1
+        LocalDateTime.now().minusMinutes(1)
     );
     TimerTask task = new TimerTask() {
       @Override

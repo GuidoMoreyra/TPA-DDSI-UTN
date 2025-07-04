@@ -2,7 +2,7 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
-import ar.edu.utn.frba.dds.models.enums.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -4,9 +4,8 @@ package ar.edu.utn.frba.dds;
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
-import ar.edu.utn.frba.dds.repositories.SolicitudRepositorySingleton;
+import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteDinamica;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,16 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-
 public class FuenteDinamicaTest {
-
-  @BeforeEach
-  public void setup() {
-    SolicitudRepositorySingleton.resetInstance();
-  }
 
   @Test
   public void obtenerHechosDevuelveSoloSolicitudesAceptadas() {
@@ -43,16 +35,16 @@ public class FuenteDinamicaTest {
     s3.aceptarSolicitudConSugerencias(sugerenciaDtoMock); // debe incluirse
 
     // Simular flujo real de uso: agregar al repositorio directamente
-    var repo = SolicitudRepositorySingleton.getInstance();
+    var repo = SolicitudesAgregacionRepository.getInstance();
 
     // Hacemos trampa para testear sin depender de agregar por DTO
-    repo.agregarSolicitudAgregacion(s1);
-    repo.agregarSolicitudAgregacion(s2);
-    repo.agregarSolicitudAgregacion(s3);
+    repo.agregarSolicitud(s1);
+    repo.agregarSolicitud(s2);
+    repo.agregarSolicitud(s3);
 
-    repo.aceptarSolicitud(s1);
-    repo.rechazarSolicitudAgregacion(s2);
-    repo.aceptarSolicitudConSugerencias(s3,sugerenciaDtoMock);
+    s1.aceptarSolicitud();
+    s2.rechazarSolicitud();
+    s3.aceptarSolicitudConSugerencias(sugerenciaDtoMock);
 
     FuenteDinamica fuente = new FuenteDinamica();
     List<Hecho> hechos = fuente.obtenerHechos();
