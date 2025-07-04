@@ -2,15 +2,19 @@ package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
 import lombok.Getter;
 
 @Getter
+@SuppressFBWarnings("EI_EXPOSE_REP")
 public final class SolicitudAgregacion {
   private EstadoSolicitudAgregacion estado;
   private final Hecho hecho;
   private final Boolean esAnonimo;
   private final LocalDate fechaCreacion;
+
 
   //CONSTRUCTOR
   public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo) {
@@ -18,6 +22,10 @@ public final class SolicitudAgregacion {
     this.hecho = hecho;
     this.esAnonimo = esAnonimo;
     this.fechaCreacion = LocalDate.now();
+  }
+
+  public Hecho getHecho() {
+    return hecho;
   }
 
   // Constructor adicional solo para testeo

@@ -7,10 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+
 public final class FuenteDeAgregacion implements Fuente {
   private final List<Fuente> fuentes;
 
+  public FuenteDeAgregacion(List<Fuente> fuentes) {
+    this.fuentes = new ArrayList<>(fuentes);
+  }
+  
   @Override
   public List<Hecho> obtenerHechos() {
     List<Hecho> hechos = new ArrayList<>();
