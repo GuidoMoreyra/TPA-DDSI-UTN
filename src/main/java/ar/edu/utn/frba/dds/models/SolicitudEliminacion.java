@@ -30,4 +30,16 @@ public final class SolicitudEliminacion {
   public boolean esParaElHecho(Hecho hecho) {
     return this.hecho.equals(hecho);
   }
+
+  public EstadoSolicitudEliminacion getEstado() {
+    return estado;
+  }
+
+  public Hecho getHecho() {
+    return hecho;
+  }
+
+  public String getJustificacion() {
+    return justificacion;
+  }
 }

@@ -9,20 +9,21 @@ import java.util.List;
 public class MayoriaSimple implements AlgoritmoDeConsenso {
 
   private List<Fuente> fuentesActivas;
+  private List<Hecho> hechosAgregados;
 
-  public MayoriaSimple(List<Fuente> fuentes) {
-    fuentesActivas =  new ArrayList<>(fuentes);
+  public MayoriaSimple(List<Fuente> fuentesActivas, List<Hecho> hechosAgregados) {
+    this.fuentesActivas = fuentesActivas;
+    this.hechosAgregados = hechosAgregados;
   }
 
   @Override
   public boolean estaConsensuado(Hecho hecho, Fuente fuente) {
-    long cantidadQueLoConfirman = fuentesActivas
-        .stream()
-        .filter(f -> f.existe(hecho))
+    long repeticiones = hechosAgregados.stream()
+        .filter(h -> h.getTitulo().equals(hecho.getTitulo()))
         .count();
 
     int totalFuentes = fuentesActivas.size();
-    return cantidadQueLoConfirman >= Math.ceil(totalFuentes / 2.0);
+    return repeticiones >= Math.ceil(totalFuentes / 2.0);
 
   }
 

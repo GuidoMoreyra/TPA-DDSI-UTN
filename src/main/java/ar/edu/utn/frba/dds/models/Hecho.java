@@ -4,9 +4,12 @@ import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +22,7 @@ public class Hecho {
   private final Coordenada coordenadas;
   private final LocalDate fechaDelHecho;
   private final LocalDate fechaCreacion = LocalDate.now();
+  private List<TipoDeConsenso> algoritmos = new ArrayList<>();
   @Setter
   private OrigenHecho origen;
 
@@ -31,6 +35,7 @@ public class Hecho {
       LocalDate fechaDelHecho,
       OrigenHecho origen,
       String contenidoMultimedia
+
   ) {
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
@@ -39,6 +44,7 @@ public class Hecho {
     this.coordenadas = new Coordenada(longitud, latitud, "Buenos Aires"); // TODO: cambiar luego
     this.fechaDelHecho = fechaDelHecho;
     this.origen = origen;
+
   }
 
   public Boolean estaActivo() {
@@ -91,5 +97,42 @@ public class Hecho {
   public boolean compararHecho(Hecho h) {
     return this.getTitulo().equals(h.getTitulo());
   }
+
+  public String getTitulo() {
+    return titulo;
+  }
+
+  public String getDescripcion() {
+    return descripcion;
+  }
+
+  public String getCategoria() {
+    return categoria;
+  }
+
+  public String getContenidoMultimedia() {
+    return contenidoMultimedia;
+  }
+
+  public Coordenada getCoordenadas() {
+    return coordenadas;
+  }
+
+  public LocalDate getFechaDelHecho() {
+    return fechaDelHecho;
+  }
+
+  public OrigenHecho getOrigen() {
+    return origen;
+  }
+
+  public List<TipoDeConsenso> getConsensos() {
+    return algoritmos;
+  }
+
+  public void agregarConsenso(TipoDeConsenso algoritmo) {
+    this.algoritmos.add(algoritmo);
+  }
+
 
 }
