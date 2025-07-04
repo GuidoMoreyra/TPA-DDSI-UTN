@@ -46,5 +46,4 @@ public final class SolicitudAgregacion {
   public boolean puedeEditar() {
     return !esAnonimo && fechaCreacion.isAfter(LocalDate.now().minusDays(7));
   }
-
 }

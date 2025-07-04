@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import java.time.LocalDate;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class Hecho {
@@ -18,6 +19,7 @@ public class Hecho {
   private final Coordenada coordenadas;
   private final LocalDate fechaDelHecho;
   private final LocalDate fechaCreacion = LocalDate.now();
+  @Setter
   private OrigenHecho origen;
 
   public Hecho(
