@@ -20,6 +20,12 @@ public class Hecho {
   private final LocalDate fechaCreacion = LocalDate.now();
   private OrigenHecho origen;
 
+
+
+
+  public Hecho() {}
+
+
   public Hecho(
       String titulo,
       String descripcion,
@@ -38,6 +44,47 @@ public class Hecho {
     this.fechaDelHecho = fechaDelHecho;
     this.origen = origen;
   }
+
+
+  ////GETTERS///
+
+  public String getTitulo() {
+    return titulo;
+  }
+
+  public String getDescripcion() {
+    return descripcion;
+  }
+
+  public String getCategoria() {
+    return categoria;
+  }
+
+  public Coordenada getCoordenadas() {
+    return coordenadas;
+  }
+
+  public Coordenada getLugar() {
+    return new Coordenada(coordenadas.longitud, coordenadas.latitud);
+  }
+
+  public String getLocalidad() {
+    return this.coordenadas.getLocalidad();
+  }
+
+  public LocalDate getFechaDelHecho() {
+
+    return fechaDelHecho;
+  }
+
+  public LocalDate getFechaCreacion() {
+    return fechaCreacion;
+  }
+
+  public OrigenHecho getOrigen() {
+    return origen;
+  }
+
 
   public Boolean estaActivo() {
     return SolicitudesEliminacionRepository
