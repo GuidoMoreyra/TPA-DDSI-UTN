@@ -12,8 +12,8 @@ public class MayoriaSimple implements AlgoritmoDeConsenso {
   private List<Hecho> hechosAgregados;
 
   public MayoriaSimple(List<Fuente> fuentesActivas, List<Hecho> hechosAgregados) {
-    this.fuentesActivas = fuentesActivas;
-    this.hechosAgregados = hechosAgregados;
+    this.fuentesActivas = new ArrayList<>(fuentesActivas);
+    this.hechosAgregados = new ArrayList<>(hechosAgregados);
   }
 
   @Override

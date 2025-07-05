@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,9 +23,12 @@ public class Hecho {
   private final Coordenada coordenadas;
   private final LocalDate fechaDelHecho;
   private final LocalDate fechaCreacion = LocalDate.now();
+  @Getter(AccessLevel.NONE)
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
+
   @Setter
   private OrigenHecho origen;
+
 
   public Hecho(
       String titulo,
@@ -127,12 +131,17 @@ public class Hecho {
   }
 
   public List<TipoDeConsenso> getConsensos() {
-    return algoritmos;
+    return new ArrayList<>(algoritmos);
   }
 
   public void agregarConsenso(TipoDeConsenso algoritmo) {
     this.algoritmos.add(algoritmo);
   }
+
+  public void setOrigen(OrigenHecho origen) {
+    this.origen = origen;
+  }
+
 
 
 }

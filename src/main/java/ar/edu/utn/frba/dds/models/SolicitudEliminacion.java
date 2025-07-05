@@ -38,4 +38,11 @@ public final class SolicitudEliminacion {
     return this.hecho.equals(hecho);
   }
 
+  public String getJustificacion() {
+    return justificacion;
+  }
+
+  public EstadoSolicitudEliminacion getEstado() {
+    return estado;
+  }
 }

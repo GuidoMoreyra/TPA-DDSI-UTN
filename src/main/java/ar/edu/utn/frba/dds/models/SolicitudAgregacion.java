@@ -24,10 +24,6 @@ public final class SolicitudAgregacion {
     this.fechaCreacion = LocalDate.now();
   }
 
-  public Hecho getHecho() {
-    return hecho;
-  }
-
   // Constructor adicional solo para testeo
   public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo, LocalDate fechaCreacion) {
     this.estado = EstadoSolicitudAgregacion.PENDIENTE;
