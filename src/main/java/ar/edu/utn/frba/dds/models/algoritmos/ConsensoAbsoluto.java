@@ -10,15 +10,19 @@ import java.util.stream.Collectors;
 public class ConsensoAbsoluto implements AlgoritmoDeConsenso {
 
   private List<Fuente> fuentesActivas;
+  private List<Hecho> hechosAgregados;
 
-  public  ConsensoAbsoluto(List<Fuente> fuentes) {
-    fuentesActivas =  new ArrayList<>(fuentes);
+  public ConsensoAbsoluto(List<Fuente> fuentesActivas, List<Hecho> hechosAgregados) {
+    this.fuentesActivas = fuentesActivas;
+    this.hechosAgregados = hechosAgregados;
   }
 
   @Override
   public boolean estaConsensuado(Hecho hecho, Fuente fuente) {
-    return fuentesActivas
-        .stream()
-        .allMatch(f -> f.existe(hecho));
+    long repeticiones = hechosAgregados.stream()
+        .filter(h -> h.getTitulo().equals(hecho.getTitulo()))
+        .count();
+
+    return repeticiones == fuentesActivas.size();
   }
 }

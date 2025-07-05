@@ -22,4 +22,8 @@ public final class HechosRepository {
   public void agregarHecho(Hecho hecho) {
     hechos.add(hecho);
   }
+
+  public void limpiar() { //para testear
+    this.hechos.clear();
+  }
 }

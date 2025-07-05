@@ -54,4 +54,20 @@ public final class SolicitudAgregacion {
   public boolean puedeEditar() {
     return !esAnonimo && fechaCreacion.isAfter(LocalDate.now().minusDays(7));
   }
+
+  public EstadoSolicitudAgregacion getEstado() {
+    return estado;
+  }
+
+  public Hecho getHecho() {
+    return hecho;
+  }
+
+  public Boolean getEsAnonimo() {
+    return esAnonimo;
+  }
+
+  public LocalDate getFechaCreacion() {
+    return fechaCreacion;
+  }
 }
