@@ -20,14 +20,15 @@ public class Hecho {
   private String descripcion;
   private String categoria;
   private String contenidoMultimedia;
-  private final Coordenada coordenadas;
-  private final LocalDate fechaDelHecho;
-  private final LocalDate fechaCreacion = LocalDate.now();
+  private Coordenada coordenadas;
+  private LocalDate fechaDelHecho;
+  private LocalDate fechaCreacion = LocalDate.now();
+  @Setter
+  private OrigenHecho origen;
   @Getter(AccessLevel.NONE)
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
-  @Setter
-  private OrigenHecho origen;
+  public Hecho() {}
 
 
   public Hecho(
@@ -39,17 +40,56 @@ public class Hecho {
       LocalDate fechaDelHecho,
       OrigenHecho origen,
       String contenidoMultimedia
-
   ) {
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
-    this.coordenadas = new Coordenada(longitud, latitud, "Buenos Aires"); // TODO: cambiar luego
+    this.coordenadas = new Coordenada(longitud, latitud); // TODO: cambiar luego
     this.fechaDelHecho = fechaDelHecho;
     this.origen = origen;
-
   }
+
+
+  ////GETTERS///
+
+  public String getTitulo() {
+    return titulo;
+  }
+
+  public String getDescripcion() {
+    return descripcion;
+  }
+
+  public String getCategoria() {
+    return categoria;
+  }
+
+  public Coordenada getCoordenadas() {
+    return coordenadas;
+  }
+
+  public Coordenada getLugar() {
+    return new Coordenada(coordenadas.longitud, coordenadas.latitud);
+  }
+
+  public String getLocalidad() {
+    return this.coordenadas.getLocalidad();
+  }
+
+  public LocalDate getFechaDelHecho() {
+
+    return fechaDelHecho;
+  }
+
+  public LocalDate getFechaCreacion() {
+    return fechaCreacion;
+  }
+
+  public OrigenHecho getOrigen() {
+    return origen;
+  }
+
 
   public Boolean estaActivo() {
     return SolicitudesEliminacionRepository
@@ -102,46 +142,11 @@ public class Hecho {
     return this.getTitulo().equals(h.getTitulo());
   }
 
-  public String getTitulo() {
-    return titulo;
-  }
-
-  public String getDescripcion() {
-    return descripcion;
-  }
-
-  public String getCategoria() {
-    return categoria;
-  }
-
-  public String getContenidoMultimedia() {
-    return contenidoMultimedia;
-  }
-
-  public Coordenada getCoordenadas() {
-    return coordenadas;
-  }
-
-  public LocalDate getFechaDelHecho() {
-    return fechaDelHecho;
-  }
-
-  public OrigenHecho getOrigen() {
-    return origen;
+  public void agregarConsenso(TipoDeConsenso algoritmo) {
+    this.algoritmos.add(algoritmo);
   }
 
   public List<TipoDeConsenso> getConsensos() {
     return new ArrayList<>(algoritmos);
   }
-
-  public void agregarConsenso(TipoDeConsenso algoritmo) {
-    this.algoritmos.add(algoritmo);
-  }
-
-  public void setOrigen(OrigenHecho origen) {
-    this.origen = origen;
-  }
-
-
-
 }

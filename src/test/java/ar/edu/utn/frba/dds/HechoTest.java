@@ -38,8 +38,8 @@ public class HechoTest {
     assertEquals(OrigenHecho.ESTATICO, hecho.getOrigen());
 
     Coordenada coord = hecho.getCoordenadas();
-    assertEquals(-34.6, coord.latitud());
-    assertEquals(-58.4, coord.longitud());
+    assertEquals(-34.6, coord.getLatitud());
+    assertEquals(-58.4, coord.getLongitud());
   }
 
   @Test

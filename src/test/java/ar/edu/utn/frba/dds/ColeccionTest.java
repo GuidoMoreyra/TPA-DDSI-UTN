@@ -58,11 +58,11 @@ public class ColeccionTest {
     Hecho hechoMock = mock(Hecho.class);
     Coordenada coordenadaMock = mock(Coordenada.class);
 
-    when(coordenadaMock.localidad()).thenReturn("Buenos Aires");
+    when(coordenadaMock.getLocalidad()).thenReturn("Buenos Aires");
     when(hechoMock.getCoordenadas()).thenReturn(coordenadaMock);
 
     // Cumple todos los criterios de creación
-    when(hechoMock.getCoordenadas().localidad()).thenReturn("Buenos Aires");
+    when(hechoMock.getCoordenadas().getLocalidad()).thenReturn("Buenos Aires");
     when(hechoMock.getCategoria()).thenReturn("Educación");
     when(hechoMock.getFechaDelHecho()).thenReturn(LocalDate.of(2024, 6, 1));
     when(fuenteMock.obtenerHechos()).thenReturn(List.of(hechoMock));
@@ -90,15 +90,15 @@ public class ColeccionTest {
     Hecho hecho3 = mock(Hecho.class);
     Coordenada coordenadaMock = mock(Coordenada.class);
 
-    when(coordenadaMock.localidad()).thenReturn("Buenos Aires");
+    when(coordenadaMock.getLocalidad()).thenReturn("Buenos Aires");
     when(hecho1.getCoordenadas()).thenReturn(coordenadaMock);
     when(hecho2.getCoordenadas()).thenReturn(coordenadaMock);
     when(hecho3.getCoordenadas()).thenReturn(coordenadaMock);
     when(criterioLugarMock.localidad()).thenReturn("Buenos Aires");
 
-    when(hecho1.getCoordenadas().localidad()).thenReturn("Buenos Aires");
-    when(hecho2.getCoordenadas().localidad()).thenReturn("Buenos Aires");
-    when(hecho3.getCoordenadas().localidad()).thenReturn("Buenos Aires");
+    when(hecho1.getCoordenadas().getLocalidad()).thenReturn("Buenos Aires");
+    when(hecho2.getCoordenadas().getLocalidad()).thenReturn("Buenos Aires");
+    when(hecho3.getCoordenadas().getLocalidad()).thenReturn("Buenos Aires");
 
     when(hecho1.getCategoria()).thenReturn("Educación");
     when(hecho2.getCategoria()).thenReturn("Educación");

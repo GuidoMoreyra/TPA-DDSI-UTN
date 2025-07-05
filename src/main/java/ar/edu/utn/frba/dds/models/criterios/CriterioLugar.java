@@ -12,7 +12,7 @@ public record CriterioLugar(String localidad) implements Criterio {
   public Boolean cumple(Hecho hecho) {
     //se usa localidad para poder testear mientras no tengamos la API
     return localidad.equals(
-        hecho.getCoordenadas().localidad()
+        hecho.getCoordenadas().getLocalidad()
     );
   }
 
