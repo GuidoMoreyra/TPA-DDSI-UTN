@@ -39,4 +39,8 @@ public final class FuenteIntermedia implements Fuente {
         .orElse(null);
   }
 
+  public void actualizar() {
+    fuenteQueSeUsa.actualizar();
+  }
+
 }
