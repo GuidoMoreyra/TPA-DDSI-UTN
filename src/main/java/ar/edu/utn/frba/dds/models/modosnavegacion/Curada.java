@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Curada implements ModoDeNavegacion {
-  private List<Hecho> hechosLocales;
+  //private List<Hecho> hechosLocales;
 
   @Override
   public List<Hecho> navegar(Coleccion coleccion) {
     //hechosLocales = coleccion.aplicarAlgoritmoDeConsenso();
 
-    return new ArrayList<>(hechosLocales);
+
+    return new ArrayList<>();
   }
 
   /* si se pudiera tener la lista de hechosConsensuados dentro de la coleccion

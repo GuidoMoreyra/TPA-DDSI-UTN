@@ -69,6 +69,9 @@ public final class Coleccion {
         ).toList();
   }
 
+  private boolean presenciaDeAlgoritmo(AlgoritmoDeConsenso algoritmo) {
+    return algoritmoDeConseso == null;
+  }
 
 
 }
