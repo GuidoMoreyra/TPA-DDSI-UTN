@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ModoDeNavegacion {
 
-  public List<Hecho> navegar(Coleccion coleccion);
+  public List<Hecho> obtenerHechos();
 }
