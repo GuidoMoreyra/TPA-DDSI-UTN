@@ -8,7 +8,6 @@ import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteDinamica;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ public final class MainAplicarConsensos {
         "Se desconoce las causas del incendio",
         "Incendio Forestal",
         -36, -38,
-        LocalDate.of(2017,5,1),
+        LocalDate.of(2017, 5, 1),
         OrigenHecho.DINAMICO,
         "foto1.jpg"
     );
@@ -38,7 +37,7 @@ public final class MainAplicarConsensos {
         "Se acusa a el gobierno de la desaparicion de estudiantes",
         "Desaparicion vinculada al gobierno",
         -34, -58,
-        LocalDate.of(1978,5,29),
+        LocalDate.of(1978, 5, 29),
         OrigenHecho.DINAMICO,
         "foto2.jpg"
     );
@@ -47,8 +46,8 @@ public final class MainAplicarConsensos {
         "Incendio en el Parque Nacional Nahuel Huapi",
         "Campistas no apagaron debidamente las brazas",
         "Incendio Forestal",
-        -40,-71,
-        LocalDate.of(2022,9,12),
+        -40, -71,
+        LocalDate.of(2022, 9, 12),
         OrigenHecho.DINAMICO,
         "foto3.jpg"
     );
@@ -58,7 +57,7 @@ public final class MainAplicarConsensos {
     solicitud1.aceptarSolicitud();
 
     SolicitudAgregacion solicitud2 = new SolicitudAgregacion(hechoDinamico2, false);
-    solicitud2.aceptarSolicitud();// o aceptarSolicitudConSugerencias(sugerencias)
+    solicitud2.aceptarSolicitud(); // o aceptarSolicitudConSugerencias(sugerencias)
 
     SolicitudAgregacion solicitud3 = new SolicitudAgregacion(hechoDinamico3, false);
     solicitud3.aceptarSolicitud();
@@ -81,7 +80,7 @@ public final class MainAplicarConsensos {
     fuentesactivas.add(fuenteestatica2);
 
     EjecutarConsenso consensuar = new EjecutarConsenso(fuentesactivas);
-    List<Hecho> hechos = new ArrayList<>();//hechos repetidos
+    List<Hecho> hechos = new ArrayList<>(); //hechos repetidos
 
     hechos.add(hechoDinamico1);
     hechos.add(hechoDinamico2);

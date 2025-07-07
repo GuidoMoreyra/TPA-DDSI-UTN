@@ -1,14 +1,12 @@
 package ar.edu.utn.frba.dds.repositories.fuentes;
 
 import ar.edu.utn.frba.dds.contracts.Conexion;
-
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.exceptions.InvalidoUrlExeception;
 import ar.edu.utn.frba.dds.exceptions.UltimaConsultaException;
 import ar.edu.utn.frba.dds.models.Hecho;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
