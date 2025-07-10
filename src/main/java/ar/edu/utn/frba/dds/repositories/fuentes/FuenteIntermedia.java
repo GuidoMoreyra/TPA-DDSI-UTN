@@ -25,4 +25,22 @@ public final class FuenteIntermedia implements Fuente {
 
   }
 
+  @Override
+  public boolean existe(Hecho hecho) {
+    return fuenteQueSeUsa.obtenerHechos().contains(hecho);
+  }
+
+  @Override
+  public Hecho buscar(Hecho hecho) {
+    return fuenteQueSeUsa.obtenerHechos()
+        .stream()
+        .filter(unHechoFuente -> hecho.compararHecho(unHechoFuente))
+        .findFirst()
+        .orElse(null);
+  }
+
+  public void actualizar() {
+    fuenteQueSeUsa.actualizar();
+  }
+
 }

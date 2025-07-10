@@ -28,14 +28,19 @@ public final class NormalizadorCsv {
 
   public void normalizarCsv(File csvFile) throws Exception {
     // 1. Leer el CSV original
-    List<HechoCsvDto> hechos =
-        new CsvToBeanBuilder<HechoCsvDto>(new BufferedReader(
-            new InputStreamReader(new FileInputStream(csvFile), StandardCharsets.UTF_8)
-        ))
-        .withType(HechoCsvDto.class)
-        .withIgnoreLeadingWhiteSpace(true)
-        .build()
-        .parse();
+
+    List<HechoCsvDto> hechos;
+
+    try (BufferedReader reader = new BufferedReader(
+        new InputStreamReader(
+            new FileInputStream(csvFile), StandardCharsets.UTF_8
+        ))) {
+      hechos = new CsvToBeanBuilder<HechoCsvDto>(reader)
+              .withType(HechoCsvDto.class)
+              .withIgnoreLeadingWhiteSpace(true)
+              .build()
+              .parse();
+    }
 
     // 2. Aplicar transformación / limpieza si hiciera falta
     hechos.forEach(hecho -> {

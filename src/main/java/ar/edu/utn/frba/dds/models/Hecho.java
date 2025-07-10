@@ -16,13 +16,22 @@ import lombok.Setter;
 
 @Getter
 public class Hecho {
+  /**
+   */
+
   private String titulo;
+
   private String descripcion;
+
   private String categoria;
   private String contenidoMultimedia;
+
   private Coordenada coordenadas;
+
   private LocalDate fechaDelHecho;
+
   private LocalDate fechaCreacion = LocalDate.now();
+
   @Setter
   private OrigenHecho origen;
   @Getter(AccessLevel.NONE)
@@ -51,43 +60,12 @@ public class Hecho {
   }
 
 
-  ////GETTERS///
-
-  public String getTitulo() {
-    return titulo;
-  }
-
-  public String getDescripcion() {
-    return descripcion;
-  }
-
-  public String getCategoria() {
-    return categoria;
-  }
-
-  public Coordenada getCoordenadas() {
-    return coordenadas;
-  }
-
   public Coordenada getLugar() {
     return new Coordenada(coordenadas.longitud, coordenadas.latitud);
   }
 
   public String getLocalidad() {
     return this.coordenadas.getLocalidad();
-  }
-
-  public LocalDate getFechaDelHecho() {
-
-    return fechaDelHecho;
-  }
-
-  public LocalDate getFechaCreacion() {
-    return fechaCreacion;
-  }
-
-  public OrigenHecho getOrigen() {
-    return origen;
   }
 
 
@@ -149,4 +127,5 @@ public class Hecho {
   public List<TipoDeConsenso> getConsensos() {
     return new ArrayList<>(algoritmos);
   }
+
 }
