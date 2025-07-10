@@ -74,7 +74,7 @@ public final class Coleccion {
         ).toList();
   }
 
-  private List<Hecho> obtenerHechosConsensuados() {
+  private void actualizarHechosConsensuados() {
 
     if (algoritmoDeconsenso == null) {
       hechosConsensuados.addAll(this.obtenerColeccion());
@@ -89,11 +89,29 @@ public final class Coleccion {
     // me filtra los hechos que tengan el algoritmo dentro de su lista
     //luego los filtra por criterios de creacion
 
-
-
-    return hechosConsensuados;
   }
 
+  public List<Hecho> obtenerHechosConsensuados() {
+    return new ArrayList<>(hechosConsensuados);
+  }
+
+  public List<Hecho> aplicarCriteriosAdicionales(List<Criterio> criterios) {
+
+    List<Hecho> aux = List.of();
+    if (algoritmoDeconsenso == null) {
+      aux = obtenerColeccion()
+          .stream().filter(
+              hecho -> this.cumpleCriterios(hecho, criterios)
+          ).toList();
+    }
+    aux = this.obtenerHechosConsensuados()
+        .stream().filter(
+            hecho -> this.cumpleCriterios(hecho, criterios))
+        .toList();
+
+
+    return new ArrayList<>(aux);
+  }
 
 
 }
