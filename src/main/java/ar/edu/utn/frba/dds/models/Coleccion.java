@@ -22,7 +22,7 @@ public final class Coleccion {
   private  Fuente fuente;
   private List<Hecho> hechosConsensuados;
   private TipoDeConsenso algoritmoDeconsenso;
-  /// private  AlgoritmoDeConsenso algoritmoDeConseso; //comento porque se considera bug
+
 
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
   ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
@@ -35,12 +35,11 @@ public final class Coleccion {
       String categoria,
       TipoDeConsenso algoritmo
   ) {
+
     this.validar(fechaInicial, fechaFinal);
     this.fuente = fuente;
     this.algoritmoDeconsenso = algoritmo;
-    //this.algoritmoDeConseso = algoritmo; //se comenta porque por el momento es bug
 
-    /// TODO - Habria que verificar que fecha 1 sea anterior a fecha 2
     criteriosDeCreacion.add(new CriterioFecha(fechaInicial, fechaFinal));
 
     criteriosDeCreacion.add(new CriterioLugar(localidad));
