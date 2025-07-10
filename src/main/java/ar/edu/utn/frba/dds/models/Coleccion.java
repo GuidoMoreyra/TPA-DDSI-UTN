@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.models;
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
+import ar.edu.utn.frba.dds.exceptions.FechaException;
 import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
 import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
 import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
@@ -34,7 +35,7 @@ public final class Coleccion {
       String categoria,
       TipoDeConsenso algoritmo
   ) {
-
+    this.validar(fechaInicial, fechaFinal);
     this.fuente = fuente;
     this.algoritmoDeconsenso = algoritmo;
     //this.algoritmoDeConseso = algoritmo; //se comenta porque por el momento es bug
@@ -111,6 +112,13 @@ public final class Coleccion {
 
 
     return new ArrayList<>(aux);
+  }
+
+  private void validar(LocalDate fechaInicial, LocalDate fechaFinal){
+
+    if(fechaInicial.isAfter(fechaFinal)){
+      throw new FechaException("fecha inicial no puede ser posterior a fecha final");
+    }
   }
 
 
