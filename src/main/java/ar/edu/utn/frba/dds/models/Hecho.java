@@ -7,12 +7,15 @@ import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+
+@SuppressFBWarnings("EI_EXPOSE_REP")
 
 @Getter
 public class Hecho {
@@ -54,7 +57,7 @@ public class Hecho {
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
-    this.coordenadas = new Coordenada(longitud, latitud); // TODO: cambiar luego
+    this.coordenadas = new Coordenada(longitud, latitud);
     this.fechaDelHecho = fechaDelHecho;
     this.origen = origen;
   }
@@ -126,6 +129,10 @@ public class Hecho {
 
   public List<TipoDeConsenso> getConsensos() {
     return new ArrayList<>(algoritmos);
+  }
+
+  public void setLocalidad(String localidad) {
+    this.coordenadas.setLocalidad(localidad);
   }
 
 }

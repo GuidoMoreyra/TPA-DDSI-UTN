@@ -9,6 +9,7 @@ import ar.edu.utn.frba.dds.models.algoritmos.MultiplesMenciones;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EjecutarConsenso {
   private final List<AlgoritmoDeConsenso> algoritmos;
@@ -17,7 +18,7 @@ public class EjecutarConsenso {
 
   public EjecutarConsenso(List<Fuente> fuentesActivas) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);
-    this.hechosAgregados = new ArrayList<>();
+    this.hechosAgregados = new ArrayList<>(this.agregarHechos());
 
     this.algoritmos = List.of(
         new ConsensoAbsoluto(fuentesActivas, hechosAgregados),
@@ -50,6 +51,13 @@ public class EjecutarConsenso {
     }
     throw new IllegalArgumentException("Algoritmo desconocido");
   }
+
+  private List<Hecho> agregarHechos() {
+    return fuentesActivas.stream()
+        .flatMap(fuente -> fuente.obtenerHechos().stream())
+        .collect(Collectors.toList());
+  }
+
 
 
 }

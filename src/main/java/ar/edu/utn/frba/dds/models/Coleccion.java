@@ -74,7 +74,7 @@ public final class Coleccion {
         ).toList();
   }
 
-  private void actualizarHechosConsensuados() {
+  public void actualizarHechosConsensuados() {
 
     if (algoritmoDeconsenso == null) {
       hechosConsensuados.addAll(this.obtenerColeccion());
@@ -113,12 +113,16 @@ public final class Coleccion {
     return new ArrayList<>(aux);
   }
 
-  private void validar(LocalDate fechaInicial, LocalDate fechaFinal){
+  private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
 
-    if(fechaInicial.isAfter(fechaFinal)){
+    if (fechaInicial.isAfter(fechaFinal)) {
       throw new FechaException("fecha inicial no puede ser posterior a fecha final");
     }
   }
-
+  //quiero testear el validar
+  //la creacion con los tipo de algoritmos asociados a una coleccion
+  //obtenerHechosconsensuados
+  //actualizarHechosconsensuados
+  //aplicarcriterios adicionales
 
 }
