@@ -84,6 +84,8 @@ public class ColeccionHechosConsensuadosTest {
     when(hechoMockDos.getCoordenadas()).thenReturn(coordenadaMock);
     when(hechoMockDos.getFechaDelHecho()).thenReturn(LocalDate.of(2024, 6, 22));
 
+    when(hechoMockUno.estaActivo()).thenReturn(true);
+    when(hechoMockDos.estaActivo()).thenReturn(true);
 
     // Mock de Fuente
     Fuente fuenteMockTres = mock(Fuente.class);

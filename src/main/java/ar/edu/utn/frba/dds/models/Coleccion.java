@@ -61,7 +61,8 @@ public final class Coleccion {
     return fuente
         .obtenerHechos()
         .stream()
-        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+        .filter((Hecho h) -> h.estaActivo()
+            && this.cumpleCriterios(h, criteriosDeCreacion))
         .toList();
   }
 
@@ -83,7 +84,9 @@ public final class Coleccion {
     hechosConsensuados = HechosRepository.getInstance()
         .hechosFiltradosPorConsenso(algoritmoDeconsenso)
         .stream().filter(
-            hecho -> this.cumpleCriterios(hecho, criteriosDeCreacion)
+            hecho ->
+                hecho.estaActivo()
+                    && this.cumpleCriterios(hecho, criteriosDeCreacion)
         ).collect(Collectors.toList());
     // si tengo algoritmo usa el metodo filtro dentro del repo
     // me filtra los hechos que tengan el algoritmo dentro de su lista
