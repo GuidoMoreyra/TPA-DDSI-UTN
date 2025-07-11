@@ -117,8 +117,6 @@ public class Hecho {
         && this.getFechaDelHecho() == hechoCompar.getFechaDelHecho();
   }
 
-
-
   public boolean compararHecho(Hecho h) {
     return this.getTitulo().equals(h.getTitulo());
   }
@@ -134,5 +132,7 @@ public class Hecho {
   public void setLocalidad(String localidad) {
     this.coordenadas.setLocalidad(localidad);
   }
+
+
 
 }
