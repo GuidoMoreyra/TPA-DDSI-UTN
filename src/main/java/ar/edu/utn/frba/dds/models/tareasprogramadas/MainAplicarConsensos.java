@@ -9,17 +9,13 @@ import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteDinamica;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class MainAplicarConsensos {
   public static void main(String[] args) {
-    //1 crear cada fuente a utilizar a usar listo
-    //2 crear la lista de fuentes listo
-    //3 crear el objeto EjecutarCosenso liato
-    //4 crear los hechos a repetir
-    //5 lista de hechos a repetir
-    //6 ejecutar consensuar.evaluar(hechos)
+
 
     // 1. Crear hechos simulados
     Hecho hechoDinamico1 = new Hecho(
@@ -70,22 +66,36 @@ public final class MainAplicarConsensos {
 
     Fuente fuentedinamica = new FuenteDinamica();
 
-    Fuente fuenteestatica = new FuenteEstatica("formatoTp.csv");
+    Fuente fuenteestatica = new FuenteEstatica("formatoTp");
 
-    Fuente fuenteestatica2 = new FuenteEstatica("hechos.csv");
+    Fuente fuenteestatica2 = new FuenteEstatica("hechos");
 
     List<Fuente> fuentesactivas = new ArrayList<>();
     fuentesactivas.add(fuentedinamica);
     fuentesactivas.add(fuenteestatica);
     fuentesactivas.add(fuenteestatica2);
 
-    EjecutarConsenso consensuar = new EjecutarConsenso(fuentesactivas);
-    List<Hecho> hechos = new ArrayList<>(); //hechos repetidos
 
+
+
+    System.out.println("Hechos antes de aplicar consenso :");
+    System.out.println(hechoDinamico1.getConsensos());
+    System.out.println(hechoDinamico2.getConsensos());
+
+    List<Hecho> hechos = new ArrayList<>(); //hechos repetidos
     hechos.add(hechoDinamico1);
     hechos.add(hechoDinamico2);
 
+    EjecutarConsenso consensuar = new EjecutarConsenso(fuentesactivas);
     consensuar.evaluar(hechos);
+
+    System.out.println("Hechos despues de aplicar consenso :");
+    System.out.println(hechoDinamico1.getConsensos());
+    System.out.println(hechoDinamico2.getConsensos());
+
+
+
+
 
   }
 }
