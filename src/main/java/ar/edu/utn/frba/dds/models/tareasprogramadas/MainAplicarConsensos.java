@@ -75,9 +75,6 @@ public final class MainAplicarConsensos {
     fuentesactivas.add(fuenteestatica);
     fuentesactivas.add(fuenteestatica2);
 
-
-
-
     System.out.println("Hechos antes de aplicar consenso :");
     System.out.println(hechoDinamico1.getConsensos());
     System.out.println(hechoDinamico2.getConsensos());
