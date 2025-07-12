@@ -109,7 +109,7 @@ public class Hecho {
         .anyMatch(s -> s.getHecho().equals(this));
   }
 
-  public boolean compararRigurosa(Hecho hechoCompar) {
+  public boolean comparacionRigurosa(Hecho hechoCompar) {
     return this.getTitulo().equals(hechoCompar.getTitulo())
         && this.getDescripcion().equals(hechoCompar.getDescripcion())
         && this.getCategoria().equals(hechoCompar.getCategoria())

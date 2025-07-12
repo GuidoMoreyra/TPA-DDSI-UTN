@@ -17,12 +17,11 @@ import lombok.Getter;
 
 public final class Coleccion {
 
-  private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
   @Getter
   private  Fuente fuente;
-  private List<Hecho> hechosConsensuados;
   private TipoDeConsenso algoritmoDeconsenso;
-
+  private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
+  private final HechosRepository repositorio = HechosRepository.getInstance() ;
 
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
   ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
@@ -41,13 +40,10 @@ public final class Coleccion {
     this.algoritmoDeconsenso = algoritmo;
 
     criteriosDeCreacion.add(new CriterioFecha(fechaInicial, fechaFinal));
-
     criteriosDeCreacion.add(new CriterioLugar(localidad));
-
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
 
   }
-
   ////METODOS///
 
   public Boolean cumpleCriterios(Hecho hecho, List<Criterio> criterios) {
@@ -57,17 +53,15 @@ public final class Coleccion {
   }
 
   public List<Hecho> obtenerColeccion() {
-    ///  La fuente deberia devolver solo hechos activos.
     return fuente
         .obtenerHechos()
         .stream()
-        .filter((Hecho h) -> h.estaActivo()
-            && this.cumpleCriterios(h, criteriosDeCreacion))
+        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+        .filter((Hecho h) -> repositorio.verificaConsenso(h, algoritmoDeconsenso))
         .toList();
   }
 
   public List<Hecho> obtenerColeccionConCriteriosAdicionales(List<Criterio> criterios) {
-    ///  La fuente deberia devolver solo hechos activos.
     return this.obtenerColeccion()
         .stream()
         .filter((Hecho h) ->
@@ -75,46 +69,7 @@ public final class Coleccion {
         ).toList();
   }
 
-  public void actualizarHechosConsensuados() {
 
-    if (algoritmoDeconsenso == null) {
-      hechosConsensuados.addAll(this.obtenerColeccion());
-      //si no tengo un algoritmo me trae los hehcos de su fuente primitiva
-    }
-    hechosConsensuados = HechosRepository.getInstance()
-        .hechosFiltradosPorConsenso(algoritmoDeconsenso)
-        .stream().filter(
-            hecho ->
-                hecho.estaActivo()
-                    && this.cumpleCriterios(hecho, criteriosDeCreacion)
-        ).collect(Collectors.toList());
-    // si tengo algoritmo usa el metodo filtro dentro del repo
-    // me filtra los hechos que tengan el algoritmo dentro de su lista
-    //luego los filtra por criterios de creacion
-
-  }
-
-  public List<Hecho> obtenerHechosConsensuados() {
-    return new ArrayList<>(hechosConsensuados);
-  }
-
-  public List<Hecho> aplicarCriteriosAdicionales(List<Criterio> criterios) {
-
-    List<Hecho> aux = List.of();
-    if (algoritmoDeconsenso == null) {
-      aux = obtenerColeccion()
-          .stream().filter(
-              hecho -> this.cumpleCriterios(hecho, criterios)
-          ).toList();
-    }
-    aux = this.obtenerHechosConsensuados()
-        .stream().filter(
-            hecho -> this.cumpleCriterios(hecho, criterios))
-        .toList();
-
-
-    return new ArrayList<>(aux);
-  }
 
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
 
@@ -122,10 +77,6 @@ public final class Coleccion {
       throw new FechaException("fecha inicial no puede ser posterior a fecha final");
     }
   }
-  //quiero testear el validar
-  //la creacion con los tipo de algoritmos asociados a una coleccion
-  //obtenerHechosconsensuados
-  //actualizarHechosconsensuados
-  //aplicarcriterios adicionales
+
 
 }

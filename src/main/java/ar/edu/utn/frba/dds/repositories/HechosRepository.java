@@ -16,6 +16,7 @@ public final class HechosRepository {
     return INSTANCE;
   }
 
+
   public List<Hecho> getHechos() {
     return Collections.unmodifiableList(hechos);
   }
@@ -28,10 +29,12 @@ public final class HechosRepository {
     this.hechos.clear();
   }
 
-  public List<Hecho> hechosFiltradosPorConsenso(TipoDeConsenso consenso) {
-    return new ArrayList<>(this.getHechos()
-        .stream().filter(hecho ->
-          hecho.getConsensos().contains(consenso)
-        ).toList());
+  public Boolean verificaConsenso(Hecho hechoAverificar,TipoDeConsenso consenso) {
+    for(Hecho hechoDelRepositorio : this.hechos){
+      if(hechoDelRepositorio.comparacionRigurosa(hechoAverificar)){
+        return hechoDelRepositorio.getConsensos().contains(consenso);
+      }
+    }
+    return false;
   }
 }
