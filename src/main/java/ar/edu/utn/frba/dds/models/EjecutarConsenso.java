@@ -14,28 +14,35 @@ import java.util.stream.Collectors;
 public class EjecutarConsenso {
   private final List<AlgoritmoDeConsenso> algoritmos;
   private final List<Fuente> fuentesActivas;
-  private final List<Hecho> hechosAgregados;
+  private final List<Hecho> hechosMezclados;
+  private final HechosRepository repositorio = HechosRepository.getInstance();
 
   public EjecutarConsenso(List<Fuente> fuentesActivas) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);
-    this.hechosAgregados = new ArrayList<>(this.agregarHechos());
+    this.hechosMezclados = new ArrayList<>(this.agregarHechos());
 
+
+    //Aca da error por que todavia no se cambiaron los algoritmos
+    //                               para utilizar el repositorio
     this.algoritmos = List.of(
-        new ConsensoAbsoluto(fuentesActivas, hechosAgregados),
-        new MayoriaSimple(fuentesActivas, hechosAgregados),
-        new MultiplesMenciones(hechosAgregados)
+        new ConsensoAbsoluto(fuentesActivas),
+        new MayoriaSimple(fuentesActivas),
+        new MultiplesMenciones()
     );
   }
 
-  public void evaluar(List<Hecho> hechosRepetidos) {
-    for (Hecho hecho : hechosRepetidos) {
-      for (AlgoritmoDeConsenso algoritmo : algoritmos) {
-        if (algoritmo.estaConsensuado(hecho, null)) { // fuente no se usa
-          hecho.agregarConsenso(mapearTipo(algoritmo));
+  public void evaluar() {
+    for (Hecho hechoIndex : hechosMezclados) {
+      if(!repositorio.contiene(hechoIndex)) {
+        repositorio.agregarHecho(hechoIndex);
+        for(Hecho hechoDelRepositorio : repositorio.getHechos()) {
+          for (AlgoritmoDeConsenso algoritmo : algoritmos) {
+            if (algoritmo.estaConsensuado(hechoIndex, null)) { // fuente no se usa
+              hechoIndex.agregarConsenso(mapearTipo(algoritmo));
+            }
+          }
         }
       }
-      hechosAgregados.add(hecho); // actualizar lista compartida
-      HechosRepository.getInstance().agregarHecho(hecho);
     }
   }
 

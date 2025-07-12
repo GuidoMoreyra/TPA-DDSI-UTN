@@ -33,6 +33,9 @@ public final class HechosRepository {
     return this.hechos.stream().anyMatch((Hecho h) -> h.comparacionRigurosa(hecho));
   }
   public Boolean verificaConsenso(Hecho hechoAverificar,TipoDeConsenso consenso) {
+    if(consenso == null) {
+      return true;
+    }
     for(Hecho hechoDelRepositorio : this.hechos){
       if(hechoDelRepositorio.comparacionRigurosa(hechoAverificar)){
         return hechoDelRepositorio.getConsensos().contains(consenso);
