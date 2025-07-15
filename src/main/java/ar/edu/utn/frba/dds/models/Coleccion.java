@@ -61,7 +61,7 @@ public final class Coleccion {
     return fuente
         .obtenerHechos()
         .stream()
-        .filter((Hecho h) -> h.estaActivo()
+        .filter((Hecho h) -> h.estaActivo()//solo se aplica a repositorio eliminacion
             && this.cumpleCriterios(h, criteriosDeCreacion))
         .toList();
   }

@@ -76,8 +76,10 @@ public class Hecho {
     return SolicitudesEliminacionRepository
         .getInstance()
         .obtenerSolicitudesConEstado(EstadoSolicitudEliminacion.APROBADO)
+
         .stream()
         .noneMatch(solicitud -> solicitud.esParaElHecho(this));
+        //busca que no tenga solicutud de eliminacion aprobada
   }
 
   public void aplicarCambios(CambiosHechoDto cambios) {
