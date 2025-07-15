@@ -37,7 +37,7 @@ public class EjecutarConsenso {
         repositorio.agregarHecho(hechoIndex);
         for(Hecho hechoDelRepositorio : repositorio.getHechos()) {
           for (AlgoritmoDeConsenso algoritmo : algoritmos) {
-            if (algoritmo.estaConsensuado(hechoIndex, null)) { // fuente no se usa
+            if (algoritmo.estaConsensuado(hechoIndex)) { // fuente no se usa
               hechoIndex.agregarConsenso(mapearTipo(algoritmo));
             }
           }
