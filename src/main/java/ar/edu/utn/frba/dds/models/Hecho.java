@@ -79,7 +79,7 @@ public class Hecho {
 
         .stream()
         .noneMatch(solicitud -> solicitud.esParaElHecho(this));
-        //busca que no tenga solicutud de eliminacion aprobada
+    //busca que no tenga solicutud de eliminacion aprobada
   }
 
   public void aplicarCambios(CambiosHechoDto cambios) {
@@ -116,7 +116,8 @@ public class Hecho {
         && this.getDescripcion().equals(hechoCompar.getDescripcion())
         && this.getCategoria().equals(hechoCompar.getCategoria())
         && this.getCoordenadas().equals(hechoCompar.getCoordenadas())
-        && this.getFechaDelHecho() == hechoCompar.getFechaDelHecho();
+        && this.getFechaDelHecho().equals(hechoCompar.getFechaDelHecho());
+
   }
 
   public boolean compararHecho(Hecho h) {
@@ -136,5 +137,7 @@ public class Hecho {
   }
 
 
-
+  public void setConsensos(List<TipoDeConsenso> consensosNuevos) {
+    this.algoritmos = consensosNuevos;
+  }
 }

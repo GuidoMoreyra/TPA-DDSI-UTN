@@ -79,13 +79,21 @@ public final class MainAplicarConsensos {
     System.out.println(hechoDinamico1.getConsensos());
     System.out.println(hechoDinamico2.getConsensos());
 
-    List<Hecho> hechos = new ArrayList<>(); //hechos repetidos
+    /*
+    List<Hecho> hechos = new ArrayList<>();
+    //hechos repetidos
     hechos.add(hechoDinamico1);
     hechos.add(hechoDinamico2);
 
-    EjecutarConsenso consensuar = new EjecutarConsenso(fuentesactivas);
-    consensuar.evaluar();
+    Esto de aca se deberia cambiar por una coleccion
+    para luego aplicar coleccion.aplicarConsenso();
+    y hacer un for que muestre el titulo del hecho, su algoritmo
 
+     */
+
+    EjecutarConsenso consensuar = new EjecutarConsenso(fuentesactivas);
+    //consensuar.evaluar();
+    consensuar.evaluarVersionDos();
     System.out.println("Hechos despues de aplicar consenso :");
     System.out.println(hechoDinamico1.getConsensos());
     System.out.println(hechoDinamico2.getConsensos());

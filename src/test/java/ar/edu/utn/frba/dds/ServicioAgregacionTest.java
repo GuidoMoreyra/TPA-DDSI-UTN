@@ -105,7 +105,7 @@ public class ServicioAgregacionTest {
     ejecutar = new EjecutarConsenso(List.of(fuenteMockUno,fuenteMockDos));
     servicioTest = new FuenteDeAgregacion(List.of(fuenteMockUno,fuenteMockDos));
     List<Hecho> hechos = servicioTest.obtenerHechos();
-    ejecutar.evaluar();
+    ejecutar.evaluarVersionDos();
   }
 
   @Test
@@ -141,12 +141,16 @@ public class ServicioAgregacionTest {
         "Incendio Forestal",
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
+
+    List<Hecho> resultado = coleccion.aplicarConsenso();
+    assertEquals(6, resultado.size());
+
     /*
     coleccion.actualizarHechosConsensuados();
-    List<Hecho> resultado = coleccion.obtenerHechosConsensuados();
+
 
     // Assert
-    assertEquals(6, resultado.size());*/
+    */
 
   }
 }

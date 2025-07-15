@@ -21,11 +21,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ColeccionHechosConsensuadosTest {
-
+  private Hecho hechoUno;
+  private Hecho hechoDos;
+  private Hecho hechoTres;
   @BeforeEach
   void setUp() {
 
-    Hecho hechoUno = new Hecho("incendio forestal esquel",
+    hechoUno = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
         "Incendio Forestal",
         -38,
@@ -34,7 +36,7 @@ public class ColeccionHechosConsensuadosTest {
         OrigenHecho.ESTATICO,
         null);
 
-    Hecho hechoDos = new Hecho("incendio forestal esquel",
+    hechoDos = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
         "Incendio Forestal",
         -38,
@@ -43,7 +45,7 @@ public class ColeccionHechosConsensuadosTest {
         OrigenHecho.ESTATICO,
         null);
 
-    Hecho hechoTres = new Hecho("incendio forestal esquel",
+    hechoTres = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
         "Incendio Forestal",
         -38,
@@ -58,16 +60,12 @@ public class ColeccionHechosConsensuadosTest {
     hechoTres.setLocalidad("esquel");
 
 
-    Fuente fuenteMockUno = mock(Fuente.class);
-    when(fuenteMockUno.obtenerHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno));
-    Fuente fuenteMockDos = mock(Fuente.class);
-    when(fuenteMockDos.obtenerHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno));
+  }
 
-    // Act
-    HechosRepository.getInstance().limpiar(); //limpio el repo por las dudas
-    EjecutarConsenso ejecutar = new EjecutarConsenso(List.of(fuenteMockUno,fuenteMockDos));
-    ejecutar.evaluar();
-
+  @BeforeEach
+  void limpiarRepositorio() {
+    HechosRepository.getInstance().limpiar();
+    assertEquals(0, HechosRepository.getInstance().getHechos().size(), "Repositorio no limpio antes del test");
   }
 
   @Test
@@ -90,6 +88,8 @@ public class ColeccionHechosConsensuadosTest {
     // Mock de Fuente
     Fuente fuenteMockTres = mock(Fuente.class);
     when(fuenteMockTres.obtenerHechos()).thenReturn(List.of(hechoMockUno, hechoMockDos));
+
+
 
     // Crear colección sin algoritmo de consenso
     Coleccion coleccion = new Coleccion(
@@ -129,6 +129,7 @@ public class ColeccionHechosConsensuadosTest {
     Fuente fuenteMockCuatro = mock(Fuente.class);
     when(fuenteMockCuatro.obtenerHechos()).thenReturn(List.of(hechoMockUno, hechoMockDos));
 
+
     // Crear colección CON algoritmo (no se va a usar en este test)
     Coleccion coleccion = new Coleccion(
         fuenteMockCuatro,
@@ -151,20 +152,40 @@ public class ColeccionHechosConsensuadosTest {
   @DisplayName("Devuelve los hechos consensuados que cumplen los criterios creacionales")
   void testObtenerHechosConsensuados() {
 
+
+
+    Fuente fuenteMockUno = mock(Fuente.class);
+    when(fuenteMockUno.obtenerHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno));
+    Fuente fuenteMockDos = mock(Fuente.class);
+    when(fuenteMockDos.obtenerHechos()).thenReturn(List.of(hechoUno));
+
+
+    // Act
+    HechosRepository.getInstance().limpiar();
+    //limpio el repo
+    EjecutarConsenso ejecutar = new EjecutarConsenso(List.of(fuenteMockUno,fuenteMockDos));
+    ejecutar.evaluarVersionDos();
+
+    /*
+    System.out.println("Hechos en repo:");
+    HechosRepository.getInstance().getHechos().forEach(h ->
+        System.out.println(h.getTitulo() + " - " + h.getFechaDelHecho() + " - " + h.getConsensos())
+    );*/
+
     Coleccion coleccion = new Coleccion(
-        mock(Fuente.class), // no importa la fuente
+        fuenteMockUno, // no importa la fuente
         "esquel",
         LocalDate.of(2022, 1, 1),
         LocalDate.of(2022, 12, 31),
         "Incendio Forestal",
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
-    /*
-    coleccion.actualizarHechosConsensuados();
-    List<Hecho> resultado = coleccion.obtenerHechosConsensuados();*/
+
+
+    List<Hecho> resultado = coleccion.aplicarConsenso();
 
     // Assert
-    //assertEquals(3, resultado.size());
+    assertEquals(3, resultado.size());
   }
 
   @Test
@@ -173,21 +194,37 @@ public class ColeccionHechosConsensuadosTest {
     Criterio fechatest = new CriterioFecha(LocalDate.of(2022, 10, 20), LocalDate.of(2022, 10, 26));
     Criterio lugartest = new CriterioLugar("esquel");
 
+    Fuente fuenteMockUno = mock(Fuente.class);
+    when(fuenteMockUno.obtenerHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno));
+    Fuente fuenteMockDos = mock(Fuente.class);
+    when(fuenteMockDos.obtenerHechos()).thenReturn(List.of(hechoUno));
+
+    Fuente fuenteTest = mock(Fuente.class);
+    when(fuenteTest.obtenerHechos()).thenReturn(List.of(hechoDos));
+
+    // Act
+    HechosRepository.getInstance().limpiar();
+    //limpio el repo
+    EjecutarConsenso ejecutar = new EjecutarConsenso(List.of(fuenteMockUno,fuenteMockDos));
+    ejecutar.evaluarVersionDos();
+
     Coleccion coleccion = new Coleccion(
-        mock(Fuente.class), // no importa la fuente
+        fuenteTest, // si importa la fuente
         "esquel",
         LocalDate.of(2022, 1, 1),
         LocalDate.of(2022, 12, 31),
         "Incendio Forestal",
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
-    /*
+
     List<Criterio> criteriosTest = List.of(lugartest, fechatest);
-    coleccion.actualizarHechosConsensuados();
-    List<Hecho> resultado = coleccion.aplicarCriteriosAdicionales(criteriosTest);
+    List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosTest);
+
+    //aca tenemos un problema como le aplico a ambos los criterios extras
+    //voy a tener que aplicar un metodo extra
 
     // Assert
-    assertEquals(1, resultado.size());*/
+    assertEquals(1, resultado.size());
 
   }
 

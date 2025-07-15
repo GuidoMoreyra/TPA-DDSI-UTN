@@ -10,24 +10,37 @@ import java.util.List;
 public class MayoriaSimple implements AlgoritmoDeConsenso {
 
   private List<Fuente> fuentesActivas;
-  private List<Hecho> hechosAgregados;
-  private final HechosRepository repositorio = HechosRepository.getInstance();
+  //private List<Hecho> hechosAgregados;
+  //private final HechosRepository repositorio = HechosRepository.getInstance();
 
   public MayoriaSimple(List<Fuente> fuentesActivas) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);
-    this.hechosAgregados = repositorio.getHechos();
+    //this.hechosAgregados = repositorio.getHechos();
 
   }
 
   @Override
   public boolean estaConsensuado(Hecho hecho) {
-    long repeticiones = hechosAgregados.stream()
+    long repeticiones = 1;
+    /*hechosAgregados.stream()
         .filter(h -> h.getTitulo().equals(hecho.getTitulo()))
         .count();
+    */
 
     int totalFuentes = fuentesActivas.size();
     return repeticiones >= Math.ceil(totalFuentes / 2.0);
 
   }
+
+  @Override
+  public boolean estaConsensuado(Hecho hecho, List<Hecho> hechosRepositorio) {
+    long  repeticiones = hechosRepositorio.stream()
+        .filter(hechoRepo -> hechoRepo.compararHecho(hecho))
+        .count();
+
+    int totalFuentes = fuentesActivas.size();
+    return repeticiones >= Math.ceil(totalFuentes / 2.0);
+  }
+
 
 }

@@ -21,7 +21,7 @@ public final class Coleccion {
   private  Fuente fuente;
   private TipoDeConsenso algoritmoDeconsenso;
   private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
-  private final HechosRepository repositorio = HechosRepository.getInstance() ;
+  private final HechosRepository repositorio = HechosRepository.getInstance();
 
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
   ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
@@ -60,8 +60,14 @@ public final class Coleccion {
         .obtenerHechos()
         .stream()
         .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
-        .filter((Hecho h) -> repositorio.verificaConsenso(h, algoritmoDeconsenso))
         .toList();
+  }
+
+  public List<Hecho> aplicarConsenso() {
+    return this.obtenerColeccion().stream()
+        .filter((Hecho unHecho) -> repositorio.verificaConsenso(
+            unHecho, algoritmoDeconsenso
+        )).toList();
   }
 
   public List<Hecho> obtenerColeccionConCriteriosAdicionales(List<Criterio> criterios) {
@@ -70,6 +76,13 @@ public final class Coleccion {
         .filter((Hecho h) ->
              this.cumpleCriterios(h, criterios)
         ).toList();
+  }
+
+  public List<Hecho> obtenerColeccionConCriteriosExtra(List<Criterio> criteriosExtra) {
+    return this.aplicarConsenso()
+        .stream()
+        .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtra))
+        .toList();
   }
   /*
   public void actualizarHechosConsensuados() {
