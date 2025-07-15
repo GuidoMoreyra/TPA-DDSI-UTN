@@ -84,7 +84,7 @@ public final class MainAplicarConsensos {
     hechos.add(hechoDinamico2);
 
     EjecutarConsenso consensuar = new EjecutarConsenso(fuentesactivas);
-    consensuar.evaluar(hechos);
+    consensuar.evaluar();
 
     System.out.println("Hechos despues de aplicar consenso :");
     System.out.println(hechoDinamico1.getConsensos());

@@ -12,8 +12,9 @@ public class ConsensoAbsoluto implements AlgoritmoDeConsenso {
   private List<Fuente> fuentesActivas;
   private List<Hecho> hechosAgregados;
 
-  public ConsensoAbsoluto(List<Fuente> fuentesActivas, List<Hecho> hechosAgregados) {
+  public ConsensoAbsoluto(List<Fuente> fuentesActivas) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);
+
     this.hechosAgregados = new ArrayList<>(hechosAgregados);
   }
 

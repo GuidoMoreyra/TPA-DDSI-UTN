@@ -10,7 +10,7 @@ public class MultiplesMenciones implements AlgoritmoDeConsenso {
 
   private List<Hecho> hechosAgregados;
 
-  public MultiplesMenciones(List<Hecho> hechosAgregados) {
+  public MultiplesMenciones(List<Fuente> fuentesActivas) {
 
     this.hechosAgregados = new ArrayList<>(hechosAgregados);
   }

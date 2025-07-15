@@ -17,12 +17,11 @@ import lombok.Getter;
 
 public final class Coleccion {
 
-  private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
   @Getter
   private  Fuente fuente;
-  private List<Hecho> hechosConsensuados;
   private TipoDeConsenso algoritmoDeconsenso;
-
+  private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
+  private final HechosRepository repositorio = HechosRepository.getInstance() ;
 
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
   ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
@@ -57,24 +56,22 @@ public final class Coleccion {
   }
 
   public List<Hecho> obtenerColeccion() {
-    ///  La fuente deberia devolver solo hechos activos.
     return fuente
         .obtenerHechos()
         .stream()
-        .filter((Hecho h) -> h.estaActivo()//solo se aplica a repositorio eliminacion
-            && this.cumpleCriterios(h, criteriosDeCreacion))
+        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+        .filter((Hecho h) -> repositorio.verificaConsenso(h, algoritmoDeconsenso))
         .toList();
   }
 
   public List<Hecho> obtenerColeccionConCriteriosAdicionales(List<Criterio> criterios) {
-    ///  La fuente deberia devolver solo hechos activos.
     return this.obtenerColeccion()
         .stream()
         .filter((Hecho h) ->
              this.cumpleCriterios(h, criterios)
         ).toList();
   }
-
+  /*
   public void actualizarHechosConsensuados() {
 
     if (algoritmoDeconsenso == null) {
@@ -116,16 +113,14 @@ public final class Coleccion {
     return new ArrayList<>(aux);
   }
 
+   */
+
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
 
     if (fechaInicial.isAfter(fechaFinal)) {
       throw new FechaException("fecha inicial no puede ser posterior a fecha final");
     }
   }
-  //quiero testear el validar
-  //la creacion con los tipo de algoritmos asociados a una coleccion
-  //obtenerHechosconsensuados
-  //actualizarHechosconsensuados
-  //aplicarcriterios adicionales
+
 
 }
