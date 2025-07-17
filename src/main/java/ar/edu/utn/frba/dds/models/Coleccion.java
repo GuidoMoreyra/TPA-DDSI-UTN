@@ -84,49 +84,6 @@ public final class Coleccion {
         .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtra))
         .toList();
   }
-  /*
-  public void actualizarHechosConsensuados() {
-
-    if (algoritmoDeconsenso == null) {
-      hechosConsensuados.addAll(this.obtenerColeccion());
-      //si no tengo un algoritmo me trae los hehcos de su fuente primitiva
-    }
-    hechosConsensuados = HechosRepository.getInstance()
-        .hechosFiltradosPorConsenso(algoritmoDeconsenso)
-        .stream().filter(
-            hecho ->
-                hecho.estaActivo()
-                    && this.cumpleCriterios(hecho, criteriosDeCreacion)
-        ).collect(Collectors.toList());
-    // si tengo algoritmo usa el metodo filtro dentro del repo
-    // me filtra los hechos que tengan el algoritmo dentro de su lista
-    //luego los filtra por criterios de creacion
-
-  }
-
-  public List<Hecho> obtenerHechosConsensuados() {
-    return new ArrayList<>(hechosConsensuados);
-  }
-
-  public List<Hecho> aplicarCriteriosAdicionales(List<Criterio> criterios) {
-
-    List<Hecho> aux = List.of();
-    if (algoritmoDeconsenso == null) {
-      aux = obtenerColeccion()
-          .stream().filter(
-              hecho -> this.cumpleCriterios(hecho, criterios)
-          ).toList();
-    }
-    aux = this.obtenerHechosConsensuados()
-        .stream().filter(
-            hecho -> this.cumpleCriterios(hecho, criterios))
-        .toList();
-
-
-    return new ArrayList<>(aux);
-  }
-
-   */
 
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
 
@@ -134,6 +91,4 @@ public final class Coleccion {
       throw new FechaException("fecha inicial no puede ser posterior a fecha final");
     }
   }
-
-
 }

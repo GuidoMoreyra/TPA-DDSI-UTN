@@ -27,7 +27,7 @@ public class EjecutarConsenso {
     this.algoritmos = List.of(
         new ConsensoAbsoluto(fuentesActivas),
         new MayoriaSimple(fuentesActivas),
-        new MultiplesMenciones(fuentesActivas)
+        new MultiplesMenciones()
     );
   }
 

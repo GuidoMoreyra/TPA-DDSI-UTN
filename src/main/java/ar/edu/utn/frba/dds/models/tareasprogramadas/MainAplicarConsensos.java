@@ -16,54 +16,6 @@ import java.util.List;
 public final class MainAplicarConsensos {
   public static void main(String[] args) {
 
-
-    // 1. Crear hechos simulados
-    Hecho hechoDinamico1 = new Hecho(
-        "Incendio en la Patagonia",
-        "Se desconoce las causas del incendio",
-        "Incendio Forestal",
-        -36, -38,
-        LocalDate.of(2017, 5, 1),
-        OrigenHecho.DINAMICO,
-        "foto1.jpg"
-    );
-
-    Hecho hechoDinamico2 = new Hecho(
-        "Desaparicion en buenos aires",
-        "Se acusa a el gobierno de la desaparicion de estudiantes",
-        "Desaparicion vinculada al gobierno",
-        -34, -58,
-        LocalDate.of(1978, 5, 29),
-        OrigenHecho.DINAMICO,
-        "foto2.jpg"
-    );
-
-    Hecho hechoDinamico3 = new Hecho(
-        "Incendio en el Parque Nacional Nahuel Huapi",
-        "Campistas no apagaron debidamente las brazas",
-        "Incendio Forestal",
-        -40, -71,
-        LocalDate.of(2022, 9, 12),
-        OrigenHecho.DINAMICO,
-        "foto3.jpg"
-    );
-
-    // 2. Crear solicitudes
-    SolicitudAgregacion solicitud1 = new SolicitudAgregacion(hechoDinamico1, false);
-    solicitud1.aceptarSolicitud();
-
-    SolicitudAgregacion solicitud2 = new SolicitudAgregacion(hechoDinamico2, false);
-    solicitud2.aceptarSolicitud(); // o aceptarSolicitudConSugerencias(sugerencias)
-
-    SolicitudAgregacion solicitud3 = new SolicitudAgregacion(hechoDinamico3, false);
-    solicitud3.aceptarSolicitud();
-
-    // 3. Agregar al repositorio
-    SolicitudesAgregacionRepository repo = SolicitudesAgregacionRepository.getInstance();
-    repo.agregarSolicitud(solicitud1);
-    repo.agregarSolicitud(solicitud2);
-    repo.agregarSolicitud(solicitud3);
-
     Fuente fuentedinamica = new FuenteDinamica();
 
     Fuente fuenteestatica = new FuenteEstatica("formatoTp");
@@ -75,28 +27,10 @@ public final class MainAplicarConsensos {
     fuentesactivas.add(fuenteestatica);
     fuentesactivas.add(fuenteestatica2);
 
-    System.out.println("Hechos antes de aplicar consenso :");
-    System.out.println(hechoDinamico1.getConsensos());
-    System.out.println(hechoDinamico2.getConsensos());
-
-    /*
-    List<Hecho> hechos = new ArrayList<>();
-    //hechos repetidos
-    hechos.add(hechoDinamico1);
-    hechos.add(hechoDinamico2);
-
-    Esto de aca se deberia cambiar por una coleccion
-    para luego aplicar coleccion.aplicarConsenso();
-    y hacer un for que muestre el titulo del hecho, su algoritmo
-
-     */
 
     EjecutarConsenso consensuar = new EjecutarConsenso(fuentesactivas);
-    //consensuar.evaluar();
     consensuar.evaluarVersionDos();
-    System.out.println("Hechos despues de aplicar consenso :");
-    System.out.println(hechoDinamico1.getConsensos());
-    System.out.println(hechoDinamico2.getConsensos());
+
 
 
 

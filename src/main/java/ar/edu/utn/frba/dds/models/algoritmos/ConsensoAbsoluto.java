@@ -11,23 +11,14 @@ import java.util.stream.Collectors;
 public class ConsensoAbsoluto implements AlgoritmoDeConsenso {
 
   private List<Fuente> fuentesActivas;
-  //private List<Hecho> hechosAgregados;
-  //private final HechosRepository repositorio = HechosRepository.getInstance();
 
   public ConsensoAbsoluto(List<Fuente> fuentesActivas) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);
-
-    //this.hechosAgregados = repositorio.getHechos();
   }
 
   @Override
   public boolean estaConsensuado(Hecho hecho) {
     long repeticiones = 1;
-    /*hechosAgregados.stream()
-        .filter(h -> h.getTitulo().equals(hecho.getTitulo()))
-        .count();
-    */
-
     return repeticiones == fuentesActivas.size();
   }
 

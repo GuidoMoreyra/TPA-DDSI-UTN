@@ -9,21 +9,11 @@ import java.util.List;
 
 public class MultiplesMenciones implements AlgoritmoDeConsenso {
 
-  //private List<Hecho> hechosAgregados;
 
-
-  public MultiplesMenciones(List<Fuente> fuentesActivas) {
-
-  }
 
   @Override
   public boolean estaConsensuado(Hecho hecho) {
     long repeticiones = 2;
-
-    /*hechosAgregados.stream()
-        .filter(h -> h.getTitulo().equals(hecho.getTitulo()))
-        .count();
-    */
 
     return repeticiones > 1;
   }

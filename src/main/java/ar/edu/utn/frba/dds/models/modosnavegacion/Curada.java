@@ -16,7 +16,7 @@ public class Curada implements ModoDeNavegacion {
   @Override
   public List<Hecho> obtenerHechos() {
     return new ArrayList<>(
-        coleccion.obtenerColeccion()//provisorio
+        coleccion.aplicarConsenso()
     );
   }
 

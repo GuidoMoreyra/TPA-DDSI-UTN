@@ -17,8 +17,6 @@ public class Coordenada {
 
   }
 
-  public Coordenada() {}
-
   public double getLatitud() {
     return latitud;
   }
