@@ -39,6 +39,7 @@ public final class FuenteEstatica implements Fuente {
       List<HechoCsvDto> dtos = new CsvToBeanBuilder<HechoCsvDto>(reader)
           .withType(HechoCsvDto.class)
           .withIgnoreLeadingWhiteSpace(true)
+          .withSeparator(';')
           .build()
           .parse();
 

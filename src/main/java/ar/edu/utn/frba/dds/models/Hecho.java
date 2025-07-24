@@ -7,12 +7,15 @@ import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+
+@SuppressFBWarnings("EI_EXPOSE_REP")
 
 @Getter
 public class Hecho {
@@ -54,7 +57,7 @@ public class Hecho {
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
-    this.coordenadas = new Coordenada(longitud, latitud); // TODO: cambiar luego
+    this.coordenadas = new Coordenada(longitud, latitud);
     this.fechaDelHecho = fechaDelHecho;
     this.origen = origen;
   }
@@ -73,8 +76,10 @@ public class Hecho {
     return SolicitudesEliminacionRepository
         .getInstance()
         .obtenerSolicitudesConEstado(EstadoSolicitudEliminacion.APROBADO)
+
         .stream()
         .noneMatch(solicitud -> solicitud.esParaElHecho(this));
+    //busca que no tenga solicutud de eliminacion aprobada
   }
 
   public void aplicarCambios(CambiosHechoDto cambios) {
@@ -106,15 +111,14 @@ public class Hecho {
         .anyMatch(s -> s.getHecho().equals(this));
   }
 
-  public boolean compararRigurosa(Hecho hechoCompar) {
+  public boolean comparacionRigurosa(Hecho hechoCompar) {
     return this.getTitulo().equals(hechoCompar.getTitulo())
         && this.getDescripcion().equals(hechoCompar.getDescripcion())
         && this.getCategoria().equals(hechoCompar.getCategoria())
         && this.getCoordenadas().equals(hechoCompar.getCoordenadas())
-        && this.getFechaDelHecho() == hechoCompar.getFechaDelHecho();
+        && this.getFechaDelHecho().equals(hechoCompar.getFechaDelHecho());
+
   }
-
-
 
   public boolean compararHecho(Hecho h) {
     return this.getTitulo().equals(h.getTitulo());
@@ -128,4 +132,12 @@ public class Hecho {
     return new ArrayList<>(algoritmos);
   }
 
+  public void setLocalidad(String localidad) {
+    this.coordenadas.setLocalidad(localidad);
+  }
+
+
+  public void setConsensos(List<TipoDeConsenso> consensosNuevos) {
+    this.algoritmos = consensosNuevos;
+  }
 }

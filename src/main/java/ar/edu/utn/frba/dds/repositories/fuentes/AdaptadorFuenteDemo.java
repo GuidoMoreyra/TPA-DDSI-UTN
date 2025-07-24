@@ -53,21 +53,6 @@ public final class AdaptadorFuenteDemo {
     return new ArrayList<>(hechosObtenidos);
   }
 
-  /*
-  private boolean esMomentoDeObtenerHechos() {
-    Duration duracion = Duration.between(ultimaConsulta, LocalDateTime.now());
-    return duracion.toMinutes() >= intervaloDeEspera;
-  }
-
-
-   */
-
-  /*
-  private boolean deboActualizar() {
-    return ultimaConsulta == null
-        || ultimaConsulta.plus(intervaloDeEspera)
-            .isBefore(LocalDateTime.now());
-  }*/
 
   private Hecho construirHechoDesde(Map<String, Object> datos) {
     //Primera opcion parciando los datos

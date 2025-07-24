@@ -1,23 +1,27 @@
 package ar.edu.utn.frba.dds.models;
 
-import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.contracts.Fuente;
+import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
+import ar.edu.utn.frba.dds.exceptions.FechaException;
 import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
 import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
 import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
+import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 
 
 public final class Coleccion {
 
-  private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
   @Getter
   private  Fuente fuente;
-  /// private  AlgoritmoDeConsenso algoritmoDeConseso; //comento porque se considera bug
+  private TipoDeConsenso algoritmoDeconsenso;
+  private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
+  private final HechosRepository repositorio = HechosRepository.getInstance();
 
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
   ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
@@ -28,13 +32,13 @@ public final class Coleccion {
       LocalDate fechaInicial,
       LocalDate fechaFinal,
       String categoria,
-      AlgoritmoDeConsenso algoritmo
+      TipoDeConsenso algoritmo
   ) {
 
+    this.validar(fechaInicial, fechaFinal);
     this.fuente = fuente;
-    //this.algoritmoDeConseso = algoritmo; //se comenta porque por el momento es bug
+    this.algoritmoDeconsenso = algoritmo;
 
-    /// TODO - Habria que verificar que fecha 1 sea anterior a fecha 2
     criteriosDeCreacion.add(new CriterioFecha(fechaInicial, fechaFinal));
 
     criteriosDeCreacion.add(new CriterioLugar(localidad));
@@ -52,7 +56,6 @@ public final class Coleccion {
   }
 
   public List<Hecho> obtenerColeccion() {
-    ///  La fuente deberia devolver solo hechos activos.
     return fuente
         .obtenerHechos()
         .stream()
@@ -60,8 +63,14 @@ public final class Coleccion {
         .toList();
   }
 
+  public List<Hecho> aplicarConsenso() {
+    return this.obtenerColeccion().stream()
+        .filter((Hecho unHecho) -> repositorio.verificaConsenso(
+            unHecho, algoritmoDeconsenso
+        )).toList();
+  }
+
   public List<Hecho> obtenerColeccionConCriteriosAdicionales(List<Criterio> criterios) {
-    ///  La fuente deberia devolver solo hechos activos.
     return this.obtenerColeccion()
         .stream()
         .filter((Hecho h) ->
@@ -69,6 +78,17 @@ public final class Coleccion {
         ).toList();
   }
 
+  public List<Hecho> obtenerColeccionConCriteriosExtra(List<Criterio> criteriosExtra) {
+    return this.aplicarConsenso()
+        .stream()
+        .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtra))
+        .toList();
+  }
 
+  private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
 
+    if (fechaInicial.isAfter(fechaFinal)) {
+      throw new FechaException("fecha inicial no puede ser posterior a fecha final");
+    }
+  }
 }

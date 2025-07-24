@@ -60,6 +60,7 @@ public class ColeccionTest {
 
     when(coordenadaMock.getLocalidad()).thenReturn("Buenos Aires");
     when(hechoMock.getCoordenadas()).thenReturn(coordenadaMock);
+    when(hechoMock.estaActivo()).thenReturn(true);
 
     // Cumple todos los criterios de creación
     when(hechoMock.getCoordenadas().getLocalidad()).thenReturn("Buenos Aires");
@@ -107,6 +108,10 @@ public class ColeccionTest {
     when(hecho1.getFechaDelHecho()).thenReturn(LocalDate.of(2024, 6, 1));
     when(hecho2.getFechaDelHecho()).thenReturn(LocalDate.of(2024, 6, 1));
     when(hecho3.getFechaDelHecho()).thenReturn(LocalDate.of(2024, 6, 1));
+
+    when(hecho1.estaActivo()).thenReturn(true);
+    when(hecho2.estaActivo()).thenReturn(true);
+    when(hecho3.estaActivo()).thenReturn(true);
 
     // La fuente devuelve 3 hechos
     when(fuenteMock.obtenerHechos()).thenReturn(List.of(hecho1, hecho2, hecho3));

@@ -180,17 +180,47 @@
         </configuration>
       </plugin>
       <plugin>
-        <!-- Build an executable JAR -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>Main</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
+        <!-- Este plugin permite empaquetar nuestras aplicaciones utilizando distintos formatos -->
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>aplicar-consenso</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <finalName>aplicar-consenso</finalName>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                <manifest>
+                  <mainClass>ar.edu.utn.frba.dds.models.tareasprogramadas.MainAplicarConsenso</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>fuente-demo</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <finalName>fuente-demo</finalName>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                <manifest>
+                  <mainClass>ar.edu.utn.frba.dds.models.tareasprogramadas.MainFuenteDemo</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
