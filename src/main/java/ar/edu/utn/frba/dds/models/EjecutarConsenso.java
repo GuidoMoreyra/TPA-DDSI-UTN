@@ -31,24 +31,6 @@ public class EjecutarConsenso {
     );
   }
 
-  /*
-  public void evaluar() {
-    for (Hecho hechoIndex : hechosMezclados) {
-      if(!repositorio.contiene(hechoIndex)) {
-        repositorio.agregarHecho(hechoIndex);
-        for(Hecho hechoDelRepositorio : repositorio.getHechos()) {
-          for (AlgoritmoDeConsenso algoritmo : algoritmos) {
-            if (algoritmo.estaConsensuado(hechoIndex)) {
-              hechoIndex.agregarConsenso(mapearTipo(algoritmo));
-            }
-          }
-        }
-      }
-    }
-  }
-
-   */
-
   public void evaluarVersionDos() {
     hechosMezclados.stream()
         //me devuelve una lista de hechos que no se contiene el repo
