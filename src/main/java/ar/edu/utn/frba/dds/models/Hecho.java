@@ -37,6 +37,7 @@ public class Hecho {
 
   @Setter
   private OrigenHecho origen;
+  @Setter
   @Getter(AccessLevel.NONE)
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
@@ -137,7 +138,4 @@ public class Hecho {
   }
 
 
-  public void setConsensos(List<TipoDeConsenso> consensosNuevos) {
-    this.algoritmos = consensosNuevos;
-  }
 }
