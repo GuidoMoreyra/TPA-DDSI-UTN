@@ -13,6 +13,7 @@ public enum OrigenHecho {
       case DINAMICO -> AGREGADOR_DINAMICO;
       case ESTATICO -> AGREGADOR_ESTATICO;
       case INTERMEDIO -> AGREGADOR_INTERMEDIO;
+      case AGREGADOR_DINAMICO, AGREGADOR_ESTATICO, AGREGADOR_INTERMEDIO -> origenHecho;
       default -> throw new IllegalArgumentException(
           "El origen " + origenHecho + " ingresado no se puede mapear al agregador"
       );

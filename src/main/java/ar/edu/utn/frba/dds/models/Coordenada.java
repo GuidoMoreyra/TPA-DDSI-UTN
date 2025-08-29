@@ -1,9 +1,12 @@
 package ar.edu.utn.frba.dds.models;
 
 
+import lombok.Setter;
+
 public class Coordenada {
   public double longitud;
   public double latitud;
+  @Setter
   public String localidad;
 
   public Coordenada(double longitud, double latitud) {
@@ -14,7 +17,7 @@ public class Coordenada {
 
   }
 
-  public Coordenada() {}
+  public Coordenada() { }
 
   public double getLatitud() {
     return latitud;
@@ -27,4 +30,5 @@ public class Coordenada {
   public String getLocalidad() {
     return localidad;
   }
+
 }

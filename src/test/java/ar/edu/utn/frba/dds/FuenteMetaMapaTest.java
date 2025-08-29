@@ -39,7 +39,8 @@ public class FuenteMetaMapaTest {
                 },
                 "fechaDelHecho": "2023-10-01",
                 "fechaCreacion": null,
-                "origen": "INTERMEDIO"
+                "origen": "INTERMEDIO",
+                "algoritmos": ["CONSENSO_ABSOLUTO"]
               }
             ]
         """;

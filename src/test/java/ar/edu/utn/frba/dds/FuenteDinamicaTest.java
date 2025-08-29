@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds;
 
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
+import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class FuenteDinamicaTest {
@@ -20,15 +22,45 @@ public class FuenteDinamicaTest {
   @Test
   public void obtenerHechosDevuelveSoloSolicitudesAceptadas() {
 
-    Hecho hechoMock1 = mock(Hecho.class);
-    Hecho hechoMock2 = mock(Hecho.class);
-    Hecho hechoMock3 = mock(Hecho.class);
+    // Crear hechos reales
+    Hecho hecho1 = new Hecho(
+        "Incendio forestal bariloche",
+        "impacto de truenos en arboles genero un incendio",
+        "incendio forestal",
+        -38,
+        -56,
+        LocalDate.of(2022, 10, 20),
+        OrigenHecho.ESTATICO,
+        null
+    );
+
+    Hecho hecho2 = new Hecho(
+        "desborde del rio parana",
+        "intensas lluvias genere crecida del rio historica",
+        "desborde de rios",
+        -38,
+        -56,
+        LocalDate.of(2022, 10, 21),
+        OrigenHecho.ESTATICO,
+        null
+    );
+
+    Hecho hecho3 = new Hecho(
+        "Tormenta de arena en mendoza",
+        "inesperada torment de arena cubre todo mendoza",
+        "tormenta de arena",
+        -38,
+        -56,
+        LocalDate.of(2022, 10, 22),
+        OrigenHecho.ESTATICO,
+        null
+    );
 
     CambiosHechoDto sugerenciaDtoMock = mock(CambiosHechoDto.class);
 
-    SolicitudAgregacion s1 = new SolicitudAgregacion(hechoMock1, true);
-    SolicitudAgregacion s2 = new SolicitudAgregacion(hechoMock2, true);
-    SolicitudAgregacion s3 = new SolicitudAgregacion(hechoMock3, true);
+    SolicitudAgregacion s1 = new SolicitudAgregacion(hecho1, true);
+    SolicitudAgregacion s2 = new SolicitudAgregacion(hecho2, true);
+    SolicitudAgregacion s3 = new SolicitudAgregacion(hecho3, true);
 
     s1.aceptarSolicitud(); // debe incluirse
     s2.rechazarSolicitud(); // no debe incluirse
@@ -50,8 +82,9 @@ public class FuenteDinamicaTest {
     List<Hecho> hechos = fuente.obtenerHechos();
 
     assertEquals(2, hechos.size());
-    assertTrue(hechos.contains(hechoMock1));
-    assertTrue(hechos.contains(hechoMock3));
-    assertFalse(hechos.contains(hechoMock2));
+
+    assertTrue(hechos.stream().anyMatch(h->h.getTitulo().equals("Tormenta de arena en mendoza")));
+    assertTrue(hechos.stream().anyMatch(h->h.getTitulo().equals("Incendio forestal bariloche")));
+    assertFalse(hechos.stream().anyMatch(h->h.getTitulo().equals("desborde del rio parana")));
   }
 }

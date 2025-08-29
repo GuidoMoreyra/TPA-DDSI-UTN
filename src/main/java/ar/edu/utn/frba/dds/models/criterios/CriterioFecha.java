@@ -7,7 +7,9 @@ import java.time.LocalDate;
 public record CriterioFecha(LocalDate fechaInicial, LocalDate fechaFinal) implements Criterio {
 
   public Boolean cumple(Hecho hecho) {
-    return true;
+
+    return (!hecho.getFechaDelHecho().isBefore(fechaInicial)
+        && !hecho.getFechaDelHecho().isAfter(fechaFinal));
   }
 
 }

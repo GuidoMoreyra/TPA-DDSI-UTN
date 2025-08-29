@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.repositories;
 
+import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,7 @@ public final class HechosRepository {
     return INSTANCE;
   }
 
+
   public List<Hecho> getHechos() {
     return Collections.unmodifiableList(hechos);
   }
@@ -25,5 +27,23 @@ public final class HechosRepository {
 
   public void limpiar() { //para testear
     this.hechos.clear();
+  }
+
+  public boolean contiene(Hecho hecho) {
+    return this.hechos.stream().anyMatch((Hecho h) -> h.comparacionRigurosa(hecho));
+  }
+
+  public Boolean verificaConsenso(Hecho hechoAverificar, TipoDeConsenso consenso) {
+    if (consenso == null) {
+      return true;
+    }
+
+
+    for (Hecho hechoDelRepositorio : this.hechos) {
+      if (hechoDelRepositorio.comparacionRigurosa(hechoAverificar)) {
+        return hechoDelRepositorio.getConsensos().contains(consenso);
+      }
+    }
+    return false;
   }
 }
