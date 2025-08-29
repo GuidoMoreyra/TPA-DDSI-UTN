@@ -56,7 +56,7 @@ public class EjecutarConsenso {
         .toList();
 
     // Reemplazar los consensos anteriores por los consensos nuevos que se cumplen
-    unHecho.setConsensos(consensosActuales);
+    unHecho.setAlgoritmos(consensosActuales);
 
   }
 
