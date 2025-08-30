@@ -6,14 +6,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
 import lombok.Getter;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
+@Entity
 @Getter
 @SuppressFBWarnings("EI_EXPOSE_REP")
-public final class SolicitudAgregacion {
+public class SolicitudAgregacion {
+
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  @Transient
   private EstadoSolicitudAgregacion estado;
-  private final Hecho hecho;
-  private final Boolean esAnonimo;
-  private final LocalDate fechaCreacion;
+
+  @OneToOne
+  private  Hecho hecho;
+
+  private  Boolean esAnonimo;
+
+  private  LocalDate fechaCreacion;
 
 
   //CONSTRUCTOR
@@ -23,6 +39,8 @@ public final class SolicitudAgregacion {
     this.esAnonimo = esAnonimo;
     this.fechaCreacion = LocalDate.now();
   }
+
+  public SolicitudAgregacion(){}
 
   // Constructor adicional solo para testeo
   public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo, LocalDate fechaCreacion) {

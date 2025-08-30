@@ -13,14 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
-
+@Entity
 public final class Coleccion {
 
   @Getter
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  @Transient
   private  Fuente fuente;
+  @Transient
   private TipoDeConsenso algoritmoDeconsenso;
+  @Transient
   private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
+  @Transient
   private final HechosRepository repositorio = HechosRepository.getInstance();
 
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
@@ -46,6 +58,8 @@ public final class Coleccion {
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
 
   }
+
+  public Coleccion(){}//por algun motivo me lo pide despues de hacer @Entity
 
   ////METODOS///
 

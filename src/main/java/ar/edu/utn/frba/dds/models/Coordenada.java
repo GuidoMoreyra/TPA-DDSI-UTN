@@ -2,8 +2,17 @@ package ar.edu.utn.frba.dds.models;
 
 
 import lombok.Setter;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
+@Entity
 public class Coordenada {
+
+  @Id
+  @GeneratedValue
+  private Long id;
+
   public double longitud;
   public double latitud;
   @Setter

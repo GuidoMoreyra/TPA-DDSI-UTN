@@ -4,13 +4,27 @@ import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Getter
 @SuppressFBWarnings("EI_EXPOSE_REP")
-public final class SolicitudEliminacion {
+@Entity
+public class SolicitudEliminacion {
+
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  @Transient
   private EstadoSolicitudEliminacion estado = EstadoSolicitudEliminacion.PENDIENTE;
-  private final Hecho hecho;
-  private final String justificacion;
+
+  @OneToOne
+  private Hecho hecho;
+  private String justificacion;
 
   public SolicitudEliminacion(
        Hecho hecho,
@@ -25,6 +39,8 @@ public final class SolicitudEliminacion {
     this.hecho = hecho;
     this.justificacion = justificacion;
   }
+
+  public SolicitudEliminacion() {}
 
   public Hecho getHecho() {
     return hecho;

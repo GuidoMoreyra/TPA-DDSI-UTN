@@ -17,6 +17,8 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 @SuppressFBWarnings("EI_EXPOSE_REP")
@@ -37,7 +39,7 @@ public class Hecho {
   private String categoria;
   private String contenidoMultimedia;
 
-  @Transient
+  @OneToOne
   private Coordenada coordenadas;
 
   private LocalDate fechaDelHecho;
@@ -48,6 +50,8 @@ public class Hecho {
   private OrigenHecho origen;
   @Setter
   @Getter(AccessLevel.NONE)
+
+  //@OneToMany
   @Transient
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
