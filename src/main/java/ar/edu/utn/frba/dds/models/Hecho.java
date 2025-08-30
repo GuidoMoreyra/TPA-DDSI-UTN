@@ -14,13 +14,21 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @SuppressFBWarnings("EI_EXPOSE_REP")
 
 @Getter
+@Entity
 public class Hecho {
   /**
    */
+  @Id
+  @GeneratedValue
+  private Long id;
 
   private String titulo;
 
@@ -29,6 +37,7 @@ public class Hecho {
   private String categoria;
   private String contenidoMultimedia;
 
+  @Transient
   private Coordenada coordenadas;
 
   private LocalDate fechaDelHecho;
@@ -39,6 +48,7 @@ public class Hecho {
   private OrigenHecho origen;
   @Setter
   @Getter(AccessLevel.NONE)
+  @Transient
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
   public Hecho() {}
