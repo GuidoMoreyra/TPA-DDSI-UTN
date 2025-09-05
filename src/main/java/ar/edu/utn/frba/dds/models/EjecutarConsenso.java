@@ -10,12 +10,31 @@ import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
+@Entity
 public class EjecutarConsenso {
-  private final List<AlgoritmoDeConsenso> algoritmos;
-  private final List<Fuente> fuentesActivas;
-  private final List<Hecho> hechosMezclados;
+
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  @Transient
+  private  List<AlgoritmoDeConsenso> algoritmos;
+
+  @Transient
+  private  List<Fuente> fuentesActivas;
+
+  @Transient
+  private  List<Hecho> hechosMezclados;
+
+  @Transient
   private final HechosRepository repositorio = HechosRepository.getInstance();
+
+  public EjecutarConsenso() {}
 
   public EjecutarConsenso(List<Fuente> fuentesActivas) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);
@@ -25,7 +44,7 @@ public class EjecutarConsenso {
     //Aca da error por que todavia no se cambiaron los algoritmos
     //                               para utilizar el repositorio
     this.algoritmos = List.of(
-        new ConsensoAbsoluto(fuentesActivas),
+        new ConsensoAbsoluto(),
         new MayoriaSimple(fuentesActivas),
         new MultiplesMenciones()
     );

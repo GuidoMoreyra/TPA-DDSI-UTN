@@ -12,11 +12,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Getter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import lombok.Getter;
+
 
 @Entity
 public final class Coleccion {
@@ -59,7 +60,7 @@ public final class Coleccion {
 
   }
 
-  public Coleccion(){}//por algun motivo me lo pide despues de hacer @Entity
+  public Coleccion() {}//por algun motivo me lo pide despues de hacer @Entity
 
   ////METODOS///
 

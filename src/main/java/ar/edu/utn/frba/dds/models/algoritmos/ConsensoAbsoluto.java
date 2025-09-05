@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class ConsensoAbsoluto implements AlgoritmoDeConsenso {
 
-  private List<Fuente> fuentesActivas;
 
-  public ConsensoAbsoluto(List<Fuente> fuentesActivas) {
-    this.fuentesActivas = new ArrayList<>(fuentesActivas);
+  public ConsensoAbsoluto() {
+
   }
 
 

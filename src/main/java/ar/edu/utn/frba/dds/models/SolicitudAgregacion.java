@@ -5,12 +5,13 @@ import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
-import lombok.Getter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import lombok.Getter;
+
 
 @Entity
 @Getter
@@ -40,7 +41,7 @@ public class SolicitudAgregacion {
     this.fechaCreacion = LocalDate.now();
   }
 
-  public SolicitudAgregacion(){}
+  public SolicitudAgregacion() {}
 
   // Constructor adicional solo para testeo
   public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo, LocalDate fechaCreacion) {

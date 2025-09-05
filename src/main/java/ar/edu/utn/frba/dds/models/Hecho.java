@@ -11,15 +11,19 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+
+
 
 @SuppressFBWarnings("EI_EXPOSE_REP")
 
@@ -39,7 +43,7 @@ public class Hecho {
   private String categoria;
   private String contenidoMultimedia;
 
-  @OneToOne
+  @Embedded
   private Coordenada coordenadas;
 
   private LocalDate fechaDelHecho;
@@ -47,12 +51,17 @@ public class Hecho {
   private LocalDate fechaCreacion = LocalDate.now();
 
   @Setter
+  @CollectionTable(name = "origen_hecho")
+  @Enumerated(EnumType.ORDINAL)
   private OrigenHecho origen;
+
   @Setter
   @Getter(AccessLevel.NONE)
 
-  //@OneToMany
-  @Transient
+
+  @ElementCollection
+  @CollectionTable(name = "algoritmos_consensuados")
+  @Enumerated(EnumType.STRING)
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
   public Hecho() {}

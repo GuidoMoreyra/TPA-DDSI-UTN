@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.repositories;
 
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +26,9 @@ public final class SolicitudesAgregacionRepository {
     return Collections.unmodifiableList(solicitudes);
   }
 
+
+
+
   public List<SolicitudAgregacion> obtenerSolicitudesConEstado(EstadoSolicitudAgregacion estado) {
     return solicitudes
         .stream()
@@ -33,6 +37,7 @@ public final class SolicitudesAgregacionRepository {
   }
 
   public void agregarSolicitud(SolicitudAgregacion solicitud) {
+
     solicitudes.add(solicitud);
   }
 }
