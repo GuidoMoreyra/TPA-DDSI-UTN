@@ -8,7 +8,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 
 
-public final class FuenteDeAgregacion implements Fuente {
+public final class FuenteDeAgregacion extends Fuente {
   private final List<Fuente> fuentes;
 
   public FuenteDeAgregacion(List<Fuente> fuentes) {

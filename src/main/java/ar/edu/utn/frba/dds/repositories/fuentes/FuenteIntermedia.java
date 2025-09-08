@@ -5,7 +5,7 @@ import ar.edu.utn.frba.dds.exceptions.FuenteProxyException;
 import ar.edu.utn.frba.dds.models.Hecho;
 import java.util.List;
 
-public final class FuenteIntermedia implements Fuente {
+public class FuenteIntermedia extends Fuente {
 
   private  AdaptadorFuenteDemo fuenteQueSeUsa;
 

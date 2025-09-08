@@ -13,8 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import lombok.Getter;
 
@@ -27,12 +30,24 @@ public final class Coleccion {
   @GeneratedValue
   private Long id;
 
-  @Transient
+
+  @OneToOne
   private  Fuente fuente;
-  @Transient
+
+  @Enumerated(EnumType.STRING)
   private TipoDeConsenso algoritmoDeconsenso;
+
+
+  /*
+  * Esto de aca seria un OneToMany
+  * Criterio seria una tabla de herencia
+  *porque los criterios son record y tienen parametros en el nombre de la clase
+  *
+  *
+  * */
   @Transient
   private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
+
   @Transient
   private final HechosRepository repositorio = HechosRepository.getInstance();
 

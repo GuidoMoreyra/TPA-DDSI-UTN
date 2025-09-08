@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class FuenteDinamica implements Fuente {
+public final class FuenteDinamica extends Fuente {
 
   @Override
   public List<Hecho> obtenerHechos() {

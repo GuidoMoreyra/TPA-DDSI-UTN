@@ -15,7 +15,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public final class FuenteEstatica implements Fuente {
+public final class FuenteEstatica extends Fuente {
 
   private final String archivo;
 
