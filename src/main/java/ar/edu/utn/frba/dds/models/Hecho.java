@@ -4,11 +4,13 @@ import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CollectionTable;
@@ -64,6 +66,10 @@ public class Hecho {
   @Enumerated(EnumType.STRING)
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
+  /*atributo agregado para estadisticas*/
+  private Provincia provincia = null;
+
+
   public Hecho() {}
 
 
@@ -84,6 +90,7 @@ public class Hecho {
     this.coordenadas = new Coordenada(longitud, latitud);
     this.fechaDelHecho = fechaDelHecho;
     this.origen = origen;
+    this.provincia = this.establecerProvincia(this.coordenadas);
   }
 
 
@@ -158,6 +165,21 @@ public class Hecho {
 
   public void setLocalidad(String localidad) {
     this.coordenadas.setLocalidad(localidad);
+  }
+
+  /*metodo para estadisticas*/
+  public Provincia establecerProvincia(Coordenada coordenada) {
+
+    return Provincia.obtenerProvinciaDesdeCoordenada(this.coordenadas);
+  }
+
+  /*
+  * tendria que cambiar el constructor para que sea
+  * de localDateTime o tambien tener un localTime como atributo para la hora
+  * por el momento lo dejo asi despues lo cambio
+  * */
+  public LocalTime horaDelHecho(){
+    return LocalTime.now();
   }
 
 

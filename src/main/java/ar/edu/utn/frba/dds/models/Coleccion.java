@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.contracts.Fuente;
+import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.exceptions.FechaException;
 import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
@@ -9,8 +10,11 @@ import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
 import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -54,6 +58,13 @@ public final class Coleccion {
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
   ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
 
+  /*
+  * Desnormalizando:guardar estadísticas precalculadas en cada colección.
+  * */
+  private Integer cantidadHechosReportados = 0;
+  private Provincia provinciaConMasHechos = Provincia.PROVINCIA_DESCONOCIDA;
+  private LocalTime horaPicoHechos = LocalTime.of(0,0,0);
+
   public Coleccion(
       Fuente fuente,
       String localidad,
@@ -72,6 +83,7 @@ public final class Coleccion {
     criteriosDeCreacion.add(new CriterioLugar(localidad));
 
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
+
 
   }
 
@@ -121,4 +133,46 @@ public final class Coleccion {
       throw new FechaException("fecha inicial no puede ser posterior a fecha final");
     }
   }
+
+  /*
+  * metodos para calcular los atributos de reporte
+  * */
+
+  public void cantidadHechosReportados() {
+    cantidadHechosReportados = this.obtenerColeccion().size();
+  }
+
+  public void setProvinciaConMasHechos( List<Hecho> hechos ) {
+
+
+    Map<Provincia, Integer> contador = new HashMap<>();
+    Provincia maxProvincia = null;
+    Integer maxCount = 0;
+
+    for (Hecho hecho : hechos) {
+      Provincia provincia = hecho.getProvincia();
+      contador.put(provincia, contador.getOrDefault(provincia, 0) + 1);
+    }
+
+    for (Map.Entry<Provincia, Integer> entry : contador.entrySet()) {
+      if (entry.getValue() > maxCount) {
+        maxProvincia = entry.getKey();
+        maxCount = entry.getValue();
+      }
+    }
+    this.provinciaConMasHechos = maxProvincia;
+
+  }
+
+  /*
+  * dentro de la coleccion
+  * tengo que hacer esto: ¿A qué hora del día ocurren la mayor cantidad de hechos de una cierta categoría?
+  * tengo el atributo  horaPicoHechos, como cada coleccion tiene su categoria lo unico que faltaria es buscar
+  * por horario ir iterando hecho por hecho y fijarse cual es la hora donde mas hechos ocurrieron
+  *
+  *
+  *
+  * */
+
+
 }
