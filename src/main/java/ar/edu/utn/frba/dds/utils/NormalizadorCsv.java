@@ -18,7 +18,7 @@ import java.util.List;
 
 
 //Codigo completamente hecho por chatGPT deberiamos revisarlo
-// y entender que mierda hace.
+
 
 //Esta normalizacion deberia ejecutarse a la hora de cargar el archivo.
 // Se lo normaliza a este formato:

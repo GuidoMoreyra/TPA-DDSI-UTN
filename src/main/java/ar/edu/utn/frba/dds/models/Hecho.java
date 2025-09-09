@@ -10,6 +10,7 @@ import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,7 @@ public class Hecho {
 
   /*atributo agregado para estadisticas*/
   private Provincia provincia = null;
+  private LocalTime horaHecho;
 
 
   public Hecho() {}
@@ -79,7 +81,7 @@ public class Hecho {
       String categoria,
       double latitud,
       double longitud,
-      LocalDate fechaDelHecho,
+      LocalDateTime fechaDelHecho,
       OrigenHecho origen,
       String contenidoMultimedia
   ) {
@@ -88,9 +90,10 @@ public class Hecho {
     this.descripcion = descripcion;
     this.categoria = categoria;
     this.coordenadas = new Coordenada(longitud, latitud);
-    this.fechaDelHecho = fechaDelHecho;
+    this.fechaDelHecho = fechaDelHecho.toLocalDate();
     this.origen = origen;
     this.provincia = this.establecerProvincia(this.coordenadas);
+    this.horaHecho = fechaDelHecho.toLocalTime();
   }
 
 

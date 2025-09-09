@@ -61,9 +61,14 @@ public final class Coleccion {
   /*
   * Desnormalizando:guardar estadísticas precalculadas en cada colección.
   * */
+  @Getter
   private Integer cantidadHechosReportados = 0;
+  @Getter
   private Provincia provinciaConMasHechos = Provincia.PROVINCIA_DESCONOCIDA;
-  private LocalTime horaPicoHechos = LocalTime.of(0,0,0);
+  @Getter
+  private Integer horaPicoHechos = 0;
+  @Getter
+  private String categoria;
 
   public Coleccion(
       Fuente fuente,
@@ -83,6 +88,8 @@ public final class Coleccion {
     criteriosDeCreacion.add(new CriterioLugar(localidad));
 
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
+
+    this.categoria = categoria;
 
 
   }
@@ -142,9 +149,9 @@ public final class Coleccion {
     cantidadHechosReportados = this.obtenerColeccion().size();
   }
 
-  public void setProvinciaConMasHechos( List<Hecho> hechos ) {
+  public void setProvinciaConMasHechos() {
 
-
+    List<Hecho> hechos = this.obtenerColeccion();
     Map<Provincia, Integer> contador = new HashMap<>();
     Provincia maxProvincia = null;
     Integer maxCount = 0;
@@ -169,10 +176,37 @@ public final class Coleccion {
   * tengo que hacer esto: ¿A qué hora del día ocurren la mayor cantidad de hechos de una cierta categoría?
   * tengo el atributo  horaPicoHechos, como cada coleccion tiene su categoria lo unico que faltaria es buscar
   * por horario ir iterando hecho por hecho y fijarse cual es la hora donde mas hechos ocurrieron
-  *
+  *Por el momento solo me da la hora de 0 a 23
   *
   *
   * */
+
+  public void calcularHoraPico() {
+
+    /*
+    * Map<hora,cantidadDehechos>
+    * */
+    Map<Integer, Integer> contadorHoras = new HashMap<>();
+    List<Hecho> hechos = this.obtenerColeccion();
+    hechos.forEach(hecho -> {
+      Integer hora = hecho.horaDelHecho().getHour();// obtenemos la hora del día (0-23)
+      contadorHoras.put(hora, contadorHoras.getOrDefault(hora, 0) + 1);
+
+    });
+
+
+    // Encontrar la hora con mayor cantidad de hechos
+    int maxHora = -1;
+    int maxCount = -1;
+    for (Map.Entry<Integer, Integer> entry : contadorHoras.entrySet()) {
+      if (entry.getValue() > maxCount) {
+        maxCount = entry.getValue();
+        maxHora = entry.getKey();
+      }
+    }
+
+    this.horaPicoHechos = maxHora; // guardamos la hora pico en la colección
+  }
 
 
 }
