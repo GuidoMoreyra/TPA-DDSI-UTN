@@ -53,7 +53,7 @@ public final class SolicitudesEliminacionRepository {
   *metodos para estadistica
   *¿Cuántas solicitudes de eliminación son spam?
   * */
-  public Long cantidadDeSolicitudesSpam(List<SolicitudEliminacion> solicitudesDeEliminacion){
+  public Long cantidadDeSolicitudesSpam(List<SolicitudEliminacion> solicitudesDeEliminacion) {
     DetectorDeSpamBasico detectorDeSpam = new DetectorDeSpamBasico();
 
     return solicitudesDeEliminacion.stream()

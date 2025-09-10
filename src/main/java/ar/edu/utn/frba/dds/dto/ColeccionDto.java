@@ -4,13 +4,14 @@ import ar.edu.utn.frba.dds.enums.Provincia;
 
 public class ColeccionDto {
 
-  private Integer cantidadHechosReportados;
+  private String categoriaConMasHechos;
   private Provincia provinciaConMasHechos;
   private Integer horaPicoHechos;
   private String categoria;
+  private Provincia provincia;
 
-  public Integer getCantidadHechosReportados() {
-    return cantidadHechosReportados;
+  public String getCategoriaConMasHechos() {
+    return categoriaConMasHechos;
   }
 
   public Provincia getProvinciaConMasHechos() {
@@ -25,8 +26,16 @@ public class ColeccionDto {
     return categoria;
   }
 
-  public void setCantidadHechosReportados(Integer cantidadHechosReportados) {
-    this.cantidadHechosReportados = cantidadHechosReportados;
+  public Provincia getProvincia() {
+    return provincia;
+  }
+
+  public void setProvincia(Provincia provincia) {
+    this.provincia = provincia;
+  }
+
+  public void setCategoriaConMasHechos(String categoriaConMasHechos) {
+    this.categoriaConMasHechos = categoriaConMasHechos;
   }
 
   public void setCategoria(String categoria) {
@@ -40,4 +49,13 @@ public class ColeccionDto {
   public void setProvinciaConMasHechos(Provincia provinciaConMasHechos) {
     this.provinciaConMasHechos = provinciaConMasHechos;
   }
+
+  public ColeccionDto(ColeccionDto dto) {
+    this.categoriaConMasHechos = dto.getCategoriaConMasHechos();
+    this.categoria = dto.getCategoria();
+    this.horaPicoHechos = dto.getHoraPicoHechos();
+    this.provincia = dto.getProvincia();
+  }
+
+  public ColeccionDto() {}
 }

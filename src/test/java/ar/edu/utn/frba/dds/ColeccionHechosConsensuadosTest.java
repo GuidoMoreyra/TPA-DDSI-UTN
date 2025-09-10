@@ -34,6 +34,7 @@ public class ColeccionHechosConsensuadosTest {
         -56,
         LocalDate.of(2022, 10, 29),
         OrigenHecho.ESTATICO,
+        null,
         null);
 
     hechoDos = new Hecho("incendio forestal esquel",
@@ -43,7 +44,7 @@ public class ColeccionHechosConsensuadosTest {
         -56,
         LocalDate.of(2022, 10, 25),
         OrigenHecho.ESTATICO,
-        null);
+        null,null);
 
     hechoTres = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -52,7 +53,7 @@ public class ColeccionHechosConsensuadosTest {
         -56,
         LocalDate.of(2022, 10, 30),
         OrigenHecho.ESTATICO,
-        null);
+        null,null);
 
 
     hechoUno.setLocalidad("esquel");

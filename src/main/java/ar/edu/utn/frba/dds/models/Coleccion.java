@@ -35,7 +35,7 @@ public final class Coleccion {
   private Long id;
 
 
-  @OneToOne
+  @Transient
   private  Fuente fuente;
 
   @Enumerated(EnumType.STRING)
@@ -173,8 +173,10 @@ public final class Coleccion {
 
   /*
   * dentro de la coleccion
-  * tengo que hacer esto: ¿A qué hora del día ocurren la mayor cantidad de hechos de una cierta categoría?
-  * tengo el atributo  horaPicoHechos, como cada coleccion tiene su categoria lo unico que faltaria es buscar
+  * tengo que hacer esto: ¿A qué hora del día ocurren la mayor
+  *  cantidad de hechos de una cierta categoría?
+  * tengo el atributo  horaPicoHechos, como cada coleccion tiene su
+  * categoria lo unico que faltaria es buscar
   * por horario ir iterando hecho por hecho y fijarse cual es la hora donde mas hechos ocurrieron
   *Por el momento solo me da la hora de 0 a 23
   *
@@ -189,7 +191,7 @@ public final class Coleccion {
     Map<Integer, Integer> contadorHoras = new HashMap<>();
     List<Hecho> hechos = this.obtenerColeccion();
     hechos.forEach(hecho -> {
-      Integer hora = hecho.horaDelHecho().getHour();// obtenemos la hora del día (0-23)
+      Integer hora = hecho.horaDelHecho().getHour(); // obtenemos la hora del día (0-23)
       contadorHoras.put(hora, contadorHoras.getOrDefault(hora, 0) + 1);
 
     });

@@ -3,6 +3,8 @@ package ar.edu.utn.frba.dds.dto;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.Data;
 
 @Data
@@ -28,6 +30,10 @@ public final class HechoCsvDto {
   public LocalDate fechaDelHecho;
 
   public String contenidoMultimedia = "";
+
+  @CsvDate("HH:mm:ss")
+  @CsvBindByName(column = "Hora_Hecho")
+  public LocalTime horaHecho;
 
   public String getTitulo() {
     return titulo;
@@ -55,6 +61,10 @@ public final class HechoCsvDto {
 
   public String getContenidoMultimedia() {
     return contenidoMultimedia;
+  }
+
+  public LocalTime getHoraHecho() {
+    return horaHecho;
   }
 
   public void setDescripcion(String descripcion) {

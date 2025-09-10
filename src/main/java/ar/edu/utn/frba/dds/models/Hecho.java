@@ -22,6 +22,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -62,13 +63,13 @@ public class Hecho {
   @Getter(AccessLevel.NONE)
 
 
-  @ElementCollection
-  @CollectionTable(name = "algoritmos_consensuados")
-  @Enumerated(EnumType.STRING)
+  @Transient
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
   /*atributo agregado para estadisticas*/
+  @Transient
   private Provincia provincia = null;
+
   private LocalTime horaHecho;
 
 
@@ -81,19 +82,20 @@ public class Hecho {
       String categoria,
       double latitud,
       double longitud,
-      LocalDateTime fechaDelHecho,
+      LocalDate fechaDelHecho,
       OrigenHecho origen,
-      String contenidoMultimedia
+      String contenidoMultimedia,
+      LocalTime horaDelHecho
   ) {
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
     this.coordenadas = new Coordenada(longitud, latitud);
-    this.fechaDelHecho = fechaDelHecho.toLocalDate();
+    this.fechaDelHecho = fechaDelHecho;
     this.origen = origen;
     this.provincia = this.establecerProvincia(this.coordenadas);
-    this.horaHecho = fechaDelHecho.toLocalTime();
+    this.horaHecho = horaDelHecho;
   }
 
 
@@ -181,7 +183,7 @@ public class Hecho {
   * de localDateTime o tambien tener un localTime como atributo para la hora
   * por el momento lo dejo asi despues lo cambio
   * */
-  public LocalTime horaDelHecho(){
+  public LocalTime horaDelHecho() {
     return LocalTime.now();
   }
 

@@ -73,7 +73,8 @@ public final class AdaptadorFuenteDemo {
         longitud,
         fechaOcurrido,
         origen,
-        contenidoMultimedia
+        contenidoMultimedia,
+        null
     );
   }
 

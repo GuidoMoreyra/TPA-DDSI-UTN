@@ -11,4 +11,11 @@ public class SolicitudSpamDto {
   public void setCantidadDeSolicitudSpam(Long cantidadDeSolicitudSpam) {
     this.cantidadDeSolicitudSpam = cantidadDeSolicitudSpam;
   }
+
+  public SolicitudSpamDto(SolicitudSpamDto solicitudSpamDto) {
+    this.cantidadDeSolicitudSpam = solicitudSpamDto.getCantidadDeSolicitudSpam();
+  }
+
+  public SolicitudSpamDto() {}
+
 }

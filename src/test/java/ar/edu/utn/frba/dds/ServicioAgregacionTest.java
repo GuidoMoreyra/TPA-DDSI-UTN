@@ -37,7 +37,7 @@ public class ServicioAgregacionTest {
         -56,
         LocalDate.of(2022, 10, 29),
         OrigenHecho.AGREGADOR_ESTATICO,
-        null);
+        null,null);
 
     Hecho hechoDos = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -46,7 +46,7 @@ public class ServicioAgregacionTest {
         -56,
         LocalDate.of(2022, 10, 25),
         OrigenHecho.AGREGADOR_ESTATICO,
-        null);
+        null,null);
 
     Hecho hechoTres = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -55,7 +55,7 @@ public class ServicioAgregacionTest {
         -56,
         LocalDate.of(2022, 10, 30),
         OrigenHecho.AGREGADOR_ESTATICO,
-        null);
+        null,null);
 
 
     hechoUno.setLocalidad("esquel");
@@ -69,7 +69,7 @@ public class ServicioAgregacionTest {
         -56,
         LocalDate.of(2022, 10, 29),
         OrigenHecho.AGREGADOR_DINAMICO,
-        null);
+        null,null);
 
     Hecho hechoCinco = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -78,7 +78,7 @@ public class ServicioAgregacionTest {
         -56,
         LocalDate.of(2022, 10, 25),
         OrigenHecho.AGREGADOR_DINAMICO,
-        null);
+        null,null);
 
     Hecho hechoSeis = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -87,7 +87,7 @@ public class ServicioAgregacionTest {
         -56,
         LocalDate.of(2022, 10, 30),
         OrigenHecho.AGREGADOR_DINAMICO,
-        null);
+        null,null);
 
 
     hechoCinco.setLocalidad("esquel");

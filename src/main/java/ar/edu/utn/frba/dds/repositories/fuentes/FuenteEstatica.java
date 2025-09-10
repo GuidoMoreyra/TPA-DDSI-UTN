@@ -54,7 +54,9 @@ public final class FuenteEstatica extends Fuente {
               dto.getLatitud(),
               dto.getFechaDelHecho(),
               OrigenHecho.ESTATICO,
-              dto.getContenidoMultimedia()
+              dto.getContenidoMultimedia(),
+              dto.getHoraHecho()
+
           ))
           .toList();
 

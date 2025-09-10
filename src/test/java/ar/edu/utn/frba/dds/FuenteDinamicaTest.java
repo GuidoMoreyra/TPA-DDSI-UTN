@@ -31,6 +31,7 @@ public class FuenteDinamicaTest {
         -56,
         LocalDate.of(2022, 10, 20),
         OrigenHecho.ESTATICO,
+        null,
         null
     );
 
@@ -42,6 +43,7 @@ public class FuenteDinamicaTest {
         -56,
         LocalDate.of(2022, 10, 21),
         OrigenHecho.ESTATICO,
+        null,
         null
     );
 
@@ -53,6 +55,7 @@ public class FuenteDinamicaTest {
         -56,
         LocalDate.of(2022, 10, 22),
         OrigenHecho.ESTATICO,
+        null,
         null
     );
 

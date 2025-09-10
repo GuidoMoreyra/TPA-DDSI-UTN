@@ -1,11 +1,24 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.contracts.Reporte;
+import ar.edu.utn.frba.dds.dto.ColeccionDto;
+import ar.edu.utn.frba.dds.dto.SolicitudSpamDto;
 import ar.edu.utn.frba.dds.enums.Provincia;
+import ar.edu.utn.frba.dds.models.reportes.ReporteColeccion;
+import ar.edu.utn.frba.dds.models.reportes.ReporteSolicitudElim;
 import ar.edu.utn.frba.dds.repositories.ColeccionRepositorio;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class ComponenteDeEstadisticas {
 
@@ -19,8 +32,9 @@ public class ComponenteDeEstadisticas {
   private Long cantidadSolicSpam;
 
 
-  public ComponenteDeEstadisticas(ColeccionRepositorio repositorioColeccion
-  , SolicitudesEliminacionRepository repoSolicitudesEliminacion, String categoria) {
+  public ComponenteDeEstadisticas(ColeccionRepositorio repositorioColeccion,
+                                  SolicitudesEliminacionRepository repoSolicitudesEliminacion,
+                                  String categoria) {
     this.repoColeccion = repositorioColeccion;
     this.repoSolicitudesEliminacion = repoSolicitudesEliminacion;
     this.categoriaBuscar = categoria;
@@ -28,32 +42,56 @@ public class ComponenteDeEstadisticas {
     this.provinciaSegunCategoria = Provincia.PROVINCIA_DESCONOCIDA;
     this.provinciaConMasHechos = null;
     this.categoriaConMasHechos = null;
-    this.horaDePicoSegunCategoria =0;
+    this.horaDePicoSegunCategoria = 0;
 
   }
 
-  public void actualizar(){
+  public void actualizar() {
 
     repoColeccion.getColecciones().forEach(coleccion -> {
       coleccion.cantidadHechosReportados();
       coleccion.calcularHoraPico();
-      coleccion.setProvinciaConMasHechos();});
+      coleccion.setProvinciaConMasHechos(); });
 
-    List<SolicitudEliminacion> solicitudEliminacions = repoSolicitudesEliminacion.getSolicitudes();
+    List<SolicitudEliminacion> solicitudEliminacions = repoSolicitudesEliminacion
+        .getSolicitudes();
 
-    this.provinciaConMasHechos = this.provinciaConMasHechos();
-    this.categoriaConMasHechos = this.categoriaConMasHechos();
-    this.provinciaSegunCategoria = this.provinciaConMasHechosDeCategoria(categoriaBuscar);
-    this.horaDePicoSegunCategoria = this.horaPicoDeCategoria(categoriaBuscar);
-    this.cantidadSolicSpam = repoSolicitudesEliminacion.cantidadDeSolicitudesSpam(solicitudEliminacions);
+    this.cantidadSolicSpam = repoSolicitudesEliminacion
+        .cantidadDeSolicitudesSpam(solicitudEliminacions);
+    this.provinciaConMasHechos = this.buscarProvinciaConMasHechos();
+    this.categoriaConMasHechos = this.buscarCategoriaConMasHechos();
+    this.provinciaSegunCategoria = this.buscarProvinciaConMasHechosDeCategoria(categoriaBuscar);
+    this.horaDePicoSegunCategoria = this.buscarHoraPicoDeCategoria(categoriaBuscar);
+
 
   }
 
-  public String categoriaConMasHechos() {
+  public Long getCantidadSolicSpam() {
+    return cantidadSolicSpam;
+  }
+
+  public String getCategoriaConMasHechos() {
+    return categoriaConMasHechos;
+  }
+
+  public Provincia getProvinciaConMasHechos() {
+    return provinciaConMasHechos;
+  }
+
+  public Provincia getProvinciaSegunCategoria() {
+    return provinciaSegunCategoria;
+  }
+
+  public Integer getHoraDePicoSegunCategoria() {
+    return horaDePicoSegunCategoria;
+  }
+
+  public String buscarCategoriaConMasHechos() {
     List<Coleccion> colecciones = repoColeccion.getColecciones();
     Map<String, Integer> contadorCategorias = new HashMap<>();
     // Buscar la categoría con máximo valor
     String categoriaMax = null;
+
     int maxCantidad = 0;
 
     for (Coleccion c : colecciones) {
@@ -74,7 +112,7 @@ public class ComponenteDeEstadisticas {
     return categoriaMax;
   }
 
-  public Provincia provinciaConMasHechosDeCategoria( String categoria) {
+  public Provincia buscarProvinciaConMasHechosDeCategoria(String categoria) {
     List<Coleccion> colecciones = repoColeccion.getColecciones()
         .stream().filter(coleccion ->
             coleccion.getCategoria().equals(categoria)).toList();
@@ -95,7 +133,7 @@ public class ComponenteDeEstadisticas {
         .orElse(Provincia.PROVINCIA_DESCONOCIDA);
   }
 
-  public Provincia provinciaConMasHechos() {
+  public Provincia buscarProvinciaConMasHechos() {
     List<Coleccion> colecciones = repoColeccion.getColecciones();
     Map<Provincia, Integer> contadorProvincias = new HashMap<>();
 
@@ -111,10 +149,10 @@ public class ComponenteDeEstadisticas {
         .orElse(Provincia.PROVINCIA_DESCONOCIDA);
   }
 
-  public int horaPicoDeCategoria( String categoria) {
+  public int buscarHoraPicoDeCategoria(String categoria) {
     Map<Integer, Integer> contadorHoras = new HashMap<>();
     List<Coleccion> colecciones = repoColeccion.getColecciones()
-        .stream().filter(coleccion ->coleccion.getCategoria().equals(categoria)).toList();
+        .stream().filter(coleccion -> coleccion.getCategoria().equals(categoria)).toList();
 
     colecciones.forEach(coleccion -> {
       Integer hora = coleccion.getHoraPicoHechos();
@@ -128,6 +166,59 @@ public class ComponenteDeEstadisticas {
         .orElse(-1); // -1 = sin resultados
   }
 
+  public ColeccionDto generarColeccionDto() {
+    ColeccionDto dto = new ColeccionDto();
+    dto.setCategoria(this.categoriaBuscar);
+    dto.setCategoriaConMasHechos(this.getCategoriaConMasHechos());
+    dto.setProvinciaConMasHechos(this.getProvinciaConMasHechos());
+    dto.setHoraPicoHechos(this.getHoraDePicoSegunCategoria());
+    dto.setProvincia(this.getProvinciaSegunCategoria());
 
+    return dto;
+  }
+
+  public String exportarReporteColeccion() {
+    ColeccionDto dto = this.generarColeccionDto();
+    Reporte reporteColeccion = new ReporteColeccion(dto);
+    String csv = reporteColeccion.generarCsv();
+    return csv;
+  }
+
+  public SolicitudSpamDto generarSolicitudSpamDto() {
+    SolicitudSpamDto dto = new SolicitudSpamDto();
+    dto.setCantidadDeSolicitudSpam(this.getCantidadSolicSpam());
+    return dto;
+  }
+
+  public String exportarSolicitudSpam() {
+    SolicitudSpamDto dto = this.generarSolicitudSpamDto();
+    Reporte reporteSolicitud = new ReporteSolicitudElim(dto);
+    return reporteSolicitud.generarCsv();
+  }
+
+  public void exportarCsvArchivo(String rutaArchivo, Reporte reporte) {
+    try {
+      File file = new File(rutaArchivo);
+      if (file.getParentFile() != null) {
+        boolean  ok = file.getParentFile().mkdirs();
+        if (!ok && !file.getParentFile().exists()) {
+          throw new IOException("No se puede crear los directorios "
+              + file.getParentFile());
+        }
+
+      }
+
+      try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+          new FileOutputStream(file), StandardCharsets.UTF_8))) {
+        writer.write(reporte.generarCsv());
+        System.out.println("CSV exportado en: " + rutaArchivo);
+      }
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
 }
+
+

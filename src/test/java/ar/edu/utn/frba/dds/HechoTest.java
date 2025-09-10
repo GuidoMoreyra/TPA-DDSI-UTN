@@ -27,7 +27,7 @@ public class HechoTest {
         -58.4,
         LocalDate.of(2023, 10, 5),
         OrigenHecho.ESTATICO,
-        "foto.png"
+        "foto.png",null
     );
 
     assertEquals("Incendio", hecho.getTitulo());
@@ -52,7 +52,7 @@ public class HechoTest {
         -58.4,
         LocalDate.of(2023, 10, 5),
         OrigenHecho.ESTATICO,
-        "foto.png"
+        "foto.png",null
     );
 
     CambiosHechoDto cambios = new CambiosHechoDto();
@@ -81,7 +81,7 @@ public class HechoTest {
         -58.4,
         LocalDate.of(2024, 1, 1),
         OrigenHecho.ESTATICO,
-        "imagen.jpg"
+        "imagen.jpg",null
     );
     String justificacion = "a".repeat(501);
     SolicitudEliminacion solicitudEliminacion = new SolicitudEliminacion(hecho, justificacion);
@@ -97,7 +97,7 @@ public class HechoTest {
     // Instancia real de Hecho
     Hecho hecho = new Hecho(
         "titulo", "descripcion", "categoria",
-        0.00, 0.00, LocalDate.now(), OrigenHecho.ESTATICO, ""
+        0.00, 0.00, LocalDate.now(), OrigenHecho.ESTATICO, "",null
     );
 
     CambiosHechoDto sugerencias = new CambiosHechoDto();

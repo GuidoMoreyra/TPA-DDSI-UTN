@@ -21,7 +21,7 @@ public class HechoPersistenciaTest implements SimplePersistenceTest {
         -58.4,
         LocalDate.of(2024, 1, 1),
         OrigenHecho.ESTATICO,
-        "imagen.jpg");
+        "imagen.jpg",null);
 
     entityManager().persist(hecho);
 
