@@ -5,10 +5,14 @@ import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Entity
+@DiscriminatorValue("Dinamica")
 public final class FuenteDinamica extends Fuente {
 
   @Override

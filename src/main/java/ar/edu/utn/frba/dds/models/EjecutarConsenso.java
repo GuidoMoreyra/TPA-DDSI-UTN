@@ -55,10 +55,10 @@ public class EjecutarConsenso {
         //me devuelve una lista de hechos que no se contiene el repo
         .filter((Hecho hecho) -> !repositorio.contiene(hecho))
         //a esos hechos los agrego al repo
-        .forEach(hecho -> repositorio.agregarHecho(hecho));
+        .forEach(repositorio::agregarHecho);
     //a todos los hechos los reproceso aplicandole tanto a viejos como nuevos
     //los algoritmos de consenso
-    repositorio.getHechos().forEach(hecho -> this.aplicarConsensos(hecho));
+    repositorio.getHechos().forEach(this::aplicarConsensos);
   }
 
   private void aplicarConsensos(Hecho unHecho) {
@@ -71,7 +71,7 @@ public class EjecutarConsenso {
     List<TipoDeConsenso> consensosActuales = algoritmos.stream()
         //cambio la firma de hechosActuales ahora se lo paso a estaConsensuado
         .filter(algoritmo -> algoritmo.estaConsensuado(unHecho, hechosActuales))
-        .map(algoritmo -> this.mapearTipo(algoritmo))
+        .map(this::mapearTipo)
         .toList();
 
     // Reemplazar los consensos anteriores por los consensos nuevos que se cumplen
@@ -97,7 +97,5 @@ public class EjecutarConsenso {
         .flatMap(fuente -> fuente.obtenerHechos().stream())
         .collect(Collectors.toList());
   }
-
-
 
 }

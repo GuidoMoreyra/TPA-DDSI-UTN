@@ -1,23 +1,23 @@
 package ar.edu.utn.frba.dds.contracts;
 
 import ar.edu.utn.frba.dds.models.Hecho;
+import lombok.Getter;
+
+import javax.persistence.*;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-
-
 
 @Entity
+@Table(name = "fuentes")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 public abstract class Fuente {
 
   @Id
-  @GeneratedValue
-  public Long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Getter
+  private Long id;
 
   public abstract List<Hecho> obtenerHechos();
- 
 }
+
+

@@ -12,44 +12,36 @@ import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
 import lombok.Getter;
 
+import javax.persistence.*;
 
 @Entity
+@Table(name = "colecciones")
 public final class Coleccion {
 
-  @Getter
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Getter
   private Long id;
 
-
-  @Transient
+  @Getter
+  @ManyToOne
   private  Fuente fuente;
 
   @Enumerated(EnumType.STRING)
+  @Column(name = "consenso")
   private TipoDeConsenso algoritmoDeconsenso;
 
-
-  /*
-  * Esto de aca seria un OneToMany
-  * Criterio seria una tabla de herencia
-  *porque los criterios son record y tienen parametros en el nombre de la clase
-  *
-  *
-  * */
-  @Transient
+  @ManyToMany
+  @JoinTable(
+      name = "colecciones_criterions",
+      joinColumns = @JoinColumn(name = "coleccion_id"),
+      inverseJoinColumns = @JoinColumn(name = "criterio_id")
+  )
   private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
 
   @Transient
@@ -89,12 +81,9 @@ public final class Coleccion {
 
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
 
-    this.categoria = categoria;
-
-
   }
 
-  public Coleccion() {}//por algun motivo me lo pide despues de hacer @Entity
+  public Coleccion() {}
 
   ////METODOS///
 
@@ -104,9 +93,19 @@ public final class Coleccion {
         .allMatch(criterio -> criterio.cumple(hecho));
   }
 
+  // TODO: Deprecar luego, el método de abajo (obtenerHechos) lo reemplaza porque va contra la DB
   public List<Hecho> obtenerColeccion() {
     return fuente
         .obtenerHechos()
+        .stream()
+        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+        .toList();
+  }
+
+  public List<Hecho> obtenerHechos() {
+    List<Hecho> hechos = HechosRepository.getInstance().getHechos();
+
+    return hechos
         .stream()
         .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
         .toList();
@@ -135,7 +134,6 @@ public final class Coleccion {
   }
 
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
-
     if (fechaInicial.isAfter(fechaFinal)) {
       throw new FechaException("fecha inicial no puede ser posterior a fecha final");
     }

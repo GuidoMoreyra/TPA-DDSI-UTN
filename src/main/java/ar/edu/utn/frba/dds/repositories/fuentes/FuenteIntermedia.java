@@ -3,10 +3,16 @@ package ar.edu.utn.frba.dds.repositories.fuentes;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.exceptions.FuenteProxyException;
 import ar.edu.utn.frba.dds.models.Hecho;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.List;
 
-public class FuenteIntermedia extends Fuente {
+@Entity
+@DiscriminatorValue("Intermedia")
+public final class FuenteIntermedia extends Fuente {
 
+  @Transient
   private  AdaptadorFuenteDemo fuenteQueSeUsa;
 
   public void configurarFuenteIntermedia(AdaptadorFuenteDemo fuenteQueSeUsa) {
