@@ -2,8 +2,18 @@ package ar.edu.utn.frba.dds.models.criterios;
 
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.models.Hecho;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
-public record CriterioLugar(String localidad) implements Criterio {
+@Entity
+@DiscriminatorValue("CriterioLugar")
+public class CriterioLugar extends Criterio {
+
+  private String localidad;
+
+  public CriterioLugar(String localidad) {
+    this.localidad = localidad;
+  }
 
   /// TODO - Aca deberiamos usar la api del mapa para ver si la localidad que
   ///   se paso al criterio  contiene la de la cordenada.

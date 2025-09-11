@@ -2,7 +2,9 @@ package ar.edu.utn.frba.dds.models;
 
 
 import lombok.Setter;
+import javax.persistence.Embeddable;
 
+@Embeddable
 public class Coordenada {
   public double longitud;
   public double latitud;

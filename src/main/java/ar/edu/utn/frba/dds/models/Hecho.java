@@ -26,6 +26,7 @@ public class Hecho {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Getter
   private Long id;
 
   private String titulo;
@@ -36,7 +37,7 @@ public class Hecho {
 
   private String contenidoMultimedia;
 
-  @Transient
+  @Embedded
   private Coordenada coordenadas;
 
   private LocalDate fechaDelHecho;
@@ -44,10 +45,13 @@ public class Hecho {
   private LocalDate fechaCreacion = LocalDate.now();
 
   @Setter
+  @Enumerated(EnumType.STRING)
+  @Column(name = "origen")
   private OrigenHecho origen;
   @Setter
   @Getter(AccessLevel.NONE)
-  @Transient
+  @ElementCollection
+  @Column(name = "Consenso")
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
   public Hecho() {}

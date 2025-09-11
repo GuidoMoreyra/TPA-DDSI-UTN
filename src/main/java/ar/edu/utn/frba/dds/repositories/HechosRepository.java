@@ -2,11 +2,13 @@ package ar.edu.utn.frba.dds.repositories;
 
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class HechosRepository {
+
+public final class HechosRepository implements WithSimplePersistenceUnit {
   private static final HechosRepository INSTANCE = new HechosRepository();
   private final List<Hecho> hechos = new ArrayList<>();
 
@@ -16,28 +18,38 @@ public final class HechosRepository {
     return INSTANCE;
   }
 
-
+  @SuppressWarnings("unchecked")
   public List<Hecho> getHechos() {
-    return Collections.unmodifiableList(hechos);
+    //return Collections.unmodifiableList(hechos);
+    return entityManager()
+        .createQuery("from hechos")
+        .getResultList();
   }
 
+  @SuppressWarnings("unchecked")
   public void agregarHecho(Hecho hecho) {
-    hechos.add(hecho);
+    //hechos.add(hecho);
+    entityManager().persist(hecho);
+
   }
 
   public void limpiar() { //para testear
     this.hechos.clear();
   }
 
+  @SuppressWarnings("unchecked")
   public boolean contiene(Hecho hecho) {
-    return this.hechos.stream().anyMatch((Hecho h) -> h.comparacionRigurosa(hecho));
+    Hecho hechoEncontrado = entityManager()
+        .find(Hecho.class, hecho.getId());
+
+    return hechoEncontrado != null;
+
   }
 
   public Boolean verificaConsenso(Hecho hechoAverificar, TipoDeConsenso consenso) {
     if (consenso == null) {
       return true;
     }
-
 
     for (Hecho hechoDelRepositorio : this.hechos) {
       if (hechoDelRepositorio.comparacionRigurosa(hechoAverificar)) {

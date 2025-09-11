@@ -13,14 +13,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
-
+@Entity
 public final class Coleccion {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
   @Getter
+  @ManyToOne
   private  Fuente fuente;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "consenso")
   private TipoDeConsenso algoritmoDeconsenso;
+  @ManyToMany
   private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
+  @Transient
   private final HechosRepository repositorio = HechosRepository.getInstance();
 
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia

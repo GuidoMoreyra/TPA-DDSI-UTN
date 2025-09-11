@@ -13,15 +13,22 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @AllArgsConstructor
-public final class FuenteEstatica implements Fuente {
+@Entity
+@DiscriminatorValue("Estatica")
+public final class FuenteEstatica extends Fuente {
 
+  @Transient
   private final String archivo;
 
   /// Se asume que los archivos fueron previamente normalizados.
   /// La ruta del archivo debe ser src/main/resources,
   ///  si no se lanzara una exepcion de tipo InvalidPathException.
+  ///
   @Override
   public List<Hecho> obtenerHechos() {
 

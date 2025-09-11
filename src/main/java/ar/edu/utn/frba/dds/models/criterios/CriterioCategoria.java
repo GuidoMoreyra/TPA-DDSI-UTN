@@ -2,9 +2,20 @@ package ar.edu.utn.frba.dds.models.criterios;
 
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.models.Hecho;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import java.awt.*;
 import java.util.Map;
 
-public record CriterioCategoria(String categoria) implements Criterio {
+@Entity
+@DiscriminatorValue("CriterioCategoria")
+public class CriterioCategoria extends Criterio {
+
+  private String categoria;
+
+  public CriterioCategoria(String categoria) {
+    this.categoria = categoria;
+  }
 
   @Override
   public Boolean cumple(Hecho hecho) {
