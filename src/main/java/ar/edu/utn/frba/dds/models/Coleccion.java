@@ -21,6 +21,7 @@ public final class Coleccion {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Getter
   private Long id;
 
   @Getter
@@ -76,9 +77,19 @@ public final class Coleccion {
         .allMatch(criterio -> criterio.cumple(hecho));
   }
 
+  // TODO: Deprecar luego, el método de abajo (obtenerHechos) lo reemplaza porque va contra la DB
   public List<Hecho> obtenerColeccion() {
     return fuente
         .obtenerHechos()
+        .stream()
+        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+        .toList();
+  }
+
+  public List<Hecho> obtenerHechos() {
+    List<Hecho> hechos = HechosRepository.getInstance().getHechos();
+
+    return hechos
         .stream()
         .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
         .toList();
@@ -107,7 +118,6 @@ public final class Coleccion {
   }
 
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
-
     if (fechaInicial.isAfter(fechaFinal)) {
       throw new FechaException("fecha inicial no puede ser posterior a fecha final");
     }
