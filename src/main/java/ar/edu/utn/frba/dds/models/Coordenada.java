@@ -1,9 +1,12 @@
 package ar.edu.utn.frba.dds.models;
 
+import static ar.edu.utn.frba.dds.enums.Provincia.PROVINCIA_DESCONOCIDA;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import ar.edu.utn.frba.dds.enums.Provincia;
 import lombok.Setter;
 
 
@@ -36,6 +39,17 @@ public class Coordenada {
   
   public String getLocalidad() {
     return localidad;
+  }
+
+  public Provincia obtenerProvincia() {
+    for (Provincia p : Provincia.values()) {
+      if (p != PROVINCIA_DESCONOCIDA
+          && p.contiene(this.getLatitud(), this.getLongitud())) {
+        return p;
+      }
+    }
+    return PROVINCIA_DESCONOCIDA;
+
   }
 
 

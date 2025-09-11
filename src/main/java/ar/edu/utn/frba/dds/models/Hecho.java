@@ -22,6 +22,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -61,8 +62,6 @@ public class Hecho {
 
   @Setter
   @Getter(AccessLevel.NONE)
-
-
   @Transient
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
@@ -94,7 +93,7 @@ public class Hecho {
     this.coordenadas = new Coordenada(longitud, latitud);
     this.fechaDelHecho = fechaDelHecho;
     this.origen = origen;
-    this.provincia = this.establecerProvincia(this.coordenadas);
+    this.provincia = this.establecerProvincia();
     this.horaHecho = horaDelHecho;
   }
 
@@ -173,18 +172,13 @@ public class Hecho {
   }
 
   /*metodo para estadisticas*/
-  public Provincia establecerProvincia(Coordenada coordenada) {
+  public Provincia establecerProvincia() {
 
-    return Provincia.obtenerProvinciaDesdeCoordenada(this.coordenadas);
+    return this.coordenadas.obtenerProvincia();
   }
 
-  /*
-  * tendria que cambiar el constructor para que sea
-  * de localDateTime o tambien tener un localTime como atributo para la hora
-  * por el momento lo dejo asi despues lo cambio
-  * */
   public LocalTime horaDelHecho() {
-    return LocalTime.now();
+    return this.horaHecho;
   }
 
 

@@ -48,15 +48,7 @@ public enum Provincia {
         && lon >= lonMin && lon <= lonMax;
   }
 
-  public static Provincia obtenerProvinciaDesdeCoordenada(Coordenada coordenada) {
-    for (Provincia p : Provincia.values()) {
-      if (p != PROVINCIA_DESCONOCIDA
-          && p.contiene(coordenada.getLatitud(), coordenada.getLongitud())) {
-        return p;
-      }
-    }
-    return PROVINCIA_DESCONOCIDA;
-  }
 }
+
 
 

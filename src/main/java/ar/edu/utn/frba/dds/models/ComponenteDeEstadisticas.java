@@ -8,13 +8,7 @@ import ar.edu.utn.frba.dds.models.reportes.ReporteColeccion;
 import ar.edu.utn.frba.dds.models.reportes.ReporteSolicitudElim;
 import ar.edu.utn.frba.dds.repositories.ColeccionRepositorio;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
+import ar.edu.utn.frba.dds.utils.ExportadorCsv;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -177,7 +171,7 @@ public class ComponenteDeEstadisticas {
     return dto;
   }
 
-  public String exportarReporteColeccion() {
+  public String generarReporteColeccion() {
     ColeccionDto dto = this.generarColeccionDto();
     Reporte reporteColeccion = new ReporteColeccion(dto);
     String csv = reporteColeccion.generarCsv();
@@ -190,34 +184,18 @@ public class ComponenteDeEstadisticas {
     return dto;
   }
 
-  public String exportarSolicitudSpam() {
+  public String generarSolicitudSpam() {
     SolicitudSpamDto dto = this.generarSolicitudSpamDto();
     Reporte reporteSolicitud = new ReporteSolicitudElim(dto);
     return reporteSolicitud.generarCsv();
   }
 
-  public void exportarCsvArchivo(String rutaArchivo, Reporte reporte) {
-    try {
-      File file = new File(rutaArchivo);
-      if (file.getParentFile() != null) {
-        boolean  ok = file.getParentFile().mkdirs();
-        if (!ok && !file.getParentFile().exists()) {
-          throw new IOException("No se puede crear los directorios "
-              + file.getParentFile());
-        }
-
-      }
-
-      try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-          new FileOutputStream(file), StandardCharsets.UTF_8))) {
-        writer.write(reporte.generarCsv());
-        System.out.println("CSV exportado en: " + rutaArchivo);
-      }
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public void exportarReporte(String rutaReporte, Reporte reporte) {
+    ExportadorCsv exportadorCsv = new ExportadorCsv();
+    exportadorCsv.exportarCsvArchivo(rutaReporte, reporte);
   }
+
+
 
 }
 
