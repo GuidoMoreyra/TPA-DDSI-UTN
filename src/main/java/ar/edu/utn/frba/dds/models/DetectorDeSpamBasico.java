@@ -86,26 +86,6 @@ public final class DetectorDeSpamBasico implements DetectorDeSpam {
       tfidf.put(palabra, tfValor * idf);
     }
 
-    /*
-    for (String palabra : tf.keySet()) {
-      int frecuenciaEnDocumento =
-          (int) corpus.stream()
-              .filter(documento -> tokenizar(documento).contains(palabra))
-              .count();
-
-      double idf = Math.log(
-          (double) (corpus.size() + 1) / (frecuenciaEnDocumento + 1)
-      );
-
-      tfidf.put(
-          palabra,
-          tf.get(palabra) * idf
-      );
-
-
-    }
-    */
-
     return tfidf;
   }
 

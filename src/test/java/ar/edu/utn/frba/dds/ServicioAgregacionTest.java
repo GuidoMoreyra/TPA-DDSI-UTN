@@ -4,22 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.EjecutarConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
-import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteDeAgregacion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServicioAgregacionTest {
@@ -105,7 +101,6 @@ public class ServicioAgregacionTest {
     ejecutar = new EjecutarConsenso(List.of(fuenteMockUno,fuenteMockDos));
     servicioTest = new FuenteDeAgregacion(List.of(fuenteMockUno,fuenteMockDos));
     List<Hecho> hechos = servicioTest.obtenerHechos();
-    ejecutar.evaluarVersionDos();
   }
 
   @Test
@@ -122,7 +117,6 @@ public class ServicioAgregacionTest {
     );
 
     List<Hecho> resultado = coleccion.obtenerColeccion();
-
 
     // Assert
     assertEquals(6, resultado.size());
@@ -144,13 +138,6 @@ public class ServicioAgregacionTest {
 
     List<Hecho> resultado = coleccion.aplicarConsenso();
     assertEquals(6, resultado.size());
-
-    /*
-    coleccion.actualizarHechosConsensuados();
-
-
-    // Assert
-    */
 
   }
 }

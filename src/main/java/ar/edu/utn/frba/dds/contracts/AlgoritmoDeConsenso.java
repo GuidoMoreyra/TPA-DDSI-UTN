@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface AlgoritmoDeConsenso {
 
-  public boolean estaConsensuado(Hecho hecho);
+  boolean estaConsensuado(Hecho hecho);
 
-  public boolean estaConsensuado(Hecho hecho, List<Hecho> hechosRepositorio);
+  boolean estaConsensuado(Hecho hecho, List<Hecho> hechosRepositorio);
 
 }

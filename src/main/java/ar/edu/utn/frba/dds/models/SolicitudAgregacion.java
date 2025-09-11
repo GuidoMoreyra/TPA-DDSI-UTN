@@ -2,22 +2,19 @@ package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+
+import javax.persistence.*;
 
 @Getter
 @SuppressFBWarnings("EI_EXPOSE_REP")
 @Entity
+@Table(name = "solicitudes_agregacion")
+@AllArgsConstructor
 public final class SolicitudAgregacion {
 
   @Id
@@ -26,24 +23,25 @@ public final class SolicitudAgregacion {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "estado")
-  private EstadoSolicitudAgregacion estado;
+  private EstadoSolicitudAgregacion estado = EstadoSolicitudAgregacion.PENDIENTE;
+
   @OneToOne
-  private final Hecho hecho;
-  private final Boolean esAnonimo;
-  private final LocalDate fechaCreacion;
+  private Hecho hecho;
 
+  @Column(name = "es_anonimo")
+  private Boolean esAnonimo;
 
-  //CONSTRUCTOR
+  @Column(name = "fecha_creacion")
+  private LocalDate fechaCreacion = LocalDate.now();
+
+  public SolicitudAgregacion() {}
+
   public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo) {
-    this.estado = EstadoSolicitudAgregacion.PENDIENTE;
     this.hecho = hecho;
     this.esAnonimo = esAnonimo;
-    this.fechaCreacion = LocalDate.now();
   }
 
-  // Constructor adicional solo para testeo
   public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo, LocalDate fechaCreacion) {
-    this.estado = EstadoSolicitudAgregacion.PENDIENTE;
     this.hecho = hecho;
     this.esAnonimo = esAnonimo;
     this.fechaCreacion = fechaCreacion;
@@ -68,19 +66,4 @@ public final class SolicitudAgregacion {
     return !esAnonimo && fechaCreacion.isAfter(LocalDate.now().minusDays(7));
   }
 
-  public EstadoSolicitudAgregacion getEstado() {
-    return estado;
-  }
-
-  public Hecho getHecho() {
-    return hecho;
-  }
-
-  public Boolean getEsAnonimo() {
-    return esAnonimo;
-  }
-
-  public LocalDate getFechaCreacion() {
-    return fechaCreacion;
-  }
 }

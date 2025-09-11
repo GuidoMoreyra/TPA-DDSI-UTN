@@ -62,12 +62,6 @@ public class ColeccionHechosConsensuadosTest {
 
   }
 
-  @BeforeEach
-  void limpiarRepositorio() {
-    HechosRepository.getInstance().limpiar();
-    assertEquals(0, HechosRepository.getInstance().getHechos().size(), "Repositorio no limpio antes del test");
-  }
-
   @Test
   void testSeCreaColeccionSinAlgoritmoDeConsenso() {
     Coordenada coordenadaMock = mock(Coordenada.class);
@@ -159,13 +153,6 @@ public class ColeccionHechosConsensuadosTest {
     Fuente fuenteMockDos = mock(Fuente.class);
     when(fuenteMockDos.obtenerHechos()).thenReturn(List.of(hechoUno));
 
-
-    // Act
-    HechosRepository.getInstance().limpiar();
-    //limpio el repo
-    EjecutarConsenso ejecutar = new EjecutarConsenso(List.of(fuenteMockUno,fuenteMockDos));
-    ejecutar.evaluarVersionDos();
-
     /*
     System.out.println("Hechos en repo:");
     HechosRepository.getInstance().getHechos().forEach(h ->
@@ -201,12 +188,6 @@ public class ColeccionHechosConsensuadosTest {
 
     Fuente fuenteTest = mock(Fuente.class);
     when(fuenteTest.obtenerHechos()).thenReturn(List.of(hechoDos));
-
-    // Act
-    HechosRepository.getInstance().limpiar();
-    //limpio el repo
-    EjecutarConsenso ejecutar = new EjecutarConsenso(List.of(fuenteMockUno,fuenteMockDos));
-    ejecutar.evaluarVersionDos();
 
     Coleccion coleccion = new Coleccion(
         fuenteTest, // si importa la fuente

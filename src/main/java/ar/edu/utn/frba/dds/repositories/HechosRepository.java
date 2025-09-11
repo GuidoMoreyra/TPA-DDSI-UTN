@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 public final class HechosRepository implements WithSimplePersistenceUnit {
   private static final HechosRepository INSTANCE = new HechosRepository();
   private final List<Hecho> hechos = new ArrayList<>();
@@ -22,7 +21,7 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
   public List<Hecho> getHechos() {
     //return Collections.unmodifiableList(hechos);
     return entityManager()
-        .createQuery("from hechos")
+        .createQuery("from Hecho", Hecho.class)
         .getResultList();
   }
 

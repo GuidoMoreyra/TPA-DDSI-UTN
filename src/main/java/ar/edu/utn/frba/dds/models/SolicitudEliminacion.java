@@ -1,23 +1,15 @@
 package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+
+import javax.persistence.*;
 
 @Getter
 @SuppressFBWarnings("EI_EXPOSE_REP")
 @Entity
+@Table(name = "solicitudes_eliminacion")
 public final class SolicitudEliminacion {
 
   @Id
@@ -27,9 +19,10 @@ public final class SolicitudEliminacion {
   @Enumerated(EnumType.STRING)
   @Column(name = "estado")
   private EstadoSolicitudEliminacion estado = EstadoSolicitudEliminacion.PENDIENTE;
+
   @OneToOne
-  private final Hecho hecho;
-  private final String justificacion;
+  private Hecho hecho;
+  private String justificacion;
 
   public SolicitudEliminacion(
        Hecho hecho,
@@ -45,9 +38,7 @@ public final class SolicitudEliminacion {
     this.justificacion = justificacion;
   }
 
-  public Hecho getHecho() {
-    return hecho;
-  }
+  public SolicitudEliminacion() {}
 
   public void modificarEstado(EstadoSolicitudEliminacion nuevoEstado) {
     this.estado = nuevoEstado;
@@ -57,11 +48,4 @@ public final class SolicitudEliminacion {
     return this.hecho.equals(hecho);
   }
 
-  public String getJustificacion() {
-    return justificacion;
-  }
-
-  public EstadoSolicitudEliminacion getEstado() {
-    return estado;
-  }
 }

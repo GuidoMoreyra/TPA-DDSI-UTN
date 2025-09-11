@@ -35,27 +35,31 @@ public class Hecho {
 
   private String categoria;
 
+  @Column(name = "contenido_multimedia")
   private String contenidoMultimedia;
 
   @Embedded
   private Coordenada coordenadas;
 
+  @Column(name = "fecha_hecho")
   private LocalDate fechaDelHecho;
 
-  private LocalDate fechaCreacion = LocalDate.now();
+  @Column(name = "fecha_creacion", updatable = false)
+  private final LocalDate fechaCreacion = LocalDate.now();
 
   @Setter
   @Enumerated(EnumType.STRING)
   @Column(name = "origen")
   private OrigenHecho origen;
+
   @Setter
   @Getter(AccessLevel.NONE)
   @ElementCollection
-  @Column(name = "Consenso")
+  @CollectionTable(joinColumns = @JoinColumn(name = "hecho_id"))
+  @Column(name = "algoritmo")
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
   public Hecho() {}
-
 
   public Hecho(
       String titulo,
@@ -90,10 +94,8 @@ public class Hecho {
     return SolicitudesEliminacionRepository
         .getInstance()
         .obtenerSolicitudesConEstado(EstadoSolicitudEliminacion.APROBADO)
-
         .stream()
         .noneMatch(solicitud -> solicitud.esParaElHecho(this));
-    //busca que no tenga solicutud de eliminacion aprobada
   }
 
   public void aplicarCambios(CambiosHechoDto cambios) {
@@ -109,9 +111,6 @@ public class Hecho {
     if (cambios.getContenidoMultimedia() != null) {
       this.contenidoMultimedia = cambios.getContenidoMultimedia();
     }
-    //    if (cambios.getCoordenadas() != null) {
-    //      this.coordenadas = cambios.getCoordenadas();
-    //    }
     if (cambios.getOrigen() != null) {
       this.origen = cambios.getOrigen();
     }
@@ -149,6 +148,5 @@ public class Hecho {
   public void setLocalidad(String localidad) {
     this.coordenadas.setLocalidad(localidad);
   }
-
 
 }
