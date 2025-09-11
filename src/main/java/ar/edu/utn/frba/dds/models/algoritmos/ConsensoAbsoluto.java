@@ -3,14 +3,12 @@ package ar.edu.utn.frba.dds.models.algoritmos;
 import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ConsensoAbsoluto implements AlgoritmoDeConsenso {
 
-  private List<Fuente> fuentesActivas;
+  private final List<Fuente> fuentesActivas;
 
   public ConsensoAbsoluto(List<Fuente> fuentesActivas) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);

@@ -1,13 +1,12 @@
 package ar.edu.utn.frba.dds.contracts;
 
-import java.util.List;
-
 import ar.edu.utn.frba.dds.models.Hecho;
+import java.util.List;
 
 public interface AlgoritmoDeConsenso {
 
+  boolean estaConsensuado(Hecho hecho);
 
-  public boolean estaConsensuado(Hecho hecho, List<Hecho> hechosRepositorio);
-
+  boolean estaConsensuado(Hecho hecho, List<Hecho> hechosRepositorio);
 
 }

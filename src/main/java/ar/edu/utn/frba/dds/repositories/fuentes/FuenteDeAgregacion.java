@@ -6,9 +6,14 @@ import ar.edu.utn.frba.dds.models.Hecho;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 
-
-public final class FuenteDeAgregacion implements Fuente {
+@Entity
+@DiscriminatorValue("Agregacion")
+public final class FuenteDeAgregacion extends Fuente {
+  @Transient
   private final List<Fuente> fuentes;
 
   public FuenteDeAgregacion(List<Fuente> fuentes) {

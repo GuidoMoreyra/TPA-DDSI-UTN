@@ -95,7 +95,7 @@ public class ColeccionTest {
     when(hecho1.getCoordenadas()).thenReturn(coordenadaMock);
     when(hecho2.getCoordenadas()).thenReturn(coordenadaMock);
     when(hecho3.getCoordenadas()).thenReturn(coordenadaMock);
-    when(criterioLugarMock.localidad()).thenReturn("Buenos Aires");
+    when(criterioLugarMock.getLocalidad()).thenReturn("Buenos Aires");
 
     when(hecho1.getCoordenadas().getLocalidad()).thenReturn("Buenos Aires");
     when(hecho2.getCoordenadas().getLocalidad()).thenReturn("Buenos Aires");
