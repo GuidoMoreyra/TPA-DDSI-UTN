@@ -44,7 +44,7 @@ public class EjecutarConsenso {
     //Aca da error por que todavia no se cambiaron los algoritmos
     //                               para utilizar el repositorio
     this.algoritmos = List.of(
-        new ConsensoAbsoluto(),
+        new ConsensoAbsoluto(fuentesActivas),
         new MayoriaSimple(fuentesActivas),
         new MultiplesMenciones()
     );

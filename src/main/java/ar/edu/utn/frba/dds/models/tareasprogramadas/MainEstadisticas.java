@@ -3,8 +3,7 @@ package ar.edu.utn.frba.dds.models.tareasprogramadas;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Coleccion;
-import ar.edu.utn.frba.dds.repositories.ColeccionRepositorio;
-import ar.edu.utn.frba.dds.repositories.fuentes.FuenteDinamica;
+import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
 import java.time.LocalDate;
 
@@ -33,7 +32,6 @@ public class MainEstadisticas {
         TipoDeConsenso.MAYORIA_SIMPLE
     );
 
-    ColeccionRepositorio repo = ColeccionRepositorio.getInstance();
-    repo.agregarColeccion(coleccion);
+
   }
 }

@@ -63,7 +63,7 @@ public class Hecho {
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
   /*atributo agregado para estadisticas*/
-  @Transient
+  @Enumerated(EnumType.STRING)
   private Provincia provincia = null;
 
   private LocalTime horaHecho;

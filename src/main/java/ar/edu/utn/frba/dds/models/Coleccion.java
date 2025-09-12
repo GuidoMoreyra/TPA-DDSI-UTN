@@ -56,8 +56,11 @@ public final class Coleccion {
   @Getter
   private Integer cantidadHechosReportados = 0;
   @Getter
+  @Enumerated(EnumType.STRING)
+  @Column(name = "provincia_con_mas_hechos")
   private Provincia provinciaConMasHechos = Provincia.PROVINCIA_DESCONOCIDA;
   @Getter
+  @Column(name = "hora_pico")
   private Integer horaPicoHechos = 0;
   @Getter
   private String categoria;
@@ -139,9 +142,8 @@ public final class Coleccion {
     }
   }
 
-  /*
-  * metodos para calcular los atributos de reporte
-  * */
+
+  // metodos para calcular los atributos de reporte
 
   public void cantidadHechosReportados() {
     cantidadHechosReportados = this.obtenerColeccion().size();
@@ -150,6 +152,7 @@ public final class Coleccion {
   public void setProvinciaConMasHechos() {
 
     List<Hecho> hechos = this.obtenerColeccion();
+    // provincia, cantidadDeveces que aparece
     Map<Provincia, Integer> contador = new HashMap<>();
     Provincia maxProvincia = null;
     Integer maxCount = 0;
@@ -169,23 +172,11 @@ public final class Coleccion {
 
   }
 
-  /*
-  * dentro de la coleccion
-  * tengo que hacer esto: ¿A qué hora del día ocurren la mayor
-  *  cantidad de hechos de una cierta categoría?
-  * tengo el atributo  horaPicoHechos, como cada coleccion tiene su
-  * categoria lo unico que faltaria es buscar
-  * por horario ir iterando hecho por hecho y fijarse cual es la hora donde mas hechos ocurrieron
-  *Por el momento solo me da la hora de 0 a 23
-  *
-  *
-  * */
 
   public void calcularHoraPico() {
 
-    /*
-    * Map<hora,cantidadDehechos>
-    * */
+    //Map<hora del dia (0-23),cantidadDehechos>
+
     Map<Integer, Integer> contadorHoras = new HashMap<>();
     List<Hecho> hechos = this.obtenerColeccion();
     hechos.forEach(hecho -> {
