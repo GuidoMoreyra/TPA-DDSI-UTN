@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import lombok.Getter;
 
 @Getter
-public final class SolicitudesAgregacionRepository {
+public final class SolicitudesAgregacionRepository implements WithSimplePersistenceUnit {
   private static final SolicitudesAgregacionRepository INSTANCE =
       new SolicitudesAgregacionRepository();
 
@@ -21,18 +22,23 @@ public final class SolicitudesAgregacionRepository {
     return INSTANCE;
   }
 
+  @SuppressWarnings("unchecked")
   public List<SolicitudAgregacion> getSolicitudes() {
-    return Collections.unmodifiableList(solicitudes);
+    return entityManager()
+        .createQuery("from SolicitudAgregacion", SolicitudAgregacion.class)
+        .getResultList();
   }
 
+  @SuppressWarnings("unchecked")
   public List<SolicitudAgregacion> obtenerSolicitudesConEstado(EstadoSolicitudAgregacion estado) {
-    return solicitudes
-        .stream()
-        .filter(s -> Objects.equals(s.getEstado(), estado))
-        .toList();
+    return entityManager()
+        .createQuery("from solicitudagregacion where estado = :estado")
+        .setParameter("estado", estado)
+        .getResultList();
   }
 
+  @SuppressWarnings("unchecked")
   public void agregarSolicitud(SolicitudAgregacion solicitud) {
-    solicitudes.add(solicitud);
+    entityManager().persist(solicitud);
   }
 }

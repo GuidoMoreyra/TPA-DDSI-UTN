@@ -21,11 +21,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ColeccionHechosConsensuadosTest {
+  private HechosRepository repoHechos;
   private Hecho hechoUno;
   private Hecho hechoDos;
   private Hecho hechoTres;
   @BeforeEach
   void setUp() {
+
+    repoHechos = HechosRepository.getInstance();
 
     hechoUno = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -59,6 +62,10 @@ public class ColeccionHechosConsensuadosTest {
     hechoDos.setLocalidad("esquel");
     hechoTres.setLocalidad("esquel");
 
+    //se persisten los hechos
+    repoHechos.agregarHecho(hechoUno);
+    repoHechos.agregarHecho(hechoDos);
+    repoHechos.agregarHecho(hechoTres);
 
   }
 
@@ -152,13 +159,10 @@ public class ColeccionHechosConsensuadosTest {
   @DisplayName("Devuelve los hechos consensuados que cumplen los criterios creacionales")
   void testObtenerHechosConsensuados() {
 
-
-
     Fuente fuenteMockUno = mock(Fuente.class);
     when(fuenteMockUno.obtenerHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno));
     Fuente fuenteMockDos = mock(Fuente.class);
     when(fuenteMockDos.obtenerHechos()).thenReturn(List.of(hechoUno));
-
 
     // Act
     HechosRepository.getInstance().limpiar();

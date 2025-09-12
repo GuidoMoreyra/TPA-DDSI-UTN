@@ -29,6 +29,7 @@ public final class SolicitudEliminacion {
   private EstadoSolicitudEliminacion estado = EstadoSolicitudEliminacion.PENDIENTE;
   @OneToOne
   private final Hecho hecho;
+  @Column(length = 2000)
   private final String justificacion;
 
   public SolicitudEliminacion(

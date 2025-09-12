@@ -17,6 +17,7 @@ public class EjecutarConsenso {
   private final List<Hecho> hechosMezclados;
   private final HechosRepository repositorio = HechosRepository.getInstance();
 
+
   public EjecutarConsenso(List<Fuente> fuentesActivas) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);
     this.hechosMezclados = new ArrayList<>(this.agregarHechos());

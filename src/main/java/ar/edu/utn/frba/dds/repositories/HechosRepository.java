@@ -20,15 +20,13 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
 
   @SuppressWarnings("unchecked")
   public List<Hecho> getHechos() {
-    //return Collections.unmodifiableList(hechos);
     return entityManager()
-        .createQuery("from hechos")
+        .createQuery("from Hecho", Hecho.class)
         .getResultList();
   }
 
   @SuppressWarnings("unchecked")
   public void agregarHecho(Hecho hecho) {
-    //hechos.add(hecho);
     entityManager().persist(hecho);
 
   }

@@ -27,9 +27,12 @@ public class ServicioAgregacionTest {
   public Fuente fuenteMockUno = mock(Fuente.class);
   public Fuente fuenteMockDos = mock(Fuente.class);
   public  EjecutarConsenso ejecutar;
+  private HechosRepository repoHechos;
 
   @BeforeEach
   void setup(){
+    repoHechos = HechosRepository.getInstance();
+
     Hecho hechoUno = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
         "Incendio Forestal",
@@ -94,6 +97,12 @@ public class ServicioAgregacionTest {
     hechoCuatro.setLocalidad("esquel");
     hechoSeis.setLocalidad("esquel");
 
+    repoHechos.agregarHecho(hechoUno);
+    repoHechos.agregarHecho(hechoDos);
+    repoHechos.agregarHecho(hechoTres);
+    repoHechos.agregarHecho(hechoCuatro);
+    repoHechos.agregarHecho(hechoCinco);
+    repoHechos.agregarHecho(hechoSeis);
 
     when(fuenteMockUno.obtenerHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno));
 

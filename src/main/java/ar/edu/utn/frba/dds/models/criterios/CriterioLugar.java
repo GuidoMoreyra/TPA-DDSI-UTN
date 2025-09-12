@@ -2,13 +2,14 @@ package ar.edu.utn.frba.dds.models.criterios;
 
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.models.Hecho;
+import lombok.Getter;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("CriterioLugar")
 public class CriterioLugar extends Criterio {
-
+  @Getter
   private String localidad;
 
   public CriterioLugar(String localidad) {
@@ -25,5 +26,7 @@ public class CriterioLugar extends Criterio {
         hecho.getCoordenadas().getLocalidad()
     );
   }
+
+
 
 }
