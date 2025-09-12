@@ -3,6 +3,8 @@ package ar.edu.utn.frba.dds.repositories;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
+
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -56,5 +58,24 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
       }
     }
     return false;
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<Hecho> buscarPorTexto(String searchTerm) {
+    if (searchTerm == null || searchTerm.trim().isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    String sql = """
+        SELECT h.*, MATCH(h.titulo, h.descripcion) AGAINST(:searchTerm IN NATURAL LANGUAGE MODE) as relevance 
+        FROM hechos h 
+        WHERE MATCH(h.titulo, h.descripcion) AGAINST(:searchTerm IN NATURAL LANGUAGE MODE)
+        ORDER BY relevance DESC
+    """;
+
+    Query query = entityManager().createNativeQuery(sql, Hecho.class);
+    query.setParameter("searchTerm", searchTerm.trim());
+
+    return query.getResultList();
   }
 }
