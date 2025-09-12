@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Entity
@@ -23,7 +23,11 @@ import javax.persistence.Transient;
 public final class FuenteEstatica extends Fuente {
 
   @Transient
-  private final String archivo;
+  private  String archivo;
+
+  public FuenteEstatica() {
+
+  }
 
   /// Se asume que los archivos fueron previamente normalizados.
   /// La ruta del archivo debe ser src/main/resources,

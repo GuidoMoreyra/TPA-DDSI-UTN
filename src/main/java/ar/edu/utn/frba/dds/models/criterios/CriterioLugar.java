@@ -2,10 +2,11 @@ package ar.edu.utn.frba.dds.models.criterios;
 
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.models.Hecho;
-import lombok.Getter;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import lombok.Getter;
+
+
 
 @Entity
 @DiscriminatorValue("lugar")

@@ -1,10 +1,10 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.enums.Provincia;
+import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import ar.edu.utn.frba.dds.enums.Provincia;
-import javax.persistence.Embeddable;
 
 @Getter
 @Embeddable

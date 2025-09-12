@@ -2,9 +2,20 @@ package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.Getter;
-
-import javax.persistence.*;
 
 @Getter
 @SuppressFBWarnings("EI_EXPOSE_REP")

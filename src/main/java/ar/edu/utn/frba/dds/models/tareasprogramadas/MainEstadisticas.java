@@ -33,5 +33,8 @@ public class MainEstadisticas {
     );
 
 
+    System.out.println(coleccion.getCategoria());
+    System.out.println(coleccionDos.getCategoria());
+
   }
 }

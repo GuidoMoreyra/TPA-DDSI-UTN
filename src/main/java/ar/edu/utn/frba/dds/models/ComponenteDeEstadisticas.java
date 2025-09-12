@@ -9,10 +9,10 @@ import ar.edu.utn.frba.dds.models.reportes.ReporteSolicitudElim;
 import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import ar.edu.utn.frba.dds.utils.ExportadorCsv;
-import lombok.Getter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 
 @Getter
 public class ComponenteDeEstadisticas {

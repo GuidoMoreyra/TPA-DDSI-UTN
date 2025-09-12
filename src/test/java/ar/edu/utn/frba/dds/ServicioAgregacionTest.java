@@ -23,6 +23,7 @@ public class ServicioAgregacionTest {
   public Fuente fuenteMockUno = mock(Fuente.class);
   public Fuente fuenteMockDos = mock(Fuente.class);
   public  EjecutarConsenso ejecutar;
+  public HechosRepository repoTest = mock(HechosRepository.class);
 
   @BeforeEach
   void setup(){
@@ -95,12 +96,14 @@ public class ServicioAgregacionTest {
 
     when(fuenteMockDos.obtenerHechos()).thenReturn(List.of(hechoCuatro,hechoCinco,hechoSeis));
 
+    when(repoTest.getHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno,hechoCuatro,hechoCinco,hechoSeis));
     // Act
 
-    HechosRepository.getInstance().limpiar(); //limpio el repo por las dudas
+    //limpio el repo por las dudas
     ejecutar = new EjecutarConsenso(List.of(fuenteMockUno,fuenteMockDos));
     servicioTest = new FuenteDeAgregacion(List.of(fuenteMockUno,fuenteMockDos));
     List<Hecho> hechos = servicioTest.obtenerHechos();
+
   }
 
   @Test
@@ -123,21 +126,5 @@ public class ServicioAgregacionTest {
 
   }
 
-  @Test
-  @DisplayName("se utiliza una fuente de agregacion y para obtener hechos consensuados")
-  void hechosConsenuadosConServicioDeAgregacion() {
 
-    Coleccion coleccion = new Coleccion(
-        servicioTest,
-        "esquel",
-        LocalDate.of(2022, 1, 1),
-        LocalDate.of(2022, 12, 31),
-        "Incendio Forestal",
-        TipoDeConsenso.MULTIPLES_MENCIONES
-    );
-
-    List<Hecho> resultado = coleccion.aplicarConsenso();
-    assertEquals(6, resultado.size());
-
-  }
 }

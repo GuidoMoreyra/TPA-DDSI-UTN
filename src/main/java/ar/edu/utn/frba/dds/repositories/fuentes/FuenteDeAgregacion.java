@@ -5,21 +5,40 @@ import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.models.Hecho;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+
 
 @Entity
 @DiscriminatorValue("Agregacion")
 public final class FuenteDeAgregacion extends Fuente {
+
+  @Getter
+  @Setter
   @Transient
-  private final List<Fuente> fuentes;
+  private  List<Fuente> fuentes;
 
   public FuenteDeAgregacion(List<Fuente> fuentes) {
     this.fuentes = new ArrayList<>(fuentes);
   }
-  
+
+  public FuenteDeAgregacion() {
+
+  }
+
+  public List<Fuente> getFuentes() {
+    return new ArrayList<>(fuentes);
+  }
+
+  public void setFuentes(List<Fuente> fuentes) {
+    this.fuentes = new ArrayList<>(fuentes);
+  }
+
   @Override
   public List<Hecho> obtenerHechos() {
     List<Hecho> hechos = new ArrayList<>();

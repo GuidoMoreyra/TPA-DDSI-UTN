@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.repositories;
 
 import ar.edu.utn.frba.dds.models.Coleccion;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
 import java.util.List;
 
 public class ColeccionRepository implements WithSimplePersistenceUnit {
