@@ -5,8 +5,10 @@ import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
+import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteDinamica;
+import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +19,7 @@ import static org.mockito.Mockito.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public class FuenteDinamicaTest {
+public class FuenteDinamicaTest implements SimplePersistenceTest {
 
   @Test
   public void obtenerHechosDevuelveSoloSolicitudesAceptadas() {
@@ -56,6 +58,16 @@ public class FuenteDinamicaTest {
         null
     );
 
+    var repo = HechosRepository.getInstance();
+
+    //se persisten los hechos
+    withTransaction(() -> {
+      repo.agregarHecho(hecho1);
+      repo.agregarHecho(hecho2);
+      repo.agregarHecho(hecho3);
+    });
+
+
     CambiosHechoDto sugerenciaDtoMock = mock(CambiosHechoDto.class);
 
     SolicitudAgregacion s1 = new SolicitudAgregacion(hecho1, true);
@@ -67,16 +79,22 @@ public class FuenteDinamicaTest {
     s3.aceptarSolicitudConSugerencias(sugerenciaDtoMock); // debe incluirse
 
     // Simular flujo real de uso: agregar al repositorio directamente
-    var repo = SolicitudesAgregacionRepository.getInstance();
+    var repoAgregacion = SolicitudesAgregacionRepository.getInstance();
 
-    // Hacemos trampa para testear sin depender de agregar por DTO
-    repo.agregarSolicitud(s1);
-    repo.agregarSolicitud(s2);
-    repo.agregarSolicitud(s3);
+    repoAgregacion.agregarSolicitud(s1);
+    repoAgregacion.agregarSolicitud(s2);
+    repoAgregacion.agregarSolicitud(s3);
 
     s1.aceptarSolicitud();
     s2.rechazarSolicitud();
     s3.aceptarSolicitudConSugerencias(sugerenciaDtoMock);
+
+    //se persisten las solicitudes
+    withTransaction(() -> {
+      repoAgregacion.agregarSolicitud(s1);
+      repoAgregacion.agregarSolicitud(s2);
+      repoAgregacion.agregarSolicitud(s3);
+    });
 
     FuenteDinamica fuente = new FuenteDinamica();
     List<Hecho> hechos = fuente.obtenerHechos();

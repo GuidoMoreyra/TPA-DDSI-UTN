@@ -7,10 +7,12 @@ import ar.edu.utn.frba.dds.models.algoritmos.ConsensoAbsoluto;
 import ar.edu.utn.frba.dds.models.algoritmos.MayoriaSimple;
 import ar.edu.utn.frba.dds.models.algoritmos.MultiplesMenciones;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressFBWarnings("EI_EXPOSE_REP")
 public class EjecutarConsenso {
   private final List<AlgoritmoDeConsenso> algoritmos;
   private final List<Fuente> fuentesActivas;
@@ -18,18 +20,14 @@ public class EjecutarConsenso {
   private final HechosRepository repositorio = HechosRepository.getInstance();
 
 
-  public EjecutarConsenso(List<Fuente> fuentesActivas) {
+  public EjecutarConsenso(List<Fuente> fuentesActivas, List<AlgoritmoDeConsenso> algoritmos) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);
     this.hechosMezclados = new ArrayList<>(this.agregarHechos());
 
 
     //Aca da error por que todavia no se cambiaron los algoritmos
     //                               para utilizar el repositorio
-    this.algoritmos = List.of(
-        new ConsensoAbsoluto(fuentesActivas),
-        new MayoriaSimple(fuentesActivas),
-        new MultiplesMenciones()
-    );
+    this.algoritmos = algoritmos;
   }
 
   public void evaluarVersionDos() {
@@ -53,25 +51,12 @@ public class EjecutarConsenso {
     List<TipoDeConsenso> consensosActuales = algoritmos.stream()
         //cambio la firma de hechosActuales ahora se lo paso a estaConsensuado
         .filter(algoritmo -> algoritmo.estaConsensuado(unHecho, hechosActuales))
-        .map(algoritmo -> this.mapearTipo(algoritmo))
+        .map(algoritmo -> algoritmo.getTipo())
         .toList();
 
     // Reemplazar los consensos anteriores por los consensos nuevos que se cumplen
     unHecho.setAlgoritmos(consensosActuales);
 
-  }
-
-  private TipoDeConsenso mapearTipo(AlgoritmoDeConsenso algoritmo) {
-    if (algoritmo instanceof ConsensoAbsoluto) {
-      return TipoDeConsenso.CONSENSO_ABSOLUTO;
-    }
-    if (algoritmo instanceof MayoriaSimple) {
-      return TipoDeConsenso.MAYORIA_SIMPLE;
-    }
-    if (algoritmo instanceof MultiplesMenciones) {
-      return TipoDeConsenso.MULTIPLES_MENCIONES;
-    }
-    throw new IllegalArgumentException("Algoritmo desconocido");
   }
 
   private List<Hecho> agregarHechos() {

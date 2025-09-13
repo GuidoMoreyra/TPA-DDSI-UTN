@@ -1,8 +1,7 @@
 package ar.edu.utn.frba.dds.models;
 
-
-import lombok.Setter;
 import javax.persistence.Embeddable;
+import lombok.Setter;
 
 @Embeddable
 public class Coordenada {

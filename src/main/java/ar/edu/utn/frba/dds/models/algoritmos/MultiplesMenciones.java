@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models.algoritmos;
 
 import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.contracts.Fuente;
+import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.util.ArrayList;
@@ -9,7 +10,10 @@ import java.util.List;
 
 public class MultiplesMenciones implements AlgoritmoDeConsenso {
 
-
+  @Override
+  public TipoDeConsenso getTipo() {
+    return TipoDeConsenso.MULTIPLES_MENCIONES;
+  }
 
   @Override
   public boolean estaConsensuado(Hecho hecho) {

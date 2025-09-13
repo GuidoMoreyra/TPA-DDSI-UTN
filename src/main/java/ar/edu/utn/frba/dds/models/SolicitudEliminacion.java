@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.models;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.Getter;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -14,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import lombok.Getter;
 
 @Getter
 @SuppressFBWarnings("EI_EXPOSE_REP")

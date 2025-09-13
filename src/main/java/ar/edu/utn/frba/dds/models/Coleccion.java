@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Getter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,6 +24,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import lombok.Getter;
 
 @Entity
 public final class Coleccion {
@@ -70,41 +70,30 @@ public final class Coleccion {
 
   ////METODOS///
 
+
+  public List<Hecho> aplicarConsenso(List<Criterio> criteriosExtras) {
+
+    return this.obtenerColeccion(criteriosExtras).stream()
+        .filter((Hecho unHecho) -> repositorio.verificaConsenso(
+            unHecho, algoritmoDeconsenso
+        )).toList();
+  }
+
   public Boolean cumpleCriterios(Hecho hecho, List<Criterio> criterios) {
     return criterios
         .stream()
         .allMatch(criterio -> criterio.cumple(hecho));
   }
 
-  public List<Hecho> obtenerColeccion() {
+  public List<Hecho> obtenerColeccion(List<Criterio> criteriosExtras) {
     return fuente
         .obtenerHechos()
         .stream()
         .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+        .filter(h -> criteriosExtras == null || this.cumpleCriterios(h, criteriosExtras))
         .toList();
   }
 
-  public List<Hecho> aplicarConsenso() {
-    return this.obtenerColeccion().stream()
-        .filter((Hecho unHecho) -> repositorio.verificaConsenso(
-            unHecho, algoritmoDeconsenso
-        )).toList();
-  }
-
-  public List<Hecho> obtenerColeccionConCriteriosAdicionales(List<Criterio> criterios) {
-    return this.obtenerColeccion()
-        .stream()
-        .filter((Hecho h) ->
-             this.cumpleCriterios(h, criterios)
-        ).toList();
-  }
-
-  public List<Hecho> obtenerColeccionConCriteriosExtra(List<Criterio> criteriosExtra) {
-    return this.aplicarConsenso()
-        .stream()
-        .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtra))
-        .toList();
-  }
 
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
 

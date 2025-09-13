@@ -32,7 +32,7 @@ public final class SolicitudesEliminacionRepository implements WithSimplePersist
   @SuppressWarnings("unchecked")
   public List<SolicitudEliminacion> obtenerSolicitudesConEstado(EstadoSolicitudEliminacion estado) {
     return entityManager()
-        .createQuery("from solicitudeliminacion where estado = :estado")
+        .createQuery("from SolicitudEliminacion where estado = :estado")
         .setParameter("estado", estado)
         .getResultList();
   }
