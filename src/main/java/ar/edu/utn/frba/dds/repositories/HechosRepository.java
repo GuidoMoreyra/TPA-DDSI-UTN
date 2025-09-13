@@ -21,7 +21,6 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
 
   @SuppressWarnings("unchecked")
   public List<Hecho> getHechos() {
-    //return Collections.unmodifiableList(hechos);
     return entityManager()
         .createQuery("from Hecho", Hecho.class)
         .getResultList();
@@ -29,13 +28,15 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
 
   @SuppressWarnings("unchecked")
   public void agregarHecho(Hecho hecho) {
-    //hechos.add(hecho);
     entityManager().persist(hecho);
-
   }
 
   public void limpiar() { //para testear
     this.hechos.clear();
+  }
+
+  public void limpiarBase() {
+    entityManager().createQuery("DELETE FROM Hecho");
   }
 
   @SuppressWarnings("unchecked")
@@ -44,7 +45,6 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
         .find(Hecho.class, hecho.getId());
 
     return hechoEncontrado != null;
-
   }
 
   public Boolean verificaConsenso(Hecho hechoAverificar, TipoDeConsenso consenso) {

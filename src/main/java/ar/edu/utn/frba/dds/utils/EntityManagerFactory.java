@@ -12,11 +12,14 @@ public class EntityManagerFactory {
     String persistenceUnitName = "simple-persistence-unit";
 
     System.out.println("Inicializando EntityManagerFactory...");
-    javax.persistence.EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+    javax.persistence.EntityManagerFactory emf =
+        Persistence.createEntityManagerFactory(persistenceUnitName);
 
     crearIndicesFullText(emf);
 
     System.out.println("EntityManagerFactory inicializado. Hibernate debería haber aplicado las migraciones.");
+    System.out.println("EntityManagerFactory inicializado. "
+        + "Hibernate debería haber aplicado las migraciones.");
 
     emf.close();
     System.out.println("Factory cerrado. Listo.");

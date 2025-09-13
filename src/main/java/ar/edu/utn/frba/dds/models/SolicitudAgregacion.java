@@ -4,11 +4,17 @@ import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.OneToOne;
 
 @Getter
 @SuppressFBWarnings("EI_EXPOSE_REP")

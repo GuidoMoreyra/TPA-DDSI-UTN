@@ -3,10 +3,11 @@ package ar.edu.utn.frba.dds.repositories.fuentes;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.exceptions.FuenteProxyException;
 import ar.edu.utn.frba.dds.models.Hecho;
+import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import java.util.List;
+
 
 @Entity
 @DiscriminatorValue("Intermedia")

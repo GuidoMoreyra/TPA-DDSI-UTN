@@ -5,10 +5,10 @@ import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.models.Hecho;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import lombok.AllArgsConstructor;
 
 @Entity
 @DiscriminatorValue("Agregacion")

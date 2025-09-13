@@ -3,13 +3,14 @@ package ar.edu.utn.frba.dds.repositories;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
+import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 
-public final class SolicitudesEliminacionRepository {
+public final class SolicitudesEliminacionRepository implements WithSimplePersistenceUnit {
   private static final SolicitudesEliminacionRepository INSTANCE =
       new SolicitudesEliminacionRepository();
 
@@ -21,19 +22,23 @@ public final class SolicitudesEliminacionRepository {
     return INSTANCE;
   }
 
+  @SuppressWarnings("unchecked")
   public List<SolicitudEliminacion> getSolicitudes() {
-    return Collections.unmodifiableList(solicitudes);
+    return entityManager()
+        .createQuery("from SolicitudEliminacion", SolicitudEliminacion.class)
+        .getResultList();
   }
 
+  @SuppressWarnings("unchecked")
   public List<SolicitudEliminacion> obtenerSolicitudesConEstado(EstadoSolicitudEliminacion estado) {
-    return solicitudes
-        .stream()
-        .filter(s -> Objects.equals(s.getEstado(), estado))
-        .toList();
+    return entityManager()
+        .createQuery("from SolicitudEliminacion where estado = :estado")
+        .setParameter("estado", estado)
+        .getResultList();
   }
 
   public void agregarSolicitud(SolicitudEliminacion solicitud) {
-    this.solicitudes.add(solicitud);
+    entityManager().persist(solicitud);
   }
 
   public void rechazarAutomaticamente(List<SolicitudEliminacion> solicitudesDeEliminacion) {
