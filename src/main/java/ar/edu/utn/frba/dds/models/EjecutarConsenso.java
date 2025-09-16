@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 public class EjecutarConsenso {
   private final List<AlgoritmoDeConsenso> algoritmos;
   private final List<Fuente> fuentesActivas;
-  private final List<Hecho> hechosMezclados;
+  //private final List<Hecho> hechosMezclados;
   private final HechosRepository repositorio = HechosRepository.getInstance();
 
 
   public EjecutarConsenso(List<Fuente> fuentesActivas, List<AlgoritmoDeConsenso> algoritmos) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);
-    this.hechosMezclados = new ArrayList<>(this.agregarHechos());
+    //this.hechosMezclados = new ArrayList<>(this.agregarHechos());
 
 
     //Aca da error por que todavia no se cambiaron los algoritmos
@@ -30,8 +30,8 @@ public class EjecutarConsenso {
     this.algoritmos = algoritmos;
   }
 
-  public void evaluarVersionDos() {
-    hechosMezclados.stream()
+  public void evaluarVersionDos(List<Hecho> hechosNuevos) {
+    hechosNuevos.stream()
         //me devuelve una lista de hechos que no se contiene el repo
         .filter((Hecho hecho) -> !repositorio.contiene(hecho))
         //a esos hechos los agrego al repo

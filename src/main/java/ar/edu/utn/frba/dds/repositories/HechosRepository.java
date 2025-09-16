@@ -54,12 +54,13 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
       return true;
     }
 
-    for (Hecho hechoDelRepositorio : this.hechos) {
-      if (hechoDelRepositorio.comparacionRigurosa(hechoAverificar)) {
-        return hechoDelRepositorio.getConsensos().contains(consenso);
-      }
+
+    Hecho hechoEncontrado = entityManager().find(Hecho.class, hechoAverificar.getId());
+    if (hechoEncontrado == null) {
+      return false;
     }
-    return false;
+
+    return hechoEncontrado.getConsensos().contains(consenso);
   }
 
   @SuppressWarnings("unchecked")

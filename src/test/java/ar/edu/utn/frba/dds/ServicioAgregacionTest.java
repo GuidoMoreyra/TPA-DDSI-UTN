@@ -110,7 +110,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
 
     // Act
 
-    HechosRepository.getInstance().limpiar(); //limpio el repo por las dudas
+    //HechosRepository.getInstance().limpiar(); //limpio el repo por las dudas
     var fuentesActivas = List.of(fuenteMockUno,fuenteMockDos);
 
     var algoritmos = List.of(
@@ -122,7 +122,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
     ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
     servicioTest = new FuenteDeAgregacion(List.of(fuenteMockUno,fuenteMockDos));
     List<Hecho> hechos = servicioTest.obtenerHechos();
-    ejecutar.evaluarVersionDos();
+    ejecutar.evaluarVersionDos(hechos);
   }
 
   @Test
@@ -158,8 +158,10 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
 
-    List<Hecho> resultado = coleccion.aplicarConsensoConCriteriosExtra(null);
-    //assertEquals(6, resultado.size());
+    coleccion.setEstaCurada(true);
+
+    List<Hecho> resultado = coleccion.obtenerColeccionVersionDos();
+    assertEquals(6, resultado.size());
 
   }
 }
