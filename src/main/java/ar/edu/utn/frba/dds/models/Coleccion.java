@@ -11,9 +11,23 @@ import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Getter;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "colecciones")
@@ -71,49 +85,27 @@ public final class Coleccion {
 
   ////METODOS///
 
+
+  public List<Hecho> aplicarConsenso(List<Criterio> criteriosExtras) {
+
+    return this.obtenerColeccion(criteriosExtras).stream()
+        .filter((Hecho unHecho) -> repositorio.verificaConsenso(
+            unHecho, algoritmoDeconsenso
+        )).toList();
+  }
+
   public Boolean cumpleCriterios(Hecho hecho, List<Criterio> criterios) {
     return criterios
         .stream()
         .allMatch(criterio -> criterio.cumple(hecho));
   }
 
-  // TODO: Deprecar luego, el método de abajo (obtenerHechos) lo reemplaza porque va contra la DB
-  public List<Hecho> obtenerColeccion() {
+  public List<Hecho> obtenerColeccion(List<Criterio> criteriosExtras) {
     return fuente
         .obtenerHechos()
         .stream()
         .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
-        .toList();
-  }
-
-  public List<Hecho> obtenerHechos() {
-    List<Hecho> hechos = HechosRepository.getInstance().getHechos();
-
-    return hechos
-        .stream()
-        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
-        .toList();
-  }
-
-  public List<Hecho> aplicarConsenso() {
-    return this.obtenerColeccion().stream()
-        .filter((Hecho unHecho) -> repositorio.verificaConsenso(
-            unHecho, algoritmoDeconsenso
-        )).toList();
-  }
-
-  public List<Hecho> obtenerColeccionConCriteriosAdicionales(List<Criterio> criterios) {
-    return this.obtenerColeccion()
-        .stream()
-        .filter((Hecho h) ->
-             this.cumpleCriterios(h, criterios)
-        ).toList();
-  }
-
-  public List<Hecho> obtenerColeccionConCriteriosExtra(List<Criterio> criteriosExtra) {
-    return this.aplicarConsenso()
-        .stream()
-        .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtra))
+        .filter(h -> criteriosExtras == null || this.cumpleCriterios(h, criteriosExtras))
         .toList();
   }
 

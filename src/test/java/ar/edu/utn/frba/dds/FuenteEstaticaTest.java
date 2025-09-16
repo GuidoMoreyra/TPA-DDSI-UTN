@@ -20,4 +20,13 @@ public class FuenteEstaticaTest {
 
     assertEquals(10, hechos.size());
   }
+
+  @Test
+  public void elPrimerHechoDeLaFuenteEstaticaNoEsNulo() {
+    FuenteEstatica fuente = new FuenteEstatica("formatoTP");
+
+    List<Hecho> hechos = fuente.obtenerHechos();
+
+    assertNotNull(hechos.get(0));
+  }
 }

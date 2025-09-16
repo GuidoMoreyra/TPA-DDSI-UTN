@@ -1,10 +1,10 @@
 package ar.edu.utn.frba.dds.models;
 
-import lombok.AllArgsConstructor;
+import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Embeddable;
+
 
 @Getter
 @Embeddable

@@ -1,10 +1,17 @@
 package ar.edu.utn.frba.dds.contracts;
 
 import ar.edu.utn.frba.dds.models.Hecho;
-import lombok.Getter;
-
-import javax.persistence.*;
 import java.util.List;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+import lombok.Getter;
 
 @Entity
 @Table(name = "fuentes")
@@ -18,6 +25,7 @@ public abstract class Fuente {
   private Long id;
 
   public abstract List<Hecho> obtenerHechos();
+
 }
 
 
