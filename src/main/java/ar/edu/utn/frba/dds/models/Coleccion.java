@@ -11,7 +11,6 @@ import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,11 +22,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "colecciones")
@@ -57,6 +55,9 @@ public final class Coleccion {
   @Transient
   private final HechosRepository repositorio = HechosRepository.getInstance();
 
+  @Setter
+  private boolean estaCurada;
+
   ///  La coleccion siempre se carga con los 3 criterios de pertenencia
   ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
 
@@ -78,6 +79,7 @@ public final class Coleccion {
     criteriosDeCreacion.add(new CriterioLugar(localidad));
 
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
+    this.estaCurada = false;
 
   }
 
@@ -86,7 +88,7 @@ public final class Coleccion {
   ////METODOS///
 
 
-  public List<Hecho> aplicarConsenso(List<Criterio> criteriosExtras) {
+  public List<Hecho> aplicarConsensoConCriteriosExtra(List<Criterio> criteriosExtras) {
 
     return this.obtenerColeccion(criteriosExtras).stream()
         .filter((Hecho unHecho) -> repositorio.verificaConsenso(
@@ -114,4 +116,32 @@ public final class Coleccion {
       throw new FechaException("fecha inicial no puede ser posterior a fecha final");
     }
   }
+
+  public List<Hecho> obtenerColeccionVersionDos() {
+    if (estaCurada) {
+      return fuente.obtenerHechos()
+          .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+          .filter((Hecho unHecho) -> repositorio.verificaConsenso(
+              unHecho, algoritmoDeconsenso
+          )).toList();
+    } else {
+      return fuente.obtenerHechos()
+          .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+          .toList();
+    }
+  }
+
+  public List<Hecho> obtenerColeccionConCriteriosExtra(
+      List<Criterio> criteriosExtras
+  ) {
+    if (estaCurada) {
+      return this.aplicarConsensoConCriteriosExtra(criteriosExtras);
+    } else {
+      return fuente.obtenerHechos()
+          .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+          .filter(h -> this.cumpleCriterios(h, criteriosExtras))
+          .toList();
+    }
+  }
+
 }

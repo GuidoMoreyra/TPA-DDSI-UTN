@@ -46,6 +46,8 @@ public  class FuenteDeAgregacion extends Fuente {
     return hechos;
   }
 
+  /* se agregaron los getters y setters para pasar el mvn clean verify*/
+
   public List<Fuente> getFuentes() {
     return new ArrayList<>(fuentes);
   }

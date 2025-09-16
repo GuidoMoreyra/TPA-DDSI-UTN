@@ -194,7 +194,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     );
 
 
-    List<Hecho> resultado = coleccion.aplicarConsenso(null);
+    List<Hecho> resultado = coleccion.aplicarConsensoConCriteriosExtra(null);
 
     // Assert
     //assertEquals(3, resultado.size());

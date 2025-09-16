@@ -4,14 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.EjecutarConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.models.algoritmos.ConsensoAbsoluto;
 import ar.edu.utn.frba.dds.models.algoritmos.MayoriaSimple;
 import ar.edu.utn.frba.dds.models.algoritmos.MultiplesMenciones;
@@ -160,7 +158,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
 
-    List<Hecho> resultado = coleccion.aplicarConsenso(null);
+    List<Hecho> resultado = coleccion.aplicarConsensoConCriteriosExtra(null);
     //assertEquals(6, resultado.size());
 
   }

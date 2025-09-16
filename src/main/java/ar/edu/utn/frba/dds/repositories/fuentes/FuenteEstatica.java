@@ -23,7 +23,18 @@ import lombok.AllArgsConstructor;
 public final class FuenteEstatica extends Fuente {
 
   @Transient
-  private final String archivo;
+  private  String archivo;
+
+  public FuenteEstatica() {
+
+  }
+
+
+  /*se agrego para pasar el mvn clear verify*/
+
+  public void setArchivo(String archivo) {
+    this.archivo = archivo;
+  }
 
   /// Se asume que los archivos fueron previamente normalizados.
   /// La ruta del archivo debe ser src/main/resources,
