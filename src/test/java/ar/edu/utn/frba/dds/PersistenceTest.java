@@ -39,58 +39,46 @@ public class PersistenceTest implements SimplePersistenceTest {
         OrigenHecho.ESTATICO,
         "foto.png"
     );
-  withTransaction(() -> {
-    repoHechos.limpiarBase();
-  });
 
+    repoHechos.limpiarBase();
   }
 
  //HechosRepository
   @Test
   public void sePuedePersistirYConsultarUnHecho(){
 
-    withTransaction(() -> {
       repoHechos.agregarHecho(hecho);
       repoHechos.getHechos();
-    });
-    //assertEquals(1, repoHechos.getHechos().size());
+
+    assertEquals(1, repoHechos.getHechos().size());
   }
 
   //SolicitudesAgregacionRepository
   @Test
   public void sePuedePersistirYConsultarUnaSolicitudDeAgregacion(){
 
-    withTransaction(() -> {
-      //primero persisto el hecho
       repoHechos.agregarHecho(hecho);
-    });
 
     SolicitudAgregacion solicitud = new SolicitudAgregacion(hecho, false);
 
-//    withTransaction(() -> {
-//      repoSolicitudesAgregacion.agregarSolicitud(solicitud);
-//      repoSolicitudesAgregacion.getSolicitudes();
-//    });
-//
-//    assertEquals(1, repoSolicitudesAgregacion.getSolicitudes().size());
+      repoSolicitudesAgregacion.agregarSolicitud(solicitud);
+      repoSolicitudesAgregacion.getSolicitudes();
+
+    assertEquals(1, repoSolicitudesAgregacion.getSolicitudes().size());
    }
 
   @Test
   public void sePuedePersistirYConsultarUnaSolicitudDeEliminacion(){
 
-    withTransaction(() -> {
       //primero persisto el hecho
       repoHechos.agregarHecho(hecho);
-    });
-
 
     String justificacion = "a".repeat(501);
     SolicitudEliminacion solicitud = new SolicitudEliminacion(hecho, justificacion);
 
-    withTransaction(() -> {
-      repoSolicitudesEliminacion.agregarSolicitud(solicitud);
-      repoSolicitudesEliminacion.getSolicitudes();
-    });
+    repoSolicitudesEliminacion.agregarSolicitud(solicitud);
+    repoSolicitudesEliminacion.getSolicitudes();
+
 
     assertEquals(1, repoSolicitudesEliminacion.getSolicitudes().size());
 

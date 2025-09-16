@@ -106,9 +106,7 @@ public class HechoTest implements SimplePersistenceTest {
 
     var repoHechos = HechosRepository.getInstance();
 
-    withTransaction(() -> {
-      repoHechos.agregarHecho(hecho);
-    });
+    repoHechos.agregarHecho(hecho);
 
     // Armar DTO y agregar solicitud al repositorio
     SolicitudAgregacion solicitudAgregacion = new SolicitudAgregacion(hecho, false);
@@ -116,9 +114,8 @@ public class HechoTest implements SimplePersistenceTest {
     SolicitudesAgregacionRepository repo = SolicitudesAgregacionRepository.getInstance();
     solicitudAgregacion.aceptarSolicitudConSugerencias(sugerencias);
 
-    withTransaction(() -> {
       repo.agregarSolicitud(solicitudAgregacion);
-    });
+
 
     //assertTrue(hecho.tieneSugerencias());
   }

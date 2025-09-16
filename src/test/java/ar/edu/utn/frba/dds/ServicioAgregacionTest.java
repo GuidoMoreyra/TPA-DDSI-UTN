@@ -99,14 +99,12 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
     hechoCuatro.setLocalidad("esquel");
     hechoSeis.setLocalidad("esquel");
 
-    withTransaction(() -> {
-      repoHechos.agregarHecho(hechoUno);
-      repoHechos.agregarHecho(hechoDos);
-      repoHechos.agregarHecho(hechoTres);
-      repoHechos.agregarHecho(hechoCuatro);
-      repoHechos.agregarHecho(hechoCinco);
-      repoHechos.agregarHecho(hechoSeis);
-    });
+    repoHechos.agregarHecho(hechoUno);
+    repoHechos.agregarHecho(hechoDos);
+    repoHechos.agregarHecho(hechoTres);
+    repoHechos.agregarHecho(hechoCuatro);
+    repoHechos.agregarHecho(hechoCinco);
+    repoHechos.agregarHecho(hechoSeis);
 
     when(fuenteMockUno.obtenerHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno));
 
@@ -143,7 +141,6 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
     );
 
     List<Hecho> resultado = coleccion.obtenerColeccion(null);
-
 
     // Assert
     assertEquals(6, resultado.size());

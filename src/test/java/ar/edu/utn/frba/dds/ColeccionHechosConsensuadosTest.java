@@ -61,19 +61,16 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         OrigenHecho.ESTATICO,
         null);
 
-
     hechoUno.setLocalidad("esquel");
     hechoDos.setLocalidad("esquel");
     hechoTres.setLocalidad("esquel");
-
-
   }
 
   @BeforeEach
   void limpiarRepositorio() {
-    HechosRepository.getInstance().limpiar();
-    HechosRepository.getInstance().limpiarBase();
-    //assertEquals(0, HechosRepository.getInstance().getHechos().size(), "Repositorio no limpio antes del test");
+    repoHechos.limpiar();
+    repoHechos.limpiarBase();
+    assertEquals(0, HechosRepository.getInstance().getHechos().size(), "Repositorio no limpio antes del test");
   }
 
   @Test
@@ -167,15 +164,13 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
 
     // Act
     //limpio el repo
-    HechosRepository.getInstance().limpiar();
-    var repo = HechosRepository.getInstance();
+//    HechosRepository.getInstance().limpiar();
+//    var repo = HechosRepository.getInstance();
 
     //se persisten los hechos
-    withTransaction(() -> {
-      repo.agregarHecho(hechoUno);
-      repo.agregarHecho(hechoDos);
-      repo.agregarHecho(hechoTres);
-    });
+    repoHechos.agregarHecho(hechoUno);
+    repoHechos.agregarHecho(hechoDos);
+    repoHechos.agregarHecho(hechoTres);
 
     var fuentesActivas = List.of(fuenteMockUno,fuenteMockDos);
 
@@ -233,11 +228,10 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     var repo = HechosRepository.getInstance();
 
     //se persisten los hechos
-    withTransaction(() -> {
-      repo.agregarHecho(hechoUno);
-      repo.agregarHecho(hechoDos);
-      repo.agregarHecho(hechoTres);
-    });
+
+      repoHechos.agregarHecho(hechoUno);
+      repoHechos.agregarHecho(hechoDos);
+      repoHechos.agregarHecho(hechoTres);
 
     EjecutarConsenso ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
     ejecutar.evaluarVersionDos();

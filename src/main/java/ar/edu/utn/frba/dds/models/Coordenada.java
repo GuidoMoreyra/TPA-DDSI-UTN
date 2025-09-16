@@ -3,7 +3,7 @@ package ar.edu.utn.frba.dds.models;
 import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.AllArgsConstructor;
+
 
 
 @Getter

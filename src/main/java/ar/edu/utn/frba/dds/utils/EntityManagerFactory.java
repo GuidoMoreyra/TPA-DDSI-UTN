@@ -1,9 +1,10 @@
 package ar.edu.utn.frba.dds.utils;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import java.util.List;
+
 
 public class EntityManagerFactory {
 
@@ -17,7 +18,8 @@ public class EntityManagerFactory {
 
     crearIndicesFullText(emf);
 
-    System.out.println("EntityManagerFactory inicializado. Hibernate debería haber aplicado las migraciones.");
+    System.out.println("EntityManagerFactory inicializado. "
+        + "Hibernate debería haber aplicado las migraciones.");
     System.out.println("EntityManagerFactory inicializado. "
         + "Hibernate debería haber aplicado las migraciones.");
 
@@ -39,8 +41,8 @@ public class EntityManagerFactory {
       System.out.println("Creando índices FULLTEXT...");
 
       if (!existeIndice(em, "hechos", "idx_multiple_fulltext")) {
-        ejecutarSQL(em, "ALTER TABLE hechos ADD FULLTEXT idx_multiple_fulltext " +
-            "(" + String.join(", ", columnasParaFullTextSearch) + ")");
+        ejecutarSql(em, "ALTER TABLE hechos ADD FULLTEXT idx_multiple_fulltext "
+            + "(" + String.join(", ", columnasParaFullTextSearch) + ")");
         System.out.println("✓ Índice FULLTEXT creado para múltiples columnas");
       } else {
         System.out.println("• Índice múltiple ya existe");
@@ -60,8 +62,8 @@ public class EntityManagerFactory {
   private static boolean existeIndice(EntityManager em, String tabla, String nombreIndice) {
     try {
       Query query = em.createNativeQuery(
-          "SELECT COUNT(*) FROM information_schema.statistics " +
-              "WHERE table_schema = DATABASE() AND table_name = :tabla AND index_name = :indice"
+          "SELECT COUNT(*) FROM information_schema.statistics "
+              + "WHERE table_schema = DATABASE() AND table_name = :tabla AND index_name = :indice"
       );
       query.setParameter("tabla", tabla);
       query.setParameter("indice", nombreIndice);
@@ -74,7 +76,7 @@ public class EntityManagerFactory {
     }
   }
 
-  private static void ejecutarSQL(EntityManager em, String sql) {
+  private static void ejecutarSql(EntityManager em, String sql) {
     try {
       Query query = em.createNativeQuery(sql);
       query.executeUpdate();

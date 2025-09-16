@@ -28,7 +28,6 @@ public class SolicitudEliminacionTest {
     assertEquals(hechoMock, solicitud.getHecho());
     assertEquals(justificacion, solicitud.getJustificacion());
     assertEquals(EstadoSolicitudEliminacion.PENDIENTE, solicitud.getEstado());
-
   }
 
   @Test

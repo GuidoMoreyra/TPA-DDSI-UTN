@@ -3,11 +3,10 @@ package ar.edu.utn.frba.dds.repositories;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
-
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.Query;
 
 public final class HechosRepository implements WithSimplePersistenceUnit {
   private static final HechosRepository INSTANCE = new HechosRepository();
@@ -31,13 +30,16 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
     entityManager().persist(hecho);
   }
 
+  @SuppressWarnings("unchecked")
   public void limpiar() { //para testear
     this.hechos.clear();
   }
 
+  @SuppressWarnings("unchecked")
   public void limpiarBase() {
-    entityManager().createQuery("DELETE FROM Hecho");
+    entityManager().clear();
   }
+
 
   @SuppressWarnings("unchecked")
   public boolean contiene(Hecho hecho) {
@@ -67,11 +69,12 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
     }
 
     String sql = """
-        SELECT h.*, MATCH(h.titulo, h.descripcion) AGAINST(:searchTerm IN NATURAL LANGUAGE MODE) as relevance 
+        SELECT h.*, MATCH(h.titulo, h.descripcion) 
+        AGAINST(:searchTerm IN NATURAL LANGUAGE MODE) as relevance 
         FROM hechos h 
         WHERE MATCH(h.titulo, h.descripcion) AGAINST(:searchTerm IN NATURAL LANGUAGE MODE)
         ORDER BY relevance DESC
-    """;
+        """;
 
     Query query = entityManager().createNativeQuery(sql, Hecho.class);
     query.setParameter("searchTerm", searchTerm.trim());

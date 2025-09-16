@@ -61,11 +61,10 @@ public class FuenteDinamicaTest implements SimplePersistenceTest {
     var repo = HechosRepository.getInstance();
 
     //se persisten los hechos
-    withTransaction(() -> {
+
       repo.agregarHecho(hecho1);
       repo.agregarHecho(hecho2);
       repo.agregarHecho(hecho3);
-    });
 
 
     CambiosHechoDto sugerenciaDtoMock = mock(CambiosHechoDto.class);
@@ -90,11 +89,9 @@ public class FuenteDinamicaTest implements SimplePersistenceTest {
     s3.aceptarSolicitudConSugerencias(sugerenciaDtoMock);
 
     //se persisten las solicitudes
-    withTransaction(() -> {
       repoAgregacion.agregarSolicitud(s1);
       repoAgregacion.agregarSolicitud(s2);
       repoAgregacion.agregarSolicitud(s3);
-    });
 
     FuenteDinamica fuente = new FuenteDinamica();
     List<Hecho> hechos = fuente.obtenerHechos();
