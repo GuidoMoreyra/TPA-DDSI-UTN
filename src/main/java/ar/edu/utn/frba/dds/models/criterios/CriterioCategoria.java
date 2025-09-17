@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 
 
 
+
 @Entity
 @DiscriminatorValue("categoria")
 @AllArgsConstructor

@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-
 @Entity
 @DiscriminatorValue("Dinamica")
 public final class FuenteDinamica extends Fuente {

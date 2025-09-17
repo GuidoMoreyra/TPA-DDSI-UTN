@@ -29,6 +29,13 @@ public final class FuenteEstatica extends Fuente {
 
   }
 
+
+  /*se agrego para pasar el mvn clear verify*/
+
+  public void setArchivo(String archivo) {
+    this.archivo = archivo;
+  }
+
   /// Se asume que los archivos fueron previamente normalizados.
   /// La ruta del archivo debe ser src/main/resources,
   ///  si no se lanzara una exepcion de tipo InvalidPathException.

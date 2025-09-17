@@ -10,22 +10,17 @@ import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
 import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -33,7 +28,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.Getter;
-
+import lombok.Setter;
 
 @Entity
 @Table(name = "colecciones")
@@ -63,8 +58,8 @@ public final class Coleccion {
   @Transient
   private final HechosRepository repositorio = HechosRepository.getInstance();
 
-  ///  La coleccion siempre se carga con los 3 criterios de pertenencia
-  ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
+  @Setter
+  private boolean estaCurada;
 
   /*
   * Desnormalizando:guardar estadísticas precalculadas en cada colección.
@@ -99,6 +94,7 @@ public final class Coleccion {
     criteriosDeCreacion.add(new CriterioLugar(localidad));
 
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
+    this.estaCurada = false;
 
   }
 
@@ -106,13 +102,19 @@ public final class Coleccion {
 
   ////METODOS///
 
+  private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
+    if (fechaInicial.isAfter(fechaFinal)) {
+      throw new FechaException("fecha inicial no puede ser posterior a fecha final");
+    }
+  }
+
+
   public Boolean cumpleCriterios(Hecho hecho, List<Criterio> criterios) {
     return criterios
         .stream()
         .allMatch(criterio -> criterio.cumple(hecho));
   }
 
-  // TODO: Deprecar luego, el método de abajo (obtenerHechos) lo reemplaza porque va contra la DB
   public List<Hecho> obtenerColeccion() {
     return fuente
         .obtenerHechos()
@@ -130,6 +132,38 @@ public final class Coleccion {
         .toList();
   }
 
+
+  public List<Hecho> obtenerColeccionCriteriosCreacional() {
+    if (estaCurada) {
+      return fuente.obtenerHechos()
+          .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+          .filter((Hecho unHecho) -> repositorio.verificaConsenso(
+              unHecho, algoritmoDeconsenso
+          )).toList();
+    } else {
+      return fuente.obtenerHechos()
+          .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+          .toList();
+    }
+  }
+
+
+  public List<Hecho> obtenerColeccionConCriteriosExtra(List<Criterio> criteriosExtras) {
+    if (estaCurada) {
+      return this.aplicarConsenso()
+          .stream()
+          .filter(hecho -> this.cumpleCriterios(hecho, criteriosDeCreacion))
+          .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtras))
+          .toList();
+    } else {
+      return fuente.obtenerHechos()
+          .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+          .filter(h -> this.cumpleCriterios(h, criteriosExtras))
+          .toList();
+    }
+  }
+
+
   public List<Hecho> aplicarConsenso() {
     return this.obtenerColeccion().stream()
         .filter((Hecho unHecho) -> repositorio.verificaConsenso(
@@ -137,26 +171,6 @@ public final class Coleccion {
         )).toList();
   }
 
-  public List<Hecho> obtenerColeccionConCriteriosAdicionales(List<Criterio> criterios) {
-    return this.obtenerColeccion()
-        .stream()
-        .filter((Hecho h) ->
-             this.cumpleCriterios(h, criterios)
-        ).toList();
-  }
-
-  public List<Hecho> obtenerColeccionConCriteriosExtra(List<Criterio> criteriosExtra) {
-    return this.aplicarConsenso()
-        .stream()
-        .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtra))
-        .toList();
-  }
-
-  private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
-    if (fechaInicial.isAfter(fechaFinal)) {
-      throw new FechaException("fecha inicial no puede ser posterior a fecha final");
-    }
-  }
 
 
   // metodos para calcular los atributos de reporte

@@ -11,21 +11,28 @@ import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.EjecutarConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.models.algoritmos.ConsensoAbsoluto;
+import ar.edu.utn.frba.dds.models.algoritmos.MayoriaSimple;
+import ar.edu.utn.frba.dds.models.algoritmos.MultiplesMenciones;
 import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
 import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
+import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
 
-public class ColeccionHechosConsensuadosTest {
+public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
+  private HechosRepository repoHechos;
   private Hecho hechoUno;
   private Hecho hechoDos;
   private Hecho hechoTres;
   @BeforeEach
   void setUp() {
+
+    repoHechos = HechosRepository.getInstance();
 
     hechoUno = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -55,12 +62,16 @@ public class ColeccionHechosConsensuadosTest {
         OrigenHecho.ESTATICO,
         null,null);
 
-
     hechoUno.setLocalidad("esquel");
     hechoDos.setLocalidad("esquel");
     hechoTres.setLocalidad("esquel");
+  }
 
-
+  @BeforeEach
+  void limpiarRepositorio() {
+    repoHechos.limpiar();
+    repoHechos.limpiarBase();
+    assertEquals(0, HechosRepository.getInstance().getHechos().size(), "Repositorio no limpio antes del test");
   }
 
   @Test
@@ -97,7 +108,7 @@ public class ColeccionHechosConsensuadosTest {
     );
 
     // Ejecutar
-    List<Hecho> resultados = coleccion.obtenerColeccion();
+    List<Hecho> resultados = coleccion.obtenerColeccionCriteriosCreacional();
 
     // Verificar
     assertEquals(2, resultados.size());
@@ -135,13 +146,123 @@ public class ColeccionHechosConsensuadosTest {
         TipoDeConsenso.MAYORIA_SIMPLE
     );
 
+    coleccion.setEstaCurada(true);
+
     // Ejecutar
-    List<Hecho> resultados = coleccion.obtenerColeccion();
+    List<Hecho> resultados = coleccion.obtenerColeccionCriteriosCreacional();
 
     // Verificar
     assertEquals(2, resultados.size());
 
   }
 
+  @Test
+  @DisplayName("Devuelve los hechos consensuados que cumplen los criterios creacionales")
+  void testObtenerHechosConsensuados() {
+
+    Fuente fuenteMockUno = mock(Fuente.class);
+    when(fuenteMockUno.obtenerHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno));
+    Fuente fuenteMockDos = mock(Fuente.class);
+    when(fuenteMockDos.obtenerHechos()).thenReturn(List.of(hechoUno));
+
+    Fuente fuenteMocktres = mock(Fuente.class);
+    when(fuenteMocktres.obtenerHechos()).thenReturn(List.of(hechoUno));
+
+    // Act
+    //limpio el repo
+//    HechosRepository.getInstance().limpiar();
+//    var repo = HechosRepository.getInstance();
+
+    //se persisten los hechos
+    repoHechos.agregarHecho(hechoUno);
+    repoHechos.agregarHecho(hechoDos);
+    repoHechos.agregarHecho(hechoTres);
+
+    var fuentesActivas = List.of(fuenteMockUno,fuenteMockDos);
+
+    var algoritmos = List.of(
+        new ConsensoAbsoluto(fuentesActivas),
+        new MayoriaSimple(fuentesActivas),
+        new MultiplesMenciones()
+    );
+
+    EjecutarConsenso ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
+    ejecutar.evaluarVersionDos(fuenteMockUno.obtenerHechos());
+
+
+    Coleccion coleccion = new Coleccion(
+        fuenteMockUno, // no importa la fuente
+        "esquel",
+        LocalDate.of(2022, 1, 1),
+        LocalDate.of(2022, 12, 31),
+        "Incendio Forestal",
+        TipoDeConsenso.MULTIPLES_MENCIONES
+    );
+
+    coleccion.setEstaCurada(true);
+
+    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional();
+
+    // Assert
+    assertEquals(3, resultado.size());
+  }
+
+  @Test
+  @DisplayName("Devuelve los hechos consensuados que cumplen criterios extras")
+  void testObtenerHechosConsensuadosExtras() {
+    Criterio fechatest = new CriterioFecha(LocalDate.of(2022, 10, 20), LocalDate.of(2022, 10, 26));
+    Criterio lugartest = new CriterioLugar("esquel");
+
+    Fuente fuenteMockUno = mock(Fuente.class);
+    when(fuenteMockUno.obtenerHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno));
+    Fuente fuenteMockDos = mock(Fuente.class);
+    when(fuenteMockDos.obtenerHechos()).thenReturn(List.of(hechoUno));
+
+    Fuente fuenteTest = mock(Fuente.class);
+    when(fuenteTest.obtenerHechos()).thenReturn(List.of(hechoDos));
+
+    // Act
+    HechosRepository.getInstance().limpiar();
+    //limpio el repo
+    var fuentesActivas = List.of(fuenteMockUno,fuenteMockDos);
+
+    var algoritmos = List.of(
+        new ConsensoAbsoluto(fuentesActivas),
+        new MayoriaSimple(fuentesActivas),
+        new MultiplesMenciones()
+    );
+
+    var repo = HechosRepository.getInstance();
+
+    //se persisten los hechos
+
+      repoHechos.agregarHecho(hechoUno);
+      repoHechos.agregarHecho(hechoDos);
+      repoHechos.agregarHecho(hechoTres);
+
+    EjecutarConsenso ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
+    ejecutar.evaluarVersionDos(fuenteTest.obtenerHechos());
+
+    Coleccion coleccion = new Coleccion(
+        fuenteTest, // si importa la fuente
+        "esquel",
+        LocalDate.of(2022, 1, 1),
+        LocalDate.of(2022, 12, 31),
+        "Incendio Forestal",
+        TipoDeConsenso.MULTIPLES_MENCIONES
+    );
+
+    List<Criterio> criteriosTest = List.of(lugartest, fechatest);
+
+    coleccion.setEstaCurada(true);
+    List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosTest);
+
+    //aca tenemos un problema como le aplico a ambos los criterios extras
+    //voy a tener que aplicar un metodo extra
+
+    // Assert
+    assertEquals(0, resultado.size());
+
+  }
 
 }

@@ -7,51 +7,31 @@ import ar.edu.utn.frba.dds.models.algoritmos.ConsensoAbsoluto;
 import ar.edu.utn.frba.dds.models.algoritmos.MayoriaSimple;
 import ar.edu.utn.frba.dds.models.algoritmos.MultiplesMenciones;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
 
-@Entity
+@SuppressFBWarnings("EI_EXPOSE_REP")
 public class EjecutarConsenso {
-
-  @Id
-  @GeneratedValue
-  private Long id;
-
-  @Transient
-  private  List<AlgoritmoDeConsenso> algoritmos;
-
-  @Transient
-  private  List<Fuente> fuentesActivas;
-
-  @Transient
-  private  List<Hecho> hechosMezclados;
-
-  @Transient
+  private final List<AlgoritmoDeConsenso> algoritmos;
+  private final List<Fuente> fuentesActivas;
+  //private final List<Hecho> hechosMezclados;
   private final HechosRepository repositorio = HechosRepository.getInstance();
 
-  public EjecutarConsenso() {}
 
-  public EjecutarConsenso(List<Fuente> fuentesActivas) {
+  public EjecutarConsenso(List<Fuente> fuentesActivas, List<AlgoritmoDeConsenso> algoritmos) {
     this.fuentesActivas = new ArrayList<>(fuentesActivas);
-    this.hechosMezclados = new ArrayList<>(this.agregarHechos());
+    //this.hechosMezclados = new ArrayList<>(this.agregarHechos());
 
 
     //Aca da error por que todavia no se cambiaron los algoritmos
     //                               para utilizar el repositorio
-    this.algoritmos = List.of(
-        new ConsensoAbsoluto(fuentesActivas),
-        new MayoriaSimple(fuentesActivas),
-        new MultiplesMenciones()
-    );
+    this.algoritmos = algoritmos;
   }
 
-  public void evaluarVersionDos() {
-    hechosMezclados.stream()
+  public void evaluarVersionDos(List<Hecho> hechosNuevos) {
+    hechosNuevos.stream()
         //me devuelve una lista de hechos que no se contiene el repo
         .filter((Hecho hecho) -> !repositorio.contiene(hecho))
         //a esos hechos los agrego al repo
@@ -71,7 +51,7 @@ public class EjecutarConsenso {
     List<TipoDeConsenso> consensosActuales = algoritmos.stream()
         //cambio la firma de hechosActuales ahora se lo paso a estaConsensuado
         .filter(algoritmo -> algoritmo.estaConsensuado(unHecho, hechosActuales))
-        .map(this::mapearTipo)
+        .map(algoritmo -> algoritmo.getTipo())
         .toList();
 
     // Reemplazar los consensos anteriores por los consensos nuevos que se cumplen
@@ -79,23 +59,12 @@ public class EjecutarConsenso {
 
   }
 
-  private TipoDeConsenso mapearTipo(AlgoritmoDeConsenso algoritmo) {
-    if (algoritmo instanceof ConsensoAbsoluto) {
-      return TipoDeConsenso.CONSENSO_ABSOLUTO;
-    }
-    if (algoritmo instanceof MayoriaSimple) {
-      return TipoDeConsenso.MAYORIA_SIMPLE;
-    }
-    if (algoritmo instanceof MultiplesMenciones) {
-      return TipoDeConsenso.MULTIPLES_MENCIONES;
-    }
-    throw new IllegalArgumentException("Algoritmo desconocido");
-  }
-
   private List<Hecho> agregarHechos() {
     return fuentesActivas.stream()
         .flatMap(fuente -> fuente.obtenerHechos().stream())
         .collect(Collectors.toList());
   }
+
+
 
 }

@@ -13,8 +13,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import lombok.Getter;
 
-
-
 @Entity
 @Table(name = "fuentes")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -27,6 +25,7 @@ public abstract class Fuente {
   private Long id;
 
   public abstract List<Hecho> obtenerHechos();
+
 }
 
 

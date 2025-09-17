@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 
 
+
 @Entity
 @DiscriminatorValue("fecha")
 @AllArgsConstructor

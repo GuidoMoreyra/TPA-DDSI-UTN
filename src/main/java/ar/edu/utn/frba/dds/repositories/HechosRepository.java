@@ -6,6 +6,7 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.Query;
 
 public final class HechosRepository implements WithSimplePersistenceUnit {
   private static final HechosRepository INSTANCE = new HechosRepository();
@@ -19,7 +20,6 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
 
   @SuppressWarnings("unchecked")
   public List<Hecho> getHechos() {
-    //return Collections.unmodifiableList(hechos);
     return entityManager()
         .createQuery("from Hecho", Hecho.class)
         .getResultList();
@@ -27,14 +27,19 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
 
   @SuppressWarnings("unchecked")
   public void agregarHecho(Hecho hecho) {
-    //hechos.add(hecho);
     entityManager().persist(hecho);
-
   }
 
+  @SuppressWarnings("unchecked")
   public void limpiar() { //para testear
     this.hechos.clear();
   }
+
+  @SuppressWarnings("unchecked")
+  public void limpiarBase() {
+    entityManager().clear();
+  }
+
 
   @SuppressWarnings("unchecked")
   public boolean contiene(Hecho hecho) {
@@ -42,7 +47,6 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
         .find(Hecho.class, hecho.getId());
 
     return hechoEncontrado != null;
-
   }
 
   public Boolean verificaConsenso(Hecho hechoAverificar, TipoDeConsenso consenso) {
@@ -50,11 +54,32 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
       return true;
     }
 
-    for (Hecho hechoDelRepositorio : this.hechos) {
-      if (hechoDelRepositorio.comparacionRigurosa(hechoAverificar)) {
-        return hechoDelRepositorio.getConsensos().contains(consenso);
-      }
+
+    Hecho hechoEncontrado = entityManager().find(Hecho.class, hechoAverificar.getId());
+    if (hechoEncontrado == null) {
+      return false;
     }
-    return false;
+
+    return hechoEncontrado.getConsensos().contains(consenso);
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<Hecho> buscarPorTexto(String searchTerm) {
+    if (searchTerm == null || searchTerm.trim().isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    String sql = """
+        SELECT h.*, MATCH(h.titulo, h.descripcion) 
+        AGAINST(:searchTerm IN NATURAL LANGUAGE MODE) as relevance 
+        FROM hechos h 
+        WHERE MATCH(h.titulo, h.descripcion) AGAINST(:searchTerm IN NATURAL LANGUAGE MODE)
+        ORDER BY relevance DESC
+        """;
+
+    Query query = entityManager().createNativeQuery(sql, Hecho.class);
+    query.setParameter("searchTerm", searchTerm.trim());
+
+    return query.getResultList();
   }
 }

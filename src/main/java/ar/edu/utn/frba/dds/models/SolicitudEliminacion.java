@@ -33,6 +33,7 @@ public final class SolicitudEliminacion {
 
   @OneToOne
   private Hecho hecho;
+  @Column(length = 2000)
   private String justificacion;
 
   public SolicitudEliminacion(

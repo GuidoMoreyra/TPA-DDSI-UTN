@@ -6,12 +6,9 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import lombok.Getter;
 
-
-
 @Entity
 @DiscriminatorValue("lugar")
 public class CriterioLugar extends Criterio {
-
   @Getter
   private String localidad;
 

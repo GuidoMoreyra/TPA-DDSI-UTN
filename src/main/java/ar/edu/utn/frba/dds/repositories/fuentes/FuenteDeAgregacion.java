@@ -12,14 +12,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-
-
 @Entity
 @DiscriminatorValue("Agregacion")
-public final class FuenteDeAgregacion extends Fuente {
-
-  @Getter
-  @Setter
+@Setter
+public  class FuenteDeAgregacion extends Fuente {
   @Transient
   private  List<Fuente> fuentes;
 
@@ -29,14 +25,6 @@ public final class FuenteDeAgregacion extends Fuente {
 
   public FuenteDeAgregacion() {
 
-  }
-
-  public List<Fuente> getFuentes() {
-    return new ArrayList<>(fuentes);
-  }
-
-  public void setFuentes(List<Fuente> fuentes) {
-    this.fuentes = new ArrayList<>(fuentes);
   }
 
   @Override
@@ -57,4 +45,15 @@ public final class FuenteDeAgregacion extends Fuente {
 
     return hechos;
   }
+
+  /* se agregaron los getters y setters para pasar el mvn clean verify*/
+
+  public List<Fuente> getFuentes() {
+    return new ArrayList<>(fuentes);
+  }
+
+  public void setFuentes(List<Fuente> fuentes) {
+    this.fuentes = new ArrayList<>(fuentes);
+  }
+
 }
