@@ -20,7 +20,7 @@ public class ComponenteDeEstadisticas {
   private SolicitudesEliminacionRepository repoSolicitudesEliminacion;
   private Provincia provinciaConMasHechos = null;
   private String categoriaConMasHechos = null;
-  private Provincia provinciaSegunCategoria = Provincia.PROVINCIA_DESCONOCIDA;
+  private Provincia provinciaConMasHechosPorCategoria = Provincia.PROVINCIA_DESCONOCIDA;
   private Integer horaDePicoSegunCategoria = null;
   private Long cantidadSolicSpam = null;
 
@@ -44,16 +44,17 @@ public class ComponenteDeEstadisticas {
 
     List<SolicitudEliminacion> solicitudEliminacions = repoSolicitudesEliminacion
         .getSolicitudes();
-
+    /*¿Cuántas solicitudes de eliminación son spam?*/
     this.cantidadSolicSpam = repoSolicitudesEliminacion
         .cantidadDeSolicitudesSpam(solicitudEliminacions);
     this.provinciaConMasHechos = this.buscarProvinciaConMasHechos();
     this.categoriaConMasHechos = this.buscarCategoriaConMasHechos();
-    this.provinciaSegunCategoria = this.buscarProvinciaConMasHechosPorCategoria(categoriaBuscar);
+    this.provinciaConMasHechosPorCategoria = this.buscarProvinciaConMasHechosPorCategoria(categoriaBuscar);
     this.horaDePicoSegunCategoria = this.buscarHoraPicoPorCategoria(categoriaBuscar);
 
   }
 
+  /*¿Cuál es la categoría con mayor cantidad de hechos reportados?*/
   public String buscarCategoriaConMasHechos() {
 
     Map<String, Integer> contadorCategorias = new HashMap<>();
@@ -80,6 +81,7 @@ public class ComponenteDeEstadisticas {
     return categoriaMax;
   }
 
+  /*¿En qué provincia se presenta la mayor cantidad de hechos de una cierta categoría?*/
   public Provincia buscarProvinciaConMasHechosPorCategoria(String categoria) {
     List<Coleccion> colecciones = repoColeccion.listar()
         .stream().filter(coleccion ->
@@ -100,7 +102,7 @@ public class ComponenteDeEstadisticas {
         .map(Map.Entry::getKey)
         .orElse(Provincia.PROVINCIA_DESCONOCIDA);
   }
-
+  /*¿en qué provincia se agrupan la mayor cantidad de hechos reportados?*/
   public Provincia buscarProvinciaConMasHechos() {
     Map<Provincia, Integer> contadorProvincias = new HashMap<>();
 
@@ -116,6 +118,7 @@ public class ComponenteDeEstadisticas {
         .orElse(Provincia.PROVINCIA_DESCONOCIDA);
   }
 
+  /*¿A qué hora del día ocurren la mayor cantidad de hechos de una cierta categoría?*/
   public int buscarHoraPicoPorCategoria(String categoria) {
     Map<Integer, Integer> contadorHoras = new HashMap<>();
     List<Coleccion> colecciones = repoColeccion.listar()
@@ -139,7 +142,7 @@ public class ComponenteDeEstadisticas {
         categoriaConMasHechos,
         provinciaConMasHechos,
         horaDePicoSegunCategoria,
-        provinciaSegunCategoria
+        provinciaConMasHechosPorCategoria
     );
     return  reporteColeccion;
   }

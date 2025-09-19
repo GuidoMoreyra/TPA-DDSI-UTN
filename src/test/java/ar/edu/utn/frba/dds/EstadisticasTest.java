@@ -245,7 +245,7 @@ public class EstadisticasTest implements SimplePersistenceTest {
 
 
     Assertions.assertEquals("Inseguridad", componente.getCategoriaConMasHechos());
-    Assertions.assertEquals(Provincia.RIO_NEGRO, componente.getProvinciaSegunCategoria());
+    Assertions.assertEquals(Provincia.RIO_NEGRO, componente.getProvinciaConMasHechosPorCategoria());
     Assertions.assertEquals(Provincia.RIO_NEGRO, componente.getProvinciaConMasHechos());
     Assertions.assertEquals(22, componente.getHoraDePicoSegunCategoria());
 
