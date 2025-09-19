@@ -54,7 +54,6 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
       return true;
     }
 
-
     Hecho hechoEncontrado = entityManager().find(Hecho.class, hechoAverificar.getId());
     if (hechoEncontrado == null) {
       return false;

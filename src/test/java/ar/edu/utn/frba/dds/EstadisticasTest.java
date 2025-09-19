@@ -183,8 +183,8 @@ public class EstadisticasTest implements SimplePersistenceTest {
 
     coleccion.setEstaCurada(false);
     coleccion.calcularHoraPico();
-    coleccion.setProvinciaConMasHechos();
-    coleccion.cantidadHechosReportados();
+    coleccion.calcularProvinciaConMasHechos();
+    coleccion.calcularHechosReportados();
 
 
     Assertions.assertEquals(22,coleccion.getHoraPicoHechos());

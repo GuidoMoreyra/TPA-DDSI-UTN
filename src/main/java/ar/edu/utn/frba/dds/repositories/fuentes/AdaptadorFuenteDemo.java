@@ -18,14 +18,14 @@ public final class AdaptadorFuenteDemo {
   private final Conexion conexion;
   private final URL url;
   private LocalDateTime ultimaConsulta;
-  //private final Integer intervaloDeEspera;
+
   private final List<Hecho> hechosObtenidos = new ArrayList<>();
 
   public AdaptadorFuenteDemo(
       Conexion conexion,
       String url,
       LocalDateTime ultimaConsulta
-  //intervaloDeespera
+
   ) {
     validarUltimaConsulta(ultimaConsulta);
     this.conexion = conexion;

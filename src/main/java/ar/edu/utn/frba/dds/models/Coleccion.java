@@ -117,33 +117,16 @@ public final class Coleccion {
         .allMatch(criterio -> criterio.cumple(hecho));
   }
 
-  /*
-  public List<Hecho> obtenerColeccion() {
-    return fuente
-        .obtenerHechos()
-        .stream()
-        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
-        .toList();
-  }
-  */
-
-  public List<Hecho> obtenerHechos() {
-    List<Hecho> hechos = HechosRepository.getInstance().getHechos();
-
-    return hechos
-        .stream()
-        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
-        .toList();
-  }
 
 
   public List<Hecho> obtenerColeccionCriteriosCreacional() {
     if (estaCurada) {
       return fuente.obtenerHechos()
-          .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+          .stream()
+          .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
           .filter((Hecho unHecho) -> repositorio.verificaConsenso(
-              unHecho, algoritmoDeconsenso
-          )).toList();
+              unHecho, algoritmoDeconsenso))
+          .toList();
     } else {
       return fuente.obtenerHechos()
           .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
@@ -151,12 +134,13 @@ public final class Coleccion {
     }
   }
 
-
   public List<Hecho> obtenerColeccionConCriteriosExtra(List<Criterio> criteriosExtras) {
     if (estaCurada) {
-      return this.aplicarConsenso()
+      return fuente.obtenerHechos()
           .stream()
-          .filter(hecho -> this.cumpleCriterios(hecho, criteriosDeCreacion))
+          .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+          .filter((Hecho unHecho) -> repositorio.verificaConsenso(
+              unHecho, algoritmoDeconsenso))
           .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtras))
           .toList();
     } else {
@@ -174,23 +158,13 @@ public final class Coleccion {
   }
 
 
-
-  public List<Hecho> aplicarConsenso() {
-    return fuente.obtenerHechos().stream()
-        .filter((Hecho unHecho) -> repositorio.verificaConsenso(
-            unHecho, algoritmoDeconsenso
-        )).toList();
-  }
-
-
-
   // metodos para calcular los atributos de reporte
 
-  public void cantidadHechosReportados() {
+  public void calcularHechosReportados() {
     cantidadHechosReportados = this.obtenerColeccionCriteriosCreacional().size();
   }
 
-  public void setProvinciaConMasHechos() {
+  public void calcularProvinciaConMasHechos() {
 
     List<Hecho> hechos = this.obtenerColeccionCriteriosCreacional();
     // provincia, cantidadDeveces que aparece
@@ -238,6 +212,18 @@ public final class Coleccion {
     }
 
     this.horaPicoHechos = maxHora; // guardamos la hora pico en la colección
+  }
+
+
+
+
+  public List<Hecho> obtenerHechos() {
+    List<Hecho> hechos = HechosRepository.getInstance().getHechos();
+
+    return hechos
+        .stream()
+        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+        .toList();
   }
 
 

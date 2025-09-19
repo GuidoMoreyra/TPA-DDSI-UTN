@@ -190,7 +190,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     );
 
     EjecutarConsenso ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
-    ejecutar.evaluarVersionDos(fuenteMockUno.obtenerHechos());
+    ejecutar.evaluarHechos(fuenteMockUno.obtenerHechos());
 
 
     Coleccion coleccion = new Coleccion(
@@ -244,7 +244,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
       repoHechos.agregarHecho(hechoTres);
 
     EjecutarConsenso ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
-    ejecutar.evaluarVersionDos(fuenteTest.obtenerHechos());
+    ejecutar.evaluarHechos(fuenteTest.obtenerHechos());
 
     Coleccion coleccion = new Coleccion(
         fuenteTest, // si importa la fuente

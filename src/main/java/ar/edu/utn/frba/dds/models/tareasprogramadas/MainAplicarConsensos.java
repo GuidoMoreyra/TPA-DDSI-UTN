@@ -3,11 +3,9 @@ package ar.edu.utn.frba.dds.models.tareasprogramadas;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.models.EjecutarConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.algoritmos.ConsensoAbsoluto;
 import ar.edu.utn.frba.dds.models.algoritmos.MayoriaSimple;
 import ar.edu.utn.frba.dds.models.algoritmos.MultiplesMenciones;
-import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteDinamica;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
 import java.util.ArrayList;
@@ -33,10 +31,10 @@ public final class MainAplicarConsensos {
         new MultiplesMenciones()
     );
 
-    List<Hecho> hechosEvaluar = fuentedinamica.obtenerHechos();
+    List<Hecho> hechosDePrueba = fuentedinamica.obtenerHechos();
 
     EjecutarConsenso consensuar = new EjecutarConsenso(fuentesactivas, algoritmos);
-    consensuar.evaluarVersionDos(hechosEvaluar);
+    consensuar.evaluarHechos(hechosDePrueba);
 
 
 

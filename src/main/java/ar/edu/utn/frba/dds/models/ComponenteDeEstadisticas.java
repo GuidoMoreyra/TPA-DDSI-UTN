@@ -18,11 +18,11 @@ public class ComponenteDeEstadisticas {
   private String categoriaBuscar;
   private ColeccionRepository repoColeccion;
   private SolicitudesEliminacionRepository repoSolicitudesEliminacion;
-  private Provincia provinciaConMasHechos;
-  private String categoriaConMasHechos;
-  private Provincia provinciaSegunCategoria;
-  private Integer horaDePicoSegunCategoria;
-  private Long cantidadSolicSpam;
+  private Provincia provinciaConMasHechos = null;
+  private String categoriaConMasHechos = null;
+  private Provincia provinciaSegunCategoria = Provincia.PROVINCIA_DESCONOCIDA;
+  private Integer horaDePicoSegunCategoria = null;
+  private Long cantidadSolicSpam = null;
 
 
   public ComponenteDeEstadisticas(ColeccionRepository repositorioColeccion,
@@ -31,20 +31,16 @@ public class ComponenteDeEstadisticas {
     this.repoColeccion = repositorioColeccion;
     this.repoSolicitudesEliminacion = repoSolicitudesEliminacion;
     this.categoriaBuscar = categoria;
-    this.cantidadSolicSpam = null;
-    this.provinciaSegunCategoria = Provincia.PROVINCIA_DESCONOCIDA;
-    this.provinciaConMasHechos = null;
-    this.categoriaConMasHechos = null;
-    this.horaDePicoSegunCategoria = 0;
+
 
   }
 
   public void actualizar() {
 
     repoColeccion.listar().forEach(coleccion -> {
-      coleccion.cantidadHechosReportados();
+      coleccion.calcularHechosReportados();
       coleccion.calcularHoraPico();
-      coleccion.setProvinciaConMasHechos(); });
+      coleccion.calcularProvinciaConMasHechos(); });
 
     List<SolicitudEliminacion> solicitudEliminacions = repoSolicitudesEliminacion
         .getSolicitudes();
@@ -53,8 +49,8 @@ public class ComponenteDeEstadisticas {
         .cantidadDeSolicitudesSpam(solicitudEliminacions);
     this.provinciaConMasHechos = this.buscarProvinciaConMasHechos();
     this.categoriaConMasHechos = this.buscarCategoriaConMasHechos();
-    this.provinciaSegunCategoria = this.buscarProvinciaConMasHechosDeCategoria(categoriaBuscar);
-    this.horaDePicoSegunCategoria = this.buscarHoraPicoDeCategoria(categoriaBuscar);
+    this.provinciaSegunCategoria = this.buscarProvinciaConMasHechosPorCategoria(categoriaBuscar);
+    this.horaDePicoSegunCategoria = this.buscarHoraPicoPorCategoria(categoriaBuscar);
 
   }
 
@@ -84,7 +80,7 @@ public class ComponenteDeEstadisticas {
     return categoriaMax;
   }
 
-  public Provincia buscarProvinciaConMasHechosDeCategoria(String categoria) {
+  public Provincia buscarProvinciaConMasHechosPorCategoria(String categoria) {
     List<Coleccion> colecciones = repoColeccion.listar()
         .stream().filter(coleccion ->
             coleccion.getCategoria().equals(categoria)).toList();
@@ -120,7 +116,7 @@ public class ComponenteDeEstadisticas {
         .orElse(Provincia.PROVINCIA_DESCONOCIDA);
   }
 
-  public int buscarHoraPicoDeCategoria(String categoria) {
+  public int buscarHoraPicoPorCategoria(String categoria) {
     Map<Integer, Integer> contadorHoras = new HashMap<>();
     List<Coleccion> colecciones = repoColeccion.listar()
         .stream().filter(coleccion -> coleccion.getCategoria().equals(categoria)).toList();

@@ -19,6 +19,9 @@ public  class FuenteDeAgregacion extends Fuente {
   @Transient
   private  List<Fuente> fuentes;
 
+  @Transient
+  private  List<Hecho> hechos;
+
   public FuenteDeAgregacion(List<Fuente> fuentes) {
     this.fuentes = new ArrayList<>(fuentes);
   }
@@ -34,16 +37,13 @@ public  class FuenteDeAgregacion extends Fuente {
     for (Fuente fuente : fuentes) {
       List<Hecho> hechosFuente = fuente.obtenerHechos();
 
-      hechosFuente.forEach(
-          hecho -> hecho.setOrigen(
-              OrigenHecho.mapearOrigenConAgregador(hecho.getOrigen())
-          )
-      );
-
-      hechos.addAll(fuente.obtenerHechos());
+      hechos.addAll(hechosFuente);
     }
-
     return hechos;
+  }
+
+  public void actualizarHechos(){
+    hechos.addAll(this.obtenerHechos());
   }
 
   /* se agregaron los getters y setters para pasar el mvn clean verify*/
