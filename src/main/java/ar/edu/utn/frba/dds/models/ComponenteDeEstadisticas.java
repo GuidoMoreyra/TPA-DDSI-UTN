@@ -1,8 +1,6 @@
 package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.contracts.Reporte;
-import ar.edu.utn.frba.dds.dto.ColeccionDto;
-import ar.edu.utn.frba.dds.dto.SolicitudSpamDto;
 import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.models.reportes.ReporteColeccion;
 import ar.edu.utn.frba.dds.models.reportes.ReporteSolicitudElim;
@@ -139,34 +137,23 @@ public class ComponenteDeEstadisticas {
         .orElse(-1); // -1 = sin resultados
   }
 
-  public ColeccionDto generarColeccionDto() {
-    ColeccionDto dto = new ColeccionDto();
-    dto.setCategoria(this.categoriaBuscar);
-    dto.setCategoriaConMasHechos(this.getCategoriaConMasHechos());
-    dto.setProvinciaConMasHechos(this.getProvinciaConMasHechos());
-    dto.setHoraPicoHechos(this.getHoraDePicoSegunCategoria());
-    dto.setProvincia(this.getProvinciaSegunCategoria());
 
-    return dto;
+  public ReporteColeccion generarReporteColeccion() {
+    ReporteColeccion reporteColeccion = new ReporteColeccion(
+        categoriaConMasHechos,
+        provinciaConMasHechos,
+        horaDePicoSegunCategoria,
+        provinciaSegunCategoria
+    );
+    return  reporteColeccion;
   }
 
-  public String generarReporteColeccion() {
-    ColeccionDto dto = this.generarColeccionDto();
-    Reporte reporteColeccion = new ReporteColeccion(dto);
-    String csv = reporteColeccion.generarCsv();
-    return csv;
-  }
 
-  public SolicitudSpamDto generarSolicitudSpamDto() {
-    SolicitudSpamDto dto = new SolicitudSpamDto();
-    dto.setCantidadDeSolicitudSpam(this.getCantidadSolicSpam());
-    return dto;
-  }
 
-  public String generarSolicitudSpam() {
-    SolicitudSpamDto dto = this.generarSolicitudSpamDto();
-    Reporte reporteSolicitud = new ReporteSolicitudElim(dto);
-    return reporteSolicitud.generarCsv();
+  public ReporteSolicitudElim generarReporteSolicitudSpam() {
+    ReporteSolicitudElim reporteSolicitud = new ReporteSolicitudElim(
+        this.getCantidadSolicSpam());
+    return reporteSolicitud;
   }
 
   public void exportarReporte(String rutaReporte, Reporte reporte) {

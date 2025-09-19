@@ -1,20 +1,21 @@
 package ar.edu.utn.frba.dds.models.reportes;
 
 import ar.edu.utn.frba.dds.contracts.Reporte;
-import ar.edu.utn.frba.dds.dto.SolicitudSpamDto;
+import lombok.Getter;
 
+@Getter
 public class ReporteSolicitudElim implements Reporte {
 
-  private SolicitudSpamDto solicitudSpam;
+  private Long solicitudesSpam;
 
-  public ReporteSolicitudElim(SolicitudSpamDto solicitudSpamDto) {
-    this.solicitudSpam = new SolicitudSpamDto(solicitudSpamDto);
+  public ReporteSolicitudElim(Long solicitudesSpam) {
+    this.solicitudesSpam = solicitudesSpam;
   }
 
   @Override
   public String generarCsv() {
     String encabezado = "cantidad_de_solicitues_eliminacion_spam";
-    String fila = String.valueOf(solicitudSpam.getCantidadDeSolicitudSpam());
+    String fila = String.valueOf(this.getSolicitudesSpam());
     return encabezado + "\n" + fila;
   }
 
