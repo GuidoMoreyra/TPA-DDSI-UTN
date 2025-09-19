@@ -14,8 +14,9 @@ import lombok.Setter;
 
 @Entity
 @DiscriminatorValue("Agregacion")
-@Setter
+
 public  class FuenteDeAgregacion extends Fuente {
+  @Setter
   @Transient
   private  List<Fuente> fuentes;
 
@@ -23,6 +24,7 @@ public  class FuenteDeAgregacion extends Fuente {
   private  List<Hecho> hechos;
 
   public FuenteDeAgregacion(List<Fuente> fuentes) {
+
     this.fuentes = new ArrayList<>(fuentes);
   }
 
@@ -42,7 +44,7 @@ public  class FuenteDeAgregacion extends Fuente {
     return hechos;
   }
 
-  public void actualizarHechos(){
+  public void actualizarHechos() {
     hechos.addAll(this.obtenerHechos());
   }
 
@@ -55,5 +57,7 @@ public  class FuenteDeAgregacion extends Fuente {
   public void setFuentes(List<Fuente> fuentes) {
     this.fuentes = new ArrayList<>(fuentes);
   }
+
+
 
 }

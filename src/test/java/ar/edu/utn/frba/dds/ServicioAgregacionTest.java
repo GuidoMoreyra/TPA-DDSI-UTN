@@ -41,7 +41,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 29),
-        OrigenHecho.AGREGADOR_ESTATICO,
+        OrigenHecho.ESTATICO,
         null,null);
 
     Hecho hechoDos = new Hecho("incendio forestal esquel",
@@ -50,7 +50,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 25),
-        OrigenHecho.AGREGADOR_ESTATICO,
+        OrigenHecho.ESTATICO,
         null,null);
 
     Hecho hechoTres = new Hecho("incendio forestal esquel",
@@ -59,7 +59,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 30),
-        OrigenHecho.AGREGADOR_ESTATICO,
+        OrigenHecho.ESTATICO,
         null,null);
 
 
@@ -73,8 +73,9 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 29),
-        OrigenHecho.AGREGADOR_DINAMICO,
+        OrigenHecho.DINAMICO,
         null,null);
+
 
     Hecho hechoCinco = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -82,7 +83,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 25),
-        OrigenHecho.AGREGADOR_DINAMICO,
+        OrigenHecho.DINAMICO,
         null,null);
 
     Hecho hechoSeis = new Hecho("incendio forestal esquel",
@@ -91,7 +92,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 30),
-        OrigenHecho.AGREGADOR_DINAMICO,
+        OrigenHecho.DINAMICO,
         null,null);
 
 

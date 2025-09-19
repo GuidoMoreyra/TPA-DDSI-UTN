@@ -49,7 +49,8 @@ public class ComponenteDeEstadisticas {
         .cantidadDeSolicitudesSpam(solicitudEliminacions);
     this.provinciaConMasHechos = this.buscarProvinciaConMasHechos();
     this.categoriaConMasHechos = this.buscarCategoriaConMasHechos();
-    this.provinciaConMasHechosPorCategoria = this.buscarProvinciaConMasHechosPorCategoria(categoriaBuscar);
+    this.provinciaConMasHechosPorCategoria =
+        this.buscarProvinciaConMasHechosPorCategoria(categoriaBuscar);
     this.horaDePicoSegunCategoria = this.buscarHoraPicoPorCategoria(categoriaBuscar);
 
   }
@@ -102,6 +103,7 @@ public class ComponenteDeEstadisticas {
         .map(Map.Entry::getKey)
         .orElse(Provincia.PROVINCIA_DESCONOCIDA);
   }
+
   /*¿en qué provincia se agrupan la mayor cantidad de hechos reportados?*/
   public Provincia buscarProvinciaConMasHechos() {
     Map<Provincia, Integer> contadorProvincias = new HashMap<>();
