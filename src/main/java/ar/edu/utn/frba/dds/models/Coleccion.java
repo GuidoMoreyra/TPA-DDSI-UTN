@@ -74,6 +74,7 @@ public final class Coleccion {
   @Column(name = "hora_pico")
   private Integer horaPicoHechos = 0;
   @Getter
+
   private String categoria;
 
   public Coleccion(
@@ -95,6 +96,7 @@ public final class Coleccion {
 
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
     this.estaCurada = false;
+    this.setCategoria(categoria);
 
   }
 
@@ -115,6 +117,7 @@ public final class Coleccion {
         .allMatch(criterio -> criterio.cumple(hecho));
   }
 
+  /*
   public List<Hecho> obtenerColeccion() {
     return fuente
         .obtenerHechos()
@@ -122,6 +125,7 @@ public final class Coleccion {
         .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
         .toList();
   }
+  */
 
   public List<Hecho> obtenerHechos() {
     List<Hecho> hechos = HechosRepository.getInstance().getHechos();
@@ -163,9 +167,16 @@ public final class Coleccion {
     }
   }
 
+  // se agrega setter manual porque mvn clear verify dice que es un spotbug
+
+  public void setCategoria(String categoria) {
+    this.categoria = categoria;
+  }
+
+
 
   public List<Hecho> aplicarConsenso() {
-    return this.obtenerColeccion().stream()
+    return fuente.obtenerHechos().stream()
         .filter((Hecho unHecho) -> repositorio.verificaConsenso(
             unHecho, algoritmoDeconsenso
         )).toList();
@@ -176,12 +187,12 @@ public final class Coleccion {
   // metodos para calcular los atributos de reporte
 
   public void cantidadHechosReportados() {
-    cantidadHechosReportados = this.obtenerColeccion().size();
+    cantidadHechosReportados = this.obtenerColeccionCriteriosCreacional().size();
   }
 
   public void setProvinciaConMasHechos() {
 
-    List<Hecho> hechos = this.obtenerColeccion();
+    List<Hecho> hechos = this.obtenerColeccionCriteriosCreacional();
     // provincia, cantidadDeveces que aparece
     Map<Provincia, Integer> contador = new HashMap<>();
     Provincia maxProvincia = null;
@@ -208,7 +219,7 @@ public final class Coleccion {
     //Map<hora del dia (0-23),cantidadDehechos>
 
     Map<Integer, Integer> contadorHoras = new HashMap<>();
-    List<Hecho> hechos = this.obtenerColeccion();
+    List<Hecho> hechos = this.obtenerColeccionCriteriosCreacional();
     hechos.forEach(hecho -> {
       Integer hora = hecho.horaDelHecho().getHour(); // obtenemos la hora del día (0-23)
       contadorHoras.put(hora, contadorHoras.getOrDefault(hora, 0) + 1);

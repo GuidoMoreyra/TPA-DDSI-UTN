@@ -116,24 +116,27 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
 
   @Test
   void seCreaColeccionConAlgoritmoDeConsenso() {
+
+    Hecho hechoTestDos = new Hecho("incendio forestal", "desc", "INSEGURIDAD",
+        -38, -56, LocalDate.of(2025, 3, 10), OrigenHecho.ESTATICO, null, null);
+    hechoTestDos.setLocalidad("Avellaneda");
+    hechoTestDos.setAlgoritmos(List.of(TipoDeConsenso.MAYORIA_SIMPLE));
+
+    Hecho hechoTestUno = new Hecho("incendio forestal", "desc", "INSEGURIDAD",
+        -38, -56, LocalDate.of(2025, 3, 12), OrigenHecho.ESTATICO, null, null);
+    hechoTestUno.setLocalidad("Avellaneda");
+    hechoTestUno.setAlgoritmos(List.of(TipoDeConsenso.MAYORIA_SIMPLE));
+
+    repoHechos.agregarHecho(hechoTestUno);
+    repoHechos.agregarHecho(hechoTestDos);
+
+
     Coordenada coordenadaMock = mock(Coordenada.class);
     when(coordenadaMock.getLocalidad()).thenReturn("Avellaneda");
 
-    Hecho hechoMockUno = mock(Hecho.class);
-    when(hechoMockUno.getCategoria()).thenReturn("INSEGURIDAD");
-    when(hechoMockUno.getCoordenadas()).thenReturn(coordenadaMock);
-    when(hechoMockUno.getFechaDelHecho()).thenReturn(LocalDate.of(2025, 3, 10));
-    when(hechoMockUno.estaActivo()).thenReturn(true);
-
-    Hecho hechoMockDos = mock(Hecho.class);
-    when(hechoMockDos.getCategoria()).thenReturn("INSEGURIDAD");
-    when(hechoMockDos.getCoordenadas()).thenReturn(coordenadaMock);
-    when(hechoMockDos.getFechaDelHecho()).thenReturn(LocalDate.of(2025, 3, 12));
-    when(hechoMockDos.estaActivo()).thenReturn(true);
-
     // Fuente que devuelve ese hecho
     Fuente fuenteMockCuatro = mock(Fuente.class);
-    when(fuenteMockCuatro.obtenerHechos()).thenReturn(List.of(hechoMockUno, hechoMockDos));
+    when(fuenteMockCuatro.obtenerHechos()).thenReturn(List.of(hechoTestDos, hechoTestUno));
 
 
     // Crear colección CON algoritmo (no se va a usar en este test)
@@ -261,7 +264,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     //voy a tener que aplicar un metodo extra
 
     // Assert
-    assertEquals(0, resultado.size());
+    assertEquals(1, resultado.size());
 
   }
 

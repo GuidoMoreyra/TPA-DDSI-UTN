@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.Hecho;
@@ -14,6 +15,7 @@ import ar.edu.utn.frba.dds.contracts.Fuente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ColeccionTest {
@@ -139,7 +141,12 @@ public class ColeccionTest {
     when(criterioFechaMock.cumple(hecho3)).thenReturn(false);  //no pasa
 
     // Ejecutamos el método a testear
-    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional();
+    List<Criterio> criteriosAdicionales = new ArrayList<Criterio>();
+    criteriosAdicionales.add(criterioLugarMock);
+    criteriosAdicionales.add(criterioCategoriaMock);
+    criteriosAdicionales.add(criterioFechaMock);
+
+    List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosAdicionales);
 
     // Solo hecho1 cumple todos los criterios
     assertEquals(1, resultado.size());
