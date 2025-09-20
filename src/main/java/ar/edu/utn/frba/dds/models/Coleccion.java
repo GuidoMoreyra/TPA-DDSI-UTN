@@ -58,8 +58,6 @@ public final class Coleccion {
   @Transient
   private final HechosRepository repositorio = HechosRepository.getInstance();
 
-  @Setter
-  private boolean estaCurada;
 
   /*
   * Desnormalizando:guardar estadísticas precalculadas en cada colección.
@@ -76,6 +74,14 @@ public final class Coleccion {
   @Getter
 
   private String categoria;
+
+  @ManyToMany
+  @JoinTable(
+      name = "coleccion_hecho",
+      joinColumns = @JoinColumn(name = "coleccion_id"),
+      inverseJoinColumns = @JoinColumn(name = "hecho_id")
+  )
+  private List<Hecho> hechos = new ArrayList<>();
 
   public Coleccion(
       Fuente fuente,
@@ -95,14 +101,18 @@ public final class Coleccion {
     criteriosDeCreacion.add(new CriterioLugar(localidad));
 
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
-    this.estaCurada = false;
     this.setCategoria(categoria);
 
   }
 
+
   public Coleccion() {}
 
   ////METODOS///
+
+  public void persistirHechos(List<Hecho> Hechos) {
+    this.hechos = new ArrayList<>(Hechos);
+  }
 
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
     if (fechaInicial.isAfter(fechaFinal)) {
@@ -119,7 +129,8 @@ public final class Coleccion {
 
 
 
-  public List<Hecho> obtenerColeccionCriteriosCreacional() {
+
+  public List<Hecho> obtenerColeccionCriteriosCreacional(Boolean estaCurada) {
     if (estaCurada) {
       return fuente.obtenerHechos()
           .stream()
@@ -134,21 +145,17 @@ public final class Coleccion {
     }
   }
 
-  public List<Hecho> obtenerColeccionConCriteriosExtra(List<Criterio> criteriosExtras) {
-    if (estaCurada) {
-      return fuente.obtenerHechos()
+  public List<Hecho> obtenerColeccionConCriteriosExtra(
+      List<Criterio> criteriosExtras, Boolean estaCurada) {
+    if (estaCurada && !(criteriosExtras.isEmpty())) {
+      return this.obtenerColeccionCriteriosCreacional(estaCurada)
           .stream()
-          .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
-          .filter((Hecho unHecho) -> repositorio.verificaConsenso(
-              unHecho, algoritmoDeconsenso))
           .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtras))
           .toList();
     } else {
-      return fuente.obtenerHechos()
-          .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
-          .filter(h -> this.cumpleCriterios(h, criteriosExtras))
-          .toList();
+       return this.obtenerColeccionCriteriosCreacional(estaCurada);
     }
+
   }
 
   // se agrega setter manual porque mvn clear verify dice que es un spotbug
@@ -161,12 +168,12 @@ public final class Coleccion {
   // metodos para calcular los atributos de reporte
 
   public void calcularHechosReportados() {
-    cantidadHechosReportados = this.obtenerColeccionCriteriosCreacional().size();
+    cantidadHechosReportados = this.obtenerColeccionCriteriosCreacional(false).size();
   }
 
   public void calcularProvinciaConMasHechos() {
 
-    List<Hecho> hechos = this.obtenerColeccionCriteriosCreacional();
+    List<Hecho> hechos = this.obtenerColeccionCriteriosCreacional(false);
     // provincia, cantidadDeveces que aparece
     Map<Provincia, Integer> contador = new HashMap<>();
     Provincia maxProvincia = null;
@@ -193,7 +200,7 @@ public final class Coleccion {
     //Map<hora del dia (0-23),cantidadDehechos>
 
     Map<Integer, Integer> contadorHoras = new HashMap<>();
-    List<Hecho> hechos = this.obtenerColeccionCriteriosCreacional();
+    List<Hecho> hechos = this.obtenerColeccionCriteriosCreacional(false);
     hechos.forEach(hecho -> {
       Integer hora = hecho.horaDelHecho().getHour(); // obtenemos la hora del día (0-23)
       contadorHoras.put(hora, contadorHoras.getOrDefault(hora, 0) + 1);

@@ -141,8 +141,8 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         "Incendio Forestal",
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
-
-    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional();
+    Boolean esIrrestricta = false;
+    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional(esIrrestricta);
 
     // Assert
     assertEquals(6, resultado.size());
@@ -162,9 +162,9 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
 
-    coleccion.setEstaCurada(true);
 
-    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional();
+    Boolean esIrrestricta = false;
+    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional(esIrrestricta);
     assertEquals(6, resultado.size());
 
   }

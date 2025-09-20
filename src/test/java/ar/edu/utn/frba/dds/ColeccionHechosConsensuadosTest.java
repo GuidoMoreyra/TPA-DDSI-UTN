@@ -106,9 +106,9 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         "INSEGURIDAD",
         null
     );
-
+    Boolean noestaCurada = false;
     // Ejecutar
-    List<Hecho> resultados = coleccion.obtenerColeccionCriteriosCreacional();
+    List<Hecho> resultados = coleccion.obtenerColeccionCriteriosCreacional(noestaCurada);
 
     // Verificar
     assertEquals(2, resultados.size());
@@ -149,10 +149,10 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         TipoDeConsenso.MAYORIA_SIMPLE
     );
 
-    coleccion.setEstaCurada(true);
+    Boolean estaCurada = true;
 
     // Ejecutar
-    List<Hecho> resultados = coleccion.obtenerColeccionCriteriosCreacional();
+    List<Hecho> resultados = coleccion.obtenerColeccionCriteriosCreacional(estaCurada);
 
     // Verificar
     assertEquals(2, resultados.size());
@@ -202,9 +202,9 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
 
-    coleccion.setEstaCurada(true);
+    Boolean estaCurada = true;
 
-    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional();
+    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional(estaCurada);
 
     // Assert
     assertEquals(3, resultado.size());
@@ -257,8 +257,8 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
 
     List<Criterio> criteriosTest = List.of(lugartest, fechatest);
 
-    coleccion.setEstaCurada(true);
-    List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosTest);
+    Boolean estaCurada = true;
+    List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosTest, estaCurada);
 
     //aca tenemos un problema como le aplico a ambos los criterios extras
     //voy a tener que aplicar un metodo extra

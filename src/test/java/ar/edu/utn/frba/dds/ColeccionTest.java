@@ -78,7 +78,8 @@ public class ColeccionTest {
     LocalDate fechaFin = LocalDate.of(2024, 12, 31);
     Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación",null);
 
-    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional();
+    Boolean esIrrestricta = false;
+    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional(esIrrestricta);
 
     assertEquals(1, resultado.size());
     assertTrue(resultado.contains(hechoMock));
@@ -146,7 +147,9 @@ public class ColeccionTest {
     criteriosAdicionales.add(criterioCategoriaMock);
     criteriosAdicionales.add(criterioFechaMock);
 
-    List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosAdicionales);
+    Boolean esIrrestrica = false;
+
+    List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosAdicionales, esIrrestrica);
 
     // Solo hecho1 cumple todos los criterios
     assertEquals(1, resultado.size());
