@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.repositories;
 
+import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.models.Coleccion;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.Collection;
@@ -25,5 +26,6 @@ public class ColeccionRepository implements WithSimplePersistenceUnit {
   public void persistir(Coleccion coleccion) {
     entityManager().persist(coleccion);
   }
+
 
 }

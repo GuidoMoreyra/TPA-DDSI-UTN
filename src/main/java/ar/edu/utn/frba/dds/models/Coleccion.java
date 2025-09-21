@@ -75,14 +75,6 @@ public final class Coleccion {
 
   private String categoria;
 
-  @ManyToMany
-  @JoinTable(
-      name = "coleccion_hecho",
-      joinColumns = @JoinColumn(name = "coleccion_id"),
-      inverseJoinColumns = @JoinColumn(name = "hecho_id")
-  )
-  private List<Hecho> hechos = new ArrayList<>();
-
   public Coleccion(
       Fuente fuente,
       String localidad,
@@ -110,9 +102,6 @@ public final class Coleccion {
 
   ////METODOS///
 
-  public void persistirHechos(List<Hecho> Hechos) {
-    this.hechos = new ArrayList<>(Hechos);
-  }
 
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
     if (fechaInicial.isAfter(fechaFinal)) {

@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
@@ -10,6 +11,7 @@ import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -85,6 +87,198 @@ public class PersistenceTest implements SimplePersistenceTest {
 
     assertEquals(1, repoSolicitudesEliminacion.getSolicitudes().size());
 
+  }
+
+  @Test
+  public void seCalculaLaProvicniaConMasHechosSegunCategoria(){
+
+    Hecho hechoUno = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -30.5,
+        -55.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+
+    Hecho hechoDos = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -30.5,
+        -55.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+    Hecho hechoTres = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -30.5,
+        -55.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+    Hecho hechoCuatro = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -55.3,
+        -68.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+    HechosRepository repo = HechosRepository.getInstance();
+    repo.agregarHecho(hechoUno);
+    repo.agregarHecho(hechoDos);
+    repo.agregarHecho(hechoTres);
+    repo.agregarHecho(hechoCuatro);
+
+    String categoriaTest = "Incendio";
+
+    //Assertions.assertEquals(Provincia.CORRIENTES,hechoUno.getProvincia());
+    Assertions.assertEquals(Provincia.CORRIENTES, repo.buscarProvinciaConMasHechosPorCategoria(categoriaTest));
+    //Assertions.assertEquals(hechoUno.getProvincia(),entityManager().find(Hecho.class, hechoUno.getId()).getProvincia());
+
+  }
+
+  @Test
+  public void seCalculaLaHoraPicoDeHechosSegunCategoria(){
+    Hecho hechoUno = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -30.5,
+        -55.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+
+    Hecho hechoDos = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -30.5,
+        -55.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+    Hecho hechoTres = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -30.5,
+        -55.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+    Hecho hechoCuatro = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -55.3,
+        -68.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+    HechosRepository repo = HechosRepository.getInstance();
+    repo.agregarHecho(hechoUno);
+    repo.agregarHecho(hechoDos);
+    repo.agregarHecho(hechoTres);
+    repo.agregarHecho(hechoCuatro);
+
+    String categoriaTest = "Incendio";
+
+    //Assertions.assertEquals(Provincia.CORRIENTES,hechoUno.getProvincia());
+    Assertions.assertEquals(12, repo.buscarHoraPicoDeHechosSegun(categoriaTest));
+    //Assertions.assertEquals(hechoUno.getProvincia(),entityManager().find(Hecho.class, hechoUno.getId()).getProvincia());
+
+  }
+
+  @Test
+  public void seCalculaCategoriaConMasHechos(){
+    Hecho hechoUno = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -30.5,
+        -55.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+
+    Hecho hechoDos = new Hecho(
+        "titulo",
+        "descripcion",
+        "Educacion",
+        -30.5,
+        -55.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+    Hecho hechoTres = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -30.5,
+        -55.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+    Hecho hechoCuatro = new Hecho(
+        "titulo",
+        "descripcion",
+        "Siniestro",
+        -55.3,
+        -68.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+    HechosRepository repo = HechosRepository.getInstance();
+    repo.agregarHecho(hechoUno);
+    repo.agregarHecho(hechoDos);
+    repo.agregarHecho(hechoTres);
+    repo.agregarHecho(hechoCuatro);
+
+
+    Assertions.assertEquals("Incendio",repo.buscarCategoriaConMasHechos());
   }
 
 }

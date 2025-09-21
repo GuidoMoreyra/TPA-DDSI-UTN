@@ -181,7 +181,7 @@ public class EstadisticasTest implements SimplePersistenceTest {
         "Inseguridad",
         null);
 
-    coleccion.setEstaCurada(false);
+
     coleccion.calcularHoraPico();
     coleccion.calcularProvinciaConMasHechos();
     coleccion.calcularHechosReportados();
