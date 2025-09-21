@@ -1,10 +1,7 @@
 id_Hecho;titulo;descripcion;categoria;latitud;longitud;fecha_Del_Hecho;Hora_Hecho
-13001;Incendio en la Patagonia;Se desconoce las causas del incendio;Incendio Forestal;-36;-38;05/01/2017;08:30:00
-13002;Incendio en Esquel;Campistas no apagaron debidamente los brazas;Incendio Forestal;-42;-71;05/01/2017;12:35:00
-13003;Desaparicion en Jujuy;Se acusa a la policia local de desaparecer a un hombre;Desaparicion vinculada al gobierno;-24;-65;21/09/1988;02:50:00
+13001;Incendio en la Patagonia;Se desconoce las causas del incendio;Incendio_Forestal;-30.5;-55.5;20/02/2024;08:30:00
+13002;Incendio en Esquel;Campistas no apagaron debidamente los brazas;Incendio_Forestal;-30.5;-55.5;20/01/2024;12:35:00
 13004;Choque en ruta nacional 9;Se produjo un choque entre un colectivo y un auto particular en cordoba;Siniestro vial;-31;-63;25/12/2002;04:00:00
-13005;Incendio en Cerro Llao Llao;Se desconoce las causas del incendio;Incendio Forestal;-41;-72;04/03/2025;10:30:00
-13006;Incendio en el Parque Nacional Nahuel Huapi;Campistas no apagaron debidamente las brazas;Incendio Forestal;-40;-71;12/09/2022;12:35:00
+13005;Incendio en Cerro Llao Llao;Se desconoce las causas del incendio;Incendio_Forestal;-30.5;-55.5;04/03/2024;10:30:00
+13006;Incendio en el Parque Nacional Nahuel Huapi;Campistas no apagaron debidamente las brazas;Incendio_Forestal;-30.5;-55.5;05/09/2024;12:35:00
 13007;Choque en ruta nacional 9;Se produjo un choque entre un colectivo y un auto particular en cordoba;Siniestro vial;-31;-63;19/07/1988;10:00:00
-13008;Desaparicion en buenos aires;Se acusa a al gobierno de la desaparicion de estudiantes;Desaparicion vinculada al gobierno;-34;-58;29/05/1978;12:45:00
-13009;Choque en ruta nacional 9;Se produjo un choque entre dos autos particular en salta;Siniestro vial;-25;-64;20/08/1988;20:50:00

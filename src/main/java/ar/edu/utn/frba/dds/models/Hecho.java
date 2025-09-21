@@ -97,7 +97,7 @@ public class Hecho {
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
-    this.coordenadas = new Coordenada(longitud, latitud);
+    this.coordenadas = new Coordenada(latitud, longitud);
     this.fechaDelHecho = fechaDelHecho;
     this.origen = origen;
     this.provincia = this.establecerProvincia();
@@ -106,7 +106,7 @@ public class Hecho {
 
 
   public Coordenada getLugar() {
-    return new Coordenada(coordenadas.longitud, coordenadas.latitud);
+    return new Coordenada(coordenadas.latitud, coordenadas.longitud);
   }
 
   public String getLocalidad() {

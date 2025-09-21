@@ -27,5 +27,21 @@ public class ColeccionRepository implements WithSimplePersistenceUnit {
     entityManager().persist(coleccion);
   }
 
+  public Provincia provinciaConMasHechos(Long coleccionId) {
+    String query = """
+        SELECT h.provincia
+        FROM Coleccion c
+        JOIN c.hechos h
+        WHERE c.id = :coleccionId
+        GROUP BY h.provincia
+        ORDER BY COUNT(h) DESC
+    """;
 
+    List<Provincia> resultados = entityManager()
+        .createQuery(query, Provincia.class)
+        .setParameter("coleccionId", coleccionId)
+        .getResultList();
+
+    return resultados.isEmpty() ? Provincia.PROVINCIA_DESCONOCIDA : resultados.get(0);
+  }
 }

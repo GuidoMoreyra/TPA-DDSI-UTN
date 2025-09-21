@@ -2,21 +2,27 @@ package ar.edu.utn.frba.dds;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.Provincia;
+import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
+import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
+import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
+import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
 import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -322,6 +328,39 @@ public class PersistenceTest implements SimplePersistenceTest {
 
     Assertions.assertTrue(detector.esSpam(justificacion));
     Assertions.assertEquals(1,repoSol.cantidadDeSolicitudesSpamDos());
+  }
+
+  @Test
+  public void seCalculaLaProvinciaconMasHechosDeUnaColeccion(){
+    HechosRepository repoHecho = HechosRepository.getInstance();
+    ColeccionRepository coleccionRepository = new ColeccionRepository();
+
+    FuenteEstatica fuenteEstatica = new FuenteEstatica("hechos");
+
+    fuenteEstatica.obtenerHechos()
+        .stream().forEach(hecho -> {
+          repoHecho.agregarHecho(hecho);
+        });
+
+
+    Coleccion coleccion = new Coleccion(
+        fuenteEstatica,
+        "buenos aires",
+        LocalDate.of(2024,1,1),
+        LocalDate.of(2024,12,30),
+        "Incendio_Forestal",
+        TipoDeConsenso.MAYORIA_SIMPLE
+
+    );
+    entityManager().persist(fuenteEstatica);
+    coleccion.agregarHechos();
+
+    coleccionRepository.persistir(coleccion);
+    Boolean esIrrestricto = false;
+
+
+    Assertions.assertEquals(Provincia.CORRIENTES,coleccionRepository.provinciaConMasHechos(coleccion.getId()));
+
   }
 
 

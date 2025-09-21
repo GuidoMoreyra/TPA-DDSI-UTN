@@ -6,6 +6,7 @@ import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.ComponenteDeEstadisticas;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
+import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
 import java.time.LocalDate;
@@ -18,13 +19,17 @@ public class MainEstadisticas {
     SolicitudesEliminacionRepository solicitudesEliminacionRepository =
         SolicitudesEliminacionRepository.getInstance();
 
+    HechosRepository hechosRepository = HechosRepository.getInstance();
+
     ComponenteDeEstadisticas componente = new ComponenteDeEstadisticas(
           coleccionRepository,
           solicitudesEliminacionRepository,
+          hechosRepository,
         "Inseguridad"
+        ,null
     );
 
-    componente.actualizar();
+    componente.actualizar("Inseguridad",null);
 
   }
 }

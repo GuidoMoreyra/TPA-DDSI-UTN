@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -29,6 +30,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Entity
 @Table(name = "colecciones")
@@ -47,7 +49,7 @@ public final class Coleccion {
   @Column(name = "consenso")
   private TipoDeConsenso algoritmoDeconsenso;
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
       name = "colecciones_criterions",
       joinColumns = @JoinColumn(name = "coleccion_id"),
@@ -75,6 +77,15 @@ public final class Coleccion {
 
   private String categoria;
 
+  @Getter
+  @ManyToMany (cascade = CascadeType.PERSIST)
+  @JoinTable(
+      name = "colecciones_hechos",
+      joinColumns = @JoinColumn(name = "coleccion_id"),
+      inverseJoinColumns = @JoinColumn(name = "hecho_id")
+  )
+  private List<Hecho> hechos = new ArrayList<>();
+
   public Coleccion(
       Fuente fuente,
       String localidad,
@@ -101,7 +112,9 @@ public final class Coleccion {
   public Coleccion() {}
 
   ////METODOS///
-
+  public void agregarHechos() {
+    this.hechos = new ArrayList<>(this.obtenerColeccionCriteriosCreacional(false));
+  }
 
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
     if (fechaInicial.isAfter(fechaFinal)) {
@@ -156,9 +169,6 @@ public final class Coleccion {
 
   // metodos para calcular los atributos de reporte
 
-  public void calcularHechosReportados() {
-    cantidadHechosReportados = this.obtenerColeccionCriteriosCreacional(false).size();
-  }
 
   public void calcularProvinciaConMasHechos() {
 
@@ -184,43 +194,6 @@ public final class Coleccion {
   }
 
 
-  public void calcularHoraPico() {
-
-    //Map<hora del dia (0-23),cantidadDehechos>
-
-    Map<Integer, Integer> contadorHoras = new HashMap<>();
-    List<Hecho> hechos = this.obtenerColeccionCriteriosCreacional(false);
-    hechos.forEach(hecho -> {
-      Integer hora = hecho.horaDelHecho().getHour(); // obtenemos la hora del día (0-23)
-      contadorHoras.put(hora, contadorHoras.getOrDefault(hora, 0) + 1);
-
-    });
-
-
-    // Encontrar la hora con mayor cantidad de hechos
-    int maxHora = -1;
-    int maxCount = -1;
-    for (Map.Entry<Integer, Integer> entry : contadorHoras.entrySet()) {
-      if (entry.getValue() > maxCount) {
-        maxCount = entry.getValue();
-        maxHora = entry.getKey();
-      }
-    }
-
-    this.horaPicoHechos = maxHora; // guardamos la hora pico en la colección
-  }
-
-
-
-
-  public List<Hecho> obtenerHechos() {
-    List<Hecho> hechos = HechosRepository.getInstance().getHechos();
-
-    return hechos
-        .stream()
-        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
-        .toList();
-  }
 
 
 }

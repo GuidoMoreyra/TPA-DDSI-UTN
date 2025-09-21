@@ -17,6 +17,7 @@
         <class>ar.edu.utn.frba.dds.models.criterios.CriterioFecha</class>
         <class>ar.edu.utn.frba.dds.models.criterios.CriterioCategoria</class>
         <class>ar.edu.utn.frba.dds.contracts.Fuente</class>
+        <class>ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica</class>
         <class>ar.edu.utn.frba.dds.contracts.Criterio</class>
 
         <properties>

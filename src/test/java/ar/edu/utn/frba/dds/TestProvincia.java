@@ -16,7 +16,7 @@ public class TestProvincia {
   @DisplayName("se obtiene una provincia a partir de un objeto coordenada")
   public void obtengoProvincia(){
 
-    Coordenada coordenada = new Coordenada(-68,-36);
+    Coordenada coordenada = new Coordenada(-36,-68);
 
     Assertions.assertEquals(Provincia.LA_PAMPA, coordenada.obtenerProvincia());
 
@@ -24,7 +24,7 @@ public class TestProvincia {
   @Test
   @DisplayName("se obtiene provincia desconocida a partir de dos coordenas que no estan en argentina")
   public void obtengoProvinciaDesconocida(){
-    Coordenada coordenada = new Coordenada(-36,-68);
+    Coordenada coordenada = new Coordenada(-68,-38);
 
     Assertions.assertEquals(Provincia.PROVINCIA_DESCONOCIDA, coordenada.obtenerProvincia());
   }

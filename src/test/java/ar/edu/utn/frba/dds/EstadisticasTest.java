@@ -181,83 +181,11 @@ public class EstadisticasTest implements SimplePersistenceTest {
         "Inseguridad",
         null);
 
-    /*
-    coleccion.calcularHoraPico();
-    coleccion.calcularProvinciaConMasHechos();
-    coleccion.calcularHechosReportados();
 
-
-    Assertions.assertEquals(22,coleccion.getHoraPicoHechos());
-    Assertions.assertEquals(Provincia.BUENOS_AIRES,coleccion.getProvinciaConMasHechos());
-    Assertions.assertEquals(3,coleccion.getCantidadHechosReportados());*/
     Assertions.assertEquals("Inseguridad",coleccion.getCategoria());
 
   }
 
-  @Test
-  @DisplayName("se obtiene un reporte usando el componente de estadisticas")
-  public void estadisticasComponenteDeEstadisticas(){
-
-    Coleccion coleccionUno = mock(Coleccion.class);
-    Coleccion coleccionDos = mock(Coleccion.class);
-    Coleccion coleccionTres = mock(Coleccion.class);
-    Coleccion coleccionCuatro = mock(Coleccion.class);
-
-    when(coleccionUno.getCategoria()).thenReturn("Inseguridad");
-    when(coleccionDos.getCategoria()).thenReturn("Inseguridad");
-    when(coleccionTres.getCategoria()).thenReturn("Deporte");
-    when(coleccionCuatro.getCategoria()).thenReturn("Sinientro");
-    /*
-    when(coleccionUno.getHoraPicoHechos()).thenReturn(22);
-    when(coleccionDos.getHoraPicoHechos()).thenReturn(12);
-    when(coleccionTres.getHoraPicoHechos()).thenReturn(17);
-    when(coleccionCuatro.getHoraPicoHechos()).thenReturn(3);
-
-    when(coleccionUno.getProvinciaConMasHechos()).thenReturn(Provincia.RIO_NEGRO);
-    when(coleccionDos.getProvinciaConMasHechos()).thenReturn(Provincia.RIO_NEGRO);
-    when(coleccionTres.getProvinciaConMasHechos()).thenReturn(Provincia.RIO_NEGRO);
-    when(coleccionCuatro.getProvinciaConMasHechos()).thenReturn(Provincia.RIO_NEGRO);
-
-    when(coleccionUno.getCantidadHechosReportados()).thenReturn(3);
-    when(coleccionDos.getCantidadHechosReportados()).thenReturn(2);
-    when(coleccionTres.getCantidadHechosReportados()).thenReturn(2);
-    when(coleccionCuatro.getCantidadHechosReportados()).thenReturn(10);
-
-
-    //  Mockeo del repositorio
-    ColeccionRepository repoMock = mock(ColeccionRepository.class);
-    when(repoMock.listar()).thenReturn(List.of(coleccionUno, coleccionDos, coleccionTres));
-
-    // Mockeo de repo de solicitudes
-    SolicitudesEliminacionRepository repoSolicMock = mock(SolicitudesEliminacionRepository.class);
-    when(repoSolicMock.getSolicitudes()).thenReturn(List.of());
-    when(repoSolicMock.cantidadDeSolicitudesSpam(anyList())).thenReturn(0L);
-
-
-    ComponenteDeEstadisticas componente = new ComponenteDeEstadisticas(
-        repoMock,
-        repoSolicMock,
-        "Inseguridad"
-    );
-
-
-    componente.actualizar();*/
-
-
-    Assertions.assertEquals("Inseguridad", coleccionCuatro.getCategoria());
-    /*
-    Assertions.assertEquals(Provincia.RIO_NEGRO, componente.getProvinciaConMasHechosPorCategoria());
-    Assertions.assertEquals(Provincia.RIO_NEGRO, componente.getProvinciaConMasHechos());
-    Assertions.assertEquals(22, componente.getHoraDePicoSegunCategoria());*/
-
-
-
-
-
-
-
-
-  }
 
 
 
