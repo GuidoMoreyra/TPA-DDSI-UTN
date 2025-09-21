@@ -2,8 +2,8 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
-import ar.edu.utn.frba.dds.utils.EntityManagerFactory;
-import org.junit.jupiter.api.BeforeAll;
+import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class HechoFullTextSearchTest {
+class HechoFullTextSearchTest implements SimplePersistenceTest {
 
   private final HechosRepository hechosRepository = HechosRepository.getInstance();
 
@@ -25,9 +25,9 @@ class HechoFullTextSearchTest {
       new Hecho("Titulo 3", "Incendio forestal", "social", 0, 0, null, null, null)
   );
 
-  @BeforeAll
-  public static void setUpOnce() {
-    EntityManagerFactory.main(null);
+  @BeforeEach
+  public void setUp() {
+    hechosRepository.limpiarBase();
   }
 
   @ParameterizedTest

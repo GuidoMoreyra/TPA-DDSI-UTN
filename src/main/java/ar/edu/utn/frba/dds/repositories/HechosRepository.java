@@ -69,17 +69,34 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
       return Collections.emptyList();
     }
 
-    String sql = """
-        SELECT h.*, MATCH(h.titulo, h.descripcion) 
-        AGAINST(:searchTerm IN NATURAL LANGUAGE MODE) as relevance 
-        FROM hechos h 
-        WHERE MATCH(h.titulo, h.descripcion) AGAINST(:searchTerm IN NATURAL LANGUAGE MODE)
-        ORDER BY relevance DESC
-        """;
+    // Detectar si estamos usando H2 (para tests) o MySQL (para producción)
+    String databaseUrl = entityManager().getEntityManagerFactory()
+        .getProperties().get("hibernate.connection.url").toString();
 
-    Query query = entityManager().createNativeQuery(sql, Hecho.class);
-    query.setParameter("searchTerm", searchTerm.trim());
+    if (databaseUrl.contains("h2")) {
+      // Implementación para H2 (tests) usando LIKE
+      String jpql = """
+          SELECT h FROM Hecho h
+          WHERE LOWER(h.titulo) LIKE LOWER(:searchTerm)
+          OR LOWER(h.descripcion) LIKE LOWER(:searchTerm)
+          """;
 
-    return query.getResultList();
+      Query query = entityManager().createQuery(jpql, Hecho.class);
+      query.setParameter("searchTerm", "%" + searchTerm.trim().toLowerCase() + "%");
+      return query.getResultList();
+    } else {
+      // Implementación para MySQL (producción) usando MATCH AGAINST
+      String sql = """
+          SELECT h.*, MATCH(h.titulo, h.descripcion)
+          AGAINST(:searchTerm IN NATURAL LANGUAGE MODE) as relevance
+          FROM hechos h
+          WHERE MATCH(h.titulo, h.descripcion) AGAINST(:searchTerm IN NATURAL LANGUAGE MODE)
+          ORDER BY relevance DESC
+          """;
+
+      Query query = entityManager().createNativeQuery(sql, Hecho.class);
+      query.setParameter("searchTerm", searchTerm.trim());
+      return query.getResultList();
+    }
   }
 }
