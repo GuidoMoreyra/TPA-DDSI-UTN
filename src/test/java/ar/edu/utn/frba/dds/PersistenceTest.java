@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.Provincia;
+import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
@@ -79,7 +80,8 @@ public class PersistenceTest implements SimplePersistenceTest {
       repoHechos.agregarHecho(hecho);
 
     String justificacion = "a".repeat(501);
-    SolicitudEliminacion solicitud = new SolicitudEliminacion(hecho, justificacion);
+    DetectorDeSpamBasico detector = new DetectorDeSpamBasico();
+    SolicitudEliminacion solicitud = new SolicitudEliminacion(hecho, justificacion,detector);
 
     repoSolicitudesEliminacion.agregarSolicitud(solicitud);
     repoSolicitudesEliminacion.getSolicitudes();
@@ -280,5 +282,47 @@ public class PersistenceTest implements SimplePersistenceTest {
 
     Assertions.assertEquals("Incendio",repo.buscarCategoriaConMasHechos());
   }
+
+  @Test
+  public void seCalculaLasSolicitudesSpam(){
+    Hecho hechoUno = new Hecho(
+        "titulo",
+        "descripcion",
+        "Incendio",
+        -30.5,
+        -55.5,
+        LocalDate.of(2024,2,20),
+        OrigenHecho.ESTATICO,
+        "criteriosTest.url",
+        LocalTime.of(12,3,22)
+    );
+
+    String justificacion = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        +"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        +"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        +"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        +"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        +"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" +
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        +"ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        +"sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+    DetectorDeSpamBasico detector = new DetectorDeSpamBasico();
+    SolicitudEliminacion solElimUno = new SolicitudEliminacion(
+        hechoUno,
+        justificacion,
+        detector
+    );
+
+
+    HechosRepository repoHecho = HechosRepository.getInstance();
+    repoHecho.agregarHecho(hechoUno);
+
+    SolicitudesEliminacionRepository repoSol = SolicitudesEliminacionRepository.getInstance();
+    repoSol.agregarSolicitud(solElimUno);
+
+    Assertions.assertTrue(detector.esSpam(justificacion));
+    Assertions.assertEquals(1,repoSol.cantidadDeSolicitudesSpamDos());
+  }
+
 
 }

@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds;
 
+import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
@@ -14,16 +15,18 @@ import static org.mockito.Mockito.*;
 public class SolicitudEliminacionTest {
   private Hecho hechoMock;
   private String justificacion;
+  private DetectorDeSpamBasico detectorMock;
 
   @BeforeEach
   public void setUp() {
     hechoMock = mock(Hecho.class);
     justificacion = "a".repeat(501);
+    detectorMock = new DetectorDeSpamBasico();
   }
 
   @Test
   public void seCreaConEstadoPendiente() {
-    SolicitudEliminacion solicitud = new SolicitudEliminacion(hechoMock, justificacion);
+    SolicitudEliminacion solicitud = new SolicitudEliminacion(hechoMock, justificacion, detectorMock);
 
     assertEquals(hechoMock, solicitud.getHecho());
     assertEquals(justificacion, solicitud.getJustificacion());
@@ -34,14 +37,14 @@ public class SolicitudEliminacionTest {
   void lanzaExcepcionSiLaJustificacionEsMuyCorta() {
     justificacion = "Muy corta";
     assertThrows(IllegalArgumentException.class, () ->
-        new SolicitudEliminacion(hechoMock, justificacion)
+        new SolicitudEliminacion(hechoMock, justificacion,detectorMock)
     );
   }
 
   @Test
   void permiteModificarElEstadoAAprobado() {
 
-    SolicitudEliminacion solicitud = new SolicitudEliminacion(hechoMock, justificacion);
+    SolicitudEliminacion solicitud = new SolicitudEliminacion(hechoMock, justificacion,detectorMock);
     solicitud.modificarEstado(EstadoSolicitudEliminacion.APROBADO);
 
     assertEquals(EstadoSolicitudEliminacion.APROBADO, solicitud.getEstado());
@@ -51,7 +54,7 @@ public class SolicitudEliminacionTest {
   @Test
   void permiteModificarElEstadoARechazado() {
 
-    SolicitudEliminacion solicitud = new SolicitudEliminacion(hechoMock, justificacion);
+    SolicitudEliminacion solicitud = new SolicitudEliminacion(hechoMock, justificacion,detectorMock);
     solicitud.modificarEstado(EstadoSolicitudEliminacion.RECHAZADO);
 
     assertEquals(EstadoSolicitudEliminacion.RECHAZADO, solicitud.getEstado());

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.models.Coordenada;
+import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
@@ -86,7 +87,8 @@ public class HechoTest implements SimplePersistenceTest {
         "imagen.jpg",null
     );
     String justificacion = "a".repeat(501);
-    SolicitudEliminacion solicitudEliminacion = new SolicitudEliminacion(hecho, justificacion);
+    DetectorDeSpamBasico detector = new DetectorDeSpamBasico();
+    SolicitudEliminacion solicitudEliminacion = new SolicitudEliminacion(hecho, justificacion, detector);
     solicitudEliminacion.modificarEstado(EstadoSolicitudEliminacion.APROBADO);
 
     //pruebo el metodo
