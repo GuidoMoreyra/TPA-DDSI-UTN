@@ -1,6 +1,9 @@
 package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.repositories.HechosRepository;
+import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -9,7 +12,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class HechoFullTextSearchTest {
+class HechoFullTextSearchTest implements SimplePersistenceTest {
+
+  private final HechosRepository hechosRepository = HechosRepository.getInstance();
 
   private final List<Hecho> hechos = List.of(
       new Hecho("Inundación en Buenos Aires", "Descripción 1", "clima", 0, 0, null, null, null,null),
@@ -20,6 +25,11 @@ class HechoFullTextSearchTest {
       new Hecho("Titulo 3", "Incendio forestal", "social", 0, 0, null, null, null,null)
   );
 
+  @BeforeEach
+  public void setUp() {
+    hechosRepository.limpiarBase();
+  }
+
   @ParameterizedTest
   @CsvSource({
       "inundación, true",
@@ -27,14 +37,17 @@ class HechoFullTextSearchTest {
       "rosario, true",
       "mendoza, false",
   })
-  void testFullTextSearchEnTitulo(String query, boolean expected) {
-    boolean result = hechos.stream()
-        .anyMatch(h -> h.getTitulo().toLowerCase().contains(query.toLowerCase()));
+  void testFullTextSearchEnTitulo(String texto, boolean expected) {
+    this.hechos.forEach(this.hechosRepository::agregarHecho);
+
+    boolean textFound = ! this.hechosRepository
+        .buscarPorTexto(texto)
+        .isEmpty();
 
     if (expected) {
-      assertTrue(result);
+      assertTrue(textFound);
     } else {
-      assertFalse(result);
+      assertFalse(textFound);
     }
   }
 
@@ -45,14 +58,18 @@ class HechoFullTextSearchTest {
       "incendio, true",
       "huracán, false",
   })
-  void testFullTextSearchEnDescripcion(String query, boolean expected) {
-    boolean result = hechos.stream()
-        .anyMatch(h -> h.getDescripcion().toLowerCase().contains(query.toLowerCase()));
+  void testFullTextSearchEnDescripcion(String texto, boolean expected) {
+    this.hechos.forEach(this.hechosRepository::agregarHecho);
+
+    boolean textFound = ! this.hechosRepository
+        .buscarPorTexto(texto)
+        .isEmpty();
 
     if (expected) {
-      assertTrue(result);
+      assertTrue(textFound);
     } else {
-      assertFalse(result);
+      assertFalse(textFound);
     }
   }
+
 }
