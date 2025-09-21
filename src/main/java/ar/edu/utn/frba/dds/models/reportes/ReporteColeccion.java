@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ReporteColeccion implements Reporte {
+public class ReporteColeccion extends Reporte {
 
-  private String categoria;
-  private Provincia provincia;
+  private String categoriaConMasHechos;
+  private Provincia provinciaConMasHechos;
   private Integer horaDePicoSegunCategoria;
   private Provincia provinciaSegunCategoria;
 
@@ -18,8 +18,8 @@ public class ReporteColeccion implements Reporte {
                           Integer horaDePicoSegunCategoria,
                           Provincia provinciaSegunCategoria
   ) {
-    this.categoria = categoria;
-    this.provincia = provincia;
+    this.categoriaConMasHechos = categoria;
+    this.provinciaConMasHechos = provincia;
     this.horaDePicoSegunCategoria = horaDePicoSegunCategoria;
     this.provinciaSegunCategoria = provinciaSegunCategoria;
   }
@@ -28,8 +28,8 @@ public class ReporteColeccion implements Reporte {
   public String generarCsv() {
     String encabezado = "CategoriaConMasHechos,"
         + "ProvinciaConMasHechos,horaPicoDeHechos,ProvinciaSegunCategoria";
-    String fila = this.getCategoria() + ","
-        + "," + this.getProvincia() + ","
+    String fila = this.getCategoriaConMasHechos() + ","
+        + "," + this.getProvinciaConMasHechos() + ","
         + this.getHoraDePicoSegunCategoria()
         + "," + this.getProvinciaSegunCategoria() + "\n";
     return encabezado + "\n" + fila;

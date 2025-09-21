@@ -71,7 +71,7 @@ public class ComponenteDeEstadisticas {
   }
 
 
-  public ReporteColeccion generarReporteColeccion(String categoria) {
+  public ReporteColeccion generarReporteColeccion() {
     ReporteColeccion reporteColeccion = new ReporteColeccion(
         this.categoriaConMasHechos,
         this.provinciaConMasHechos,

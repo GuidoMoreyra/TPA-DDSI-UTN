@@ -4,7 +4,7 @@ import ar.edu.utn.frba.dds.contracts.Reporte;
 import lombok.Getter;
 
 @Getter
-public class ReporteSolicitudElim implements Reporte {
+public class ReporteSolicitudElim extends Reporte {
 
   private Long solicitudesSpam;
 
