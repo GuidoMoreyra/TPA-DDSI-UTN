@@ -65,6 +65,7 @@ public final class Coleccion {
   * Desnormalizando:guardar estadísticas precalculadas en cada colección.
   * */
   @Getter
+  @Column(name = "hechos_reportados")
   private Integer cantidadHechosReportados = 0;
   @Getter
   @Enumerated(EnumType.STRING)

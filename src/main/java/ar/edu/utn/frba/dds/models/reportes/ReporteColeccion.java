@@ -4,14 +4,23 @@ import ar.edu.utn.frba.dds.contracts.Reporte;
 import ar.edu.utn.frba.dds.enums.Provincia;
 import lombok.Getter;
 import lombok.Setter;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
 @Getter
 @Setter
+@Entity
+@DiscriminatorValue("Coleccion")
 public class ReporteColeccion extends Reporte {
 
+  @Column(name = "categoria_con_mas_hechos")
   private String categoriaConMasHechos;
+  @Column(name = "provincia_con_mas_hechos")
   private Provincia provinciaConMasHechos;
+  @Column(name = "hora_pico_segun_categoria")
   private Integer horaDePicoSegunCategoria;
+  @Column(name = "provincia_segun_categoria")
   private Provincia provinciaSegunCategoria;
 
   public ReporteColeccion(String categoria, Provincia provincia,

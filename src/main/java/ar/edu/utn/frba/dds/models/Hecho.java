@@ -77,6 +77,7 @@ public class Hecho {
   @Enumerated(EnumType.STRING)
   private Provincia provincia = null;
 
+  @Column(name = "hora_hecho")
   private LocalTime horaHecho;
 
 
