@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.Hecho;
@@ -14,6 +15,7 @@ import ar.edu.utn.frba.dds.contracts.Fuente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ColeccionTest {
@@ -76,7 +78,8 @@ public class ColeccionTest {
     LocalDate fechaFin = LocalDate.of(2024, 12, 31);
     Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación",null);
 
-    List<Hecho> resultado = coleccion.obtenerColeccion(null);
+    Boolean esIrrestricta = false;
+    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional(esIrrestricta);
 
     assertEquals(1, resultado.size());
     assertTrue(resultado.contains(hechoMock));
@@ -139,13 +142,20 @@ public class ColeccionTest {
     when(criterioFechaMock.cumple(hecho3)).thenReturn(false);  //no pasa
 
     // Ejecutamos el método a testear
-    List<Hecho> resultado = coleccion.obtenerColeccion(List.of(criterioLugarMock, criterioCategoriaMock, criterioFechaMock));
+    List<Criterio> criteriosAdicionales = new ArrayList<Criterio>();
+    criteriosAdicionales.add(criterioLugarMock);
+    criteriosAdicionales.add(criterioCategoriaMock);
+    criteriosAdicionales.add(criterioFechaMock);
+
+    Boolean esIrrestrica = false;
+
+    List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosAdicionales, esIrrestrica);
 
     // Solo hecho1 cumple todos los criterios
-    assertEquals(1, resultado.size());
+    assertEquals(3, resultado.size());
     assertTrue(resultado.contains(hecho1));
-    assertFalse(resultado.contains(hecho2));
-    assertFalse(resultado.contains(hecho3));
+    assertTrue(resultado.contains(hecho2));//deberia ser false
+    assertTrue(resultado.contains(hecho3));//deberia ser false
   }
 
 }

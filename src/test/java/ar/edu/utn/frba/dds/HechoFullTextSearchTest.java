@@ -17,12 +17,12 @@ class HechoFullTextSearchTest implements SimplePersistenceTest {
   private final HechosRepository hechosRepository = HechosRepository.getInstance();
 
   private final List<Hecho> hechos = List.of(
-      new Hecho("Inundación en Buenos Aires", "Descripción 1", "clima", 0, 0, null, null, null),
-      new Hecho("Corte de luz en Córdoba", "Descripción 2", "servicios", 0, 0, null, null, null),
-      new Hecho("Manifestación en Rosario", "Descripción 3", "social", 0, 0, null, null, null),
-      new Hecho("Titulo 1", "Asalto en CABA", "social", 0, 0, null, null, null),
-      new Hecho("Titulo 2", "Robo en licorería", "social", 0, 0, null, null, null),
-      new Hecho("Titulo 3", "Incendio forestal", "social", 0, 0, null, null, null)
+      new Hecho("Inundación en Buenos Aires", "Descripción 1", "clima", 0, 0, null, null, null,null),
+      new Hecho("Corte de luz en Córdoba", "Descripción 2", "servicios", 0, 0, null, null, null,null),
+      new Hecho("Manifestación en Rosario", "Descripción 3", "social", 0, 0, null, null, null,null),
+      new Hecho("Titulo 1", "Asalto en CABA", "social", 0, 0, null, null, null,null),
+      new Hecho("Titulo 2", "Robo en licorería", "social", 0, 0, null, null, null,null),
+      new Hecho("Titulo 3", "Incendio forestal", "social", 0, 0, null, null, null,null)
   );
 
   @BeforeEach

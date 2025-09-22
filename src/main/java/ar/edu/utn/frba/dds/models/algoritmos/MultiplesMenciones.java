@@ -13,13 +13,6 @@ public class MultiplesMenciones implements AlgoritmoDeConsenso {
     return TipoDeConsenso.MULTIPLES_MENCIONES;
   }
 
-  @Override
-  public boolean estaConsensuado(Hecho hecho) {
-    long repeticiones = 2;
-
-    return repeticiones > 1;
-  }
-
 
   @Override
   public  boolean estaConsensuado(Hecho hecho, List<Hecho> hechosRepositorio) {

@@ -4,11 +4,13 @@ import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CollectionTable;
@@ -71,6 +73,13 @@ public class Hecho {
   @Column(name = "algoritmo")
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
 
+  /*atributo agregado para estadisticas*/
+  @Enumerated(EnumType.STRING)
+  private Provincia provincia = null;
+
+  private LocalTime horaHecho;
+
+
   public Hecho() {}
 
   public Hecho(
@@ -81,20 +90,23 @@ public class Hecho {
       double longitud,
       LocalDate fechaDelHecho,
       OrigenHecho origen,
-      String contenidoMultimedia
+      String contenidoMultimedia,
+      LocalTime horaDelHecho
   ) {
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
     this.descripcion = descripcion;
     this.categoria = categoria;
-    this.coordenadas = new Coordenada(longitud, latitud);
+    this.coordenadas = new Coordenada(latitud, longitud);
     this.fechaDelHecho = fechaDelHecho;
     this.origen = origen;
+    this.provincia = this.establecerProvincia();
+    this.horaHecho = horaDelHecho;
   }
 
 
   public Coordenada getLugar() {
-    return new Coordenada(coordenadas.longitud, coordenadas.latitud);
+    return new Coordenada(coordenadas.latitud, coordenadas.longitud);
   }
 
   public String getLocalidad() {
@@ -160,5 +172,16 @@ public class Hecho {
   public void setLocalidad(String localidad) {
     this.coordenadas.setLocalidad(localidad);
   }
+
+  /*metodo para estadisticas*/
+  public Provincia establecerProvincia() {
+
+    return this.coordenadas.obtenerProvincia();
+  }
+
+  public LocalTime horaDelHecho() {
+    return this.horaHecho;
+  }
+
 
 }

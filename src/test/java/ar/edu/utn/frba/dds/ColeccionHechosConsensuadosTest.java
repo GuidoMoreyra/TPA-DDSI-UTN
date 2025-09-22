@@ -41,6 +41,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         -56,
         LocalDate.of(2022, 10, 29),
         OrigenHecho.ESTATICO,
+        null,
         null);
 
     hechoDos = new Hecho("incendio forestal esquel",
@@ -50,7 +51,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         -56,
         LocalDate.of(2022, 10, 25),
         OrigenHecho.ESTATICO,
-        null);
+        null,null);
 
     hechoTres = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -59,7 +60,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         -56,
         LocalDate.of(2022, 10, 30),
         OrigenHecho.ESTATICO,
-        null);
+        null,null);
 
     hechoUno.setLocalidad("esquel");
     hechoDos.setLocalidad("esquel");
@@ -105,9 +106,9 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         "INSEGURIDAD",
         null
     );
-
+    Boolean noestaCurada = false;
     // Ejecutar
-    List<Hecho> resultados = coleccion.obtenerColeccion(null);
+    List<Hecho> resultados = coleccion.obtenerColeccionCriteriosCreacional(noestaCurada);
 
     // Verificar
     assertEquals(2, resultados.size());
@@ -115,24 +116,27 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
 
   @Test
   void seCreaColeccionConAlgoritmoDeConsenso() {
+
+    Hecho hechoTestDos = new Hecho("incendio forestal", "desc", "INSEGURIDAD",
+        -38, -56, LocalDate.of(2025, 3, 10), OrigenHecho.ESTATICO, null, null);
+    hechoTestDos.setLocalidad("Avellaneda");
+    hechoTestDos.setAlgoritmos(List.of(TipoDeConsenso.MAYORIA_SIMPLE));
+
+    Hecho hechoTestUno = new Hecho("incendio forestal", "desc", "INSEGURIDAD",
+        -38, -56, LocalDate.of(2025, 3, 12), OrigenHecho.ESTATICO, null, null);
+    hechoTestUno.setLocalidad("Avellaneda");
+    hechoTestUno.setAlgoritmos(List.of(TipoDeConsenso.MAYORIA_SIMPLE));
+
+    repoHechos.agregarHecho(hechoTestUno);
+    repoHechos.agregarHecho(hechoTestDos);
+
+
     Coordenada coordenadaMock = mock(Coordenada.class);
     when(coordenadaMock.getLocalidad()).thenReturn("Avellaneda");
 
-    Hecho hechoMockUno = mock(Hecho.class);
-    when(hechoMockUno.getCategoria()).thenReturn("INSEGURIDAD");
-    when(hechoMockUno.getCoordenadas()).thenReturn(coordenadaMock);
-    when(hechoMockUno.getFechaDelHecho()).thenReturn(LocalDate.of(2025, 3, 10));
-    when(hechoMockUno.estaActivo()).thenReturn(true);
-
-    Hecho hechoMockDos = mock(Hecho.class);
-    when(hechoMockDos.getCategoria()).thenReturn("INSEGURIDAD");
-    when(hechoMockDos.getCoordenadas()).thenReturn(coordenadaMock);
-    when(hechoMockDos.getFechaDelHecho()).thenReturn(LocalDate.of(2025, 3, 12));
-    when(hechoMockDos.estaActivo()).thenReturn(true);
-
     // Fuente que devuelve ese hecho
     Fuente fuenteMockCuatro = mock(Fuente.class);
-    when(fuenteMockCuatro.obtenerHechos()).thenReturn(List.of(hechoMockUno, hechoMockDos));
+    when(fuenteMockCuatro.obtenerHechos()).thenReturn(List.of(hechoTestDos, hechoTestUno));
 
 
     // Crear colección CON algoritmo (no se va a usar en este test)
@@ -145,8 +149,10 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         TipoDeConsenso.MAYORIA_SIMPLE
     );
 
+    Boolean estaCurada = true;
+
     // Ejecutar
-    List<Hecho> resultados = coleccion.obtenerColeccion(null);
+    List<Hecho> resultados = coleccion.obtenerColeccionCriteriosCreacional(estaCurada);
 
     // Verificar
     assertEquals(2, resultados.size());
@@ -184,7 +190,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     );
 
     EjecutarConsenso ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
-    ejecutar.evaluarVersionDos(fuenteMockUno.obtenerHechos());
+    ejecutar.evaluarHechos(fuenteMockUno.obtenerHechos());
 
 
     Coleccion coleccion = new Coleccion(
@@ -196,8 +202,9 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
 
+    Boolean estaCurada = true;
 
-    List<Hecho> resultado = coleccion.obtenerColeccionVersionDos();
+    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional(estaCurada);
 
     // Assert
     assertEquals(3, resultado.size());
@@ -237,7 +244,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
       repoHechos.agregarHecho(hechoTres);
 
     EjecutarConsenso ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
-    ejecutar.evaluarVersionDos(fuenteTest.obtenerHechos());
+    ejecutar.evaluarHechos(fuenteTest.obtenerHechos());
 
     Coleccion coleccion = new Coleccion(
         fuenteTest, // si importa la fuente
@@ -249,7 +256,9 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     );
 
     List<Criterio> criteriosTest = List.of(lugartest, fechatest);
-    List<Hecho> resultado = coleccion.obtenerColeccion(criteriosTest);
+
+    Boolean estaCurada = true;
+    List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosTest, estaCurada);
 
     //aca tenemos un problema como le aplico a ambos los criterios extras
     //voy a tener que aplicar un metodo extra

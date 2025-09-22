@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.repositories;
 
+import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
@@ -54,7 +55,6 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
       return true;
     }
 
-
     Hecho hechoEncontrado = entityManager().find(Hecho.class, hechoAverificar.getId());
     if (hechoEncontrado == null) {
       return false;
@@ -98,5 +98,58 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
       query.setParameter("searchTerm", searchTerm.trim());
       return query.getResultList();
     }
+  }
+
+  public Provincia buscarProvinciaConMasHechosPorCategoria(String categoria) {
+
+    String query = """
+        SELECT h.provincia
+                FROM Hecho h
+                WHERE h.categoria = :categoria
+                GROUP BY h.provincia
+                ORDER BY COUNT(h) DESC
+        """;
+
+    List<Provincia> resultados = entityManager()
+        .createQuery(query, Provincia.class)
+        .setParameter("categoria", categoria)
+        .setMaxResults(1)
+        .getResultList();
+
+    return  resultados.isEmpty() ? Provincia.PROVINCIA_DESCONOCIDA : resultados.get(0);
+
+  }
+
+  public Integer buscarHoraPicoDeHechosSegun(String categoria) {
+
+    String query = """
+       SELECT HOUR(h.horaHecho), COUNT(h)
+           FROM Hecho h
+           WHERE h.categoria = :categoria
+           GROUP BY HOUR(h.horaHecho)
+           ORDER BY COUNT(h) DESC
+           """;
+    return (Integer) entityManager()
+        .createQuery(query, Object[].class)
+        .setParameter("categoria", categoria)
+        .setMaxResults(1)
+        .getResultList()
+        .get(0)[0];
+  }
+
+  public String buscarCategoriaConMasHechos() {
+    String query = """
+        Select h.categoria, count(h.categoria)
+        from Hecho h
+        group by h.categoria
+        order by count(h.categoria) desc
+        """;
+
+    Object[] result = entityManager()
+        .createQuery(query, Object[].class)
+        .getResultList()
+        .get(0);
+
+    return (String) result[0];
   }
 }

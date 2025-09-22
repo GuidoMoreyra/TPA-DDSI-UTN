@@ -33,6 +33,7 @@ public class FuenteDinamicaTest implements SimplePersistenceTest {
         -56,
         LocalDate.of(2022, 10, 20),
         OrigenHecho.ESTATICO,
+        null,
         null
     );
 
@@ -44,6 +45,7 @@ public class FuenteDinamicaTest implements SimplePersistenceTest {
         -56,
         LocalDate.of(2022, 10, 21),
         OrigenHecho.ESTATICO,
+        null,
         null
     );
 
@@ -55,6 +57,7 @@ public class FuenteDinamicaTest implements SimplePersistenceTest {
         -56,
         LocalDate.of(2022, 10, 22),
         OrigenHecho.ESTATICO,
+        null,
         null
     );
 

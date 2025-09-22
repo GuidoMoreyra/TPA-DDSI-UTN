@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.models.Coordenada;
+import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
@@ -29,7 +30,7 @@ public class HechoTest implements SimplePersistenceTest {
         -58.4,
         LocalDate.of(2023, 10, 5),
         OrigenHecho.ESTATICO,
-        "foto.png"
+        "foto.png",null
     );
 
     assertEquals("Incendio", hecho.getTitulo());
@@ -54,7 +55,7 @@ public class HechoTest implements SimplePersistenceTest {
         -58.4,
         LocalDate.of(2023, 10, 5),
         OrigenHecho.ESTATICO,
-        "foto.png"
+        "foto.png",null
     );
 
     CambiosHechoDto cambios = new CambiosHechoDto();
@@ -83,10 +84,11 @@ public class HechoTest implements SimplePersistenceTest {
         -58.4,
         LocalDate.of(2024, 1, 1),
         OrigenHecho.ESTATICO,
-        "imagen.jpg"
+        "imagen.jpg",null
     );
     String justificacion = "a".repeat(501);
-    SolicitudEliminacion solicitudEliminacion = new SolicitudEliminacion(hecho, justificacion);
+    DetectorDeSpamBasico detector = new DetectorDeSpamBasico();
+    SolicitudEliminacion solicitudEliminacion = new SolicitudEliminacion(hecho, justificacion, detector);
     solicitudEliminacion.modificarEstado(EstadoSolicitudEliminacion.APROBADO);
 
     //pruebo el metodo
@@ -99,7 +101,7 @@ public class HechoTest implements SimplePersistenceTest {
     // Instancia real de Hecho
     Hecho hecho = new Hecho(
         "titulo", "descripcion", "categoria",
-        0.00, 0.00, LocalDate.now(), OrigenHecho.ESTATICO, ""
+        0.00, 0.00, LocalDate.now(), OrigenHecho.ESTATICO, "",null
     );
 
     CambiosHechoDto sugerencias = new CambiosHechoDto();

@@ -2,6 +2,7 @@ package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.contracts.Fuente;
+import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.exceptions.FechaException;
 import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
@@ -10,7 +11,10 @@ import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -26,6 +30,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Entity
 @Table(name = "colecciones")
@@ -44,7 +49,7 @@ public final class Coleccion {
   @Column(name = "consenso")
   private TipoDeConsenso algoritmoDeconsenso;
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
       name = "colecciones_criterions",
       joinColumns = @JoinColumn(name = "coleccion_id"),
@@ -55,11 +60,31 @@ public final class Coleccion {
   @Transient
   private final HechosRepository repositorio = HechosRepository.getInstance();
 
-  @Setter
-  private boolean estaCurada;
 
-  ///  La coleccion siempre se carga con los 3 criterios de pertenencia
-  ///  (titulo , fecha , localidad) que sirven para cargar los hechos desde la fuente.
+  /*
+  * Desnormalizando:guardar estadísticas precalculadas en cada colección.
+  * */
+  @Getter
+  private Integer cantidadHechosReportados = 0;
+  @Getter
+  @Enumerated(EnumType.STRING)
+  @Column(name = "provincia_con_mas_hechos")
+  private Provincia provinciaConMasHechos = Provincia.PROVINCIA_DESCONOCIDA;
+  @Getter
+  @Column(name = "hora_pico")
+  private Integer horaPicoHechos = 0;
+  @Getter
+
+  private String categoria;
+
+  @Getter
+  @ManyToMany (cascade = CascadeType.PERSIST)
+  @JoinTable(
+      name = "colecciones_hechos",
+      joinColumns = @JoinColumn(name = "coleccion_id"),
+      inverseJoinColumns = @JoinColumn(name = "hecho_id")
+  )
+  private List<Hecho> hechos = new ArrayList<>();
 
   public Coleccion(
       Fuente fuente,
@@ -79,36 +104,16 @@ public final class Coleccion {
     criteriosDeCreacion.add(new CriterioLugar(localidad));
 
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
-    this.estaCurada = false;
+    this.setCategoria(categoria);
 
   }
+
 
   public Coleccion() {}
 
   ////METODOS///
-
-
-  public List<Hecho> aplicarConsensoConCriteriosExtra(List<Criterio> criteriosExtras) {
-
-    return this.obtenerColeccion(criteriosExtras).stream()
-        .filter((Hecho unHecho) -> repositorio.verificaConsenso(
-            unHecho, algoritmoDeconsenso
-        )).toList();
-  }
-
-  public Boolean cumpleCriterios(Hecho hecho, List<Criterio> criterios) {
-    return criterios
-        .stream()
-        .allMatch(criterio -> criterio.cumple(hecho));
-  }
-
-  public List<Hecho> obtenerColeccion(List<Criterio> criteriosExtras) {
-    return fuente
-        .obtenerHechos()
-        .stream()
-        .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
-        .filter(h -> criteriosExtras == null || this.cumpleCriterios(h, criteriosExtras))
-        .toList();
+  public void agregarHechos() {
+    this.hechos = new ArrayList<>(this.obtenerColeccionCriteriosCreacional(false));
   }
 
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
@@ -117,13 +122,24 @@ public final class Coleccion {
     }
   }
 
-  public List<Hecho> obtenerColeccionVersionDos() {
+
+  public Boolean cumpleCriterios(Hecho hecho, List<Criterio> criterios) {
+    return criterios
+        .stream()
+        .allMatch(criterio -> criterio.cumple(hecho));
+  }
+
+
+
+
+  public List<Hecho> obtenerColeccionCriteriosCreacional(Boolean estaCurada) {
     if (estaCurada) {
       return fuente.obtenerHechos()
-          .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
+          .stream()
+          .filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
           .filter((Hecho unHecho) -> repositorio.verificaConsenso(
-              unHecho, algoritmoDeconsenso
-          )).toList();
+              unHecho, algoritmoDeconsenso))
+          .toList();
     } else {
       return fuente.obtenerHechos()
           .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
@@ -132,16 +148,55 @@ public final class Coleccion {
   }
 
   public List<Hecho> obtenerColeccionConCriteriosExtra(
-      List<Criterio> criteriosExtras
-  ) {
-    if (estaCurada) {
-      return this.aplicarConsensoConCriteriosExtra(criteriosExtras);
-    } else {
-      return fuente.obtenerHechos()
-          .stream().filter((Hecho h) -> this.cumpleCriterios(h, criteriosDeCreacion))
-          .filter(h -> this.cumpleCriterios(h, criteriosExtras))
+      List<Criterio> criteriosExtras, Boolean estaCurada) {
+    if (estaCurada && !(criteriosExtras.isEmpty())) {
+      return this.obtenerColeccionCriteriosCreacional(estaCurada)
+          .stream()
+          .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtras))
           .toList();
+    } else {
+      return this.obtenerColeccionCriteriosCreacional(estaCurada);
     }
+
   }
+
+  // se agregan setter y getter manuales porque mvn clear verify dice que es un spotbug
+
+  public void setCategoria(String categoria) {
+    this.categoria = categoria;
+  }
+
+  public List<Hecho> getHechos() {
+    return new ArrayList<>(hechos);
+  }
+
+  // metodos para calcular los atributos de reporte
+
+
+  public void calcularProvinciaConMasHechos() {
+
+    List<Hecho> hechos = this.obtenerColeccionCriteriosCreacional(false);
+    // provincia, cantidadDeveces que aparece
+    Map<Provincia, Integer> contador = new HashMap<>();
+    Provincia maxProvincia = null;
+    Integer maxCount = 0;
+
+    for (Hecho hecho : hechos) {
+      Provincia provincia = hecho.getProvincia();
+      contador.put(provincia, contador.getOrDefault(provincia, 0) + 1);
+    }
+
+    for (Map.Entry<Provincia, Integer> entry : contador.entrySet()) {
+      if (entry.getValue() > maxCount) {
+        maxProvincia = entry.getKey();
+        maxCount = entry.getValue();
+      }
+    }
+    this.provinciaConMasHechos = maxProvincia;
+
+  }
+
+
+
 
 }

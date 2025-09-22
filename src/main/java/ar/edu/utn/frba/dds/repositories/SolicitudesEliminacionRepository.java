@@ -53,4 +53,26 @@ public final class SolicitudesEliminacionRepository implements WithSimplePersist
   public void rechazarAutomaticamente() {
     rechazarAutomaticamente(solicitudes);
   }
+
+  /*
+  *metodos para estadistica
+  *¿Cuántas solicitudes de eliminación son spam?
+  * */
+  // Nueva query: ya no depende del Detector, consulta directo en BD
+  public long cantidadDeSolicitudesSpamDos() {
+    return entityManager()
+        .createQuery(
+            "SELECT COUNT(s) FROM SolicitudEliminacion s WHERE s.esSpam = true",
+            Long.class
+        )
+        .getSingleResult();
+  }
+
+  /* *metodos para estadistica *¿Cuántas solicitudes de eliminación son spam? * */
+  public Long cantidadDeSolicitudesSpam(List<SolicitudEliminacion> solicitudesDeEliminacion) {
+    DetectorDeSpamBasico detectorDeSpam = new DetectorDeSpamBasico();
+    return solicitudesDeEliminacion.stream()
+        .filter(s -> detectorDeSpam.esSpam(s.getJustificacion()))
+        .count();
+  }
 }

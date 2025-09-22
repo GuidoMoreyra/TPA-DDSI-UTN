@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Entity
 @DiscriminatorValue("Estatica")
-public final class FuenteEstatica extends Fuente {
+public class FuenteEstatica extends Fuente {
 
   @Transient
   private  String archivo;
@@ -68,11 +68,13 @@ public final class FuenteEstatica extends Fuente {
               dto.getTitulo(),
               dto.getDescripcion(),
               dto.getCategoria(),
-              dto.getLongitud(),
               dto.getLatitud(),
+              dto.getLongitud(),
               dto.getFechaDelHecho(),
               OrigenHecho.ESTATICO,
-              dto.getContenidoMultimedia()
+              dto.getContenidoMultimedia(),
+              dto.getHoraHecho()
+
           ))
           .toList();
 

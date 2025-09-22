@@ -29,6 +29,9 @@ public final class SolicitudesAgregacionRepository implements WithSimplePersiste
         .getResultList();
   }
 
+
+
+
   @SuppressWarnings("unchecked")
   public List<SolicitudAgregacion> obtenerSolicitudesConEstado(EstadoSolicitudAgregacion estado) {
     return entityManager()

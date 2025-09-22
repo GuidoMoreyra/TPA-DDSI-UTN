@@ -28,6 +28,8 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
   public Fuente fuenteMockDos = mock(Fuente.class);
   public  EjecutarConsenso ejecutar;
   private HechosRepository repoHechos;
+  public HechosRepository repoTest = mock(HechosRepository.class);
+
 
   @BeforeEach
   void setup(){
@@ -39,8 +41,8 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 29),
-        OrigenHecho.AGREGADOR_ESTATICO,
-        null);
+        OrigenHecho.ESTATICO,
+        null,null);
 
     Hecho hechoDos = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -48,8 +50,8 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 25),
-        OrigenHecho.AGREGADOR_ESTATICO,
-        null);
+        OrigenHecho.ESTATICO,
+        null,null);
 
     Hecho hechoTres = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -57,8 +59,8 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 30),
-        OrigenHecho.AGREGADOR_ESTATICO,
-        null);
+        OrigenHecho.ESTATICO,
+        null,null);
 
 
     hechoUno.setLocalidad("esquel");
@@ -71,8 +73,9 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 29),
-        OrigenHecho.AGREGADOR_DINAMICO,
-        null);
+        OrigenHecho.DINAMICO,
+        null,null);
+
 
     Hecho hechoCinco = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -80,8 +83,8 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 25),
-        OrigenHecho.AGREGADOR_DINAMICO,
-        null);
+        OrigenHecho.DINAMICO,
+        null,null);
 
     Hecho hechoSeis = new Hecho("incendio forestal esquel",
         "un campista se olvido apagar correctamente las brazas",
@@ -89,8 +92,8 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         -38,
         -56,
         LocalDate.of(2022, 10, 30),
-        OrigenHecho.AGREGADOR_DINAMICO,
-        null);
+        OrigenHecho.DINAMICO,
+        null,null);
 
 
     hechoCinco.setLocalidad("esquel");
@@ -108,6 +111,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
 
     when(fuenteMockDos.obtenerHechos()).thenReturn(List.of(hechoCuatro,hechoCinco,hechoSeis));
 
+    when(repoTest.getHechos()).thenReturn(List.of(hechoTres,hechoDos,hechoUno,hechoCuatro,hechoCinco,hechoSeis));
     // Act
 
     //HechosRepository.getInstance().limpiar(); //limpio el repo por las dudas
@@ -122,7 +126,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
     ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
     servicioTest = new FuenteDeAgregacion(List.of(fuenteMockUno,fuenteMockDos));
     List<Hecho> hechos = servicioTest.obtenerHechos();
-    ejecutar.evaluarVersionDos(hechos);
+    ejecutar.evaluarHechos(hechos);
   }
 
   @Test
@@ -137,8 +141,8 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         "Incendio Forestal",
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
-
-    List<Hecho> resultado = coleccion.obtenerColeccion(null);
+    Boolean esIrrestricta = false;
+    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional(esIrrestricta);
 
     // Assert
     assertEquals(6, resultado.size());
@@ -158,9 +162,9 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         TipoDeConsenso.MULTIPLES_MENCIONES
     );
 
-    coleccion.setEstaCurada(true);
 
-    List<Hecho> resultado = coleccion.obtenerColeccionVersionDos();
+    Boolean esIrrestricta = false;
+    List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional(esIrrestricta);
     assertEquals(6, resultado.size());
 
   }

@@ -103,6 +103,13 @@
     </dependency>
 
     <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.7.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.28</version>
@@ -250,6 +257,26 @@
               </archive>
             </configuration>
           </execution>
+
+          <execution>
+            <id>estadisticas</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <finalName>estadisticas</finalName>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                <manifest>
+                  <mainClass>ar.edu.utn.frba.dds.models.tareasprogramadas.MainEstadisticas</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
         </executions>
       </plugin>
     </plugins>
