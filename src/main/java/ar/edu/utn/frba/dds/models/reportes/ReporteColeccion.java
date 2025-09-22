@@ -2,11 +2,11 @@ package ar.edu.utn.frba.dds.models.reportes;
 
 import ar.edu.utn.frba.dds.contracts.Reporte;
 import ar.edu.utn.frba.dds.enums.Provincia;
-import lombok.Getter;
-import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
