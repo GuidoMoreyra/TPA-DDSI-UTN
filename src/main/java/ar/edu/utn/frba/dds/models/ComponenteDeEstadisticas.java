@@ -31,13 +31,16 @@ public class ComponenteDeEstadisticas {
     this.repoColeccion = repositorioColeccion;
     this.repoSolicitudesEliminacion = repoSolicitudesEliminacion;
     this.repoHechosRepository = repoHechos;
-    this.actualizar(categoria,coleccion);
+    this.actualizar(categoria, coleccion);
 
   }
 
   public void actualizar(String categoria, Coleccion coleccion) {
-    this.provinciaConMasHechos = this.buscarProvinciaConMasHechosDeUnaColeccion(coleccion);
-    this.provinciaConMasHehosSegunCategoria = this.buscarProvinciaConMasHechosPorCategoria(categoria);
+    if (coleccion != null) {
+      this.provinciaConMasHechos = this.buscarProvinciaConMasHechosDeUnaColeccion(coleccion);
+    }
+    this.provinciaConMasHehosSegunCategoria =
+        this.buscarProvinciaConMasHechosPorCategoria(categoria);
     this.horaPicoHechosSegunCategoria = this.buscarHoraPicoPorCategoria(categoria);
     this.categoriaConMasHechos = this.buscarCategoriaConMasHechos();
     this.cantidadSolicitudesSpam = this.cantidadDeSolictudesEliminacionSpam();
@@ -45,7 +48,6 @@ public class ComponenteDeEstadisticas {
 
   /*¿Cuál es la categoría con mayor cantidad de hechos reportados?*/
   public String buscarCategoriaConMasHechos() {
-
     return repoHechosRepository.buscarCategoriaConMasHechos();
   }
 
@@ -56,7 +58,10 @@ public class ComponenteDeEstadisticas {
 
   /*¿en qué provincia se agrupan la mayor cantidad de hechos reportados?*/
   public Provincia buscarProvinciaConMasHechosDeUnaColeccion(Coleccion coleccion) {
-
+    if (coleccion == null) {
+      throw new IllegalArgumentException(
+          "No se puede buscar la provincia con más hechos sin una colección");
+    }
     return repoColeccion.provinciaConMasHechos(coleccion.getId());
   }
 
@@ -66,7 +71,7 @@ public class ComponenteDeEstadisticas {
     return repoHechosRepository.buscarHoraPicoDeHechosSegun(categoria);
   }
 
-  public Long cantidadDeSolictudesEliminacionSpam(){
+  public Long cantidadDeSolictudesEliminacionSpam() {
     return repoSolicitudesEliminacion.cantidadDeSolicitudesSpamDos();
   }
 

@@ -25,11 +25,11 @@ public class MainEstadisticas {
           coleccionRepository,
           solicitudesEliminacionRepository,
           hechosRepository,
-        "Inseguridad"
-        ,null
+        "Inseguridad",
+        null
     );
 
-    componente.actualizar("Inseguridad",null);
+    componente.actualizar("Inseguridad", null);
 
   }
 }

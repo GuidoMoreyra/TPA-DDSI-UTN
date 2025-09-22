@@ -155,17 +155,20 @@ public final class Coleccion {
           .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtras))
           .toList();
     } else {
-       return this.obtenerColeccionCriteriosCreacional(estaCurada);
+      return this.obtenerColeccionCriteriosCreacional(estaCurada);
     }
 
   }
 
-  // se agrega setter manual porque mvn clear verify dice que es un spotbug
+  // se agregan setter y getter manuales porque mvn clear verify dice que es un spotbug
 
   public void setCategoria(String categoria) {
     this.categoria = categoria;
   }
 
+  public List<Hecho> getHechos() {
+    return new ArrayList<>(hechos);
+  }
 
   // metodos para calcular los atributos de reporte
 

@@ -16,7 +16,8 @@ public class ColeccionRepository implements WithSimplePersistenceUnit {
 
   public Collection<Coleccion> deCategoria(String categoria) {
     var query = "from Coleccion where categoria = :categoria";
-    return entityManager().createQuery(query, Coleccion.class).setParameter("categoria", categoria).getResultList();
+    return entityManager().createQuery(query, Coleccion.class)
+        .setParameter("categoria", categoria).getResultList();
   }
 
   public Coleccion obtener(Long id) {
@@ -35,7 +36,7 @@ public class ColeccionRepository implements WithSimplePersistenceUnit {
         WHERE c.id = :coleccionId
         GROUP BY h.provincia
         ORDER BY COUNT(h) DESC
-    """;
+        """;
 
     List<Provincia> resultados = entityManager()
         .createQuery(query, Provincia.class)

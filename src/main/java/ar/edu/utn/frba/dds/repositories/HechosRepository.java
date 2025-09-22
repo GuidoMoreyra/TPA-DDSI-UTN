@@ -100,7 +100,7 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
     }
   }
 
-  public Provincia buscarProvinciaConMasHechosPorCategoria(String categoria){
+  public Provincia buscarProvinciaConMasHechosPorCategoria(String categoria) {
 
     String query = """
         SELECT h.provincia
@@ -111,8 +111,8 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
         """;
 
     List<Provincia> resultados = entityManager()
-        .createQuery(query,Provincia.class)
-        .setParameter("categoria",categoria)
+        .createQuery(query, Provincia.class)
+        .setParameter("categoria", categoria)
         .setMaxResults(1)
         .getResultList();
 
@@ -120,7 +120,7 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
 
   }
 
-  public Integer buscarHoraPicoDeHechosSegun(String categoria){
+  public Integer buscarHoraPicoDeHechosSegun(String categoria) {
 
     String query = """
        SELECT HOUR(h.horaHecho), COUNT(h)
@@ -128,8 +128,8 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
            WHERE h.categoria = :categoria
            GROUP BY HOUR(h.horaHecho)
            ORDER BY COUNT(h) DESC
-       """;
-   return (Integer) entityManager()
+           """;
+    return (Integer) entityManager()
         .createQuery(query, Object[].class)
         .setParameter("categoria", categoria)
         .setMaxResults(1)
@@ -137,7 +137,7 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
         .get(0)[0];
   }
 
-  public String buscarCategoriaConMasHechos(){
+  public String buscarCategoriaConMasHechos() {
     String query = """
         Select h.categoria, count(h.categoria)
         from Hecho h

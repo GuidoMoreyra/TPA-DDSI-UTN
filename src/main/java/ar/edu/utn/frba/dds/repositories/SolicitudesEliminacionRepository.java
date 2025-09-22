@@ -69,9 +69,10 @@ public final class SolicitudesEliminacionRepository implements WithSimplePersist
   }
 
   /* *metodos para estadistica *¿Cuántas solicitudes de eliminación son spam? * */
-  public Long cantidadDeSolicitudesSpam(List<SolicitudEliminacion> solicitudesDeEliminacion)
-  { DetectorDeSpamBasico detectorDeSpam = new DetectorDeSpamBasico();
+  public Long cantidadDeSolicitudesSpam(List<SolicitudEliminacion> solicitudesDeEliminacion) {
+    DetectorDeSpamBasico detectorDeSpam = new DetectorDeSpamBasico();
     return solicitudesDeEliminacion.stream()
         .filter(s -> detectorDeSpam.esSpam(s.getJustificacion()))
-        .count(); }
+        .count();
+  }
 }
