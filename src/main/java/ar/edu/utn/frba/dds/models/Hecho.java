@@ -72,6 +72,7 @@ public class Hecho {
   @CollectionTable(joinColumns = @JoinColumn(name = "hecho_id"))
   @Column(name = "algoritmo")
   private List<TipoDeConsenso> algoritmos = new ArrayList<>();
+//estose debe cambiar por la clase algoritmo de consenso
 
   /*atributo agregado para estadisticas*/
   @Enumerated(EnumType.STRING)

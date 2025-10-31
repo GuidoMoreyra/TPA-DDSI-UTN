@@ -48,7 +48,7 @@ public final class Coleccion {
   @Enumerated(EnumType.STRING)
   @Column(name = "consenso")
   private TipoDeConsenso algoritmoDeconsenso;
-
+  //tipo de consenso deberia cambiarse por la clase algoritmo de consenso
   @ManyToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
       name = "colecciones_criterions",
@@ -59,7 +59,7 @@ public final class Coleccion {
 
   @Transient
   private final HechosRepository repositorio = HechosRepository.getInstance();
-
+  //esto deberia irse porque lops hehcos se obtiene de la lista o cache de la fuente para la comparacion de curado o no
 
   /*
   * Desnormalizando:guardar estadísticas precalculadas en cada colección.
@@ -86,7 +86,7 @@ public final class Coleccion {
       inverseJoinColumns = @JoinColumn(name = "hecho_id")
   )
   private List<Hecho> hechos = new ArrayList<>();
-
+  //esto deberia ir en la fuente salvo fuente de cargada por el usuario
   public Coleccion(
       Fuente fuente,
       String localidad,
@@ -132,7 +132,7 @@ public final class Coleccion {
 
 
 
-
+  //cambiar nombre a dameHechosConCrietirosBasicos
   public List<Hecho> obtenerColeccionCriteriosCreacional(Boolean estaCurada) {
     if (estaCurada) {
       return fuente.obtenerHechos()
@@ -147,7 +147,7 @@ public final class Coleccion {
           .toList();
     }
   }
-
+  //cambiar nombre por dameHechosConCriteriosUsuario
   public List<Hecho> obtenerColeccionConCriteriosExtra(
       List<Criterio> criteriosExtras, Boolean estaCurada) {
     if (estaCurada && !(criteriosExtras.isEmpty())) {

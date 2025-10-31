@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -334,8 +335,8 @@ public class PersistenceTest implements SimplePersistenceTest {
   public void seCalculaLaProvinciaconMasHechosDeUnaColeccion(){
     HechosRepository repoHecho = HechosRepository.getInstance();
     ColeccionRepository coleccionRepository = new ColeccionRepository();
-
-    FuenteEstatica fuenteEstatica = new FuenteEstatica("hechos");
+    List<Hecho>hechosTest = new ArrayList<>();
+    FuenteEstatica fuenteEstatica = new FuenteEstatica("hechos",hechosTest);
 
     fuenteEstatica.obtenerHechos()
         .stream().forEach(hecho -> {

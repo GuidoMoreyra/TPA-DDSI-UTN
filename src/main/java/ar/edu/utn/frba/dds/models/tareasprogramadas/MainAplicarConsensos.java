@@ -15,10 +15,10 @@ public final class MainAplicarConsensos {
   public static void main(String[] args) {
 
     Fuente fuentedinamica = new FuenteDinamica();
+    List<Hecho>hechosMain = new ArrayList<>();
+    Fuente fuenteestatica = new FuenteEstatica("formatoTp",hechosMain);
 
-    Fuente fuenteestatica = new FuenteEstatica("formatoTp");
-
-    Fuente fuenteestatica2 = new FuenteEstatica("hechos");
+    Fuente fuenteestatica2 = new FuenteEstatica("hechos",hechosMain);
 
     List<Fuente> fuentesactivas = new ArrayList<>();
     fuentesactivas.add(fuentedinamica);
