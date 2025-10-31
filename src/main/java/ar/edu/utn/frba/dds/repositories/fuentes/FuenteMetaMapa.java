@@ -27,6 +27,7 @@ public class FuenteMetaMapa {
     this.rutaApi = rutaApi;
     this.cliente = cliente;
     this.hechosObtenidos = new ArrayList<>();
+    this.agregarHechos();
   }
 
   private void agregarHechos(){
