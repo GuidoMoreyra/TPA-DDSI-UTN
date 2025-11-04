@@ -35,14 +35,14 @@ public final class FuenteIntermedia extends Fuente {
     }
   }
 
-  public void actualizarHechos(){
-   hechosObtenidos.addAll(this.fuenteQueSeUsa.obtenerHechos());
+  public void actualizarHechos() {
+    hechosObtenidos.addAll(this.fuenteQueSeUsa.obtenerHechos());
   }
 
   @Override
   public List<Hecho> obtenerHechos()  {
 
-    return hechosObtenidos;
+    return new ArrayList<>(hechosObtenidos);
 
   }
 

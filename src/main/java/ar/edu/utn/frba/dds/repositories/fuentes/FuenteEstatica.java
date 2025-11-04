@@ -16,9 +16,9 @@ import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+
+
 @Entity
 @DiscriminatorValue("Estatica")
 public class FuenteEstatica extends Fuente {
@@ -28,8 +28,16 @@ public class FuenteEstatica extends Fuente {
   @Transient
   private List<Hecho> hechosObtenidos = new ArrayList<>();
 
-  public FuenteEstatica() {
+  public FuenteEstatica(String unarchivo) {
+    this.archivo = unarchivo;
+    this.agregarHechos();
   }
+
+  public FuenteEstatica() {
+
+  }
+
+
 
 
   /*se agrego para pasar el mvn clear verify*/
@@ -42,11 +50,11 @@ public class FuenteEstatica extends Fuente {
   /// La ruta del archivo debe ser src/main/resources,
   ///  si no se lanzara una exepcion de tipo InvalidPathException.
 
-  public void agregarHechos(){
+  public void agregarHechos() {
     this.hechosObtenidos.addAll(this.actualizarHechos());
   }
 
-  public List<Hecho> actualizarHechos(){
+  public List<Hecho> actualizarHechos() {
     //Creo la ruta al archivo
     String rutaArchivo = "src/main/resources/" + archivo + ".csv";
 
@@ -96,51 +104,6 @@ public class FuenteEstatica extends Fuente {
 }
 
 
-  /*
-  @Override
-  public List<Hecho> obtenerHechos() {
-
-    //Creo la ruta al archivo
-    String rutaArchivo = "src/main/resources/" + archivo + ".csv";
-
-    //Creamos el reader para leer el archivo
-    try (
-        BufferedReader reader = new BufferedReader(
-            new InputStreamReader(new FileInputStream(rutaArchivo), StandardCharsets.UTF_8)
-        );
-    ) {
-      //Usamos la libreria OpenCsv para leer todos los hechos del csv
-      // y pasarlos a una lista de DTOs
-      List<HechoCsvDto> dtos = new CsvToBeanBuilder<HechoCsvDto>(reader)
-          .withType(HechoCsvDto.class)
-          .withIgnoreLeadingWhiteSpace(true)
-          .withSeparator(';')
-          .build()
-          .parse();
-
-      //Creamos los hechos debidamente a partir de los datos del archivo
-      return dtos
-          .stream()
-          .map(dto -> new Hecho(
-              dto.getTitulo(),
-              dto.getDescripcion(),
-              dto.getCategoria(),
-              dto.getLatitud(),
-              dto.getLongitud(),
-              dto.getFechaDelHecho(),
-              OrigenHecho.ESTATICO,
-              dto.getContenidoMultimedia(),
-              dto.getHoraHecho()
-
-          ))
-          .toList();
-
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException("Archivo no encontrado: ", e);
-    } catch (IOException e) {
-      throw new RuntimeException("Error al leer el archivo: ", e);
-    }
-  }*/
 
 
 

@@ -123,10 +123,11 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         new MultiplesMenciones()
     );
 
-    ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
+    ejecutar = new EjecutarConsenso();
     servicioTest = new FuenteDeAgregacion(List.of(fuenteMockUno,fuenteMockDos));
+
     List<Hecho> hechos = servicioTest.obtenerHechos();
-    ejecutar.evaluarHechos(hechos);
+    ejecutar.aplicarConsensovdos(fuentesActivas, algoritmos);
   }
 
   @Test

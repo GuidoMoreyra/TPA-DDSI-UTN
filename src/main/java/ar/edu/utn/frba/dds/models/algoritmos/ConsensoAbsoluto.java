@@ -20,6 +20,16 @@ public class ConsensoAbsoluto implements AlgoritmoDeConsenso {
     return TipoDeConsenso.CONSENSO_ABSOLUTO;
   }
 
+  @Override
+  public boolean realizarConsenso(Hecho hecho, List<Fuente> fuentesActivas) {
+    long repeticiones = fuentesActivas.stream()
+        .filter(fuente -> fuente.obtenerHechos().stream()
+            .anyMatch(hechoDeunafuente -> hecho.compararHecho(hechoDeunafuente)))
+        .count();
+
+    return repeticiones == fuentesActivas.size();
+  }
+
 
   @Override
   public boolean estaConsensuado(Hecho hecho, List<Hecho> hechosRepositorio) {

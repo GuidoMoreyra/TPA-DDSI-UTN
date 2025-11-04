@@ -12,4 +12,6 @@ public interface AlgoritmoDeConsenso {
 
   public TipoDeConsenso getTipo();
 
+  boolean realizarConsenso(Hecho hecho, List<Fuente> fuentesActivas);
+
 }

@@ -30,16 +30,16 @@ public class FuenteMetaMapa {
     this.agregarHechos();
   }
 
-  private void agregarHechos(){
+  private void agregarHechos() {
 
     this.hechosObtenidos.addAll(this.actualizarHechos());
   }
 
-  public List<Hecho> obtenerHechos(){
-    return this.hechosObtenidos;
+  public List<Hecho> obtenerHechos() {
+    return new ArrayList<>(hechosObtenidos);
   }
 
-  private List<Hecho> actualizarHechos(){
+  private List<Hecho> actualizarHechos() {
     String url = rutaApi + "/hechos";
 
     try {

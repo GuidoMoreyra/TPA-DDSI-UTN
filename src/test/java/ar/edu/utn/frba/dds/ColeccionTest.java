@@ -152,10 +152,10 @@ public class ColeccionTest {
     List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosAdicionales, esIrrestrica);
 
     // Solo hecho1 cumple todos los criterios
-    assertEquals(3, resultado.size());
+    assertEquals(1, resultado.size());
     assertTrue(resultado.contains(hecho1));
-    assertTrue(resultado.contains(hecho2));//deberia ser false
-    assertTrue(resultado.contains(hecho3));//deberia ser false
+    assertFalse(resultado.contains(hecho2));//deberia ser false
+    assertFalse(resultado.contains(hecho3));//deberia ser false
   }
 
 }

@@ -15,10 +15,10 @@ public final class MainAplicarConsensos {
   public static void main(String[] args) {
 
     Fuente fuentedinamica = new FuenteDinamica();
-    List<Hecho>hechosMain = new ArrayList<>();
-    Fuente fuenteestatica = new FuenteEstatica("formatoTp",hechosMain);
 
-    Fuente fuenteestatica2 = new FuenteEstatica("hechos",hechosMain);
+    Fuente fuenteestatica = new FuenteEstatica("formatoTp");
+
+    Fuente fuenteestatica2 = new FuenteEstatica("hechos");
 
     List<Fuente> fuentesactivas = new ArrayList<>();
     fuentesactivas.add(fuentedinamica);
@@ -31,10 +31,9 @@ public final class MainAplicarConsensos {
         new MultiplesMenciones()
     );
 
-    List<Hecho> hechosDePrueba = fuentedinamica.obtenerHechos();
 
-    EjecutarConsenso consensuar = new EjecutarConsenso(fuentesactivas, algoritmos);
-    consensuar.evaluarHechos(hechosDePrueba);
+    EjecutarConsenso consensuar = new EjecutarConsenso();
+    consensuar.aplicarConsensovdos(fuentesactivas, algoritmos);
 
 
 

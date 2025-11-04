@@ -304,15 +304,7 @@ public class PersistenceTest implements SimplePersistenceTest {
         LocalTime.of(12,3,22)
     );
 
-    String justificacion = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        +"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        +"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        +"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        +"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        +"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" +
-        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-        +"ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
-        +"sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+    String justificacion ="a".repeat(501);
     DetectorDeSpamBasico detector = new DetectorDeSpamBasico();
     SolicitudEliminacion solElimUno = new SolicitudEliminacion(
         hechoUno,
@@ -336,7 +328,7 @@ public class PersistenceTest implements SimplePersistenceTest {
     HechosRepository repoHecho = HechosRepository.getInstance();
     ColeccionRepository coleccionRepository = new ColeccionRepository();
     List<Hecho>hechosTest = new ArrayList<>();
-    FuenteEstatica fuenteEstatica = new FuenteEstatica("hechos",hechosTest);
+    FuenteEstatica fuenteEstatica = new FuenteEstatica("hechos");
 
     fuenteEstatica.obtenerHechos()
         .stream().forEach(hecho -> {
