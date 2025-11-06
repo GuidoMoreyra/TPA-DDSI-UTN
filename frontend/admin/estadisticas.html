@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estadísticas - MetaMapa Admin</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-brand">MetaMapa Admin</a>
+      <ul class="navbar-nav">
+        <li><a href="../index.html" class="nav-link">Ver Sitio</a></li>
+        <li><a href="#" class="nav-link">Administrador</a></li>
+        <li><button class="btn btn-sm btn-outline" onclick="cerrarSesion()">Cerrar Sesión</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Admin Layout -->
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <ul style="list-style: none;">
+          <li class="sidebar-item">
+            <a href="colecciones.html" class="sidebar-link">
+              📚 Colecciones
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="solicitudes.html" class="sidebar-link">
+              📋 Solicitudes de Eliminación
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href="estadisticas.html" class="sidebar-link active">
+              📊 Estadísticas
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="mb-4">
+        <h1>Estadísticas del Sistema</h1>
+        <p style="color: var(--color-gray-600);">Análisis y métricas de las colecciones y hechos</p>
+      </div>
+
+      <!-- Filtro de colección -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="coleccionSelect">Seleccionar Colección</label>
+            <select class="form-select" id="coleccionSelect" onchange="cargarEstadisticas()">
+              <option value="">Todas las colecciones</option>
+              <option value="1" selected>Hechos Históricos CABA</option>
+              <option value="2">Puntos de Interés Buenos Aires</option>
+              <option value="3">Eventos Culturales 2024</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid mb-4">
+        <div class="stat-card">
+          <div class="stat-value">127</div>
+          <div class="stat-label">Hechos Reportados</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-value">Buenos Aires</div>
+          <div class="stat-label" style="font-size: 0.75rem;">Provincia con Más Hechos</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-value">14:00</div>
+          <div class="stat-label">Hora Pico</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-value">89%</div>
+          <div class="stat-label">Hechos Consensuados</div>
+        </div>
+      </div>
+
+      <!-- Estadísticas detalladas por colección -->
+      <div class="grid grid-cols-2 mb-4">
+        <!-- Distribución por categoría -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Distribución por Categoría</h3>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span style="font-size: 0.875rem;">Histórico</span>
+                  <span style="font-size: 0.875rem; font-weight: 600;">45 (35%)</span>
+                </div>
+                <div style="height: 8px; background-color: var(--color-gray-200); border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: 35%; background-color: var(--color-primary);"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span style="font-size: 0.875rem;">Cultural</span>
+                  <span style="font-size: 0.875rem; font-weight: 600;">38 (30%)</span>
+                </div>
+                <div style="height: 8px; background-color: var(--color-gray-200); border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: 30%; background-color: var(--color-secondary);"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span style="font-size: 0.875rem;">Turístico</span>
+                  <span style="font-size: 0.875rem; font-weight: 600;">25 (20%)</span>
+                </div>
+                <div style="height: 8px; background-color: var(--color-gray-200); border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: 20%; background-color: var(--color-warning);"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span style="font-size: 0.875rem;">Educativo</span>
+                  <span style="font-size: 0.875rem; font-weight: 600;">12 (9%)</span>
+                </div>
+                <div style="height: 8px; background-color: var(--color-gray-200); border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: 9%; background-color: var(--color-info);"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span style="font-size: 0.875rem;">Otro</span>
+                  <span style="font-size: 0.875rem; font-weight: 600;">7 (6%)</span>
+                </div>
+                <div style="height: 8px; background-color: var(--color-gray-200); border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: 6%; background-color: var(--color-gray-400);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hechos por provincia -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Top 5 Provincias</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Posición</th>
+                    <th>Provincia</th>
+                    <th>Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="badge badge-warning">1</span></td>
+                    <td>Buenos Aires</td>
+                    <td><strong>67</strong></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-secondary">2</span></td>
+                    <td>Córdoba</td>
+                    <td><strong>23</strong></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-secondary">3</span></td>
+                    <td>Santa Fe</td>
+                    <td><strong>18</strong></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-secondary">4</span></td>
+                    <td>Mendoza</td>
+                    <td><strong>12</strong></td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-secondary">5</span></td>
+                    <td>Tucumán</td>
+                    <td><strong>7</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distribución por hora del día -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3 class="card-title">Distribución por Hora del Día</h3>
+        </div>
+        <div class="card-body">
+          <div style="display: flex; align-items: flex-end; gap: 0.5rem; height: 200px; padding: 1rem;">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 100%; background-color: var(--color-primary); height: 30%; border-radius: 4px 4px 0 0;"></div>
+              <span style="font-size: 0.75rem; margin-top: 0.5rem;">00-06</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 100%; background-color: var(--color-primary); height: 45%; border-radius: 4px 4px 0 0;"></div>
+              <span style="font-size: 0.75rem; margin-top: 0.5rem;">06-08</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 100%; background-color: var(--color-primary); height: 70%; border-radius: 4px 4px 0 0;"></div>
+              <span style="font-size: 0.75rem; margin-top: 0.5rem;">08-10</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 100%; background-color: var(--color-primary); height: 85%; border-radius: 4px 4px 0 0;"></div>
+              <span style="font-size: 0.75rem; margin-top: 0.5rem;">10-12</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 100%; background-color: var(--color-primary); height: 100%; border-radius: 4px 4px 0 0;"></div>
+              <span style="font-size: 0.75rem; margin-top: 0.5rem; font-weight: 600;">12-14</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 100%; background-color: var(--color-primary); height: 95%; border-radius: 4px 4px 0 0;"></div>
+              <span style="font-size: 0.75rem; margin-top: 0.5rem;">14-16</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 100%; background-color: var(--color-primary); height: 75%; border-radius: 4px 4px 0 0;"></div>
+              <span style="font-size: 0.75rem; margin-top: 0.5rem;">16-18</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 100%; background-color: var(--color-primary); height: 60%; border-radius: 4px 4px 0 0;"></div>
+              <span style="font-size: 0.75rem; margin-top: 0.5rem;">18-20</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 100%; background-color: var(--color-primary); height: 50%; border-radius: 4px 4px 0 0;"></div>
+              <span style="font-size: 0.75rem; margin-top: 0.5rem;">20-22</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+              <div style="width: 100%; background-color: var(--color-primary); height: 35%; border-radius: 4px 4px 0 0;"></div>
+              <span style="font-size: 0.75rem; margin-top: 0.5rem;">22-24</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado de consenso -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Estado de Consenso</h3>
+        </div>
+        <div class="card-body">
+          <div class="grid grid-cols-3">
+            <div style="text-align: center; padding: 1.5rem;">
+              <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-success); margin-bottom: 0.5rem;">113</div>
+              <div style="font-size: 0.875rem; color: var(--color-gray-600);">Consensuados</div>
+              <div style="font-size: 0.75rem; color: var(--color-gray-500); margin-top: 0.25rem;">89%</div>
+            </div>
+            <div style="text-align: center; padding: 1.5rem; border-left: 1px solid var(--color-gray-200); border-right: 1px solid var(--color-gray-200);">
+              <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-warning); margin-bottom: 0.5rem;">14</div>
+              <div style="font-size: 0.875rem; color: var(--color-gray-600);">Pendientes</div>
+              <div style="font-size: 0.75rem; color: var(--color-gray-500); margin-top: 0.25rem;">11%</div>
+            </div>
+            <div style="text-align: center; padding: 1.5rem;">
+              <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-primary); margin-bottom: 0.5rem;">127</div>
+              <div style="font-size: 0.875rem; color: var(--color-gray-600);">Total</div>
+              <div style="font-size: 0.75rem; color: var(--color-gray-500); margin-top: 0.25rem;">100%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

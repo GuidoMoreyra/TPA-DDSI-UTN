@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Hecho - MetaMapa</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-brand">MetaMapa</a>
+      <ul class="navbar-nav">
+        <li><a href="index.html" class="nav-link">Explorar</a></li>
+        <li><a href="crear-hecho.html" class="nav-link active">Crear Hecho</a></li>
+        <li><a href="#" class="nav-link">Juan Pérez</a></li>
+        <li><button class="btn btn-sm btn-outline" onclick="cerrarSesion()">Cerrar Sesión</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container" style="padding-top: 2rem; max-width: 900px;">
+    <div class="mb-4">
+      <h1>Crear Nuevo Hecho</h1>
+      <p style="color: var(--color-gray-600);">Registra un nuevo hecho en la fuente dinámica</p>
+    </div>
+
+    <div id="successAlert" class="alert alert-success hidden">
+      ¡Hecho creado exitosamente! Redirigiendo...
+    </div>
+
+    <div id="errorAlert" class="alert alert-error hidden">
+      <strong>Error:</strong> <span id="errorMessage"></span>
+    </div>
+
+    <div class="card">
+      <form id="crearHechoForm" onsubmit="return handleCrearHecho(event)">
+        <div class="card-body">
+          <!-- Información básica -->
+          <h3 class="mb-3">Información Básica</h3>
+
+          <div class="form-group">
+            <label class="form-label required" for="titulo">Título</label>
+            <input
+              type="text"
+              class="form-input"
+              id="titulo"
+              name="titulo"
+              placeholder="Ej: Inauguración del Teatro Colón"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required" for="descripcion">Descripción</label>
+            <textarea
+              class="form-textarea"
+              id="descripcion"
+              name="descripcion"
+              placeholder="Describe el hecho en detalle..."
+              rows="5"
+              required
+            ></textarea>
+            <span class="form-help">Proporciona una descripción clara y completa del hecho</span>
+          </div>
+
+          <div class="grid grid-cols-2">
+            <div class="form-group">
+              <label class="form-label required" for="categoria">Categoría</label>
+              <select class="form-select" id="categoria" name="categoria" required>
+                <option value="">Selecciona una categoría</option>
+                <option value="historico">Histórico</option>
+                <option value="cultural">Cultural</option>
+                <option value="turistico">Turístico</option>
+                <option value="educativo">Educativo</option>
+                <option value="deportivo">Deportivo</option>
+                <option value="politico">Político</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label required" for="fechaHecho">Fecha del Hecho</label>
+              <input
+                type="date"
+                class="form-input"
+                id="fechaHecho"
+                name="fechaHecho"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="horaHecho">Hora del Hecho (opcional)</label>
+            <input
+              type="time"
+              class="form-input"
+              id="horaHecho"
+              name="horaHecho"
+            >
+          </div>
+
+          <!-- Ubicación -->
+          <h3 class="mb-3 mt-4">Ubicación</h3>
+
+          <div class="form-group">
+            <label class="form-label required" for="localidad">Localidad</label>
+            <input
+              type="text"
+              class="form-input"
+              id="localidad"
+              name="localidad"
+              placeholder="Ej: Buenos Aires, CABA"
+              required
+            >
+          </div>
+
+          <div class="grid grid-cols-2">
+            <div class="form-group">
+              <label class="form-label required" for="latitud">Latitud</label>
+              <input
+                type="number"
+                step="0.000001"
+                class="form-input"
+                id="latitud"
+                name="latitud"
+                placeholder="-34.6037"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label class="form-label required" for="longitud">Longitud</label>
+              <input
+                type="number"
+                step="0.000001"
+                class="form-input"
+                id="longitud"
+                name="longitud"
+                placeholder="-58.3816"
+                required
+              >
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-outline btn-sm" onclick="obtenerUbicacionActual()">
+            📍 Usar mi ubicación actual
+          </button>
+
+          <!-- Contenido Multimedia -->
+          <h3 class="mb-3 mt-4">Contenido Multimedia</h3>
+
+          <div class="form-group">
+            <label class="form-label">Adjuntar Imagen o Video</label>
+            <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('multimedia').click()">
+              <div style="font-size: 3rem; margin-bottom: 0.5rem;">📁</div>
+              <p style="font-weight: 500; margin-bottom: 0.25rem;">Haz clic para seleccionar un archivo</p>
+              <p style="font-size: 0.875rem; color: var(--color-gray-500);">
+                o arrastra y suelta aquí
+              </p>
+              <p style="font-size: 0.75rem; color: var(--color-gray-400); margin-top: 0.5rem;">
+                Formatos soportados: JPG, PNG, GIF, MP4, MOV (máx. 10MB)
+              </p>
+            </div>
+            <input
+              type="file"
+              id="multimedia"
+              name="multimedia"
+              accept="image/*,video/*"
+              style="display: none;"
+              onchange="handleFileSelect(event)"
+            >
+            <div id="filePreview" class="hidden" style="margin-top: 1rem;">
+              <div style="padding: 1rem; background-color: var(--color-gray-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span id="fileIcon" style="font-size: 1.5rem;">📄</span>
+                  <div>
+                    <p id="fileName" style="font-weight: 500; margin: 0;"></p>
+                    <p id="fileSize" style="font-size: 0.75rem; color: var(--color-gray-600); margin: 0;"></p>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeFile()">Eliminar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <input type="checkbox" class="form-checkbox" name="esAnonimo" id="esAnonimo">
+              Publicar de forma anónima
+            </label>
+            <span class="form-help">Si marcas esta opción, no podrás editar el hecho después de crearlo</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a href="index.html" class="btn btn-secondary">Cancelar</a>
+          <button type="submit" class="btn btn-primary">Crear Hecho</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

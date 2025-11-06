@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitar Eliminación - MetaMapa</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-brand">MetaMapa</a>
+      <ul class="navbar-nav">
+        <li><a href="index.html" class="nav-link">Explorar</a></li>
+        <li><a href="crear-hecho.html" class="nav-link">Crear Hecho</a></li>
+        <li><a href="login.html" class="nav-link">Iniciar Sesión</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container" style="padding-top: 2rem; max-width: 900px;">
+    <div class="mb-4">
+      <h1>Solicitar Eliminación de Hecho</h1>
+      <p style="color: var(--color-gray-600);">Solicita la eliminación de un hecho proporcionando una justificación detallada</p>
+    </div>
+
+    <div id="successAlert" class="alert alert-success hidden">
+      ¡Solicitud enviada exitosamente! Será revisada por un administrador.
+    </div>
+
+    <div id="errorAlert" class="alert alert-error hidden">
+      <strong>Error:</strong> <span id="errorMessage"></span>
+    </div>
+
+    <div class="grid grid-cols-2" style="gap: 2rem; align-items: start;">
+      <!-- Información del hecho -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Información del Hecho</h3>
+        </div>
+        <div class="card-body">
+          <div id="hechoInfo">
+            <h4 style="margin-bottom: 1rem;">Cabildo de Buenos Aires</h4>
+            <p style="margin-bottom: 0.75rem;"><strong>Descripción:</strong></p>
+            <p style="color: var(--color-gray-600); margin-bottom: 1rem;">
+              Edificio histórico que funcionó como sede del ayuntamiento durante la época colonial
+            </p>
+            <p><strong>Categoría:</strong> Histórico</p>
+            <p><strong>Localidad:</strong> Buenos Aires, CABA</p>
+            <p><strong>Fecha:</strong> 10 de Mayo de 1725</p>
+            <p><strong>Estado:</strong> <span class="badge badge-success">Consensuado</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario de solicitud -->
+      <div class="card">
+        <form id="solicitudEliminacionForm" onsubmit="return handleSolicitudEliminacion(event)">
+          <div class="card-header">
+            <h3 class="card-title">Justificación</h3>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-info">
+              La justificación debe tener al menos 500 caracteres para ser válida.
+            </div>
+
+            <div class="form-group">
+              <label class="form-label required" for="justificacion">Justificación Detallada</label>
+              <textarea
+                class="form-textarea"
+                id="justificacion"
+                name="justificacion"
+                placeholder="Explica detalladamente por qué consideras que este hecho debe ser eliminado..."
+                rows="12"
+                required
+                minlength="500"
+                oninput="updateCharacterCount()"
+              ></textarea>
+              <span class="form-help">
+                <span id="charCount">0</span> / 500 caracteres mínimos
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Motivos comunes:</label>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <label>
+                  <input type="radio" name="motivo" value="informacion_incorrecta" onclick="sugerirTexto(this.value)">
+                  Información incorrecta o desactualizada
+                </label>
+                <label>
+                  <input type="radio" name="motivo" value="duplicado" onclick="sugerirTexto(this.value)">
+                  Hecho duplicado
+                </label>
+                <label>
+                  <input type="radio" name="motivo" value="spam" onclick="sugerirTexto(this.value)">
+                  Spam o contenido inapropiado
+                </label>
+                <label>
+                  <input type="radio" name="motivo" value="no_relevante" onclick="sugerirTexto(this.value)">
+                  No es relevante para la colección
+                </label>
+                <label>
+                  <input type="radio" name="motivo" value="otro" onclick="sugerirTexto(this.value)">
+                  Otro motivo
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="index.html" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-danger">Enviar Solicitud</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
