@@ -26,6 +26,7 @@ public  class FuenteDeAgregacion extends Fuente {
   public FuenteDeAgregacion(List<Fuente> fuentes) {
 
     this.fuentes = new ArrayList<>(fuentes);
+    this.hechos = new ArrayList<>();
   }
 
   public FuenteDeAgregacion() {

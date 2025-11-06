@@ -11,23 +11,33 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+
+
 @Entity
 @DiscriminatorValue("Estatica")
 public class FuenteEstatica extends Fuente {
 
   @Transient
   private  String archivo;
+  @Transient
+  private List<Hecho> hechosObtenidos = new ArrayList<>();
+
+  public FuenteEstatica(String unarchivo) {
+    this.archivo = unarchivo;
+    this.agregarHechos();
+  }
 
   public FuenteEstatica() {
 
   }
+
+
 
 
   /*se agrego para pasar el mvn clear verify*/
@@ -39,10 +49,12 @@ public class FuenteEstatica extends Fuente {
   /// Se asume que los archivos fueron previamente normalizados.
   /// La ruta del archivo debe ser src/main/resources,
   ///  si no se lanzara una exepcion de tipo InvalidPathException.
-  ///
-  @Override
-  public List<Hecho> obtenerHechos() {
 
+  public void agregarHechos() {
+    this.hechosObtenidos.addAll(this.actualizarHechos());
+  }
+
+  public List<Hecho> actualizarHechos() {
     //Creo la ruta al archivo
     String rutaArchivo = "src/main/resources/" + archivo + ".csv";
 
@@ -85,7 +97,13 @@ public class FuenteEstatica extends Fuente {
     }
   }
 
+  @Override
+  public List<Hecho> obtenerHechos() {
+    return new ArrayList<>(hechosObtenidos);
+  }
 }
+
+
 
 
 

@@ -12,7 +12,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -71,7 +73,8 @@ public class Hecho {
   @ElementCollection
   @CollectionTable(joinColumns = @JoinColumn(name = "hecho_id"))
   @Column(name = "algoritmo")
-  private List<TipoDeConsenso> algoritmos = new ArrayList<>();
+  private Set<TipoDeConsenso> algoritmos = new HashSet<>();
+  //estose debe cambiar por la clase algoritmo de consenso
 
   /*atributo agregado para estadisticas*/
   @Enumerated(EnumType.STRING)
@@ -172,6 +175,14 @@ public class Hecho {
 
   public void setLocalidad(String localidad) {
     this.coordenadas.setLocalidad(localidad);
+  }
+
+  public boolean tieneConsenso() {
+    return !algoritmos.isEmpty();
+  }
+
+  public boolean cumpleConsenso(TipoDeConsenso consenso) {
+    return algoritmos.contains(consenso);
   }
 
   /*metodo para estadisticas*/

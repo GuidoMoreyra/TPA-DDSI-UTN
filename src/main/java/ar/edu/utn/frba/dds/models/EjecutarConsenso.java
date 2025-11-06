@@ -11,17 +11,32 @@ import java.util.stream.Collectors;
 
 @SuppressFBWarnings("EI_EXPOSE_REP")
 public class EjecutarConsenso {
-  private final List<AlgoritmoDeConsenso> algoritmos;
-  private final List<Fuente> fuentesActivas;
-  private final HechosRepository repositorio = HechosRepository.getInstance();
+
+  //private final HechosRepository repositorio = HechosRepository.getInstance();
 
 
-  public EjecutarConsenso(List<Fuente> fuentesActivas, List<AlgoritmoDeConsenso> algoritmos) {
-    this.fuentesActivas = new ArrayList<>(fuentesActivas);
+  public EjecutarConsenso() {
 
-    this.algoritmos = algoritmos;
   }
 
+  public void aplicarConsensovdos(List<Fuente> fuentesActivas,
+                                  List<AlgoritmoDeConsenso> algoritmos) {
+    //recorre cada algoritmo
+    algoritmos.forEach(algoritmo -> {
+      fuentesActivas.stream()
+              .flatMap(fuente -> fuente.obtenerHechos().stream())
+              //formo una lista de hechos unica
+              //filtro los hechos que cumplen con el algoritmo de consenso
+              .filter(hecho -> algoritmo.realizarConsenso(hecho, fuentesActivas))
+              .forEach(hecho -> hecho.agregarConsenso(algoritmo.getTipo()));
+      //dentro de cada hecho que cumple con el consenso le agrego el consenso que cumple.
+
+    });
+  }
+
+
+
+  /*
   public void evaluarHechos(List<Hecho> hechosNuevos) {
     hechosNuevos.stream()
         //me devuelve una lista de hechos que no se contiene el repo
@@ -31,8 +46,9 @@ public class EjecutarConsenso {
     //a todos los hechos los reproceso aplicandole tanto a viejos como nuevos
     //los algoritmos de consenso
     repositorio.getHechos().forEach(this::aplicarConsensos);
-  }
+  }*/
 
+  /*
   private void aplicarConsensos(Hecho unHecho) {
 
     //tengo tanto los hechos nuevos como viejos dentro del repositorio
@@ -49,13 +65,17 @@ public class EjecutarConsenso {
     // Reemplazar los consensos anteriores por los consensos nuevos que se cumplen
     unHecho.setAlgoritmos(consensosActuales);
 
-  }
+  }*/
 
+
+
+  /*
   private List<Hecho> agregarHechos() {
     return fuentesActivas.stream()
         .flatMap(fuente -> fuente.obtenerHechos().stream())
         .collect(Collectors.toList());
-  }
+  }*/
+
 
 
 

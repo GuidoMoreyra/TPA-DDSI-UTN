@@ -20,6 +20,19 @@ public class MayoriaSimple implements AlgoritmoDeConsenso {
     return TipoDeConsenso.MAYORIA_SIMPLE;
   }
 
+  @Override
+  public boolean realizarConsenso(Hecho hecho, List<Fuente> fuentesActivas) {
+
+    long repeticiones = fuentesActivas.stream()
+        .filter(fuente -> fuente.obtenerHechos().stream()
+            .anyMatch(hechoDeunafuente -> hecho.compararHecho(hechoDeunafuente)))
+        .count();
+
+    int totalFuentes = fuentesActivas.size();
+
+    return  repeticiones >= Math.ceil(totalFuentes / 2.0);
+  }
+
 
   @Override
   public boolean estaConsensuado(Hecho hecho, List<Hecho> hechosRepositorio) {
@@ -30,5 +43,7 @@ public class MayoriaSimple implements AlgoritmoDeConsenso {
     int totalFuentes = fuentesActivas.size();
     return repeticiones >= Math.ceil(totalFuentes / 2.0);
   }
+
+
 
 }

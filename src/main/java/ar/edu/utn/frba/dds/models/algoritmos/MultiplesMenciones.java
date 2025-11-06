@@ -23,5 +23,14 @@ public class MultiplesMenciones implements AlgoritmoDeConsenso {
     return repeticiones > 1;
   }
 
+  @Override
+  public boolean realizarConsenso(Hecho hecho, List<Fuente> fuentesActivas) {
+    long repeticiones = fuentesActivas.stream()
+            .filter(fuente -> fuente.obtenerHechos().stream()
+                .anyMatch(hechoDeunafuente -> hecho.compararHecho(hechoDeunafuente)))
+        .count();
+    return repeticiones > 1;
+  }
+
 }
 

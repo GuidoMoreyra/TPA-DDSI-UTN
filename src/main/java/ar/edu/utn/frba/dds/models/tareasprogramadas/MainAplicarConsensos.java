@@ -31,10 +31,9 @@ public final class MainAplicarConsensos {
         new MultiplesMenciones()
     );
 
-    List<Hecho> hechosDePrueba = fuentedinamica.obtenerHechos();
 
-    EjecutarConsenso consensuar = new EjecutarConsenso(fuentesactivas, algoritmos);
-    consensuar.evaluarHechos(hechosDePrueba);
+    EjecutarConsenso consensuar = new EjecutarConsenso();
+    consensuar.aplicarConsensovdos(fuentesactivas, algoritmos);
 
 
 

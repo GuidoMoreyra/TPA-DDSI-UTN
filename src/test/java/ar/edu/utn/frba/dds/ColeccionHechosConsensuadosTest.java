@@ -23,6 +23,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
   private HechosRepository repoHechos;
@@ -120,12 +121,12 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     Hecho hechoTestDos = new Hecho("incendio forestal", "desc", "INSEGURIDAD",
         -38, -56, LocalDate.of(2025, 3, 10), OrigenHecho.ESTATICO, null, null);
     hechoTestDos.setLocalidad("Avellaneda");
-    hechoTestDos.setAlgoritmos(List.of(TipoDeConsenso.MAYORIA_SIMPLE));
+    hechoTestDos.setAlgoritmos(Set.of(TipoDeConsenso.MAYORIA_SIMPLE));
 
     Hecho hechoTestUno = new Hecho("incendio forestal", "desc", "INSEGURIDAD",
         -38, -56, LocalDate.of(2025, 3, 12), OrigenHecho.ESTATICO, null, null);
     hechoTestUno.setLocalidad("Avellaneda");
-    hechoTestUno.setAlgoritmos(List.of(TipoDeConsenso.MAYORIA_SIMPLE));
+    hechoTestUno.setAlgoritmos(Set.of(TipoDeConsenso.MAYORIA_SIMPLE));
 
     repoHechos.agregarHecho(hechoTestUno);
     repoHechos.agregarHecho(hechoTestDos);
@@ -189,8 +190,8 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         new MultiplesMenciones()
     );
 
-    EjecutarConsenso ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
-    ejecutar.evaluarHechos(fuenteMockUno.obtenerHechos());
+    EjecutarConsenso ejecutar = new EjecutarConsenso();
+    ejecutar.aplicarConsensovdos(fuentesActivas, algoritmos);
 
 
     Coleccion coleccion = new Coleccion(
@@ -243,8 +244,8 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
       repoHechos.agregarHecho(hechoDos);
       repoHechos.agregarHecho(hechoTres);
 
-    EjecutarConsenso ejecutar = new EjecutarConsenso(fuentesActivas, algoritmos);
-    ejecutar.evaluarHechos(fuenteTest.obtenerHechos());
+    EjecutarConsenso ejecutar = new EjecutarConsenso();
+    ejecutar.aplicarConsensovdos(fuentesActivas, algoritmos);
 
     Coleccion coleccion = new Coleccion(
         fuenteTest, // si importa la fuente

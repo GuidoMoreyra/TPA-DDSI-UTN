@@ -19,7 +19,7 @@ public final class AdaptadorFuenteDemo {
   private final URL url;
   private LocalDateTime ultimaConsulta;
 
-  private final List<Hecho> hechosObtenidos = new ArrayList<>();
+  private List<Hecho> hechosObtenidos = new ArrayList<>();
 
   public AdaptadorFuenteDemo(
       Conexion conexion,
