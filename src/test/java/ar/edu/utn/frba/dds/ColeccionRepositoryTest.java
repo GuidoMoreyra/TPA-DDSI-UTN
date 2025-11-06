@@ -1,11 +1,9 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Coleccion;
+import ar.edu.utn.frba.dds.models.algoritmos.MultiplesMenciones;
 import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
-import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
-import lombok.Getter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -13,13 +11,17 @@ import java.time.LocalDate;
 public class ColeccionRepositoryTest implements SimplePersistenceTest {
   @Test
   public void obtenerColecciones() {
+
+    MultiplesMenciones mm1 = new MultiplesMenciones();
+    entityManager().persist(mm1);
+
     entityManager().persist(new Coleccion(
         null,
         null,
         LocalDate.of(2025,1,1),
         LocalDate.of(2025,4,20),
         "Inseguridad",
-        TipoDeConsenso.CONSENSO_ABSOLUTO
+        mm1
     ));
     entityManager().persist(new Coleccion(
 
@@ -28,7 +30,7 @@ public class ColeccionRepositoryTest implements SimplePersistenceTest {
         LocalDate.of(2025,1,1),
         LocalDate.of(2025,12,31),
         "Incendio_forestal",
-        TipoDeConsenso.CONSENSO_ABSOLUTO
+        mm1
 
     ));
 

@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.EjecutarConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
@@ -140,7 +139,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         LocalDate.of(2022, 1, 1),
         LocalDate.of(2022, 12, 31),
         "Incendio Forestal",
-        TipoDeConsenso.MULTIPLES_MENCIONES
+        new MultiplesMenciones()
     );
     Boolean esIrrestricta = false;
     List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional(esIrrestricta);
@@ -151,7 +150,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
   }
 
   @Test
-  @DisplayName("se utiliza una fuente de agregacion y para obtener hechos consensuados")
+  @DisplayName("se utiliza una fuente de agregacion para obtener hechos consensuados")
   void hechosConsenuadosConServicioDeAgregacion() {
 
     Coleccion coleccion = new Coleccion(
@@ -160,7 +159,7 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
         LocalDate.of(2022, 1, 1),
         LocalDate.of(2022, 12, 31),
         "Incendio Forestal",
-        TipoDeConsenso.MULTIPLES_MENCIONES
+        new MultiplesMenciones()
     );
 
 

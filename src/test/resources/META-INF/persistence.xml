@@ -19,6 +19,10 @@
         <class>ar.edu.utn.frba.dds.contracts.Fuente</class>
         <class>ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica</class>
         <class>ar.edu.utn.frba.dds.contracts.Criterio</class>
+        <class>ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso</class>
+        <class>ar.edu.utn.frba.dds.models.algoritmos.ConsensoAbsoluto</class>
+        <class>ar.edu.utn.frba.dds.models.algoritmos.MayoriaSimple</class>
+        <class>ar.edu.utn.frba.dds.models.algoritmos.MultiplesMenciones</class>
 
         <properties>
             <property name="hibernate.archive.autodetection" value="class"/>

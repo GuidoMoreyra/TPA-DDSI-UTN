@@ -2,12 +2,8 @@ package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.contracts.Fuente;
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
-import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressFBWarnings("EI_EXPOSE_REP")
 public class EjecutarConsenso {
@@ -28,7 +24,7 @@ public class EjecutarConsenso {
               //formo una lista de hechos unica
               //filtro los hechos que cumplen con el algoritmo de consenso
               .filter(hecho -> algoritmo.realizarConsenso(hecho, fuentesActivas))
-              .forEach(hecho -> hecho.agregarConsenso(algoritmo.getTipo()));
+              .forEach(hecho -> hecho.agregarConsenso(algoritmo));
       //dentro de cada hecho que cumple con el consenso le agrego el consenso que cumple.
 
     });

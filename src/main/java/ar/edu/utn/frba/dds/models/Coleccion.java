@@ -1,9 +1,9 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.Provincia;
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.exceptions.FechaException;
 import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
 import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,7 +30,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.Getter;
-import lombok.Setter;
 
 
 @Entity
@@ -45,12 +43,12 @@ public final class Coleccion {
 
   @Getter
   @ManyToOne
-  private  Fuente fuente;
+  private Fuente fuente;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "consenso")
-  private TipoDeConsenso algoritmoDeconsenso;
-  //tipo de consenso deberia cambiarse por la clase algoritmo de consenso
+  @ManyToOne
+  @JoinColumn(name = "algoritmo_consenso_id")
+  private AlgoritmoDeConsenso algoritmoDeconsenso;
+
   @ManyToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
       name = "colecciones_criterions",
@@ -96,7 +94,7 @@ public final class Coleccion {
       LocalDate fechaInicial,
       LocalDate fechaFinal,
       String categoria,
-      TipoDeConsenso algoritmo
+      AlgoritmoDeConsenso algoritmo
   ) {
 
     this.validar(fechaInicial, fechaFinal);
@@ -111,9 +109,6 @@ public final class Coleccion {
     this.categoria = categoria;
 
   }
-
-
-
 
   public Coleccion() {}
 

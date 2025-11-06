@@ -25,6 +25,8 @@ public class FuenteMetaMapaTest {
     HttpClient clienteHttp = mock(HttpClient.class);
     HttpResponse<String> respuestaHttp = mock(HttpResponse.class);
 
+
+
     String json =
         """
                 [
@@ -40,7 +42,7 @@ public class FuenteMetaMapaTest {
                 "fechaDelHecho": "2023-10-01",
                 "fechaCreacion": null,
                 "origen": "INTERMEDIO",
-                "algoritmos": ["CONSENSO_ABSOLUTO"]
+                "algoritmos": null
               }
             ]
         """;

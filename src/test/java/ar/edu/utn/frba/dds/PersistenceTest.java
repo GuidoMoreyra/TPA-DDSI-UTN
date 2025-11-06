@@ -2,15 +2,15 @@ package ar.edu.utn.frba.dds;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import ar.edu.utn.frba.dds.contracts.Fuente;
+import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.Provincia;
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
+import ar.edu.utn.frba.dds.models.algoritmos.MultiplesMenciones;
 import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
@@ -24,8 +24,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.mockito.Mockito.*;
 
 public class PersistenceTest implements SimplePersistenceTest {
 
@@ -335,6 +333,8 @@ public class PersistenceTest implements SimplePersistenceTest {
           repoHecho.agregarHecho(hecho);
         });
 
+    AlgoritmoDeConsenso multiplesMenciones = new MultiplesMenciones();
+    entityManager().persist(multiplesMenciones);
 
     Coleccion coleccion = new Coleccion(
         fuenteEstatica,
@@ -342,7 +342,7 @@ public class PersistenceTest implements SimplePersistenceTest {
         LocalDate.of(2024,1,1),
         LocalDate.of(2024,12,30),
         "Incendio_Forestal",
-        TipoDeConsenso.MAYORIA_SIMPLE
+        multiplesMenciones
 
     );
     entityManager().persist(fuenteEstatica);
