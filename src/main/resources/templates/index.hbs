@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MetaMapa - Sistema de gestión de mapeos colaborativos</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">MetaMapa</a>
+      <ul class="navbar-nav">
+        <li><a href="/hechos" class="nav-link">Explorar Hechos</a></li>
+        {{#if user}}
+          <li><a href="#" class="nav-link">{{nombre}}</a></li>
+          {{#if isAdmin}}
+            <li><a href="/admin" class="nav-link">Panel Admin</a></li>
+          {{/if}}
+          <li><a href="/logout" class="nav-link btn-outline">Cerrar Sesión</a></li>
+        {{else}}
+          <li><a href="/login" class="nav-link">Iniciar Sesión</a></li>
+          <li><a href="/register" class="nav-link btn-primary">Registrarse</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4rem 0;">
+    <div class="container" style="text-align: center;">
+      <h1 style="font-size: 3rem; margin-bottom: 1rem; color: white;">Bienvenido a MetaMapa</h1>
+      <p style="font-size: 1.25rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">
+        Sistema colaborativo de gestión de mapeos históricos, culturales y turísticos
+      </p>
+      {{#unless user}}
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+          <a href="/register" class="btn" style="background-color: white; color: #667eea; font-size: 1rem; padding: 0.75rem 2rem;">
+            Comenzar Ahora
+          </a>
+          <a href="/login" class="btn" style="background-color: transparent; border: 2px solid white; color: white; font-size: 1rem; padding: 0.75rem 2rem;">
+            Iniciar Sesión
+          </a>
+        </div>
+      {{/unless}}
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container" style="padding: 3rem 0;">
+    {{#if user}}
+      <div class="alert alert-success">
+        ¡Bienvenido, <strong>{{nombre}}</strong>! Tu sesión está activa.
+        {{#if isAdmin}}
+          <br>Nivel de acceso: <strong>Administrador</strong>
+        {{else}}
+          <br>Nivel de acceso: <strong>Contribuyente</strong>
+        {{/if}}
+      </div>
+    {{/if}}
+
+    <div class="grid grid-cols-3" style="margin-top: 3rem;">
+      <div class="card">
+        <div class="card-body" style="text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🗺️</div>
+          <h3>Explorar Mapeos</h3>
+          <p style="color: var(--color-gray-600);">
+            Navega por colecciones de hechos históricos, culturales y turísticos
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body" style="text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">✏️</div>
+          <h3>Contribuir</h3>
+          <p style="color: var(--color-gray-600);">
+            Agrega nuevos hechos y enriquece el conocimiento colaborativo
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body" style="text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+          <h3>Validar</h3>
+          <p style="color: var(--color-gray-600);">
+            Participa en el proceso de consenso y validación de información
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 3rem;">
+      <div class="card-header">
+        <h3 class="card-title">Características del Sistema</h3>
+      </div>
+      <div class="card-body">
+        <div class="grid grid-cols-2">
+          <div>
+            <h4 style="margin-bottom: 1rem;">Para Contribuyentes</h4>
+            <ul style="line-height: 2; color: var(--color-gray-700);">
+              <li>✅ Registro e inicio de sesión seguro</li>
+              <li>✅ Creación de hechos con multimedia</li>
+              <li>✅ Solicitudes de eliminación con justificación</li>
+              <li>✅ Geolocalización automática</li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="margin-bottom: 1rem;">Para Administradores</h4>
+            <ul style="line-height: 2; color: var(--color-gray-700);">
+              <li>✅ Gestión de colecciones y fuentes</li>
+              <li>✅ Configuración de algoritmos de consenso</li>
+              <li>✅ Aprobación de solicitudes</li>
+              <li>✅ Dashboard de estadísticas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: var(--color-gray-800); color: white; padding: 2rem 0; margin-top: 3rem;">
+    <div class="container" style="text-align: center;">
+      <p style="margin: 0;">MetaMapa - Sistema de gestión de mapeos colaborativos</p>
+      <p style="margin: 0.5rem 0 0 0; color: var(--color-gray-400); font-size: 0.875rem;">
+        Desarrollado para UTN - Diseño de Sistemas - 2025
+      </p>
+    </div>
+  </div>
+</body>
+</html>

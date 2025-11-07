@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explorar Hechos - MetaMapa</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">MetaMapa</a>
+      <ul class="navbar-nav">
+        <li><a href="/hechos" class="nav-link active">Explorar Hechos</a></li>
+        {{#if user}}
+          <li><a href="#" class="nav-link">{{nombre}}</a></li>
+          {{#if isAdmin}}
+            <li><a href="/admin" class="nav-link">Panel Admin</a></li>
+          {{/if}}
+          <li><a href="/logout" class="nav-link btn-outline">Cerrar Sesión</a></li>
+        {{else}}
+          <li><a href="/login" class="nav-link">Iniciar Sesión</a></li>
+          <li><a href="/register" class="nav-link btn-primary">Registrarse</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header Section -->
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem 0;">
+    <div class="container">
+      <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; color: white;">Explorar Hechos</h1>
+      <p style="font-size: 1.1rem; color: rgba(255,255,255,0.9);">
+        Navega por la colección de hechos históricos, culturales y turísticos
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container" style="padding: 2rem 0;">
+
+    <!-- Filtros -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <div class="card-header">
+        <h3 class="card-title">Filtros de Búsqueda</h3>
+      </div>
+      <div class="card-body">
+        <form method="GET" action="/hechos">
+          <div class="grid grid-cols-3" style="gap: 1.5rem;">
+
+            <!-- Búsqueda por texto -->
+            <div class="form-group">
+              <label class="form-label" for="busqueda">Buscar por texto</label>
+              <input
+                type="text"
+                class="form-input"
+                id="busqueda"
+                name="busqueda"
+                placeholder="Título o descripción..."
+                value="{{busquedaActual}}"
+              >
+            </div>
+
+            <!-- Filtro por categoría -->
+            <div class="form-group">
+              <label class="form-label" for="categoria">Categoría</label>
+              <select class="form-input" id="categoria" name="categoria">
+                <option value="todas" {{#if todasCategoriasSelected}}selected{{/if}}>Todas las categorías</option>
+                {{#each categorias}}
+                  <option value="{{nombre}}" {{#if selected}}selected{{/if}}>{{nombre}}</option>
+                {{/each}}
+              </select>
+            </div>
+
+            <!-- Filtro por provincia -->
+            <div class="form-group">
+              <label class="form-label" for="provincia">Provincia</label>
+              <select class="form-input" id="provincia" name="provincia">
+                <option value="todas" {{#if todasProvinciasSelected}}selected{{/if}}>Todas las provincias</option>
+                {{#each provincias}}
+                  <option value="{{nombre}}" {{#if selected}}selected{{/if}}>{{nombre}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+            <a href="/hechos" class="btn btn-outline">Limpiar Filtros</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="card">
+      <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 class="card-title">
+          Hechos Encontrados
+          <span class="badge badge-primary" style="margin-left: 0.5rem;">{{totalHechos}}</span>
+        </h3>
+        {{#if user}}
+          <a href="/hechos/crear" class="btn btn-primary" style="margin: 0;">+ Crear Hecho</a>
+        {{/if}}
+      </div>
+      <div class="card-body">
+        {{#if hechos}}
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Título</th>
+                  <th>Categoría</th>
+                  <th>Provincia</th>
+                  <th>Localidad</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each hechos}}
+                  <tr>
+                    <td>
+                      <div style="font-weight: 600; color: var(--color-gray-900);">{{titulo}}</div>
+                      <div style="font-size: 0.875rem; color: var(--color-gray-600); margin-top: 0.25rem;">
+                        {{#if descripcionTruncada}}
+                          {{descripcionTruncada}}
+                        {{/if}}
+                      </div>
+                    </td>
+                    <td>
+                      <span class="badge badge-info">{{categoria}}</span>
+                    </td>
+                    <td>{{provincia}}</td>
+                    <td>{{#if coordenadas.localidad}}{{coordenadas.localidad}}{{else}}-{{/if}}</td>
+                    <td>{{fechaDelHecho}}</td>
+                    <td>
+                      <a href="/hechos/{{id}}" class="btn btn-sm btn-primary">Ver Detalle</a>
+                    </td>
+                  </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        {{else}}
+          <div class="alert alert-info">
+            <strong>No se encontraron hechos</strong><br>
+            Intenta ajustar los filtros de búsqueda o <a href="/hechos" style="color: var(--color-primary); font-weight: 500;">limpia los filtros</a> para ver todos los hechos disponibles.
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: var(--color-gray-800); color: white; padding: 2rem 0; margin-top: 3rem;">
+    <div class="container" style="text-align: center;">
+      <p style="margin: 0;">MetaMapa - Sistema de gestión de mapeos colaborativos</p>
+      <p style="margin: 0.5rem 0 0 0; color: var(--color-gray-400); font-size: 0.875rem;">
+        Desarrollado para UTN - Diseño de Sistemas - 2025
+      </p>
+    </div>
+  </div>
+</body>
+</html>

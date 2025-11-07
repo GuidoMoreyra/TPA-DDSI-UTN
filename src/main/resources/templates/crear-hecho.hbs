@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Nuevo Hecho - MetaMapa</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">MetaMapa</a>
+      <ul class="navbar-nav">
+        <li><a href="/hechos" class="nav-link">Explorar Hechos</a></li>
+        {{#if user}}
+          <li><a href="#" class="nav-link">{{nombre}}</a></li>
+          {{#if isAdmin}}
+            <li><a href="/admin" class="nav-link">Panel Admin</a></li>
+          {{/if}}
+          <li><a href="/logout" class="nav-link btn-outline">Cerrar Sesión</a></li>
+        {{else}}
+          <li><a href="/login" class="nav-link">Iniciar Sesión</a></li>
+          <li><a href="/register" class="nav-link btn-primary">Registrarse</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header Section -->
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem 0;">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+        <a href="/hechos" style="color: white; text-decoration: none; font-size: 1.5rem;">←</a>
+        <h1 style="font-size: 2rem; margin: 0; color: white;">Crear Nuevo Hecho</h1>
+      </div>
+      <p style="font-size: 1rem; color: rgba(255,255,255,0.9); margin: 0;">
+        Comparte un hecho histórico, cultural o turístico con la comunidad
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container" style="padding: 2rem 0; max-width: 800px;">
+
+    <!-- Breadcrumb -->
+    <div style="margin-bottom: 1.5rem; color: var(--color-gray-600); font-size: 0.875rem;">
+      <a href="/" style="color: var(--color-gray-600);">Inicio</a>
+      <span style="margin: 0 0.5rem;">›</span>
+      <a href="/hechos" style="color: var(--color-gray-600);">Explorar Hechos</a>
+      <span style="margin: 0 0.5rem;">›</span>
+      <span style="color: var(--color-gray-900); font-weight: 500;">Crear Nuevo Hecho</span>
+    </div>
+
+    {{#if error}}
+      <div class="alert alert-error" style="margin-bottom: 1.5rem;">
+        <strong>Error:</strong> {{error}}
+      </div>
+    {{/if}}
+
+    <!-- Formulario -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Información del Hecho</h3>
+      </div>
+      <div class="card-body">
+        <form action="/hechos/crear" method="POST" id="formCrearHecho">
+
+          <!-- Título -->
+          <div class="form-group">
+            <label class="form-label required" for="titulo">Título del Hecho</label>
+            <input
+              type="text"
+              class="form-input"
+              id="titulo"
+              name="titulo"
+              placeholder="Ej: Declaración de la Independencia Argentina"
+              required
+              maxlength="255"
+              autofocus
+            >
+            <small style="color: var(--color-gray-600); font-size: 0.875rem;">
+              Ingresa un título descriptivo y claro
+            </small>
+          </div>
+
+          <!-- Descripción -->
+          <div class="form-group">
+            <label class="form-label required" for="descripcion">Descripción</label>
+            <textarea
+              class="form-input"
+              id="descripcion"
+              name="descripcion"
+              placeholder="Describe el hecho con el mayor detalle posible..."
+              required
+              rows="4"
+              maxlength="500"
+            ></textarea>
+            <small style="color: var(--color-gray-600); font-size: 0.875rem;">
+              Máximo 500 caracteres
+            </small>
+          </div>
+
+          <!-- Categoría -->
+          <div class="form-group">
+            <label class="form-label required" for="categoria">Categoría</label>
+            <select class="form-input" id="categoriaSelect" name="categoriaSelect" required>
+              <option value="">Selecciona una categoría...</option>
+              {{#each categorias}}
+                <option value="{{this}}">{{this}}</option>
+              {{/each}}
+              <option value="otra">Otra... (especificar)</option>
+            </select>
+          </div>
+
+          <!-- Campo de nueva categoría (oculto por defecto) -->
+          <div class="form-group" id="nuevaCategoriaContainer" style="display: none;">
+            <label class="form-label required" for="nuevaCategoria">Nueva Categoría</label>
+            <input
+              type="text"
+              class="form-input"
+              id="nuevaCategoria"
+              name="nuevaCategoria"
+              placeholder="Ingresa el nombre de la nueva categoría"
+              maxlength="100"
+            >
+          </div>
+
+          <!-- Campo oculto para la categoría final -->
+          <input type="hidden" id="categoria" name="categoria">
+
+          <!-- Ubicación -->
+          <div class="form-group">
+            <label class="form-label required">Ubicación</label>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+              <button type="button" class="btn btn-outline" id="btnUbicarme" style="flex: 1;">
+                📍 Usar mi ubicación actual
+              </button>
+              <button type="button" class="btn btn-outline" id="btnLimpiarUbicacion" style="display: none;">
+                ✕ Limpiar
+              </button>
+            </div>
+
+            <div class="grid grid-cols-2" style="gap: 1rem;">
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label required" for="latitud">Latitud</label>
+                <input
+                  type="number"
+                  class="form-input"
+                  id="latitud"
+                  name="latitud"
+                  placeholder="-34.6037"
+                  step="0.000001"
+                  min="-90"
+                  max="90"
+                  required
+                >
+              </div>
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label required" for="longitud">Longitud</label>
+                <input
+                  type="number"
+                  class="form-input"
+                  id="longitud"
+                  name="longitud"
+                  placeholder="-58.3816"
+                  step="0.000001"
+                  min="-180"
+                  max="180"
+                  required
+                >
+              </div>
+            </div>
+            <small style="color: var(--color-gray-600); font-size: 0.875rem; display: block; margin-top: 0.5rem;">
+              Puedes usar tu ubicación actual o ingresar coordenadas manualmente
+            </small>
+          </div>
+
+          <!-- Fecha del Hecho -->
+          <div class="form-group">
+            <label class="form-label required" for="fechaHecho">Fecha del Hecho</label>
+            <input
+              type="date"
+              class="form-input"
+              id="fechaHecho"
+              name="fechaHecho"
+              required
+            >
+            <small style="color: var(--color-gray-600); font-size: 0.875rem;">
+              Fecha en la que ocurrió el hecho histórico
+            </small>
+          </div>
+
+          <!-- Hora del Hecho -->
+          <div class="form-group">
+            <label class="form-label" for="horaHecho">Hora del Hecho (opcional)</label>
+            <input
+              type="time"
+              class="form-input"
+              id="horaHecho"
+              name="horaHecho"
+            >
+            <small style="color: var(--color-gray-600); font-size: 0.875rem;">
+              Si conoces la hora aproximada, ingrésala aquí
+            </small>
+          </div>
+
+          <!-- Botones -->
+          <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">
+              Crear Hecho
+            </button>
+            <a href="/hechos" class="btn btn-outline" style="flex: 1; text-align: center;">
+              Cancelar
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Info adicional -->
+    <div class="card" style="margin-top: 1.5rem;">
+      <div class="card-body">
+        <p style="color: var(--color-gray-600); line-height: 1.6; margin: 0; font-size: 0.875rem;">
+          <strong>Nota:</strong> Los hechos que crees serán agregados a la fuente dinámica de MetaMapa.
+          Asegúrate de ingresar información precisa y verificable. Si encuentras errores en un hecho
+          existente, puedes solicitar su eliminación desde la vista de detalle.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: var(--color-gray-800); color: white; padding: 2rem 0; margin-top: 3rem;">
+    <div class="container" style="text-align: center;">
+      <p style="margin: 0;">MetaMapa - Sistema de gestión de mapeos colaborativos</p>
+      <p style="margin: 0.5rem 0 0 0; color: var(--color-gray-400); font-size: 0.875rem;">
+        Desarrollado para UTN - Diseño de Sistemas - 2025
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript para funcionalidad dinámica -->
+  <script>
+    // Manejo de categoría dinámica
+    const categoriaSelect = document.getElementById('categoriaSelect');
+    const nuevaCategoriaContainer = document.getElementById('nuevaCategoriaContainer');
+    const nuevaCategoriaInput = document.getElementById('nuevaCategoria');
+    const categoriaHidden = document.getElementById('categoria');
+
+    categoriaSelect.addEventListener('change', function() {
+      if (this.value === 'otra') {
+        nuevaCategoriaContainer.style.display = 'block';
+        nuevaCategoriaInput.required = true;
+      } else {
+        nuevaCategoriaContainer.style.display = 'none';
+        nuevaCategoriaInput.required = false;
+        nuevaCategoriaInput.value = '';
+      }
+    });
+
+    // Antes de enviar el form, establecer la categoría final
+    document.getElementById('formCrearHecho').addEventListener('submit', function(e) {
+      if (categoriaSelect.value === 'otra') {
+        if (!nuevaCategoriaInput.value.trim()) {
+          e.preventDefault();
+          alert('Por favor, ingresa el nombre de la nueva categoría');
+          return;
+        }
+        categoriaHidden.value = nuevaCategoriaInput.value.trim();
+      } else {
+        categoriaHidden.value = categoriaSelect.value;
+      }
+    });
+
+    // Geolocalización
+    const btnUbicarme = document.getElementById('btnUbicarme');
+    const btnLimpiarUbicacion = document.getElementById('btnLimpiarUbicacion');
+    const latitudInput = document.getElementById('latitud');
+    const longitudInput = document.getElementById('longitud');
+
+    btnUbicarme.addEventListener('click', function() {
+      if (!navigator.geolocation) {
+        alert('Tu navegador no soporta geolocalización');
+        return;
+      }
+
+      btnUbicarme.disabled = true;
+      btnUbicarme.textContent = '📍 Obteniendo ubicación...';
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          latitudInput.value = position.coords.latitude.toFixed(6);
+          longitudInput.value = position.coords.longitude.toFixed(6);
+          btnUbicarme.textContent = '✓ Ubicación obtenida';
+          btnUbicarme.style.backgroundColor = 'var(--color-success)';
+          btnUbicarme.style.color = 'white';
+          btnUbicarme.style.borderColor = 'var(--color-success)';
+          btnLimpiarUbicacion.style.display = 'block';
+        },
+        function(error) {
+          btnUbicarme.disabled = false;
+          btnUbicarme.textContent = '📍 Usar mi ubicación actual';
+
+          let mensaje = 'No se pudo obtener la ubicación. ';
+          if (error.code === error.PERMISSION_DENIED) {
+            mensaje += 'Debes permitir el acceso a tu ubicación.';
+          } else if (error.code === error.POSITION_UNAVAILABLE) {
+            mensaje += 'Ubicación no disponible.';
+          } else if (error.code === error.TIMEOUT) {
+            mensaje += 'Tiempo de espera agotado.';
+          }
+          alert(mensaje);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+    });
+
+    btnLimpiarUbicacion.addEventListener('click', function() {
+      latitudInput.value = '';
+      longitudInput.value = '';
+      btnUbicarme.disabled = false;
+      btnUbicarme.textContent = '📍 Usar mi ubicación actual';
+      btnUbicarme.style.backgroundColor = '';
+      btnUbicarme.style.color = '';
+      btnUbicarme.style.borderColor = '';
+      btnLimpiarUbicacion.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

@@ -8,6 +8,7 @@
     <persistence-unit name="simple-persistence-unit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+        <class>ar.edu.utn.frba.dds.models.Usuario</class>
         <class>ar.edu.utn.frba.dds.models.Hecho</class>
         <class>ar.edu.utn.frba.dds.models.Coleccion</class>
         <class>ar.edu.utn.frba.dds.models.Coordenada</class>

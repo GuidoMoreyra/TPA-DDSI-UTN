@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - MetaMapa</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <h1 class="navbar-brand" style="display: inline-block;">MetaMapa</h1>
+      </div>
+
+      <h2 class="auth-title">Iniciar Sesión</h2>
+      <p class="auth-subtitle">Accede a tu cuenta para contribuir</p>
+
+      {{#if mensaje}}
+        <div class="alert alert-error">
+          <strong>Error:</strong> {{mensaje}}
+        </div>
+      {{/if}}
+
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <label class="form-label required" for="nombre">Nombre de Usuario</label>
+          <input
+            type="text"
+            class="form-input"
+            id="nombre"
+            name="nombre"
+            placeholder="tu_usuario"
+            required
+            autofocus
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label required" for="password">Contraseña</label>
+          <input
+            type="password"
+            class="form-input"
+            id="password"
+            name="password"
+            placeholder="••••••••"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full">Iniciar Sesión</button>
+      </form>
+
+      <div style="margin-top: 1.5rem; text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--color-gray-200);">
+        <p style="color: var(--color-gray-600); font-size: 0.875rem;">
+          ¿No tienes cuenta? <a href="/register" style="color: var(--color-primary); font-weight: 500;">Regístrate aquí</a>
+        </p>
+        <p style="margin-top: 0.5rem;">
+          <a href="/" style="color: var(--color-gray-600); font-size: 0.875rem;">← Volver al inicio</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
