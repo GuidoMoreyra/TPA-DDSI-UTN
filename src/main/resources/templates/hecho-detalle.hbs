@@ -194,6 +194,78 @@
       </div>
     </div>
 
+    {{#if user}}
+    <!-- Card de Solicitud de Eliminación -->
+    <div class="card" style="margin-bottom: 2rem; border-left: 3px solid var(--color-warning, #f59e0b);">
+      <div class="card-header" style="background-color: rgba(245, 158, 11, 0.05); cursor: pointer;" id="toggleReportForm">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 class="card-title" style="margin: 0; color: var(--color-warning, #f59e0b); display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.5rem;">⚠️</span>
+            Reportar Información Incorrecta
+          </h3>
+          <span id="toggleIcon" style="font-size: 1.5rem; color: var(--color-warning, #f59e0b); transition: transform 0.3s;">▼</span>
+        </div>
+      </div>
+      <div class="card-body" id="reportFormContainer" style="display: none;">
+
+        {{#if errorReporte}}
+        <div class="alert alert-error" style="margin-bottom: 1.5rem;">
+          <strong>Error:</strong> {{errorReporte}}
+        </div>
+        {{/if}}
+
+        {{#if exitoReporte}}
+        <div class="alert alert-success" style="margin-bottom: 1.5rem; background-color: #d1fae5; border-color: #6ee7b7; color: #065f46;">
+          <strong>¡Solicitud enviada!</strong> Tu reporte ha sido recibido y será revisado por un administrador.
+        </div>
+        {{/if}}
+
+        <form action="/hechos/{{hecho.id}}/reportar" method="POST" id="formReporte">
+
+          <div style="padding: 1rem; background-color: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px; margin-bottom: 1.5rem;">
+            <p style="margin: 0; color: #78350f; font-size: 0.875rem; line-height: 1.5;">
+              <strong>📌 Importante:</strong> Tu solicitud debe incluir una justificación detallada de al menos <strong>500 caracteres</strong>.
+              Esto ayuda a los administradores a evaluar correctamente tu reporte y tomar decisiones informadas.
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required" for="justificacion">
+              Justificación Detallada
+            </label>
+            <textarea
+              class="form-input"
+              id="justificacion"
+              name="justificacion"
+              placeholder="Por favor, describe en detalle por qué consideras que este hecho debería ser eliminado. Incluye información específica sobre qué datos son incorrectos, duplicados o inapropiados. Cuanto más detallada sea tu explicación, más fácil será para los administradores evaluar tu solicitud..."
+              required
+              minlength="500"
+              rows="8"
+              style="resize: vertical; font-family: inherit;"
+            ></textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+              <small style="color: var(--color-gray-600); font-size: 0.875rem;">
+                Sé específico y objetivo en tu descripción
+              </small>
+              <small id="charCount" style="color: var(--color-gray-500); font-size: 0.875rem; font-weight: 600;">
+                0 / 500 caracteres
+              </small>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn" style="flex: 1; background-color: #f59e0b; border-color: #f59e0b; color: white;">
+              Enviar Reporte
+            </button>
+            <button type="button" class="btn btn-outline" style="flex: 1;" onclick="document.getElementById('toggleReportForm').click()">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    {{/if}}
+
     <!-- Card de Información Adicional -->
     <div class="card">
       <div class="card-header">
@@ -203,7 +275,7 @@
         <p style="color: var(--color-gray-600); line-height: 1.6; margin: 0;">
           Este hecho forma parte de la colección colaborativa de MetaMapa. Si encontrás información incorrecta o deseás proponer cambios,
           {{#if user}}
-            podés enviar una solicitud de modificación o eliminación desde tu panel de usuario.
+            podés usar el formulario de reporte en esta página.
           {{else}}
             necesitás <a href="/login" style="color: var(--color-primary); font-weight: 500;">iniciar sesión</a> para proponer cambios.
           {{/if}}
@@ -222,5 +294,69 @@
       </p>
     </div>
   </div>
+
+  <!-- JavaScript para funcionalidad del formulario de reporte -->
+  <script>
+    {{#if user}}
+    // Toggle del formulario de reporte
+    const toggleBtn = document.getElementById('toggleReportForm');
+    const formContainer = document.getElementById('reportFormContainer');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    if (toggleBtn && formContainer && toggleIcon) {
+      toggleBtn.addEventListener('click', function() {
+        const isHidden = formContainer.style.display === 'none';
+        formContainer.style.display = isHidden ? 'block' : 'none';
+        toggleIcon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+      });
+    }
+
+    // Contador de caracteres
+    const textarea = document.getElementById('justificacion');
+    const charCount = document.getElementById('charCount');
+
+    if (textarea && charCount) {
+      textarea.addEventListener('input', function() {
+        const length = this.value.length;
+        charCount.textContent = length + ' / 500 caracteres';
+
+        // Cambiar color según progreso
+        if (length < 500) {
+          charCount.style.color = '#ef4444'; // Rojo si no alcanza
+        } else if (length < 1000) {
+          charCount.style.color = '#10b981'; // Verde si está en rango óptimo
+        } else {
+          charCount.style.color = '#6b7280'; // Gris si es muy largo
+        }
+      });
+
+      // Validación al enviar
+      document.getElementById('formReporte').addEventListener('submit', function(e) {
+        if (textarea.value.trim().length < 500) {
+          e.preventDefault();
+          alert('La justificación debe tener al menos 500 caracteres. Actualmente tiene ' + textarea.value.trim().length + ' caracteres.');
+          textarea.focus();
+        }
+      });
+    }
+
+    // Si hay error o éxito, mostrar el formulario automáticamente
+    {{#if errorReporte}}
+    if (formContainer && toggleIcon) {
+      formContainer.style.display = 'block';
+      toggleIcon.style.transform = 'rotate(180deg)';
+    }
+    {{/if}}
+
+    {{#if exitoReporte}}
+    if (formContainer && toggleIcon) {
+      formContainer.style.display = 'block';
+      toggleIcon.style.transform = 'rotate(180deg)';
+      // Opcional: ocultar el formulario después de mostrar el éxito
+      // setTimeout(() => { formContainer.style.display = 'none'; toggleIcon.style.transform = 'rotate(0deg)'; }, 5000);
+    }
+    {{/if}}
+    {{/if}}
+  </script>
 </body>
 </html>

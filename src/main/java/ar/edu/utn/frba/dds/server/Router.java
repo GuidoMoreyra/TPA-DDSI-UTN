@@ -25,6 +25,7 @@ public class Router {
         app.get("/hechos/crear", hechosController::mostrarFormularioCrear);
         app.post("/hechos/crear", hechosController::crearHecho);
         app.get("/hechos/{id}", hechosController::verDetalle);
+        app.post("/hechos/{id}/reportar", hechosController::reportarHecho);
 
         // Ruta principal
         app.get("/", ctx -> {

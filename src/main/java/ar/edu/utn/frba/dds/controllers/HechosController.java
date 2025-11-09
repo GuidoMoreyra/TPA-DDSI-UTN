@@ -1,8 +1,11 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
+import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import io.javalin.http.Context;
 
@@ -315,5 +318,113 @@ public class HechosController implements WithSimplePersistenceUnit {
         }
 
         context.render("crear-hecho.hbs", model);
+    }
+
+    public void reportarHecho(Context context) {
+        // Verificar que el usuario esté logueado
+        if (context.sessionAttribute("user_id") == null) {
+            context.redirect("/login");
+            return;
+        }
+
+        Hecho hecho = null;
+
+        try {
+            // Obtener el ID del hecho desde la URL
+            Long hechoId = Long.parseLong(context.pathParam("id"));
+
+            // Buscar el hecho en el repositorio
+            hecho = HechosRepository.getInstance().getHechos()
+                    .stream()
+                    .filter(h -> h.getId().equals(hechoId))
+                    .findFirst()
+                    .orElse(null);
+
+            if (hecho == null) {
+                context.redirect("/hechos");
+                return;
+            }
+
+            // Obtener la justificación del formulario
+            String justificacion = context.formParam("justificacion");
+
+            // Validaciones
+            if (justificacion == null || justificacion.trim().isEmpty()) {
+                mostrarDetalleConError(context, hecho, "La justificación es obligatoria");
+                return;
+            }
+
+            if (justificacion.trim().length() < 500) {
+                mostrarDetalleConError(context, hecho,
+                        "La justificación debe tener al menos 500 caracteres. Actualmente tiene "
+                                + justificacion.trim().length() + " caracteres.");
+                return;
+            }
+
+            // Crear la solicitud de eliminación
+            DetectorDeSpamBasico detector = new DetectorDeSpamBasico();
+            SolicitudEliminacion solicitud = new SolicitudEliminacion(
+                    hecho,
+                    justificacion.trim(),
+                    detector
+            );
+
+            // Persistir usando el repositorio
+            withTransaction(() -> {
+                SolicitudesEliminacionRepository.getInstance().agregarSolicitud(solicitud);
+            });
+
+            // Redirigir al detalle con mensaje de éxito
+            mostrarDetalleConExito(context, hecho);
+
+        } catch (IllegalArgumentException e) {
+            // Capturar error de validación del modelo o error al parsear el ID
+            if (hecho != null) {
+                mostrarDetalleConError(context, hecho, e.getMessage());
+            } else {
+                // Si no tenemos el hecho, probablemente fue un error al parsear el ID
+                context.redirect("/hechos");
+            }
+        } catch (Exception e) {
+            // Cualquier otro error
+            e.printStackTrace();
+            if (hecho != null) {
+                mostrarDetalleConError(context, hecho, "Error al procesar la solicitud: " + e.getMessage());
+            } else {
+                context.redirect("/hechos");
+            }
+        }
+    }
+
+    private void mostrarDetalleConError(Context context, Hecho hecho, String error) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("hecho", hecho);
+        model.put("errorReporte", error);
+
+        // Info de sesión para el navbar
+        if (context.sessionAttribute("user_id") != null) {
+            model.put("user", true);
+            model.put("nombre", context.sessionAttribute("nombre"));
+            Integer nivelAcceso = context.sessionAttribute("nivel_acceso");
+            model.put("isAdmin", nivelAcceso != null && nivelAcceso >= 1);
+        }
+
+        context.render("hecho-detalle.hbs", model);
+    }
+
+    private void mostrarDetalleConExito(Context context, Hecho hecho) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("hecho", hecho);
+        model.put("exitoReporte", true);
+
+        // Info de sesión para el navbar
+        if (context.sessionAttribute("user_id") != null) {
+            model.put("user", true);
+            model.put("nombre", context.sessionAttribute("nombre"));
+            Integer nivelAcceso = context.sessionAttribute("nivel_acceso");
+            model.put("isAdmin", nivelAcceso != null && nivelAcceso >= 1);
+        }
+
+        context.render("hecho-detalle.hbs", model);
     }
 }
