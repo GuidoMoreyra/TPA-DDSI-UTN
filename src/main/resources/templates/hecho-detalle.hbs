@@ -174,10 +174,13 @@
         <div style="margin-bottom: 1.5rem; padding: 1.5rem; background-color: var(--color-gray-50); border-radius: 8px; border-left: 4px solid var(--color-primary);">
           <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
             <span style="font-size: 1.5rem;">🎬</span>
-            <h4 style="margin: 0; color: var(--color-gray-700); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px;">Contenido Multimedia</h4>
+            <h4 style="margin: 0; color: --color-gray-700); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px;">Contenido Multimedia</h4>
           </div>
-          <p style="margin: 0; color: var(--color-gray-900); font-size: 0.95rem; margin-left: 2.25rem; word-break: break-all;">
-            {{hecho.contenidoMultimedia}}
+          <div id="multimediaContainer" data-url="{{hecho.contenidoMultimedia}}" style="margin-top: 1rem;">
+            <!-- El contenido multimedia se cargará dinámicamente con JavaScript -->
+          </div>
+          <p style="margin-top: 0.5rem; color: var(--color-gray-600); font-size: 0.875rem;">
+            <strong>URL:</strong> <a href="{{hecho.contenidoMultimedia}}" target="_blank" style="color: var(--color-primary); word-break: break-all;">{{hecho.contenidoMultimedia}}</a>
           </p>
         </div>
         {{/if}}
@@ -357,6 +360,52 @@
     }
     {{/if}}
     {{/if}}
+
+    // Renderizar contenido multimedia
+    const multimediaContainer = document.getElementById('multimediaContainer');
+    if (multimediaContainer) {
+      const url = multimediaContainer.dataset.url;
+      if (url) {
+        // Detectar si es un video de YouTube
+        const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/;
+        const youtubeMatch = url.match(youtubeRegex);
+
+        if (youtubeMatch) {
+          // Es un video de YouTube - crear iframe
+          const videoId = youtubeMatch[1];
+          multimediaContainer.innerHTML = `
+            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 8px;">
+              <iframe
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                src="https://www.youtube.com/embed/${videoId}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+          `;
+        } else if (url.match(/\.(jpeg|jpg|gif|png|webp|svg)$/i)) {
+          // Es una imagen - crear elemento img
+          multimediaContainer.innerHTML = `
+            <div style="text-align: center; max-width: 100%;">
+              <img
+                src="${url}"
+                alt="Contenido multimedia del hecho"
+                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);"
+                onerror="this.onerror=null; this.parentElement.innerHTML='<p style=\\'color: var(--color-error); text-align: center;\\'>❌ No se pudo cargar la imagen</p>';"
+              >
+            </div>
+          `;
+        } else {
+          // URL genérica - mostrar enlace
+          multimediaContainer.innerHTML = `
+            <p style="color: var(--color-gray-600); text-align: center; padding: 1rem; background-color: white; border-radius: 8px;">
+              📎 <a href="${url}" target="_blank" style="color: var(--color-primary); font-weight: 500;">Ver contenido multimedia</a>
+            </p>
+          `;
+        }
+      }
+    }
   </script>
 </body>
 </html>
