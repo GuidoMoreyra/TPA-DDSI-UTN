@@ -24,6 +24,8 @@ public final class SolicitudesEliminacionRepository implements WithSimplePersist
 
   @SuppressWarnings("unchecked")
   public List<SolicitudEliminacion> getSolicitudes() {
+    // Limpiar la caché para asegurar que se consulten los datos más recientes de la BD
+    entityManager().clear();
     return entityManager()
         .createQuery("from SolicitudEliminacion", SolicitudEliminacion.class)
         .getResultList();
