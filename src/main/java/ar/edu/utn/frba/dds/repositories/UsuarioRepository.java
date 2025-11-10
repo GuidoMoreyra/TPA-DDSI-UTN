@@ -25,4 +25,13 @@ public class UsuarioRepository implements WithSimplePersistenceUnit {
         return resultados.isEmpty() ? null : resultados.get(0);
     }
 
+    public Usuario getUsuarioPorNombre(String nombre) {
+        var resultados = entityManager()
+                .createQuery("from Usuario where nombre = :nombre", Usuario.class)
+                .setParameter("nombre", nombre)
+                .getResultList();
+
+        return resultados.isEmpty() ? null : resultados.get(0);
+    }
+
 }

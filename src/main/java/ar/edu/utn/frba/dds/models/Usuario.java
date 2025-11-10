@@ -47,4 +47,8 @@ public class Usuario {
         return nivelDeAcceso;
     }
 
+    public void setNivelDeAcceso(Integer nivelDeAcceso) {
+        this.nivelDeAcceso = nivelDeAcceso;
+    }
+
 }

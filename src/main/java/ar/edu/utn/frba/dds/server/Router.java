@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.server;
 
+import ar.edu.utn.frba.dds.controllers.AdminController;
 import ar.edu.utn.frba.dds.controllers.AuthController;
 import ar.edu.utn.frba.dds.controllers.HechosController;
 import io.javalin.Javalin;
@@ -10,6 +11,7 @@ public class Router {
     public void configure(Javalin app) {
         AuthController authController = new AuthController();
         HechosController hechosController = new HechosController();
+        AdminController adminController = new AdminController();
 
         // Rutas de autenticación (GET y POST manejados en el mismo método)
         app.get("/login", authController::login);
@@ -26,6 +28,13 @@ public class Router {
         app.post("/hechos/crear", hechosController::crearHecho);
         app.get("/hechos/{id}", hechosController::verDetalle);
         app.post("/hechos/{id}/reportar", hechosController::reportarHecho);
+
+        // Rutas del panel de administración
+        app.get("/admin", ctx -> ctx.redirect("/admin/solicitudes"));
+        app.get("/admin/solicitudes", adminController::listarSolicitudes);
+        app.get("/admin/solicitudes/{id}", adminController::verDetalleSolicitud);
+        app.post("/admin/solicitudes/{id}/aprobar", adminController::aprobarSolicitud);
+        app.post("/admin/solicitudes/{id}/rechazar", adminController::rechazarSolicitud);
 
         // Ruta principal
         app.get("/", ctx -> {

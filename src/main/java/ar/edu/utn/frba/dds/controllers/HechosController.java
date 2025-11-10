@@ -279,11 +279,8 @@ public class HechosController implements WithSimplePersistenceUnit {
 
             // Persistir usando transacción
             withTransaction(() -> {
-                entityManager().persist(nuevoHecho);
+                HechosRepository.getInstance().agregarHecho(nuevoHecho);
             });
-
-            // Agregar a la caché del repositorio
-            HechosRepository.getInstance().agregarHecho(nuevoHecho);
 
             // Redirigir al detalle del hecho creado
             context.redirect("/hechos/" + nuevoHecho.getId());
