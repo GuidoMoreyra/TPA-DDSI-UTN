@@ -2,12 +2,17 @@ package ar.edu.utn.frba.dds;
 
 import ar.edu.utn.frba.dds.models.Usuario;
 import ar.edu.utn.frba.dds.repositories.UsuarioRepository;
+import ar.edu.utn.frba.dds.seeders.DatabaseSeeder;
 import ar.edu.utn.frba.dds.server.Server;
 
 public class Main {
     public static void main(String[] args) {
         // Crear usuario admin por defecto si no existe
         crearAdminPorDefecto();
+
+        // Poblar la base de datos con datos de ejemplo
+        DatabaseSeeder seeder = new DatabaseSeeder();
+        seeder.seed();
 
         Server server = new Server();
         server.start();

@@ -208,6 +208,7 @@ public class HechosController implements WithSimplePersistenceUnit {
             String longitudStr = context.formParam("longitud");
             String fechaHechoStr = context.formParam("fechaHecho");
             String horaHechoStr = context.formParam("horaHecho");
+            String contenidoMultimedia = context.formParam("contenidoMultimedia");
 
             // Validaciones básicas
             if (titulo == null || titulo.trim().isEmpty()) {
@@ -264,6 +265,12 @@ public class HechosController implements WithSimplePersistenceUnit {
                 }
             }
 
+            // Procesar contenido multimedia (opcional)
+            String contenidoMultimediaFinal = null;
+            if (contenidoMultimedia != null && !contenidoMultimedia.trim().isEmpty()) {
+                contenidoMultimediaFinal = contenidoMultimedia.trim();
+            }
+
             // Crear el hecho
             Hecho nuevoHecho = new Hecho(
                 titulo.trim(),
@@ -273,7 +280,7 @@ public class HechosController implements WithSimplePersistenceUnit {
                 longitud,
                 fechaHecho,
                 OrigenHecho.DINAMICO,
-                null, // contenido multimedia (por ahora null)
+                contenidoMultimediaFinal,
                 horaHecho
             );
 
