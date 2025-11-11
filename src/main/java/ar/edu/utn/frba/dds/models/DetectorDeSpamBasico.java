@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public final class DetectorDeSpamBasico implements DetectorDeSpam {
   private static final int LIMITE_CORPUS = 50;
-  private static final double UMBRAL_SIMILITUD = 0.15;
+  private static final double UMBRAL_SIMILITUD = 0.08;
 
   @Override
   public boolean esSpam(String texto) {
@@ -103,7 +103,11 @@ public final class DetectorDeSpamBasico implements DetectorDeSpam {
         "La información reportada en este hecho es engañosa y no refleja la verdadera situación. Es fundamental mantener la integridad de nuestra base de datos eliminando este tipo de contenido que no cumple con los estándares de calidad requeridos por el sistema.",
         "Solicito la eliminación de este registro porque contiene datos erróneos que podrían generar confusión entre los usuarios. La información debe ser precisa y confiable, y este hecho no cumple con esos requisitos básicos de calidad.",
         "El hecho reportado no corresponde a la realidad y debe ser eliminado para preservar la integridad del sistema. La información presentada es incorrecta y no debe permanecer en la base de datos.",
-        "Este registro fue creado por error y contiene información que no es verídica. Es importante eliminarlo para mantener la calidad y confiabilidad de los datos en la plataforma."
+        "Este registro fue creado por error y contiene información que no es verídica. Es importante eliminarlo para mantener la calidad y confiabilidad de los datos en la plataforma.",
+        "La decisión de eliminar este contenido se fundamenta en consideraciones éticas y de responsabilidad editorial. El tratamiento dado a la información resulta insensible hacia las personas involucradas y puede contribuir a la revictimización de los afectados. Se prioriza el respeto y la dignidad humana por encima del impacto mediático.",
+        "Solicito la remoción de este hecho porque el enfoque periodístico adoptado carece de la sensibilidad necesaria para abordar temas delicados. La forma en que se presentó el contenido potencia el morbo sin aportar valor informativo real, lo cual contradice los principios éticos de esta plataforma.",
+        "Este registro debe ser eliminado dado que su publicación compromete la privacidad y dignidad de las personas mencionadas. El contenido expone detalles innecesarios que no contribuyen al debate público y pueden generar daño colateral a individuos que no son figuras públicas.",
+        "La eliminación se solicita porque el hecho periodístico carece del contexto adecuado y presenta la información de manera sesgada. Una cobertura responsable requiere equilibrio, verificación exhaustiva y consideración del impacto social, elementos que este contenido no cumple satisfactoriamente."
     );
   }
 

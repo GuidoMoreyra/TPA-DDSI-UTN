@@ -50,6 +50,11 @@ public final class SolicitudEliminacion {
     this.hecho = hecho;
     this.justificacion = justificacion;
     this.esSpam = detector.esSpam(justificacion);
+
+    // Si es spam, rechazar automáticamente
+    if (this.esSpam) {
+      this.estado = EstadoSolicitudEliminacion.RECHAZADO_AUTOMATICAMENTE;
+    }
   }
 
   public SolicitudEliminacion() {}
