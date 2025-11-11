@@ -1,7 +1,12 @@
 package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.enums.Provincia;
+import ar.edu.utn.frba.dds.models.ComponenteDeEstadisticas;
+import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
+import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
+import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import io.javalin.http.Context;
@@ -254,6 +259,126 @@ public class AdminController implements WithSimplePersistenceUnit {
         } catch (Exception e) {
             e.printStackTrace();
             context.redirect("/admin/solicitudes?error=true");
+        }
+    }
+
+    /**
+     * Muestra el panel de estadísticas
+     */
+    public void verEstadisticas(Context context) {
+        // Verificar permisos de admin
+        if (!esAdmin(context)) {
+            context.redirect("/");
+            return;
+        }
+
+        Map<String, Object> model = new HashMap<>();
+
+        try {
+            // Crear componente de estadísticas
+            ComponenteDeEstadisticas estadisticas = new ComponenteDeEstadisticas(
+                    new ColeccionRepository(),
+                    SolicitudesEliminacionRepository.getInstance(),
+                    HechosRepository.getInstance(),
+                    null, // No filtrar por categoría específica inicialmente
+                    null  // No usar una colección específica
+            );
+
+            // Estadísticas generales (con manejo de nulls)
+            String categoriaConMasHechos = estadisticas.getCategoriaConMasHechos();
+            model.put("categoriaConMasHechos", categoriaConMasHechos != null ? categoriaConMasHechos : "N/A");
+
+            Provincia provinciaConMasHechos = estadisticas.getProvinciaConMasHechos();
+            model.put("provinciaConMasHechos", provinciaConMasHechos != null ? provinciaConMasHechos.toString() : "N/A");
+
+            model.put("cantidadSolicitudesSpam", estadisticas.getCantidadSolicitudesSpam());
+
+            // Estadísticas adicionales
+            long totalHechos = HechosRepository.getInstance().getHechos().size();
+            long hechosActivos = HechosRepository.getInstance().getHechos().stream()
+                    .filter(Hecho::estaActivo)
+                    .count();
+            long totalSolicitudes = SolicitudesEliminacionRepository.getInstance().getSolicitudes().size();
+
+            model.put("totalHechos", totalHechos);
+            model.put("hechosActivos", hechosActivos);
+            model.put("hechosInactivos", totalHechos - hechosActivos);
+            model.put("totalSolicitudes", totalSolicitudes);
+
+            // Distribución por categoría
+            Map<String, Long> distribucionCategorias = HechosRepository.getInstance().getHechos().stream()
+                    .filter(Hecho::estaActivo)
+                    .collect(Collectors.groupingBy(
+                            Hecho::getCategoria,
+                            Collectors.counting()
+                    ));
+
+            // Convertir a lista para el template
+            List<Map<String, Object>> categorias = distribucionCategorias.entrySet().stream()
+                    .sorted((a, b) -> Long.compare(b.getValue(), a.getValue()))
+                    .limit(5)
+                    .map(entry -> {
+                        Map<String, Object> cat = new HashMap<>();
+                        cat.put("nombre", entry.getKey());
+                        cat.put("cantidad", entry.getValue());
+                        // Evitar división por cero
+                        long porcentaje = hechosActivos > 0
+                            ? Math.round((entry.getValue() * 100.0) / hechosActivos)
+                            : 0;
+                        cat.put("porcentaje", porcentaje);
+                        return cat;
+                    })
+                    .collect(Collectors.toList());
+
+            model.put("distribucionCategorias", categorias);
+
+            // Distribución por provincia
+            Map<Provincia, Long> distribucionProvincias = HechosRepository.getInstance().getHechos().stream()
+                    .filter(Hecho::estaActivo)
+                    .filter(h -> h.getProvincia() != null)
+                    .collect(Collectors.groupingBy(
+                            Hecho::getProvincia,
+                            Collectors.counting()
+                    ));
+
+            List<Map<String, Object>> provincias = distribucionProvincias.entrySet().stream()
+                    .sorted((a, b) -> Long.compare(b.getValue(), a.getValue()))
+                    .limit(5)
+                    .map(entry -> {
+                        Map<String, Object> prov = new HashMap<>();
+                        prov.put("nombre", entry.getKey().toString());
+                        prov.put("cantidad", entry.getValue());
+                        return prov;
+                    })
+                    .collect(Collectors.toList());
+
+            model.put("distribucionProvincias", provincias);
+
+            // Estado de solicitudes
+            List<SolicitudEliminacion> solicitudes = SolicitudesEliminacionRepository.getInstance().getSolicitudes();
+            long pendientes = solicitudes.stream()
+                    .filter(s -> s.getEstado() == EstadoSolicitudEliminacion.PENDIENTE)
+                    .count();
+            long aprobadas = solicitudes.stream()
+                    .filter(s -> s.getEstado() == EstadoSolicitudEliminacion.APROBADO)
+                    .count();
+            long rechazadas = solicitudes.stream()
+                    .filter(s -> s.getEstado() == EstadoSolicitudEliminacion.RECHAZADO
+                            || s.getEstado() == EstadoSolicitudEliminacion.RECHAZADO_AUTOMATICAMENTE)
+                    .count();
+
+            model.put("solicitudesPendientes", pendientes);
+            model.put("solicitudesAprobadas", aprobadas);
+            model.put("solicitudesRechazadas", rechazadas);
+
+            agregarInfoSesion(context, model);
+            context.render("admin-estadisticas.hbs", model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.put("error", "Error al cargar las estadísticas: " + e.getMessage());
+            agregarInfoSesion(context, model);
+            context.render("admin-estadisticas.hbs", model);
         }
     }
 }

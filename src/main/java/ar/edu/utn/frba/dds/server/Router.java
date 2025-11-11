@@ -35,6 +35,7 @@ public class Router {
         app.get("/admin/solicitudes/{id}", adminController::verDetalleSolicitud);
         app.post("/admin/solicitudes/{id}/aprobar", adminController::aprobarSolicitud);
         app.post("/admin/solicitudes/{id}/rechazar", adminController::rechazarSolicitud);
+        app.get("/admin/estadisticas", adminController::verEstadisticas);
 
         // Ruta principal
         app.get("/", ctx -> {

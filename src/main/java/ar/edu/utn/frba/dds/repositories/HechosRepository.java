@@ -121,20 +121,24 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
   }
 
   public Integer buscarHoraPicoDeHechosSegun(String categoria) {
+    if (categoria == null) {
+      return null;
+    }
 
     String query = """
        SELECT HOUR(h.horaHecho), COUNT(h)
            FROM Hecho h
-           WHERE h.categoria = :categoria
+           WHERE h.categoria = :categoria AND h.horaHecho IS NOT NULL
            GROUP BY HOUR(h.horaHecho)
            ORDER BY COUNT(h) DESC
            """;
-    return (Integer) entityManager()
+    List<Object[]> resultados = entityManager()
         .createQuery(query, Object[].class)
         .setParameter("categoria", categoria)
         .setMaxResults(1)
-        .getResultList()
-        .get(0)[0];
+        .getResultList();
+
+    return resultados.isEmpty() ? null : (Integer) resultados.get(0)[0];
   }
 
   public String buscarCategoriaConMasHechos() {
@@ -145,11 +149,14 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
         order by count(h.categoria) desc
         """;
 
-    Object[] result = entityManager()
+    List<Object[]> resultados = entityManager()
         .createQuery(query, Object[].class)
-        .getResultList()
-        .get(0);
+        .getResultList();
 
-    return (String) result[0];
+    if (resultados.isEmpty()) {
+      return null;
+    }
+
+    return (String) resultados.get(0)[0];
   }
 }
