@@ -5,6 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Explorar Hechos - MetaMapa</title>
   <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+  <style>
+    #map {
+      height: 600px;
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .view-toggle {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--color-gray-100);
+      padding: 0.25rem;
+      border-radius: 8px;
+    }
+    .view-toggle button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s;
+      color: var(--color-gray-700);
+    }
+    .view-toggle button.active {
+      background: white;
+      color: var(--color-primary);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .view-toggle button:hover:not(.active) {
+      background: var(--color-gray-200);
+    }
+    #tableView, #mapView {
+      display: none;
+    }
+    #tableView.active, #mapView.active {
+      display: block;
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
@@ -96,52 +141,70 @@
     <!-- Resultados -->
     <div class="card">
       <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 class="card-title">
-          Hechos Encontrados
-          <span class="badge badge-primary" style="margin-left: 0.5rem;">{{totalHechos}}</span>
-        </h3>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <h3 class="card-title" style="margin: 0;">
+            Hechos Encontrados
+            <span class="badge badge-primary" style="margin-left: 0.5rem;">{{totalHechos}}</span>
+          </h3>
+          <div class="view-toggle">
+            <button id="btnTableView" class="active" onclick="switchView('table')">
+              📋 Lista
+            </button>
+            <button id="btnMapView" onclick="switchView('map')">
+              🗺️ Mapa
+            </button>
+          </div>
+        </div>
         {{#if user}}
           <a href="/hechos/crear" class="btn btn-primary" style="margin: 0;">+ Crear Hecho</a>
         {{/if}}
       </div>
       <div class="card-body">
         {{#if hechos}}
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Título</th>
-                  <th>Categoría</th>
-                  <th>Provincia</th>
-                  <th>Localidad</th>
-                  <th>Fecha</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {{#each hechos}}
+          <!-- Vista de Tabla -->
+          <div id="tableView" class="active">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
                   <tr>
-                    <td>
-                      <div style="font-weight: 600; color: var(--color-gray-900);">{{titulo}}</div>
-                      <div style="font-size: 0.875rem; color: var(--color-gray-600); margin-top: 0.25rem;">
-                        {{#if descripcionTruncada}}
-                          {{descripcionTruncada}}
-                        {{/if}}
-                      </div>
-                    </td>
-                    <td>
-                      <span class="badge badge-info">{{categoria}}</span>
-                    </td>
-                    <td>{{provincia}}</td>
-                    <td>{{#if coordenadas.localidad}}{{coordenadas.localidad}}{{else}}-{{/if}}</td>
-                    <td>{{fechaDelHecho}}</td>
-                    <td>
-                      <a href="/hechos/{{id}}" class="btn btn-sm btn-primary">Ver Detalle</a>
-                    </td>
+                    <th>Título</th>
+                    <th>Categoría</th>
+                    <th>Provincia</th>
+                    <th>Localidad</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
                   </tr>
-                {{/each}}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {{#each hechos}}
+                    <tr>
+                      <td>
+                        <div style="font-weight: 600; color: var(--color-gray-900);">{{titulo}}</div>
+                        <div style="font-size: 0.875rem; color: var(--color-gray-600); margin-top: 0.25rem;">
+                          {{#if descripcionTruncada}}
+                            {{descripcionTruncada}}
+                          {{/if}}
+                        </div>
+                      </td>
+                      <td>
+                        <span class="badge badge-info">{{categoria}}</span>
+                      </td>
+                      <td>{{provincia}}</td>
+                      <td>{{#if coordenadas.localidad}}{{coordenadas.localidad}}{{else}}-{{/if}}</td>
+                      <td>{{fechaDelHecho}}</td>
+                      <td>
+                        <a href="/hechos/{{id}}" class="btn btn-sm btn-primary">Ver Detalle</a>
+                      </td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Vista de Mapa -->
+          <div id="mapView">
+            <div id="map"></div>
           </div>
         {{else}}
           <div class="alert alert-info">
@@ -163,5 +226,114 @@
       </p>
     </div>
   </div>
+
+  <script>
+    let map = null;
+    let markersGroup = null;
+
+    // Función para cambiar entre vistas
+    function switchView(view) {
+      const tableView = document.getElementById('tableView');
+      const mapView = document.getElementById('mapView');
+      const btnTable = document.getElementById('btnTableView');
+      const btnMap = document.getElementById('btnMapView');
+
+      if (view === 'table') {
+        tableView.classList.add('active');
+        mapView.classList.remove('active');
+        btnTable.classList.add('active');
+        btnMap.classList.remove('active');
+      } else {
+        tableView.classList.remove('active');
+        mapView.classList.add('active');
+        btnTable.classList.remove('active');
+        btnMap.classList.add('active');
+
+        // Inicializar mapa si no existe
+        if (!map) {
+          initMap();
+        } else {
+          // Ajustar el tamaño del mapa si ya existe
+          setTimeout(() => {
+            map.invalidateSize();
+          }, 100);
+        }
+      }
+    }
+
+    // Inicializar el mapa de Leaflet
+    function initMap() {
+      // Crear el mapa centrado en Argentina
+      map = L.map('map').setView([-38.4161, -63.6167], 5);
+
+      // Agregar capa de tiles de OpenStreetMap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+      }).addTo(map);
+
+      // Crear grupo de marcadores
+      markersGroup = L.layerGroup().addTo(map);
+
+      // Datos de hechos desde el servidor
+      const hechos = [
+        {{#each hechos}}
+        {
+          id: {{id}},
+          titulo: "{{titulo}}",
+          categoria: "{{categoria}}",
+          lat: {{coordenadas.latitud}},
+          lng: {{coordenadas.longitud}},
+          descripcion: "{{descripcionTruncada}}",
+          fecha: "{{fechaDelHecho}}"
+        }{{#unless @last}},{{/unless}}
+        {{/each}}
+      ];
+
+      // Si hay hechos, agregar marcadores y ajustar vista
+      if (hechos.length > 0) {
+        const bounds = [];
+
+        hechos.forEach(hecho => {
+          // Crear marcador
+          const marker = L.marker([hecho.lat, hecho.lng]);
+
+          // Contenido del popup con estilos
+          const popupContent = `
+            <div style="min-width: 200px;">
+              <h4 style="margin: 0 0 0.5rem 0; color: #667eea; font-size: 1rem;">
+                ${hecho.titulo}
+              </h4>
+              <p style="margin: 0 0 0.5rem 0;">
+                <span style="display: inline-block; background: #e0e7ff; color: #667eea; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">
+                  ${hecho.categoria}
+                </span>
+              </p>
+              <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #4b5563;">
+                ${hecho.descripcion}
+              </p>
+              <p style="margin: 0 0 0.75rem 0; font-size: 0.75rem; color: #6b7280;">
+                📅 ${hecho.fecha}
+              </p>
+              <a href="/hechos/${hecho.id}"
+                 style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; font-weight: 500;">
+                Ver Detalle
+              </a>
+            </div>
+          `;
+
+          marker.bindPopup(popupContent);
+          marker.addTo(markersGroup);
+
+          bounds.push([hecho.lat, hecho.lng]);
+        });
+
+        // Ajustar el mapa para mostrar todos los marcadores
+        if (bounds.length > 0) {
+          map.fitBounds(bounds, { padding: [50, 50] });
+        }
+      }
+    }
+  </script>
 </body>
 </html>
