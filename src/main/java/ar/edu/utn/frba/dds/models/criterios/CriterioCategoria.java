@@ -7,9 +7,6 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 
-
-
-
 @Entity
 @DiscriminatorValue("categoria")
 @AllArgsConstructor

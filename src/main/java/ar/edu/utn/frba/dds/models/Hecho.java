@@ -180,10 +180,6 @@ public class Hecho {
     return !algoritmos.isEmpty();
   }
 
-  public boolean cumpleConsenso(AlgoritmoDeConsenso consenso) {
-    return algoritmos.contains(consenso);
-  }
-
   /*metodo para estadisticas*/
   public Provincia establecerProvincia() {
 

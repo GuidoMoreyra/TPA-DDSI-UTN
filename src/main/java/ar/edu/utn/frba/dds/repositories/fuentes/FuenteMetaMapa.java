@@ -1,10 +1,15 @@
 package ar.edu.utn.frba.dds.repositories.fuentes;
 
+import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.exceptions.HttpNotFoundException;
 import ar.edu.utn.frba.dds.models.Hecho;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,11 +21,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class FuenteMetaMapa {
+@Entity
+@DiscriminatorValue("MetaMapa")
+public class FuenteMetaMapa extends Fuente {
 
-
+  @Column(name = "ruta_api")
   private final String rutaApi;
+  @Transient
   private final HttpClient cliente;
+  @Transient
   private List<Hecho> hechosObtenidos;
 
   public FuenteMetaMapa(String rutaApi, HttpClient cliente) {

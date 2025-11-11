@@ -13,8 +13,10 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 
@@ -23,7 +25,7 @@ import javax.persistence.Transient;
 @DiscriminatorValue("Estatica")
 public class FuenteEstatica extends Fuente {
 
-  @Transient
+  @Column(name = "path")
   private  String archivo;
   @Transient
   private List<Hecho> hechosObtenidos = new ArrayList<>();
