@@ -14,7 +14,6 @@ import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 

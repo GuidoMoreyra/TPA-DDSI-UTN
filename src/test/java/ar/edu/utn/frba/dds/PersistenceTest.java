@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
@@ -24,8 +23,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.mockito.Mockito.*;
 
 public class PersistenceTest implements SimplePersistenceTest {
 
@@ -349,8 +346,6 @@ public class PersistenceTest implements SimplePersistenceTest {
     coleccion.agregarHechos();
 
     coleccionRepository.persistir(coleccion);
-    Boolean esIrrestricto = false;
-
 
     Assertions.assertEquals(Provincia.CORRIENTES,coleccionRepository.provinciaConMasHechos(coleccion.getId()));
 

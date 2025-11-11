@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.models.tareasprogramadas;
 
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.models.EjecutarConsenso;
-import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.algoritmos.ConsensoAbsoluto;
 import ar.edu.utn.frba.dds.models.algoritmos.MayoriaSimple;
 import ar.edu.utn.frba.dds.models.algoritmos.MultiplesMenciones;

@@ -236,8 +236,6 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         new MultiplesMenciones()
     );
 
-    var repo = HechosRepository.getInstance();
-
     //se persisten los hechos
 
       repoHechos.agregarHecho(hechoUno);

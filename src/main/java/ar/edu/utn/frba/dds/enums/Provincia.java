@@ -1,7 +1,5 @@
 package ar.edu.utn.frba.dds.enums;
 
-import ar.edu.utn.frba.dds.models.Coordenada;
-
 public enum Provincia {
   BUENOS_AIRES(-41.0, -33.5, -63.0, -56.5),
   CABA(-34.7, -34.5, -58.6, -58.3),

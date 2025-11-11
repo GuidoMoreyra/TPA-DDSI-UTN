@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds;
 
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -8,14 +7,11 @@ import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.models.Coleccion;
-import ar.edu.utn.frba.dds.models.ComponenteDeEstadisticas;
 import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
 import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
 import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
-import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
-import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

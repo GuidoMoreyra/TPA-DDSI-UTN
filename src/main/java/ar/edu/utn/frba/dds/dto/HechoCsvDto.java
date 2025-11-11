@@ -3,7 +3,6 @@ package ar.edu.utn.frba.dds.dto;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.Data;
 

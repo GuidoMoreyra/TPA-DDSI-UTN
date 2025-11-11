@@ -13,26 +13,58 @@ import java.util.stream.Collectors;
 
 public final class DetectorDeSpamBasico implements DetectorDeSpam {
   private static final int LIMITE_CORPUS = 50;
-  private static final double UMBRAL_SIMILITUD = 0.08;
+  private static final double UMBRAL_SIMILITUD = 0.15;
 
   @Override
   public boolean esSpam(String texto) {
-    int length = texto.trim().length();
+      if (texto == null) return true;
 
-    // Si el texto es muy corto, es probable que sea spam
-    if (length < 100) {
-      return true;
+      String limpio = texto.trim();
+      int length = limpio.length();
+
+      // corto -> pinta spam
+      if (length < 50) return true;
+
+      List<String> tokens = tokenizar(limpio);
+      if (tokens.isEmpty()) return true;
+
+      // repetición excesiva de palabras
+      if (tieneRepeticiones(tokens)) return true;
+
+      // comparación TF-IDF con corpus
+      List<String> corpus = corpus();
+      Map<String, Double> vectorTexto = calcularTfIdf(limpio, corpus);
+
+      double promedio = 0.0;
+      int count = 0;
+
+      for (String doc : corpus) {
+          Map<String, Double> vectorDoc = calcularTfIdf(doc, corpus);
+          double sim = similitudCoseno(vectorTexto, vectorDoc);
+          promedio += sim;
+          count++;
+      }
+
+      if (count > 0) promedio /= count;
+
+      // si el texto es MUY distinto del corpus "válido", lo marcamos como spam
+      return promedio < UMBRAL_SIMILITUD;
+  }
+
+  private boolean tieneRepeticiones(List<String> tokens) {
+    Map<String, Integer> contador = new HashMap<>();
+
+    for (String t : tokens) {
+        contador.put(t, contador.getOrDefault(t, 0) + 1);
     }
 
-    // Si el texto tiene palabras repetidas excesivamente, podría ser spam
-    List<String> tokens = tokenizar(texto);
+    // Si una palabra aparece más del 10% del total → spam
+    int limite = Math.max(3, tokens.size() / 10);
 
-    if (tokens.isEmpty()) {
-      return true;
+    for (Integer rep : contador.values()) {
+        if (rep > limite) return true;
     }
 
-    // Por defecto, aceptar el texto (NO es spam)
-    // El detector básico es permisivo y solo rechaza casos obvios
     return false;
   }
 

@@ -2,12 +2,8 @@ package ar.edu.utn.frba.dds.models;
 
 import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.contracts.Fuente;
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
-import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressFBWarnings("EI_EXPOSE_REP")
 public class EjecutarConsenso {
@@ -15,9 +11,7 @@ public class EjecutarConsenso {
   //private final HechosRepository repositorio = HechosRepository.getInstance();
 
 
-  public EjecutarConsenso() {
-
-  }
+  public EjecutarConsenso() {}
 
   public void aplicarConsensovdos(List<Fuente> fuentesActivas,
                                   List<AlgoritmoDeConsenso> algoritmos) {

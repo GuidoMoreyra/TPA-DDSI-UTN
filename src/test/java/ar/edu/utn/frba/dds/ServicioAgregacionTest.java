@@ -126,7 +126,6 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
     ejecutar = new EjecutarConsenso();
     servicioTest = new FuenteDeAgregacion(List.of(fuenteMockUno,fuenteMockDos));
 
-    List<Hecho> hechos = servicioTest.obtenerHechos();
     ejecutar.aplicarConsensovdos(fuentesActivas, algoritmos);
   }
 

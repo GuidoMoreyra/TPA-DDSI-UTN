@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.utils;
 
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 
 import java.time.LocalDate;
