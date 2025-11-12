@@ -5,13 +5,14 @@ import ar.edu.utn.frba.dds.enums.Provincia;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("Coleccion")
+@Table(name = "reporte_coleccion")
 public class ReporteColeccion extends Reporte {
 
   @Column(name = "categoria_con_mas_hechos")

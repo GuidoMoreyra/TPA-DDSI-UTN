@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -51,11 +53,11 @@ public final class Coleccion {
   @JoinColumn(name = "algoritmo_consenso_id")
   private AlgoritmoDeConsenso algoritmoDeconsenso;
 
-  @ManyToMany(cascade = CascadeType.PERSIST)
+ @ManyToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
-      name = "colecciones_criterions",
-      joinColumns = @JoinColumn(name = "coleccion_id"),
-      inverseJoinColumns = @JoinColumn(name = "criterio_id")
+    name = "colecciones_criterions",
+    joinColumns = @JoinColumn(name = "coleccion_id"),
+    inverseJoinColumns = @JoinColumn(name = "criterio_id")
   )
   private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
 

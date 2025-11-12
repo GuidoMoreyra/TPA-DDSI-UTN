@@ -4,11 +4,12 @@ import ar.edu.utn.frba.dds.contracts.Reporte;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import lombok.Getter;
 
 @Getter
 @Entity
-@DiscriminatorValue("Eliminacion")
+@Table(name = "reporte_solicitud_el")
 public class ReporteSolicitudElim extends Reporte {
 
   @Column(name = "solicitudes_spam")
