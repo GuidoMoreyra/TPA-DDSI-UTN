@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.repositories;
 
+import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.enums.Provincia;
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
     return hechoEncontrado != null;
   }
 
-  public Boolean verificaConsenso(Hecho hechoAverificar, TipoDeConsenso consenso) {
+  public Boolean verificaConsenso(Hecho hechoAverificar, AlgoritmoDeConsenso consenso) {
     if (consenso == null) {
       return true;
     }

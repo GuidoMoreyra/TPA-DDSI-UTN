@@ -22,7 +22,7 @@ public class EjecutarConsenso {
               //formo una lista de hechos unica
               //filtro los hechos que cumplen con el algoritmo de consenso
               .filter(hecho -> algoritmo.realizarConsenso(hecho, fuentesActivas))
-              .forEach(hecho -> hecho.agregarConsenso(algoritmo.getTipo()));
+              .forEach(hecho -> hecho.agregarConsenso(algoritmo));
       //dentro de cada hecho que cumple con el consenso le agrego el consenso que cumple.
 
     });

@@ -1,11 +1,11 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.Provincia;
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -73,8 +73,7 @@ public class Hecho {
   @ElementCollection
   @CollectionTable(joinColumns = @JoinColumn(name = "hecho_id"))
   @Column(name = "algoritmo")
-  private Set<TipoDeConsenso> algoritmos = new HashSet<>();
-  //estose debe cambiar por la clase algoritmo de consenso
+  private Set<AlgoritmoDeConsenso> algoritmos = new HashSet<>();
 
   /*atributo agregado para estadisticas*/
   @Enumerated(EnumType.STRING)
@@ -165,11 +164,11 @@ public class Hecho {
     return this.getTitulo().equals(h.getTitulo());
   }
 
-  public void agregarConsenso(TipoDeConsenso algoritmo) {
+  public void agregarConsenso(AlgoritmoDeConsenso algoritmo) {
     this.algoritmos.add(algoritmo);
   }
 
-  public List<TipoDeConsenso> getConsensos() {
+  public List<AlgoritmoDeConsenso> getConsensos() {
     return new ArrayList<>(algoritmos);
   }
 
@@ -179,10 +178,6 @@ public class Hecho {
 
   public boolean tieneConsenso() {
     return !algoritmos.isEmpty();
-  }
-
-  public boolean cumpleConsenso(TipoDeConsenso consenso) {
-    return algoritmos.contains(consenso);
   }
 
   /*metodo para estadisticas*/

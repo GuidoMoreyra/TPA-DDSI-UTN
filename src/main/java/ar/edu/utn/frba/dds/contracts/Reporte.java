@@ -9,12 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "reporte")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "reporte", discriminatorType = DiscriminatorType.STRING)
+@MappedSuperclass
 public abstract class Reporte {
 
   @Id
