@@ -24,7 +24,7 @@ public class AuthController {
             String password = context.formParam("password");
 
             if (nombre != null && password != null && !nombre.isEmpty() && !password.isEmpty()) {
-                Usuario usuario = UsuarioRepository.INSTANCE.getUsuario(nombre, password);
+                Usuario usuario = UsuarioRepository.getInstance().getUsuario(nombre, password);
                 if (usuario != null) {
                     context.sessionAttribute("user_id", usuario.getId());
                     context.sessionAttribute("nombre", usuario.getNombre());
@@ -69,7 +69,7 @@ public class AuthController {
                 } else {
                     Usuario usuario = new Usuario(nombre, password);
                     try {
-                        UsuarioRepository.INSTANCE.persistUsuario(usuario);
+                        UsuarioRepository.getInstance().persistUsuario(usuario);
                         context.sessionAttribute("user_id", usuario.getId());
                         context.sessionAttribute("nombre", usuario.getNombre());
                         context.sessionAttribute("nivel_acceso", usuario.getNivelDeAcceso());

@@ -1,10 +1,18 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.enums.Operacion;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
+import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
+import ar.edu.utn.frba.dds.models.Usuario;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
+import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
+import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
+import ar.edu.utn.frba.dds.repositories.UsuarioRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import io.javalin.http.Context;
+import io.javalin.http.UploadedFile;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,6 +22,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class HechosController implements WithSimplePersistenceUnit {
+
+    private ImgManager imgManager;
+
+
 
     public void listarHechos(Context context) {
         Map<String, Object> model = new HashMap<>();
@@ -189,12 +201,17 @@ public class HechosController implements WithSimplePersistenceUnit {
         context.render("crear-hecho.hbs", model);
     }
 
-    public void crearHecho(Context context) {
-        // Verificar que el usuario esté logueado
-        if (context.sessionAttribute("user_id") == null) {
-            context.redirect("/login");
-            return;
-        }
+    public void crearSolicitudDeAgregacion(Context context) {
+
+        //El usuario debe estar logeado para subir contenido multimedia.
+//        if(context.sessionAttribute("user_id") != null){
+//            UploadedFile file = context.uploadedFile("imagen");
+//            var rutaImg = ImgManger.Guardar();
+//        } else {
+//
+//        }
+
+        //El usuario no requiere estar logeado para crear hechos.
 
         try {
             // Obtener datos del formulario
@@ -273,23 +290,121 @@ public class HechosController implements WithSimplePersistenceUnit {
                 null, // contenido multimedia (por ahora null)
                 horaHecho
             );
+            Usuario usuario = UsuarioRepository.getInstance().getUsuarioById(context.sessionAttribute("user_id"));
+            var nuevaSolicitudDeAgregacion = new SolicitudAgregacion(nuevoHecho, usuario);
 
-            // Persistir usando transacción
-            withTransaction(() -> {
-                entityManager().persist(nuevoHecho);
-            });
+            SolicitudesAgregacionRepository.getInstance().persist(nuevaSolicitudDeAgregacion)
 
-            // Agregar a la caché del repositorio
-            HechosRepository.getInstance().agregarHecho(nuevoHecho);
 
-            // Redirigir al detalle del hecho creado
-            context.redirect("/hechos/" + nuevoHecho.getId());
+            // Redirigir al formulario
+            this.mostrarFormularioCrear(context);
 
         } catch (Exception e) {
             e.printStackTrace();
-            mostrarError(context, "Error al crear el hecho: " + e.getMessage());
+            mostrarError(context, "Error al crear la solicitud de agregacion: " + e.getMessage());
         }
     }
+
+    public void CrearSolicitudDeEliminacion(Context context){
+        try{
+            Hecho hecho = HechosRepository.getInstance().getHechoById(Long.valueOf(context.formParam("HechoId")));
+
+            Map<String, Object> model = new HashMap<>();
+
+            if(hecho == null){
+                model.put("error","El hecho no existe");
+                return;
+            }
+
+            var nuevaSolicitudDeEliminacion = new SolicitudEliminacion(
+                    hecho,
+                    context.formParam("justificacion"),
+                    null //Deberia inyectarse por dependencia.
+            );
+            SolicitudesEliminacionRepository.getInstance().agregarSolicitud(nuevaSolicitudDeEliminacion);
+            context.render("") ;// Hay qued definir la vista :D
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void cambiarEstadoSolicitudDeAgregacion(Context context) {
+        String solicitudIdStr = context.formParam("solicitudId");
+        String operacionStr = context.formParam("Operacion");
+
+        if (solicitudIdStr == null || operacionStr == null) {
+            // Manejar error: parámetros faltantes
+            return;
+        }
+
+        Long solicitudId = Long.parseLong(solicitudIdStr);
+
+        // Buscar la solicitud (mejor con query directa en repo)
+        SolicitudAgregacion solicitud = SolicitudesAgregacionRepository.getInstance()
+                .getSolicitudes()
+                .stream()
+                .filter(s -> s.getId() == solicitudId )
+                .findFirst()
+                .orElse(null);
+
+        Map<String, Object> model = new HashMap<>();
+
+        if(solicitud == null){
+            model.put("error","La solicitud no existe");
+            return;
+        }
+
+        Operacion operacion;
+        try {
+            operacion = Operacion.valueOf(operacionStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        operacion.ejecutar(solicitud);
+
+    }
+
+    public void cambiarEstadoSolicitudDeEliminacion(Context context) {
+        String solicitudIdStr = context.formParam("solicitudId");
+        String operacionStr = context.formParam("Operacion");
+
+        if (solicitudIdStr == null || operacionStr == null) {
+            // Manejar error: parámetros faltantes
+            return;
+        }
+
+        Long solicitudId = Long.parseLong(solicitudIdStr);
+
+        // Buscar la solicitud (mejor con query directa en repo)
+        SolicitudEliminacion solicitud = SolicitudesEliminacionRepository.getInstance()
+                .getSolicitudes()
+                .stream()
+                .filter(s -> s.getId() == solicitudId )
+                .findFirst()
+                .orElse(null);
+
+        Map<String, Object> model = new HashMap<>();
+
+        if(solicitud == null){
+            model.put("error","La solicitud no existe");
+            return;
+        }
+
+        Operacion operacion;
+        try {
+            operacion = Operacion.valueOf(operacionStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        operacion.ejecutar(solicitud);
+
+    }
+
+
+
+    private
+
+
 
     private void mostrarError(Context context, String mensaje) {
         Map<String, Object> model = new HashMap<>();

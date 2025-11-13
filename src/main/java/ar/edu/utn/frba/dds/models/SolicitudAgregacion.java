@@ -4,15 +4,8 @@ import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,7 +14,7 @@ import lombok.Getter;
 @Entity
 @Table(name = "solicitudes_agregacion")
 @AllArgsConstructor
-public final class SolicitudAgregacion {
+public final class SolicitudAgregacion implements Solicitud {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,25 +24,26 @@ public final class SolicitudAgregacion {
   @Column(name = "estado")
   private EstadoSolicitudAgregacion estado = EstadoSolicitudAgregacion.PENDIENTE;
 
+  @ManyToOne
+  Usuario usuario; //Si es null es anonimo
+
   @OneToOne
   private Hecho hecho;
 
-  @Column(name = "es_anonimo")
-  private Boolean esAnonimo;
 
   @Column(name = "fecha_creacion")
   private LocalDate fechaCreacion = LocalDate.now();
 
   public SolicitudAgregacion() {}
 
-  public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo) {
+  public SolicitudAgregacion(Hecho hecho, Usuario usaruio) {
     this.hecho = hecho;
-    this.esAnonimo = esAnonimo;
+    this.usuario = usuario;
   }
 
-  public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo, LocalDate fechaCreacion) {
+  public SolicitudAgregacion(Hecho hecho, Usuario usaruio, LocalDate fechaCreacion) {
     this.hecho = hecho;
-    this.esAnonimo = esAnonimo;
+    this.usuario = usuario;
     this.fechaCreacion = fechaCreacion;
   }
 
@@ -69,7 +63,9 @@ public final class SolicitudAgregacion {
 
   //Otros
   public boolean puedeEditar() {
-    return !esAnonimo && fechaCreacion.isAfter(LocalDate.now().minusDays(7));
+    return usuario != null && fechaCreacion.isAfter(LocalDate.now().minusDays(7));
   }
 
+  public long getId() {
+  }
 }

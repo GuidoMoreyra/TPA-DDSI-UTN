@@ -3,6 +3,7 @@ package ar.edu.utn.frba.dds.repositories;
 import ar.edu.utn.frba.dds.enums.Provincia;
 import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.models.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +44,15 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
 
 
   @SuppressWarnings("unchecked")
+  public Hecho getHechoById(Long id) {
+    var resultados = entityManager()
+            .createQuery("from Hecho where id = :id", Usuario.class)
+            .setParameter("id", id)
+            .getResultList();
+
+    return resultados.isEmpty() ? null : resultados.get(0);
+  }
+
   public boolean contiene(Hecho hecho) {
     Hecho hechoEncontrado = entityManager()
         .find(Hecho.class, hecho.getId());
