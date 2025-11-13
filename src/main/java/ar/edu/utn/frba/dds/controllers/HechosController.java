@@ -329,6 +329,24 @@ public class HechosController implements WithSimplePersistenceUnit {
     }
 
     public void cambiarEstadoSolicitudDeAgregacion(Context context) {
+
+        String userIdStr = context.formParam("user_id");
+        String userAccesStr = context.sessionAttribute("nivel_acceso");
+        if(userIdStr == null){
+            context.redirect("/login");
+        }
+        int userAcces = 1;
+        try {
+            if (userAccesStr != null) {
+                userAcces = Integer.parseInt(userAccesStr);
+            }
+        } catch (NumberFormatException e) {
+
+        }
+
+        if( userAcces == 1 ) context.redirect("/home");
+        
+
         String solicitudIdStr = context.formParam("solicitudId");
         String operacionStr = context.formParam("Operacion");
 
@@ -365,6 +383,22 @@ public class HechosController implements WithSimplePersistenceUnit {
     }
 
     public void cambiarEstadoSolicitudDeEliminacion(Context context) {
+        String userIdStr = context.formParam("user_id");
+        String userAccesStr = context.sessionAttribute("nivel_acceso");
+        if(userIdStr == null){
+            context.redirect("/login");
+        }
+        int userAcces = 1;
+        try {
+            if (userAccesStr != null) {
+                userAcces = Integer.parseInt(userAccesStr);
+            }
+        } catch (NumberFormatException e) {
+
+        }
+
+        if( userAcces == 1 ) context.redirect("/home");
+
         String solicitudIdStr = context.formParam("solicitudId");
         String operacionStr = context.formParam("Operacion");
 
