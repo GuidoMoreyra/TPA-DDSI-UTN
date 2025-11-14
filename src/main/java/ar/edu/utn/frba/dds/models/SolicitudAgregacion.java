@@ -31,8 +31,7 @@ public final class SolicitudAgregacion {
   @Column(name = "estado")
   private EstadoSolicitudAgregacion estado = EstadoSolicitudAgregacion.PENDIENTE;
 
-  @OneToOne
-  private Hecho hecho;
+  @OneToOne private Hecho hecho;
 
   @Column(name = "es_anonimo")
   private Boolean esAnonimo;
@@ -53,7 +52,7 @@ public final class SolicitudAgregacion {
     this.fechaCreacion = fechaCreacion;
   }
 
-  //Estados Solicitudes
+  // Estados Solicitudes
   public void aceptarSolicitud() {
     this.estado = EstadoSolicitudAgregacion.ACEPTADO;
   }
@@ -67,9 +66,8 @@ public final class SolicitudAgregacion {
     this.estado = EstadoSolicitudAgregacion.RECHAZADO;
   }
 
-  //Otros
+  // Otros
   public boolean puedeEditar() {
     return !esAnonimo && fechaCreacion.isAfter(LocalDate.now().minusDays(7));
   }
-
 }

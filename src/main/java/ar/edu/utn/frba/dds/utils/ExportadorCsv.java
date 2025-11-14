@@ -17,16 +17,15 @@ public class ExportadorCsv {
     try {
       File file = new File(rutaArchivo);
       if (file.getParentFile() != null) {
-        boolean  ok = file.getParentFile().mkdirs();
+        boolean ok = file.getParentFile().mkdirs();
         if (!ok && !file.getParentFile().exists()) {
-          throw new IOException("No se puede crear los directorios "
-              + file.getParentFile());
+          throw new IOException("No se puede crear los directorios " + file.getParentFile());
         }
-
       }
 
-      try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-          new FileOutputStream(file), StandardCharsets.UTF_8))) {
+      try (Writer writer =
+          new BufferedWriter(
+              new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
         writer.write(reporte.generarCsv());
         System.out.println("CSV exportado en: " + rutaArchivo);
       }
@@ -35,6 +34,4 @@ public class ExportadorCsv {
       e.printStackTrace();
     }
   }
-
-
 }

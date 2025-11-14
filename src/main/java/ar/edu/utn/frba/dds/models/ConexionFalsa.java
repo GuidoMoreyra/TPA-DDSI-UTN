@@ -27,6 +27,5 @@ public final class ConexionFalsa implements Conexion {
 
     contador++;
     return datos;
-
   }
 }

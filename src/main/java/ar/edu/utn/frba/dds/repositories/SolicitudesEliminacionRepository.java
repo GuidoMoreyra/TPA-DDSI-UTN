@@ -5,10 +5,7 @@ import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-
 
 public final class SolicitudesEliminacionRepository implements WithSimplePersistenceUnit {
   private static final SolicitudesEliminacionRepository INSTANCE =
@@ -57,16 +54,14 @@ public final class SolicitudesEliminacionRepository implements WithSimplePersist
   }
 
   /*
-  *metodos para estadistica
-  *¿Cuántas solicitudes de eliminación son spam?
-  * */
+   *metodos para estadistica
+   *¿Cuántas solicitudes de eliminación son spam?
+   * */
   // Nueva query: ya no depende del Detector, consulta directo en BD
   public long cantidadDeSolicitudesSpamDos() {
     return entityManager()
         .createQuery(
-            "SELECT COUNT(s) FROM SolicitudEliminacion s WHERE s.esSpam = true",
-            Long.class
-        )
+            "SELECT COUNT(s) FROM SolicitudEliminacion s WHERE s.esSpam = true", Long.class)
         .getSingleResult();
   }
 

@@ -5,24 +5,20 @@ import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
-
-
 @Getter
 @Embeddable
 public class Coordenada {
 
-  public double latitud;
-  public double longitud;
-  @Setter
-  public String localidad = "buenos aires";
+  private double latitud;
+  private double longitud;
+  @Setter private String localidad = "buenos aires";
 
   public Coordenada(double latitud, double longitud) {
     this.latitud = latitud;
     this.longitud = longitud;
-
   }
 
-  public Coordenada() { }
+  public Coordenada() {}
 
   public Provincia obtenerProvincia() {
 
@@ -34,9 +30,5 @@ public class Coordenada {
     }
 
     return Provincia.PROVINCIA_DESCONOCIDA;
-
   }
-
-
-
 }

@@ -24,21 +24,13 @@ public final class MainAplicarConsensos {
     fuentesactivas.add(fuenteestatica);
     fuentesactivas.add(fuenteestatica2);
 
-    var algoritmos = List.of(
-        new ConsensoAbsoluto(fuentesactivas),
-        new MayoriaSimple(fuentesactivas),
-        new MultiplesMenciones()
-    );
-
+    var algoritmos =
+        List.of(
+            new ConsensoAbsoluto(fuentesactivas),
+            new MayoriaSimple(fuentesactivas),
+            new MultiplesMenciones());
 
     EjecutarConsenso consensuar = new EjecutarConsenso();
     consensuar.aplicarConsensovdos(fuentesactivas, algoritmos);
-
-
-
-
-
-
   }
 }
-

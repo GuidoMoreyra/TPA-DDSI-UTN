@@ -15,15 +15,14 @@ public class MainEstadisticas {
 
     HechosRepository hechosRepository = HechosRepository.getInstance();
 
-    ComponenteDeEstadisticas componente = new ComponenteDeEstadisticas(
-          coleccionRepository,
-          solicitudesEliminacionRepository,
-          hechosRepository,
-        "Inseguridad",
-        null
-    );
+    ComponenteDeEstadisticas componente =
+        new ComponenteDeEstadisticas(
+            coleccionRepository,
+            solicitudesEliminacionRepository,
+            hechosRepository,
+            "Inseguridad",
+            null);
 
     componente.actualizar("Inseguridad", null);
-
   }
 }

@@ -31,10 +31,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-
-
 @SuppressFBWarnings("EI_EXPOSE_REP")
-
 @Getter
 @Entity
 @Table(name = "hechos")
@@ -54,8 +51,7 @@ public class Hecho {
   @Column(name = "contenido_multimedia")
   private String contenidoMultimedia;
 
-  @Embedded
-  private Coordenada coordenadas;
+  @Embedded private Coordenada coordenadas;
 
   @Column(name = "fecha_hecho")
   private LocalDate fechaDelHecho;
@@ -82,7 +78,6 @@ public class Hecho {
   @Column(name = "hora_hecho")
   private LocalTime horaHecho;
 
-
   public Hecho() {}
 
   public Hecho(
@@ -94,8 +89,7 @@ public class Hecho {
       LocalDate fechaDelHecho,
       OrigenHecho origen,
       String contenidoMultimedia,
-      LocalTime horaDelHecho
-  ) {
+      LocalTime horaDelHecho) {
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
     this.descripcion = descripcion;
@@ -107,19 +101,16 @@ public class Hecho {
     this.horaHecho = horaDelHecho;
   }
 
-
   public Coordenada getLugar() {
-    return new Coordenada(coordenadas.latitud, coordenadas.longitud);
+    return new Coordenada(coordenadas.getLatitud(), coordenadas.getLongitud());
   }
 
   public String getLocalidad() {
     return this.coordenadas.getLocalidad();
   }
 
-
   public Boolean estaActivo() {
-    return SolicitudesEliminacionRepository
-        .getInstance()
+    return SolicitudesEliminacionRepository.getInstance()
         .obtenerSolicitudesConEstado(EstadoSolicitudEliminacion.APROBADO)
         .stream()
         .noneMatch(solicitud -> solicitud.esParaElHecho(this));
@@ -149,8 +140,7 @@ public class Hecho {
   }
 
   public Boolean tieneSugerencias() {
-    return SolicitudesAgregacionRepository
-        .getInstance()
+    return SolicitudesAgregacionRepository.getInstance()
         .obtenerSolicitudesConEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
         .stream()
         .anyMatch(s -> s.getHecho().equals(this));
@@ -162,7 +152,6 @@ public class Hecho {
         && this.getCategoria().equals(hechoCompar.getCategoria())
         && this.getCoordenadas().equals(hechoCompar.getCoordenadas())
         && this.getFechaDelHecho().equals(hechoCompar.getFechaDelHecho());
-
   }
 
   public boolean compararHecho(Hecho h) {
@@ -194,6 +183,4 @@ public class Hecho {
   public LocalTime horaDelHecho() {
     return this.horaHecho;
   }
-
-
 }

@@ -4,9 +4,7 @@ import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import lombok.Getter;
 
 @Getter
@@ -28,9 +26,6 @@ public final class SolicitudesAgregacionRepository implements WithSimplePersiste
         .createQuery("from SolicitudAgregacion", SolicitudAgregacion.class)
         .getResultList();
   }
-
-
-
 
   @SuppressWarnings("unchecked")
   public List<SolicitudAgregacion> obtenerSolicitudesConEstado(EstadoSolicitudAgregacion estado) {

@@ -8,27 +8,25 @@ import java.util.List;
 @SuppressFBWarnings("EI_EXPOSE_REP")
 public class EjecutarConsenso {
 
-  //private final HechosRepository repositorio = HechosRepository.getInstance();
-
+  // private final HechosRepository repositorio = HechosRepository.getInstance();
 
   public EjecutarConsenso() {}
 
-  public void aplicarConsensovdos(List<Fuente> fuentesActivas,
-                                  List<AlgoritmoDeConsenso> algoritmos) {
-    //recorre cada algoritmo
-    algoritmos.forEach(algoritmo -> {
-      fuentesActivas.stream()
+  public void aplicarConsensovdos(
+      List<Fuente> fuentesActivas, List<AlgoritmoDeConsenso> algoritmos) {
+    // recorre cada algoritmo
+    algoritmos.forEach(
+        algoritmo -> {
+          fuentesActivas.stream()
               .flatMap(fuente -> fuente.obtenerHechos().stream())
-              //formo una lista de hechos unica
-              //filtro los hechos que cumplen con el algoritmo de consenso
+              // formo una lista de hechos unica
+              // filtro los hechos que cumplen con el algoritmo de consenso
               .filter(hecho -> algoritmo.realizarConsenso(hecho, fuentesActivas))
               .forEach(hecho -> hecho.agregarConsenso(algoritmo));
-      //dentro de cada hecho que cumple con el consenso le agrego el consenso que cumple.
+          // dentro de cada hecho que cumple con el consenso le agrego el consenso que cumple.
 
-    });
+        });
   }
-
-
 
   /*
   public void evaluarHechos(List<Hecho> hechosNuevos) {
@@ -61,16 +59,11 @@ public class EjecutarConsenso {
 
   }*/
 
-
-
   /*
   private List<Hecho> agregarHechos() {
     return fuentesActivas.stream()
         .flatMap(fuente -> fuente.obtenerHechos().stream())
         .collect(Collectors.toList());
   }*/
-
-
-
 
 }

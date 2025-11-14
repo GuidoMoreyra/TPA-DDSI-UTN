@@ -1,13 +1,12 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 public class FuenteEstaticaTest {
 

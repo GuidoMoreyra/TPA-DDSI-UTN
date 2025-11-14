@@ -24,10 +24,12 @@ public enum Provincia {
   SANTA_FE(-34.5, -28.0, -62.5, -58.0),
   SANTIAGO_DEL_ESTERO(-30.5, -25.0, -65.0, -61.0),
   TIERRA_DEL_FUEGO(-55.2, -52.0, -68.5, -65.5),
-  PROVINCIA_DESCONOCIDA(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
-      Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY),
+  PROVINCIA_DESCONOCIDA(
+      Double.NEGATIVE_INFINITY,
+      Double.POSITIVE_INFINITY,
+      Double.NEGATIVE_INFINITY,
+      Double.POSITIVE_INFINITY),
   TUCUMAN(-27.5, -26.0, -66.5, -64.5);
-
 
   private final double latMin;
   private final double latMax;
@@ -42,11 +44,6 @@ public enum Provincia {
   }
 
   public boolean contiene(double lat, double lon) {
-    return lat >= latMin && lat <= latMax
-        && lon >= lonMin && lon <= lonMax;
+    return lat >= latMin && lat <= latMax && lon >= lonMin && lon <= lonMax;
   }
-
 }
-
-
-

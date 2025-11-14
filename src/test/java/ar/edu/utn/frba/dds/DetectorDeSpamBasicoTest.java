@@ -38,4 +38,3 @@ class DetectorDeSpamBasicoTest {
     Assertions.assertTrue(detector.esSpam(texto));
   }
 }
-

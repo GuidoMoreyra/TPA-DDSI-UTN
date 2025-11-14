@@ -6,27 +6,27 @@ import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
 
 public class Server {
-    private static void initializeStaticFiles(JavalinConfig config) {
-        config.staticFiles.add(staticFileConfig -> {
-            staticFileConfig.hostedPath = "/assets";
-            staticFileConfig.directory = "/assets";
+  private static void initializeStaticFiles(JavalinConfig config) {
+    config.staticFiles.add(
+        staticFileConfig -> {
+          staticFileConfig.hostedPath = "/assets";
+          staticFileConfig.directory = "/assets";
         });
-    }
+  }
 
-    public void start() {
-        var app = Javalin.create(config -> {
-            initializeStaticFiles(config);
-            initializeTemplating(config);
-        });
+  public void start() {
+    var app =
+        Javalin.create(
+            config -> {
+              initializeStaticFiles(config);
+              initializeTemplating(config);
+            });
 
-        new Router().configure(app);
-        app.start(9001);
-    }
+    new Router().configure(app);
+    app.start(9001);
+  }
 
-    private void initializeTemplating(JavalinConfig config) {
-        config.fileRenderer(
-                new JavalinRenderer().register("hbs", new JavalinHandlebars())
-        );
-    }
+  private void initializeTemplating(JavalinConfig config) {
+    config.fileRenderer(new JavalinRenderer().register("hbs", new JavalinHandlebars()));
+  }
 }
-

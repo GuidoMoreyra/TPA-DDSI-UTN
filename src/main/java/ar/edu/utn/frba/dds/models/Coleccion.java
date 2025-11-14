@@ -16,9 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,11 +27,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.Getter;
-
 
 @Entity
 @Table(name = "colecciones")
@@ -57,40 +53,41 @@ public final class Coleccion {
   @JoinTable(
       name = "colecciones_criterions",
       joinColumns = @JoinColumn(name = "coleccion_id"),
-      inverseJoinColumns = @JoinColumn(name = "criterio_id")
-  )
+      inverseJoinColumns = @JoinColumn(name = "criterio_id"))
   private final List<Criterio> criteriosDeCreacion = new ArrayList<>();
 
-  @Transient
-  private final HechosRepository repositorio = HechosRepository.getInstance();
-  //esto deberia irse porque lops hehcos se obtiene de la lista o cache de
+  @Transient private final HechosRepository repositorio = HechosRepository.getInstance();
+
+  // esto deberia irse porque lops hehcos se obtiene de la lista o cache de
   // la fuente para la comparacion de curado o no
 
   /*
-  * Desnormalizando:guardar estadísticas precalculadas en cada colección.
-  * */
+   * Desnormalizando:guardar estadísticas precalculadas en cada colección.
+   * */
   @Getter
   @Column(name = "hechos_reportados")
   private Integer cantidadHechosReportados = 0;
+
   @Getter
   @Enumerated(EnumType.STRING)
   @Column(name = "provincia_con_mas_hechos")
   private Provincia provinciaConMasHechos = Provincia.PROVINCIA_DESCONOCIDA;
+
   @Getter
   @Column(name = "hora_pico")
   private Integer horaPicoHechos = 0;
-  @Getter
-  private String categoria;
+
+  @Getter private String categoria;
 
   @Getter
-  @ManyToMany (cascade = CascadeType.PERSIST)
+  @ManyToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
       name = "colecciones_hechos",
       joinColumns = @JoinColumn(name = "coleccion_id"),
-      inverseJoinColumns = @JoinColumn(name = "hecho_id")
-  )
+      inverseJoinColumns = @JoinColumn(name = "hecho_id"))
   private List<Hecho> hechos = new ArrayList<>();
-  //esto deberia ir en la fuente salvo fuente de cargada por el usuario
+
+  // esto deberia ir en la fuente salvo fuente de cargada por el usuario
 
   public Coleccion(
       Fuente fuente,
@@ -98,8 +95,7 @@ public final class Coleccion {
       LocalDate fechaInicial,
       LocalDate fechaFinal,
       String categoria,
-      AlgoritmoDeConsenso algoritmo
-  ) {
+      AlgoritmoDeConsenso algoritmo) {
 
     this.validar(fechaInicial, fechaFinal);
     this.fuente = fuente;
@@ -111,12 +107,11 @@ public final class Coleccion {
 
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
     this.categoria = categoria;
-
   }
 
   public Coleccion() {}
 
-  ////METODOS///
+  //// METODOS///
   public void agregarHechos() {
     this.hechos = new ArrayList<>(this.obtenerColeccionCriteriosCreacional(false));
   }
@@ -127,59 +122,50 @@ public final class Coleccion {
     }
   }
 
-
   public Boolean cumpleCriterios(Hecho hecho, List<Criterio> criterios) {
-    return criterios
-        .stream()
-        .allMatch(criterio -> criterio.cumple(hecho));
+    return criterios.stream().allMatch(criterio -> criterio.cumple(hecho));
   }
 
-
-
-  //cambiar nombre a dameHechosConCrietirosBasicos
+  // cambiar nombre a dameHechosConCrietirosBasicos
   public List<Hecho> obtenerColeccionCriteriosCreacional(Boolean soloConsensuados) {
-    //creo la variable auxiliar de hechos y en primera instancia son de la fuente
+    // creo la variable auxiliar de hechos y en primera instancia son de la fuente
     Stream<Hecho> hechos = fuente.obtenerHechos().stream();
 
-    //si me pide hechos consensuados me fijo en cada hecho de la fuente si
-    //contiene el tipo de consenso a buscar y los traigo
+    // si me pide hechos consensuados me fijo en cada hecho de la fuente si
+    // contiene el tipo de consenso a buscar y los traigo
     if (soloConsensuados) {
       hechos = hechos.filter(Hecho::tieneConsenso);
     }
 
-    //si la lista que obtengo por ser consensuado o por la fuente esta vacia
-    //la devuelvo vacia ya que uso .lolist()
+    // si la lista que obtengo por ser consensuado o por la fuente esta vacia
+    // la devuelvo vacia ya que uso .lolist()
 
-    //caso contrario tengo hechos y le aplico los criterios (y la puede devolver vacia
+    // caso contrario tengo hechos y le aplico los criterios (y la puede devolver vacia
     // si no se aplican)
     return hechos
-          .filter(hecho -> this.cumpleCriterios(hecho, criteriosDeCreacion)
-              && hecho.estaActivo()).toList();
+        .filter(hecho -> this.cumpleCriterios(hecho, criteriosDeCreacion) && hecho.estaActivo())
+        .toList();
   }
 
-
-  //cambiar nombre por dameHechosConCriteriosUsuario
+  // cambiar nombre por dameHechosConCriteriosUsuario
   public List<Hecho> obtenerColeccionConCriteriosExtra(
       List<Criterio> criteriosExtras, Boolean soloConsensuados) {
 
     List<Hecho> base = this.obtenerColeccionCriteriosCreacional(soloConsensuados);
 
-    //si no hay hechos base, devuelvo una lista vacia.
+    // si no hay hechos base, devuelvo una lista vacia.
     if (base.isEmpty()) {
       return List.of();
     }
 
-    //si no hay criterios extra, devuelvo la lista base
+    // si no hay criterios extra, devuelvo la lista base
     if (criteriosExtras.isEmpty()) {
       return base;
     }
 
-    //si hay criterios extra, los aplico, para ambos casos
-    //esto significa que se realizo la tarea programada y tenia criterios extra
-    return base.stream()
-            .filter(hecho -> this.cumpleCriterios(hecho, criteriosExtras))
-            .toList();
-
+    // si hay criterios extra, los aplico, para ambos casos
+    // esto significa que se realizo la tarea programada y tenia criterios extra
+    return base.stream().filter(hecho -> this.cumpleCriterios(hecho, criteriosExtras)).toList();
   }
 
   // se agregan setter y getter manuales porque mvn clear verify dice que es un spotbug
@@ -189,7 +175,6 @@ public final class Coleccion {
   }
 
   // metodos para calcular los atributos de reporte
-
 
   public void calcularProvinciaConMasHechos() {
 
@@ -211,10 +196,5 @@ public final class Coleccion {
       }
     }
     this.provinciaConMasHechos = maxProvincia;
-
   }
-
-
-
-
 }

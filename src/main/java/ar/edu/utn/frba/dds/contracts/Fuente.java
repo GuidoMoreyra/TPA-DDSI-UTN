@@ -25,7 +25,4 @@ public abstract class Fuente {
   private Long id;
 
   public abstract List<Hecho> obtenerHechos();
-
 }
-
-

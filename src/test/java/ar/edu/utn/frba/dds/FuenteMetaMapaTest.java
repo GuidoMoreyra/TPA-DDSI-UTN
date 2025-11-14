@@ -1,6 +1,5 @@
 package ar.edu.utn.frba.dds;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -15,14 +14,11 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-
 public class FuenteMetaMapaTest {
   @Test
   void testObtenerHechos() throws IOException, InterruptedException {
     HttpClient clienteHttp = mock(HttpClient.class);
     HttpResponse<String> respuestaHttp = mock(HttpResponse.class);
-
-
 
     String json =
         """
@@ -54,8 +50,5 @@ public class FuenteMetaMapaTest {
 
     assertEquals(1, hechos.size());
     assertEquals("Test", hechos.get(0).getTitulo());
-
   }
-
-
 }

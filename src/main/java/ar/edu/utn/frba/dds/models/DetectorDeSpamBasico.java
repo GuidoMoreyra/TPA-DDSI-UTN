@@ -17,52 +17,64 @@ public final class DetectorDeSpamBasico implements DetectorDeSpam {
 
   @Override
   public boolean esSpam(String texto) {
-      if (texto == null) return true;
+    if (texto == null) {
+      return true;
+    }
 
-      String limpio = texto.trim();
-      int length = limpio.length();
+    String limpio = texto.trim();
+    int length = limpio.length();
 
-      // corto -> pinta spam
-      if (length < 50) return true;
+    // corto -> pinta spam
+    if (length < 50) {
+      return true;
+    }
 
-      List<String> tokens = tokenizar(limpio);
-      if (tokens.isEmpty()) return true;
+    List<String> tokens = tokenizar(limpio);
+    if (tokens.isEmpty()) {
+      return true;
+    }
 
-      // repetición excesiva de palabras
-      if (tieneRepeticiones(tokens)) return true;
+    // repetición excesiva de palabras
+    if (tieneRepeticiones(tokens)) {
+      return true;
+    }
 
-      // comparación TF-IDF con corpus
-      List<String> corpus = corpus();
-      Map<String, Double> vectorTexto = calcularTfIdf(limpio, corpus);
+    // comparación TF-IDF con corpus
+    List<String> corpus = corpus();
+    Map<String, Double> vectorTexto = calcularTfIdf(limpio, corpus);
 
-      double promedio = 0.0;
-      int count = 0;
+    double promedio = 0.0;
+    int count = 0;
 
-      for (String doc : corpus) {
-          Map<String, Double> vectorDoc = calcularTfIdf(doc, corpus);
-          double sim = similitudCoseno(vectorTexto, vectorDoc);
-          promedio += sim;
-          count++;
-      }
+    for (String doc : corpus) {
+      Map<String, Double> vectorDoc = calcularTfIdf(doc, corpus);
+      double sim = similitudCoseno(vectorTexto, vectorDoc);
+      promedio += sim;
+      count++;
+    }
 
-      if (count > 0) promedio /= count;
+    if (count > 0) {
+      promedio /= count;
+    }
 
-      // si el texto es MUY distinto del corpus "válido", lo marcamos como spam
-      return promedio < UMBRAL_SIMILITUD;
+    // si el texto es MUY distinto del corpus "válido", lo marcamos como spam
+    return promedio < UMBRAL_SIMILITUD;
   }
 
   private boolean tieneRepeticiones(List<String> tokens) {
     Map<String, Integer> contador = new HashMap<>();
 
     for (String t : tokens) {
-        contador.put(t, contador.getOrDefault(t, 0) + 1);
+      contador.put(t, contador.getOrDefault(t, 0) + 1);
     }
 
     // Si una palabra aparece más del 10% del total → spam
     int limite = Math.max(3, tokens.size() / 10);
 
     for (Integer rep : contador.values()) {
-        if (rep > limite) return true;
+      if (rep > limite) {
+        return true;
+      }
     }
 
     return false;
@@ -76,16 +88,14 @@ public final class DetectorDeSpamBasico implements DetectorDeSpam {
         SolicitudesEliminacionRepository.getInstance();
 
     List<SolicitudEliminacion> solicitudesRechazadas =
-        repositorioDeSolicitudes.obtenerSolicitudesConEstado(
-            EstadoSolicitudEliminacion.APROBADO
-        );
+        repositorioDeSolicitudes.obtenerSolicitudesConEstado(EstadoSolicitudEliminacion.APROBADO);
 
     return solicitudesRechazadas.isEmpty()
         ? corpusPorDefault()
         : solicitudesRechazadas.stream()
-        .limit(DetectorDeSpamBasico.LIMITE_CORPUS)
-        .map(SolicitudEliminacion::getJustificacion)
-        .toList();
+            .limit(DetectorDeSpamBasico.LIMITE_CORPUS)
+            .map(SolicitudEliminacion::getJustificacion)
+            .toList();
   }
 
   private List<String> corpusPorDefault() {
@@ -99,22 +109,44 @@ public final class DetectorDeSpamBasico implements DetectorDeSpam {
         "El contenido no representa la realidad del hecho.",
         "Pedí eliminarlo porque contiene datos incorrectos.",
         "El hecho está duplicado en otra entrada.",
-        "Este hecho contiene información completamente incorrecta y desactualizada que debe ser removida urgentemente de la base de datos. Los datos presentados no corresponden con la realidad y podrían confundir a los usuarios que confían en esta plataforma para obtener información precisa y verificada.",
-        "La información reportada en este hecho es engañosa y no refleja la verdadera situación. Es fundamental mantener la integridad de nuestra base de datos eliminando este tipo de contenido que no cumple con los estándares de calidad requeridos por el sistema.",
-        "Solicito la eliminación de este registro porque contiene datos erróneos que podrían generar confusión entre los usuarios. La información debe ser precisa y confiable, y este hecho no cumple con esos requisitos básicos de calidad.",
-        "El hecho reportado no corresponde a la realidad y debe ser eliminado para preservar la integridad del sistema. La información presentada es incorrecta y no debe permanecer en la base de datos.",
-        "Este registro fue creado por error y contiene información que no es verídica. Es importante eliminarlo para mantener la calidad y confiabilidad de los datos en la plataforma.",
-        "La decisión de eliminar este contenido se fundamenta en consideraciones éticas y de responsabilidad editorial. El tratamiento dado a la información resulta insensible hacia las personas involucradas y puede contribuir a la revictimización de los afectados. Se prioriza el respeto y la dignidad humana por encima del impacto mediático.",
-        "Solicito la remoción de este hecho porque el enfoque periodístico adoptado carece de la sensibilidad necesaria para abordar temas delicados. La forma en que se presentó el contenido potencia el morbo sin aportar valor informativo real, lo cual contradice los principios éticos de esta plataforma.",
-        "Este registro debe ser eliminado dado que su publicación compromete la privacidad y dignidad de las personas mencionadas. El contenido expone detalles innecesarios que no contribuyen al debate público y pueden generar daño colateral a individuos que no son figuras públicas.",
-        "La eliminación se solicita porque el hecho periodístico carece del contexto adecuado y presenta la información de manera sesgada. Una cobertura responsable requiere equilibrio, verificación exhaustiva y consideración del impacto social, elementos que este contenido no cumple satisfactoriamente."
-    );
+        "Este hecho contiene información completamente incorrecta y desactualizada que debe ser"
+            + " removida urgentemente de la base de datos. Los datos presentados no corresponden"
+            + " con la realidad y podrían confundir a los usuarios que confían en esta plataforma"
+            + " para obtener información precisa y verificada.",
+        "La información reportada en este hecho es engañosa y no refleja la verdadera situación. Es"
+            + " fundamental mantener la integridad de nuestra base de datos eliminando este tipo de"
+            + " contenido que no cumple con los estándares de calidad requeridos por el sistema.",
+        "Solicito la eliminación de este registro porque contiene datos erróneos que podrían"
+            + " generar confusión entre los usuarios. La información debe ser precisa y confiable,"
+            + " y este hecho no cumple con esos requisitos básicos de calidad.",
+        "El hecho reportado no corresponde a la realidad y debe ser eliminado para preservar la"
+            + " integridad del sistema. La información presentada es incorrecta y no debe"
+            + " permanecer en la base de datos.",
+        "Este registro fue creado por error y contiene información que no es verídica. Es"
+            + " importante eliminarlo para mantener la calidad y confiabilidad de los datos en la"
+            + " plataforma.",
+        "La decisión de eliminar este contenido se fundamenta en consideraciones éticas y de"
+            + " responsabilidad editorial. El tratamiento dado a la información resulta insensible"
+            + " hacia las personas involucradas y puede contribuir a la revictimización de los"
+            + " afectados. Se prioriza el respeto y la dignidad humana por encima del impacto"
+            + " mediático.",
+        "Solicito la remoción de este hecho porque el enfoque periodístico adoptado carece de la"
+            + " sensibilidad necesaria para abordar temas delicados. La forma en que se presentó el"
+            + " contenido potencia el morbo sin aportar valor informativo real, lo cual contradice"
+            + " los principios éticos de esta plataforma.",
+        "Este registro debe ser eliminado dado que su publicación compromete la privacidad y"
+            + " dignidad de las personas mencionadas. El contenido expone detalles innecesarios que"
+            + " no contribuyen al debate público y pueden generar daño colateral a individuos que"
+            + " no son figuras públicas.",
+        "La eliminación se solicita porque el hecho periodístico carece del contexto adecuado y"
+            + " presenta la información de manera sesgada. Una cobertura responsable requiere"
+            + " equilibrio, verificación exhaustiva y consideración del impacto social, elementos"
+            + " que este contenido no cumple satisfactoriamente.");
   }
 
   /**
-   * Calcula el TF-IDF de un texto dado un corpus.
-   * El TF-IDF es una medida que evalúa la importancia de una palabra
-   * en un documento en relación con un corpus
+   * Calcula el TF-IDF de un texto dado un corpus. El TF-IDF es una medida que evalúa la importancia
+   * de una palabra en un documento en relación con un corpus
    */
   private Map<String, Double> calcularTfIdf(String texto, List<String> corpus) {
     Map<String, Double> tf = calcularTf(texto);
@@ -124,9 +156,8 @@ public final class DetectorDeSpamBasico implements DetectorDeSpam {
       String palabra = entrada.getKey();
       double tfValor = entrada.getValue();
 
-      int frecuenciaEnDocumento = (int) corpus.stream()
-          .filter(documento -> tokenizar(documento).contains(palabra))
-          .count();
+      int frecuenciaEnDocumento =
+          (int) corpus.stream().filter(documento -> tokenizar(documento).contains(palabra)).count();
       double idf = Math.log((double) (corpus.size() + 1) / (frecuenciaEnDocumento + 1));
 
       tfidf.put(palabra, tfValor * idf);
@@ -144,41 +175,26 @@ public final class DetectorDeSpamBasico implements DetectorDeSpam {
     List<String> tokens = tokenizar(texto);
 
     for (String palabra : tokens) {
-      tf.put(
-          palabra,
-          tf.getOrDefault(palabra, 0.0) + 1.0
-      );
+      tf.put(palabra, tf.getOrDefault(palabra, 0.0) + 1.0);
     }
 
-    tf.replaceAll(
-        (String k, Double v) -> v / tokens.size()
-    );
+    tf.replaceAll((String k, Double v) -> v / tokens.size());
 
     return tf;
   }
 
   /**
-   * Divide el texto en palabras, eliminando puntuación,
-   * palabras cortas y convirtiendo a minúsculas
+   * Divide el texto en palabras, eliminando puntuación, palabras cortas y convirtiendo a minúsculas
    */
   private List<String> tokenizar(String texto) {
-    return Arrays.stream(
-        texto
-            .toLowerCase()
-            .split("\\W+")
-        )
-        .filter(
-            palabra -> palabra.length() > 2
-        )
-        .collect(
-            Collectors.toList()
-        );
+    return Arrays.stream(texto.toLowerCase().split("\\W+"))
+        .filter(palabra -> palabra.length() > 2)
+        .collect(Collectors.toList());
   }
 
   /**
-   * Calcula la similitud coseno entre dos vectores TF-IDF.
-   * La similitud coseno es una medida de similitud entre dos vectores
-   * que se define como el coseno del ángulo entre ellos
+   * Calcula la similitud coseno entre dos vectores TF-IDF. La similitud coseno es una medida de
+   * similitud entre dos vectores que se define como el coseno del ángulo entre ellos
    */
   private double similitudCoseno(Map<String, Double> vector1, Map<String, Double> vector2) {
     Set<String> todas = new HashSet<>();
@@ -197,8 +213,6 @@ public final class DetectorDeSpamBasico implements DetectorDeSpam {
       mag2 += b * b;
     }
 
-    return (mag1 == 0 || mag2 == 0)
-        ? 0.0
-        : dot / (Math.sqrt(mag1) * Math.sqrt(mag2));
+    return (mag1 == 0 || mag2 == 0) ? 0.0 : dot / (Math.sqrt(mag1) * Math.sqrt(mag2));
   }
 }

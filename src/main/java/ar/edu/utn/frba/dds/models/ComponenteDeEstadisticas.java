@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import ar.edu.utn.frba.dds.utils.ExportadorCsv;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 
 @Getter
@@ -23,11 +24,13 @@ public class ComponenteDeEstadisticas {
   private SolicitudesEliminacionRepository repoSolicitudesEliminacion;
   private HechosRepository repoHechosRepository;
 
-
-  public ComponenteDeEstadisticas(ColeccionRepository repositorioColeccion,
-                                  SolicitudesEliminacionRepository repoSolicitudesEliminacion,
-                                  HechosRepository repoHechos, String categoria,
-                                  Coleccion coleccion) {
+  @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
+  public ComponenteDeEstadisticas(
+      ColeccionRepository repositorioColeccion,
+      SolicitudesEliminacionRepository repoSolicitudesEliminacion,
+      HechosRepository repoHechos,
+      String categoria,
+      Coleccion coleccion) {
 
     this.repoColeccion = repositorioColeccion;
     this.repoSolicitudesEliminacion = repoSolicitudesEliminacion;
@@ -65,9 +68,6 @@ public class ComponenteDeEstadisticas {
     return repoHechosRepository.buscarProvinciaConMasHechosPorCategoria(categoria);
   }
 
-
-
-
   /*¿A qué hora del día ocurren la mayor cantidad de hechos de una cierta categoría?*/
   public Integer buscarHoraPicoPorCategoria(String categoria) {
     return repoHechosRepository.buscarHoraPicoDeHechosSegun(categoria);
@@ -77,23 +77,20 @@ public class ComponenteDeEstadisticas {
     return repoSolicitudesEliminacion.cantidadDeSolicitudesSpamDos();
   }
 
-
   public ReporteColeccion generarReporteColeccion() {
-    ReporteColeccion reporteColeccion = new ReporteColeccion(
-        this.categoriaConMasHechos,
-        this.provinciaConMasHechos,
-        this.horaPicoHechosSegunCategoria,
-        this.provinciaConMasHehosSegunCategoria
+    ReporteColeccion reporteColeccion =
+        new ReporteColeccion(
+            this.categoriaConMasHechos,
+            this.provinciaConMasHechos,
+            this.horaPicoHechosSegunCategoria,
+            this.provinciaConMasHehosSegunCategoria);
 
-    );
-    return  reporteColeccion;
+    return reporteColeccion;
   }
 
-
-
   public ReporteSolicitudElim generarReporteSolicitudSpam() {
-    ReporteSolicitudElim reporteSolicitud = new ReporteSolicitudElim(
-        this.cantidadDeSolictudesEliminacionSpam());
+    ReporteSolicitudElim reporteSolicitud =
+        new ReporteSolicitudElim(this.cantidadDeSolictudesEliminacionSpam());
     return reporteSolicitud;
   }
 
@@ -101,9 +98,4 @@ public class ComponenteDeEstadisticas {
     ExportadorCsv exportadorCsv = new ExportadorCsv();
     exportadorCsv.exportarCsvArchivo(rutaReporte, reporte);
   }
-
-
-
 }
-
-

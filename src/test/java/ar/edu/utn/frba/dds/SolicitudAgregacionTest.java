@@ -1,18 +1,17 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
-import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
-import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
+import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import java.time.LocalDate;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SolicitudAgregacionTest {
   private Hecho hechoMock;
@@ -39,6 +38,7 @@ public class SolicitudAgregacionTest {
 
     assertEquals(EstadoSolicitudAgregacion.RECHAZADO, solicitud.getEstado());
   }
+
   @Test
   void alAceptarConSugerenciasSeAplicanCambiosYEstadoEsAceptadoConSugerencias() {
     SolicitudAgregacion solicitud = new SolicitudAgregacion(hechoMock, false);
@@ -71,9 +71,9 @@ public class SolicitudAgregacionTest {
     // Forzamos la fecha a hace más de 7 días usando un constructor especial para testing
     var fechaAntigua = LocalDate.now().minusDays(8);
     // Se agregás un constructor especial solo para el test
-    SolicitudAgregacion solicitudConFechaAntigua = new SolicitudAgregacion(hechoMock, false, fechaAntigua);
+    SolicitudAgregacion solicitudConFechaAntigua =
+        new SolicitudAgregacion(hechoMock, false, fechaAntigua);
 
     assertFalse(solicitudConFechaAntigua.puedeEditar());
   }
 }
-

@@ -9,15 +9,15 @@ import java.util.List;
 public class ColeccionRepository implements WithSimplePersistenceUnit {
 
   public List<Coleccion> listar() {
-    return entityManager()
-        .createQuery("from Coleccion", Coleccion.class)
-        .getResultList();
+    return entityManager().createQuery("from Coleccion", Coleccion.class).getResultList();
   }
 
   public Collection<Coleccion> deCategoria(String categoria) {
     var query = "from Coleccion where categoria = :categoria";
-    return entityManager().createQuery(query, Coleccion.class)
-        .setParameter("categoria", categoria).getResultList();
+    return entityManager()
+        .createQuery(query, Coleccion.class)
+        .setParameter("categoria", categoria)
+        .getResultList();
   }
 
   public Coleccion obtener(Long id) {
@@ -29,7 +29,8 @@ public class ColeccionRepository implements WithSimplePersistenceUnit {
   }
 
   public Provincia provinciaConMasHechos(Long coleccionId) {
-    String query = """
+    String query =
+        """
         SELECT h.provincia
         FROM Coleccion c
         JOIN c.hechos h
@@ -38,10 +39,11 @@ public class ColeccionRepository implements WithSimplePersistenceUnit {
         ORDER BY COUNT(h) DESC
         """;
 
-    List<Provincia> resultados = entityManager()
-        .createQuery(query, Provincia.class)
-        .setParameter("coleccionId", coleccionId)
-        .getResultList();
+    List<Provincia> resultados =
+        entityManager()
+            .createQuery(query, Provincia.class)
+            .setParameter("coleccionId", coleccionId)
+            .getResultList();
 
     return resultados.isEmpty() ? Provincia.PROVINCIA_DESCONOCIDA : resultados.get(0);
   }

@@ -22,5 +22,4 @@ public abstract class Criterio {
   private Long id;
 
   public abstract Boolean cumple(Hecho hecho);
-
 }

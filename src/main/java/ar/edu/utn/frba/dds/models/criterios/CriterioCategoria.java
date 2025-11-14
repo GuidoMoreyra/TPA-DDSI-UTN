@@ -18,17 +18,10 @@ public class CriterioCategoria extends Criterio {
 
   @Override
   public Boolean cumple(Hecho hecho) {
-    return this.categoria.equals(
-        hecho.getCategoria()
-    );
+    return this.categoria.equals(hecho.getCategoria());
   }
 
   public Boolean seCumpleCriterio(Map<String, String> unHecho) {
-    return this.categoria.equals(
-        unHecho.get("categoria")
-    );
+    return this.categoria.equals(unHecho.get("categoria"));
   }
-
 }
-
-

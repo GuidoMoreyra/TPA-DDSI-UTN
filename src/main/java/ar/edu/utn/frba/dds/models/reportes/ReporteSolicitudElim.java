@@ -2,7 +2,6 @@ package ar.edu.utn.frba.dds.models.reportes;
 
 import ar.edu.utn.frba.dds.contracts.Reporte;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.Getter;
@@ -25,7 +24,4 @@ public class ReporteSolicitudElim extends Reporte {
     String fila = String.valueOf(this.getSolicitudesSpam());
     return encabezado + "\n" + fila;
   }
-
 }
-
-

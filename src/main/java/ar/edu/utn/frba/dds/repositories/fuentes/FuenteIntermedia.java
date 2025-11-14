@@ -5,25 +5,17 @@ import ar.edu.utn.frba.dds.exceptions.FuenteProxyException;
 import ar.edu.utn.frba.dds.models.Hecho;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-
 
 @Entity
 @DiscriminatorValue("Intermedia")
 public final class FuenteIntermedia extends Fuente {
 
-  @Transient
-  private  AdaptadorFuenteDemo fuenteQueSeUsa;
+  @Transient private AdaptadorFuenteDemo fuenteQueSeUsa;
 
-  @Transient
-  private List<Hecho> hechosObtenidos;
+  @Transient private List<Hecho> hechosObtenidos;
 
   public void configurarFuenteIntermedia(AdaptadorFuenteDemo fuenteQueSeUsa) {
     validacionFuente(fuenteQueSeUsa);
@@ -41,15 +33,12 @@ public final class FuenteIntermedia extends Fuente {
   }
 
   @Override
-  public List<Hecho> obtenerHechos()  {
+  public List<Hecho> obtenerHechos() {
 
     return new ArrayList<>(hechosObtenidos);
-
   }
-
 
   public void actualizar() {
     fuenteQueSeUsa.actualizar();
   }
-
 }

@@ -6,16 +6,14 @@ import ar.edu.utn.frba.dds.models.Hecho;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -27,11 +25,11 @@ public class FuenteMetaMapa extends Fuente {
 
   @Column(name = "ruta_api")
   private final String rutaApi;
-  @Transient
-  private final HttpClient cliente;
-  @Transient
-  private List<Hecho> hechosObtenidos;
 
+  @Transient private final HttpClient cliente;
+  @Transient private List<Hecho> hechosObtenidos;
+
+  @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
   public FuenteMetaMapa(String rutaApi, HttpClient cliente) {
     this.rutaApi = rutaApi;
     this.cliente = cliente;
@@ -53,11 +51,7 @@ public class FuenteMetaMapa extends Fuente {
 
     try {
 
-      HttpRequest request = HttpRequest.newBuilder()
-
-          .uri(URI.create(url))
-          .GET()
-          .build();
+      HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
 
       HttpResponse<String> response = cliente.send(request, HttpResponse.BodyHandlers.ofString());
       int status = response.statusCode();
@@ -70,8 +64,7 @@ public class FuenteMetaMapa extends Fuente {
 
       ObjectMapper mapper = new ObjectMapper();
       mapper.registerModule(new JavaTimeModule());
-      return mapper.readValue(response.body(), new TypeReference<List<Hecho>>() {
-      });
+      return mapper.readValue(response.body(), new TypeReference<List<Hecho>>() {});
 
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -79,8 +72,6 @@ public class FuenteMetaMapa extends Fuente {
       throw new RuntimeException(e);
     }
   }
-
-
 
   /*
   //Obtenemos los hechos sin filtrar , se podria mejorar haciendo  que los filtros

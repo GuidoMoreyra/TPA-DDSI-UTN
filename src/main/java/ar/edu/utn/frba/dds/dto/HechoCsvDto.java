@@ -10,29 +10,29 @@ import lombok.Data;
 public final class HechoCsvDto {
 
   @CsvBindByName(column = "titulo")
-  public String titulo;
+  private String titulo;
 
   @CsvBindByName(column = "descripcion")
-  public String descripcion;
+  private String descripcion;
 
   @CsvBindByName(column = "categoria")
-  public String categoria;
+  private String categoria;
 
   @CsvBindByName(column = "latitud")
-  public double latitud;
+  private double latitud;
 
   @CsvBindByName(column = "longitud")
-  public double longitud;
+  private double longitud;
 
   @CsvDate("dd/MM/yyyy")
   @CsvBindByName(column = "fecha_Del_Hecho")
-  public LocalDate fechaDelHecho;
+  private LocalDate fechaDelHecho;
 
-  public String contenidoMultimedia = "";
+  private String contenidoMultimedia = "";
 
   @CsvDate("HH:mm:ss")
   @CsvBindByName(column = "Hora_Hecho")
-  public LocalTime horaHecho;
+  private LocalTime horaHecho;
 
   public String getTitulo() {
     return titulo;

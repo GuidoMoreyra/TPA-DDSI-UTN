@@ -160,14 +160,7 @@
         <configuration>
           <configLocation>google_checks.xml</configLocation>
           <violationSeverity>warning</violationSeverity>
-          <violationIgnore>
-            MissingJavadocMethod,
-            MissingJavadocPackage,
-            MissingJavadocType,
-            NonEmptyAtclauseDescription,
-            JavadocParagraph,
-            SummaryJavadoc
-          </violationIgnore>
+          <suppressionsLocation>suppressions.xml</suppressionsLocation>
         </configuration>
         <executions>
           <execution>
@@ -182,7 +175,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.7.3.2</version>
+        <version>4.8.3.1</version>
         <executions>
           <execution>
             <id>Validar Code Smells</id>
