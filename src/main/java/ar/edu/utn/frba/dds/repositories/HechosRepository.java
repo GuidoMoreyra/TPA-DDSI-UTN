@@ -46,7 +46,7 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
   @SuppressWarnings("unchecked")
   public Hecho getHechoById(Long id) {
     var resultados = entityManager()
-            .createQuery("from Hecho where id = :id", Usuario.class)
+            .createQuery("from Hecho where id = :id", Hecho.class)
             .setParameter("id", id)
             .getResultList();
 

@@ -5,10 +5,14 @@ import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import lombok.Getter;
 import org.apache.commons.codec.digest.DigestUtils;
 
-@Getter
+
 public class UsuarioRepository implements WithSimplePersistenceUnit {
 
     private static UsuarioRepository INSTANCE = new UsuarioRepository();
+
+    public static UsuarioRepository getInstance() {
+        return INSTANCE;
+    }
 
     public void persistUsuario(Usuario usuario) {
         withTransaction(() -> {

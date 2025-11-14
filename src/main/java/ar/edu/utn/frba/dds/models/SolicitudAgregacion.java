@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.contracts.Solicitud;
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -47,7 +48,6 @@ public final class SolicitudAgregacion implements Solicitud {
     this.fechaCreacion = fechaCreacion;
   }
 
-  //Estados Solicitudes
   public void aceptarSolicitud() {
     this.estado = EstadoSolicitudAgregacion.ACEPTADO;
   }
@@ -66,6 +66,4 @@ public final class SolicitudAgregacion implements Solicitud {
     return usuario != null && fechaCreacion.isAfter(LocalDate.now().minusDays(7));
   }
 
-  public long getId() {
-  }
 }

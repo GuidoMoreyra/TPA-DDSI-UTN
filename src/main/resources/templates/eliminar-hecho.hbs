@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitar Eliminación de Hecho - MetaMapa</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">MetaMapa</a>
+      <ul class="navbar-nav">
+        <li><a href="/hechos" class="nav-link">Explorar Hechos</a></li>
+        {{#if user}}
+          <li><a href="#" class="nav-link">{{nombre}}</a></li>
+          {{#if isAdmin}}
+            <li><a href="/admin" class="nav-link">Panel Admin</a></li>
+          {{/if}}
+          <li><a href="/logout" class="nav-link btn-outline">Cerrar Sesión</a></li>
+        {{else}}
+          <li><a href="/login" class="nav-link">Iniciar Sesión</a></li>
+          <li><a href="/register" class="nav-link btn-primary">Registrarse</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header Section -->
+  <div style="background: linear-gradient(135deg, #e66465 0%, #9198e5 100%); color: white; padding: 2rem 0;">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+        <a href="/hechos" style="color: white; text-decoration: none; font-size: 1.5rem;">←</a>
+        <h1 style="font-size: 2rem; margin: 0; color: white;">Solicitar Eliminación de Hecho</h1>
+      </div>
+      <p style="font-size: 1rem; color: rgba(255,255,255,0.9); margin: 0;">
+        Indica el hecho que deseas eliminar y proporciona tu justificación
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container" style="padding: 2rem 0; max-width: 800px;">
+
+    <!-- Breadcrumb -->
+    <div style="margin-bottom: 1.5rem; color: var(--color-gray-600); font-size: 0.875rem;">
+      <a href="/" style="color: var(--color-gray-600);">Inicio</a>
+      <span style="margin: 0 0.5rem;">›</span>
+      <a href="/hechos" style="color: var(--color-gray-600);">Explorar Hechos</a>
+      <span style="margin: 0 0.5rem;">›</span>
+      <span style="color: var(--color-gray-900); font-weight: 500;">Solicitar Eliminación</span>
+    </div>
+
+    {{#if error}}
+      <div class="alert alert-error" style="margin-bottom: 1.5rem;">
+        <strong>Error:</strong> {{error}}
+      </div>
+    {{/if}}
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Información de la Solicitud</h3>
+      </div>
+      <div class="card-body">
+        <form action="/hechos/eliminar" method="POST" id="formEliminarHecho">
+
+          <!-- Hecho -->
+          <div class="form-group">
+            <label class="form-label required" for="hecho">Hecho a eliminar</label>
+            <textarea
+              class="form-input"
+              id="hecho"
+              name="hecho"
+              placeholder="Copia o describe el hecho que deseas eliminar"
+              required
+              rows="3"
+              maxlength="500"
+            >{{hecho}}</textarea>
+          </div>
+
+          <!-- Justificación -->
+          <div class="form-group">
+            <label class="form-label required" for="justificacion">Justificación</label>
+            <textarea
+              class="form-input"
+              id="justificacion"
+              name="justificacion"
+              placeholder="Explica por qué consideras que este hecho debería eliminarse"
+              required
+              rows="4"
+              maxlength="500"
+            >{{justificacion}}</textarea>
+            <small style="color: var(--color-gray-600); font-size: 0.875rem;">
+              Proporciona detalles claros y verificables para que tu solicitud sea válida
+            </small>
+          </div>
+
+          <!-- Botones -->
+          <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">
+              Enviar Solicitud
+            </button>
+            <a href="/hechos" class="btn btn-outline" style="flex: 1; text-align: center;">
+              Cancelar
+            </a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- Info adicional -->
+    <div class="card" style="margin-top: 1.5rem;">
+      <div class="card-body">
+        <p style="color: var(--color-gray-600); line-height: 1.6; margin: 0; font-size: 0.875rem;">
+          <strong>Nota:</strong> Tu solicitud será revisada por el equipo de MetaMapa. Asegúrate de
+          indicar claramente la razón de la eliminación y proporcionar información verificable.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: var(--color-gray-800); color: white; padding: 2rem 0; margin-top: 3rem;">
+    <div class="container" style="text-align: center;">
+      <p style="margin: 0;">MetaMapa - Sistema de gestión de mapeos colaborativos</p>
+      <p style="margin: 0.5rem 0 0 0; color: var(--color-gray-400); font-size: 0.875rem;">
+        Desarrollado para UTN - Diseño de Sistemas - 2025
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

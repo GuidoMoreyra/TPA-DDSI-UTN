@@ -1,5 +1,8 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.contracts.Solicitud;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.enums.Operacion;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.models.Hecho;
@@ -10,9 +13,11 @@ import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import ar.edu.utn.frba.dds.repositories.UsuarioRepository;
+import ar.edu.utn.frba.dds.utils.ImgManager;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -172,6 +177,45 @@ public class HechosController implements WithSimplePersistenceUnit {
         }
     }
 
+    public void mostrarSolicitudes(Context context){
+        String userIdStr = context.formParam("user_id");
+        String userAccesStr = context.sessionAttribute("nivel_acceso");
+        if(userIdStr == null){
+            context.redirect("/login");
+        }
+        int userAcces = 1;
+        try {
+            if (userAccesStr != null) {
+                userAcces = Integer.parseInt(userAccesStr);
+            }
+        } catch (NumberFormatException e) {
+
+        }
+        List<SolicitudAgregacion> solAgre =
+                SolicitudesAgregacionRepository
+                        .getInstance()
+                        .obtenerSolicitudesConEstado(EstadoSolicitudAgregacion.PENDIENTE)
+                        .stream()
+                        .toList();
+
+        List<SolicitudEliminacion> solElim =
+                SolicitudesEliminacionRepository
+                        .getInstance()
+                        .obtenerSolicitudesConEstado(EstadoSolicitudEliminacion.PENDIENTE)
+                        .stream()
+                        .toList();
+
+        Map<String, Object> model = new HashMap<>();
+
+        model.put("solicitudesA",solAgre);
+        model.put("solicitudesE",solElim);
+
+        context.render("gestos-solicitudes.hbs");
+        
+
+
+    }
+
     public void mostrarFormularioCrear(Context context) {
         // Verificar que el usuario esté logueado
         if (context.sessionAttribute("user_id") == null) {
@@ -191,6 +235,24 @@ public class HechosController implements WithSimplePersistenceUnit {
                 .collect(Collectors.toList());
 
         model.put("categorias", categorias);
+
+        // Info de sesión para el navbar
+        model.put("user", true);
+        model.put("nombre", context.sessionAttribute("nombre"));
+        Integer nivelAcceso = context.sessionAttribute("nivel_acceso");
+        model.put("isAdmin", nivelAcceso != null && nivelAcceso >= 1);
+
+        context.render("crear-hecho.hbs", model);
+    }
+
+    public void mostrarFormularioEliminar(@NotNull Context context) {
+        // Verificar que el usuario esté logueado
+        if (context.sessionAttribute("user_id") == null) {
+            context.redirect("/login");
+            return;
+        }
+
+        Map<String, Object> model = new HashMap<>();
 
         // Info de sesión para el navbar
         model.put("user", true);
@@ -293,7 +355,7 @@ public class HechosController implements WithSimplePersistenceUnit {
             Usuario usuario = UsuarioRepository.getInstance().getUsuarioById(context.sessionAttribute("user_id"));
             var nuevaSolicitudDeAgregacion = new SolicitudAgregacion(nuevoHecho, usuario);
 
-            SolicitudesAgregacionRepository.getInstance().persist(nuevaSolicitudDeAgregacion)
+            SolicitudesAgregacionRepository.getInstance().persist(nuevaSolicitudDeAgregacion);
 
 
             // Redirigir al formulario
@@ -305,7 +367,7 @@ public class HechosController implements WithSimplePersistenceUnit {
         }
     }
 
-    public void CrearSolicitudDeEliminacion(Context context){
+    public void crearSolicitudDeEliminacion(Context context){
         try{
             Hecho hecho = HechosRepository.getInstance().getHechoById(Long.valueOf(context.formParam("HechoId")));
 
@@ -345,7 +407,7 @@ public class HechosController implements WithSimplePersistenceUnit {
         }
 
         if( userAcces == 1 ) context.redirect("/home");
-        
+
 
         String solicitudIdStr = context.formParam("solicitudId");
         String operacionStr = context.formParam("Operacion");
@@ -433,10 +495,6 @@ public class HechosController implements WithSimplePersistenceUnit {
         operacion.ejecutar(solicitud);
 
     }
-
-
-
-    private
 
 
 

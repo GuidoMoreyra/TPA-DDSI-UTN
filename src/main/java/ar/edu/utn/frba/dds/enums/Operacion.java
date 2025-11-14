@@ -17,5 +17,5 @@ public enum Operacion {
         }
     };
 
-    public abstract void ejecutar(SolicitudAgregacion solicitud);
+    public abstract void ejecutar(Solicitud solicitud);
 }

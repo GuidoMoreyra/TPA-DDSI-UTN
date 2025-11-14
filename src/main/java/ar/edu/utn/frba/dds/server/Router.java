@@ -22,9 +22,15 @@ public class Router {
 
         // Rutas de hechos
         app.get("/hechos", hechosController::listarHechos);
-        app.get("/hechos/crear", hechosController::mostrarFormularioCrear);
-        app.post("/hechos/crear", hechosController::crearHecho);
         app.get("/hechos/{id}", hechosController::verDetalle);
+
+        //Gestor de solicitudes
+        app.get("/hechos/crear", hechosController::mostrarFormularioCrear);
+        app.post("/hechos/crear", hechosController::crearSolicitudDeAgregacion);
+        app.get("/hechos/eliminar", hechosController::mostrarFormularioEliminar);
+        app.post("/hechos/eliminar", hechosController::crearSolicitudDeEliminacion);
+
+        app.get("/solicitudes",hechosController::mostrarSolicitudes);
 
         // Ruta principal
         app.get("/", ctx -> {

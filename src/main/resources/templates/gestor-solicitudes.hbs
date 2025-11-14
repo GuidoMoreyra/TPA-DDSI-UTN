@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitudes Pendientes - MetaMapa</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">MetaMapa</a>
+      <ul class="navbar-nav">
+        <li><a href="/hechos" class="nav-link">Explorar Hechos</a></li>
+        {{#if user}}
+          <li><a href="#" class="nav-link">{{nombre}}</a></li>
+          {{#if isAdmin}}
+            <li><a href="/admin" class="nav-link">Panel Admin</a></li>
+          {{/if}}
+          <li><a href="/logout" class="nav-link btn-outline">Cerrar Sesión</a></li>
+        {{else}}
+          <li><a href="/login" class="nav-link">Iniciar Sesión</a></li>
+          <li><a href="/register" class="nav-link btn-primary">Registrarse</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem 0;">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+        <a href="/admin" style="color: white; text-decoration: none; font-size: 1.5rem;">←</a>
+        <h1 style="font-size: 2rem; margin: 0;">Solicitudes Pendientes</h1>
+      </div>
+      <p style="font-size: 1rem; color: rgba(255,255,255,0.9); margin: 0;">
+        Gestiona solicitudes de agregación y eliminación enviadas por los usuarios
+      </p>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="container" style="padding: 2rem 0; max-width: 950px;">
+
+
+    {{!-- ================================ --}}
+    {{!--   SECCIÓN 1: Solicitudes de Agregación --}}
+    {{!-- ================================ --}}
+
+    <div class="card" style="margin-bottom: 2rem;">
+      <div class="card-header">
+        <h3 class="card-title">Solicitudes de Agregación</h3>
+      </div>
+
+      <div class="card-body">
+
+        {{#if solicitudesA}}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Título</th>
+              <th>Descripción</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          {{#each solicitudesA}}
+            <tr>
+              <td>{{id}}</td>
+              <td>{{usuario.nombre}}</td>
+              <td>{{titulo}}</td>
+              <td>{{descripcion}}</td>
+
+              <td style="display:flex; gap:0.4rem;">
+
+                <form method="POST" action="/solicitudes/agregacion/cambiar-estado">
+                  <input type="hidden" name="solicitudId" value="{{id}}">
+                  <input type="hidden" name="Operacion" value="ACEPTAR">
+                  <button type="submit" class="btn btn-primary">Aceptar</button>
+                </form>
+
+                <form method="POST" action="/solicitudes/agregacion/cambiar-estado">
+                  <input type="hidden" name="solicitudId" value="{{id}}">
+                  <input type="hidden" name="Operacion" value="RECHAZAR">
+                  <button type="submit" class="btn btn-outline">Rechazar</button>
+                </form>
+
+              </td>
+            </tr>
+          {{/each}}
+          </tbody>
+
+        </table>
+
+        {{else}}
+          <p style="color: var(--color-gray-600); font-size: 0.9rem;">No hay solicitudes de agregación.</p>
+        {{/if}}
+
+      </div>
+    </div>
+
+
+
+    {{!-- ================================ --}}
+    {{!--   SECCIÓN 2: Solicitudes de Eliminación --}}
+    {{!-- ================================ --}}
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Solicitudes de Eliminación</h3>
+      </div>
+
+      <div class="card-body">
+
+        {{#if solicitudesE}}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Hecho</th>
+              <th>Justificación</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          {{#each solicitudesE}}
+            <tr>
+              <td>{{id}}</td>
+              <td>{{usuario.nombre}}</td>
+              <td>{{hecho.titulo}}</td>
+              <td>{{justificacion}}</td>
+
+              <td style="display:flex; gap:0.4rem;">
+
+                <form method="POST" action="/solicitudes/eliminacion/cambiar-estado">
+                  <input type="hidden" name="solicitudId" value="{{id}}">
+                  <input type="hidden" name="Operacion" value="ACEPTAR">
+                  <button type="submit" class="btn btn-primary">Aceptar</button>
+                </form>
+
+                <form method="POST" action="/solicitudes/eliminacion/cambiar-estado">
+                  <input type="hidden" name="solicitudId" value="{{id}}">
+                  <input type="hidden" name="Operacion" value="RECHAZAR">
+                  <button type="submit" class="btn btn-outline">Rechazar</button>
+                </form>
+
+              </td>
+            </tr>
+          {{/each}}
+          </tbody>
+
+        </table>
+
+        {{else}}
+          <p style="color: var(--color-gray-600); font-size: 0.9rem;">No hay solicitudes de eliminación.</p>
+        {{/if}}
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: var(--color-gray-800); color: white; padding: 2rem 0; margin-top: 3rem;">
+    <div class="container" style="text-align: center;">
+      <p style="margin: 0;">MetaMapa - Sistema de gestión de mapeos colaborativos</p>
+      <p style="margin: 0.5rem 0 0 0; color: var(--color-gray-400); font-size: 0.875rem;">
+        Desarrollado para UTN - Diseño de Sistemas - 2025
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>
