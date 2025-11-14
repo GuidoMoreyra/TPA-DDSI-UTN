@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.contracts.Solicitud;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javax.persistence.Column;
@@ -17,7 +19,7 @@ import lombok.Getter;
 @SuppressFBWarnings("EI_EXPOSE_REP")
 @Entity
 @Table(name = "solicitudes_eliminacion")
-public final class SolicitudEliminacion {
+public final class SolicitudEliminacion implements Solicitud {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +58,14 @@ public final class SolicitudEliminacion {
 
   public void modificarEstado(EstadoSolicitudEliminacion nuevoEstado) {
     this.estado = nuevoEstado;
+  }
+
+  public void aceptarSolicitud() {
+    this.estado = EstadoSolicitudEliminacion.APROBADO;
+  }
+
+  public void rechazarSolicitud() {
+    this.estado = EstadoSolicitudEliminacion.RECHAZADO;
   }
 
   public boolean esParaElHecho(Hecho hecho) {
