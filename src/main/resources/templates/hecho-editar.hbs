@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Hecho - MetaMapa</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">MetaMapa</a>
+      <ul class="navbar-nav">
+        <li><a href="/hechos" class="nav-link">Explorar Hechos</a></li>
+        {{#if user}}
+          <li><a href="#" class="nav-link">{{nombre}}</a></li>
+          {{#if isAdmin}}
+            <li><a href="/admin" class="nav-link">Panel Admin</a></li>
+          {{/if}}
+          <li><a href="/logout" class="nav-link btn-outline">Cerrar Sesión</a></li>
+        {{else}}
+          <li><a href="/login" class="nav-link">Iniciar Sesión</a></li>
+          <li><a href="/register" class="nav-link btn-primary">Registrarse</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header Section -->
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem 0;">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+        <a href="/hechos/{{hecho.id}}" style="color: white; text-decoration: none; font-size: 1.5rem;">←</a>
+        <h1 style="font-size: 2rem; margin: 0; color: white;">Editar Hecho</h1>
+      </div>
+      <p style="font-size: 1rem; color: rgba(255,255,255,0.9); margin: 0;">
+        Modifica la información del hecho
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container" style="padding: 2rem 0; max-width: 800px;">
+
+    <!-- Breadcrumb -->
+    <div style="margin-bottom: 1.5rem; color: var(--color-gray-600); font-size: 0.875rem;">
+      <a href="/" style="color: var(--color-gray-600);">Inicio</a>
+      <span style="margin: 0 0.5rem;">›</span>
+      <a href="/hechos" style="color: var(--color-gray-600);">Explorar Hechos</a>
+      <span style="margin: 0 0.5rem;">›</span>
+      <a href="/hechos/{{hecho.id}}" style="color: var(--color-gray-600);">{{hecho.titulo}}</a>
+      <span style="margin: 0 0.5rem;">›</span>
+      <span style="color: var(--color-gray-900); font-weight: 500;">Editar</span>
+    </div>
+
+    {{#if error}}
+      <div class="alert alert-error" style="margin-bottom: 1.5rem;">
+        <strong>Error:</strong> {{error}}
+      </div>
+    {{/if}}
+
+    <!-- Formulario -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Información del Hecho</h3>
+      </div>
+      <div class="card-body">
+        <form action="/hechos/{{hecho.id}}/editar" method="POST" id="formEditarHecho">
+
+          <!-- Título -->
+          <div class="form-group">
+            <label class="form-label required" for="titulo">Título del Hecho</label>
+            <input
+              type="text"
+              class="form-input"
+              id="titulo"
+              name="titulo"
+              value="{{hecho.titulo}}"
+              required
+              maxlength="255"
+              autofocus
+            >
+          </div>
+
+          <!-- Descripción -->
+          <div class="form-group">
+            <label class="form-label required" for="descripcion">Descripción</label>
+            <textarea
+              class="form-input"
+              id="descripcion"
+              name="descripcion"
+              required
+              rows="4"
+              maxlength="500"
+            >{{hecho.descripcion}}</textarea>
+            <small style="color: var(--color-gray-600); font-size: 0.875rem;">
+              Máximo 500 caracteres
+            </small>
+          </div>
+
+          <!-- Categoría -->
+          <div class="form-group">
+            <label class="form-label required" for="categoria">Categoría</label>
+            <select class="form-input" id="categoriaSelect" name="categoriaSelect" required>
+              <option value="">Selecciona una categoría...</option>
+              {{#each categorias}}
+                <option value="{{nombre}}" {{#if selected}}selected{{/if}}>{{nombre}}</option>
+              {{/each}}
+              <option value="otra">Otra... (especificar)</option>
+            </select>
+          </div>
+
+          <!-- Campo de nueva categoría (oculto por defecto) -->
+          <div class="form-group" id="nuevaCategoriaContainer" style="display: none;">
+            <label class="form-label required" for="nuevaCategoria">Nueva Categoría</label>
+            <input
+              type="text"
+              class="form-input"
+              id="nuevaCategoria"
+              name="nuevaCategoria"
+              placeholder="Ingresa el nombre de la nueva categoría"
+              maxlength="100"
+            >
+          </div>
+
+          <!-- Campo oculto para la categoría final -->
+          <input type="hidden" id="categoria" name="categoria" value="{{hecho.categoria}}">
+
+          <!-- Ubicación -->
+          <div class="form-group">
+            <label class="form-label required">Ubicación</label>
+            <div class="grid grid-cols-2" style="gap: 1rem;">
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label required" for="latitud">Latitud</label>
+                <input
+                  type="number"
+                  class="form-input"
+                  id="latitud"
+                  name="latitud"
+                  value="{{hecho.coordenadas.latitud}}"
+                  step="0.000001"
+                  min="-90"
+                  max="90"
+                  required
+                >
+              </div>
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label required" for="longitud">Longitud</label>
+                <input
+                  type="number"
+                  class="form-input"
+                  id="longitud"
+                  name="longitud"
+                  value="{{hecho.coordenadas.longitud}}"
+                  step="0.000001"
+                  min="-180"
+                  max="180"
+                  required
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Fecha del Hecho -->
+          <div class="form-group">
+            <label class="form-label required" for="fechaHecho">Fecha del Hecho</label>
+            <input
+              type="date"
+              class="form-input"
+              id="fechaHecho"
+              name="fechaHecho"
+              value="{{hecho.fechaHecho}}"
+              required
+            >
+          </div>
+
+          <!-- Provincia -->
+          <div class="form-group">
+            <label class="form-label" for="provincia">Provincia</label>
+            <input type="hidden" name="provincia" value="{{hecho.provincia}}">
+            <p style="color: var(--color-gray-700); padding: 0.5rem 0;">
+              <strong>Provincia:</strong> {{hecho.provincia}}
+            </p>
+            <small style="color: var(--color-gray-600); font-size: 0.875rem;">
+              La provincia se calcula automáticamente según las coordenadas
+            </small>
+          </div>
+
+          <!-- Contenido Multimedia -->
+          <div class="form-group">
+            <label class="form-label" for="urlMultimedia">Contenido Multimedia (opcional)</label>
+            {{#if hecho.contenidoMultimedia}}
+              <input
+                type="url"
+                class="form-input"
+                id="urlMultimedia"
+                name="urlMultimedia"
+                value="{{hecho.contenidoMultimedia.url}}"
+                placeholder="https://ejemplo.com/imagen.jpg o https://www.youtube.com/watch?v=..."
+                maxlength="500"
+              >
+              <input type="hidden" name="tipoMultimedia" value="{{hecho.contenidoMultimedia.tipoContenidoMultimedia}}">
+            {{else}}
+              <input
+                type="url"
+                class="form-input"
+                id="urlMultimedia"
+                name="urlMultimedia"
+                placeholder="https://ejemplo.com/imagen.jpg o https://www.youtube.com/watch?v=..."
+                maxlength="500"
+              >
+            {{/if}}
+            <small style="color: var(--color-gray-600); font-size: 0.875rem;">
+              Puedes agregar una URL a una imagen o video de YouTube relacionado con el hecho
+            </small>
+          </div>
+
+          <!-- Botones -->
+          <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">
+              Guardar Cambios
+            </button>
+            <a href="/hechos/{{hecho.id}}" class="btn btn-outline" style="flex: 1; text-align: center;">
+              Cancelar
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="background-color: var(--color-gray-800); color: white; padding: 2rem 0; margin-top: 3rem;">
+    <div class="container" style="text-align: center;">
+      <p style="margin: 0;">MetaMapa - Sistema de gestión de mapeos colaborativos</p>
+      <p style="margin: 0.5rem 0 0 0; color: var(--color-gray-400); font-size: 0.875rem;">
+        Desarrollado para UTN - Diseño de Sistemas - 2025
+      </p>
+    </div>
+  </div>
+
+  <!-- JavaScript para funcionalidad dinámica -->
+  <script>
+    // Manejo de categoría dinámica
+    const categoriaSelect = document.getElementById('categoriaSelect');
+    const nuevaCategoriaContainer = document.getElementById('nuevaCategoriaContainer');
+    const nuevaCategoriaInput = document.getElementById('nuevaCategoria');
+    const categoriaHidden = document.getElementById('categoria');
+
+    categoriaSelect.addEventListener('change', function() {
+      if (this.value === 'otra') {
+        nuevaCategoriaContainer.style.display = 'block';
+        nuevaCategoriaInput.required = true;
+      } else {
+        nuevaCategoriaContainer.style.display = 'none';
+        nuevaCategoriaInput.required = false;
+        nuevaCategoriaInput.value = '';
+      }
+    });
+
+    // Antes de enviar el form, establecer la categoría final
+    document.getElementById('formEditarHecho').addEventListener('submit', function(e) {
+      if (categoriaSelect.value === 'otra') {
+        if (!nuevaCategoriaInput.value.trim()) {
+          e.preventDefault();
+          alert('Por favor, ingresa el nombre de la nueva categoría');
+          return;
+        }
+        categoriaHidden.value = nuevaCategoriaInput.value.trim();
+      } else {
+        categoriaHidden.value = categoriaSelect.value;
+      }
+    });
+  </script>
+</body>
+</html>

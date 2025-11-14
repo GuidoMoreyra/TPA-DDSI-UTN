@@ -142,6 +142,11 @@ public class Hecho {
     if (cambios.getOrigen() != null) {
       this.origen = cambios.getOrigen();
     }
+    if (cambios.getCoordenadas() != null) {
+      this.coordenadas = cambios.getCoordenadas();
+      // Recalcular provincia basada en nuevas coordenadas
+      this.provincia = this.establecerProvincia();
+    }
   }
 
   public Boolean tieneSugerencias() {

@@ -211,10 +211,10 @@
         <!-- Acciones -->
         <div style="display: flex; gap: 1rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--color-gray-200);">
           <a href="/hechos" class="btn btn-outline">← Volver a la lista</a>
-          {{#if user}}
-            <button class="btn btn-primary" disabled style="opacity: 0.5; cursor: not-allowed;">
-              Editar Hecho (Próximamente)
-            </button>
+          {{#if puedeEditar}}
+            <a href="/hechos/{{hecho.id}}/editar" class="btn btn-primary">
+              ✏️ Editar Hecho
+            </a>
           {{/if}}
         </div>
       </div>

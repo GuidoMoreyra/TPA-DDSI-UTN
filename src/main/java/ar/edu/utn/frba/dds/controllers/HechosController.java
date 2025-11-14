@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
@@ -151,7 +153,11 @@ public class HechosController implements WithSimplePersistenceUnit {
                     model.put("user", true);
                     model.put("nombre", context.sessionAttribute("nombre"));
                     Integer nivelAcceso = context.sessionAttribute("nivel_acceso");
-                    model.put("isAdmin", nivelAcceso != null && nivelAcceso >= 1);
+                    boolean esAdmin = nivelAcceso != null && nivelAcceso >= 1;
+                    model.put("isAdmin", esAdmin);
+
+                    // Solo admins pueden editar
+                    model.put("puedeEditar", esAdmin);
                 }
 
                 context.render("hecho-detalle.hbs", model);
@@ -430,5 +436,144 @@ public class HechosController implements WithSimplePersistenceUnit {
         }
 
         context.render("hecho-detalle.hbs", model);
+    }
+
+    public void mostrarFormularioEditar(Context context) {
+        // Verificar que el usuario esté logueado y sea admin
+        if (context.sessionAttribute("user_id") == null) {
+            context.redirect("/login");
+            return;
+        }
+
+        Integer nivelAcceso = context.sessionAttribute("nivel_acceso");
+        boolean esAdmin = nivelAcceso != null && nivelAcceso >= 1;
+
+        if (!esAdmin) {
+            context.redirect("/hechos");
+            return;
+        }
+
+        try {
+            Long hechoId = Long.parseLong(context.pathParam("id"));
+            Hecho hecho = HechosRepository.getInstance().buscarPorId(hechoId);
+
+            if (hecho == null) {
+                context.redirect("/hechos");
+                return;
+            }
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("hecho", hecho);
+
+            // Obtener categorías existentes con flag de selección
+            List<String> categoriasSimples = HechosRepository.getInstance().getHechos()
+                    .stream()
+                    .map(Hecho::getCategoria)
+                    .filter(c -> c != null && !c.isEmpty())
+                    .distinct()
+                    .sorted()
+                    .collect(Collectors.toList());
+
+            List<Map<String, Object>> categorias = categoriasSimples.stream().map(c -> {
+                Map<String, Object> catMap = new HashMap<>();
+                catMap.put("nombre", c);
+                catMap.put("selected", c.equals(hecho.getCategoria()));
+                return catMap;
+            }).collect(Collectors.toList());
+
+            model.put("categorias", categorias);
+
+            // Info de sesión para el navbar
+            model.put("user", true);
+            model.put("nombre", context.sessionAttribute("nombre"));
+            model.put("isAdmin", true);
+
+            context.render("hecho-editar.hbs", model);
+
+        } catch (NumberFormatException e) {
+            context.redirect("/hechos");
+        }
+    }
+
+    public void editarHecho(Context context) {
+        // Verificar que el usuario esté logueado y sea admin
+        if (context.sessionAttribute("user_id") == null) {
+            context.redirect("/login");
+            return;
+        }
+
+        Integer nivelAcceso = context.sessionAttribute("nivel_acceso");
+        boolean esAdmin = nivelAcceso != null && nivelAcceso >= 1;
+
+        if (!esAdmin) {
+            context.redirect("/hechos");
+            return;
+        }
+
+        try {
+            Long hechoId = Long.parseLong(context.pathParam("id"));
+            Hecho hecho = HechosRepository.getInstance().buscarPorId(hechoId);
+
+            if (hecho == null) {
+                context.redirect("/hechos");
+                return;
+            }
+
+            // Obtener datos del formulario
+            String titulo = context.formParam("titulo");
+            String descripcion = context.formParam("descripcion");
+            String categoria = context.formParam("categoria");
+            String latitudStr = context.formParam("latitud");
+            String longitudStr = context.formParam("longitud");
+            String urlMultimedia = context.formParam("urlMultimedia");
+
+            // Validar campos obligatorios
+            if (titulo == null || titulo.trim().isEmpty()) {
+                throw new IllegalArgumentException("El título es obligatorio");
+            }
+            if (descripcion == null || descripcion.trim().isEmpty()) {
+                throw new IllegalArgumentException("La descripción es obligatoria");
+            }
+            if (categoria == null || categoria.trim().isEmpty()) {
+                throw new IllegalArgumentException("La categoría es obligatoria");
+            }
+            if (latitudStr == null || longitudStr == null) {
+                throw new IllegalArgumentException("Las coordenadas son obligatorias");
+            }
+
+            // Parsear coordenadas
+            double latitud = Double.parseDouble(latitudStr);
+            double longitud = Double.parseDouble(longitudStr);
+
+            // Crear DTO con los cambios
+            CambiosHechoDto cambios = new CambiosHechoDto();
+            cambios.setTitulo(titulo.trim());
+            cambios.setDescripcion(descripcion.trim());
+            cambios.setCategoria(categoria.trim());
+            cambios.setCoordenadas(new Coordenada(latitud, longitud));
+
+            // Actualizar contenido multimedia si se proporcionó
+            if (urlMultimedia != null && !urlMultimedia.trim().isEmpty()) {
+                cambios.setContenidoMultimedia(urlMultimedia.trim());
+            }
+
+            // Aplicar cambios al hecho
+            hecho.aplicarCambios(cambios);
+
+            // Guardar en base de datos
+            withTransaction(() -> {
+                HechosRepository.getInstance().actualizarHecho(hecho);
+            });
+
+            // Limpiar caché para asegurar que se lean los datos actualizados
+            entityManager().clear();
+
+            // Redirigir al detalle del hecho actualizado
+            context.redirect("/hechos/" + hecho.getId());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            context.redirect("/hechos");
+        }
     }
 }

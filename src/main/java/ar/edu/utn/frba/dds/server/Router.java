@@ -27,6 +27,8 @@ public class Router {
         app.get("/hechos/crear", hechosController::mostrarFormularioCrear);
         app.post("/hechos/crear", hechosController::crearHecho);
         app.get("/hechos/{id}", hechosController::verDetalle);
+        app.get("/hechos/{id}/editar", hechosController::mostrarFormularioEditar);
+        app.post("/hechos/{id}/editar", hechosController::editarHecho);
         app.post("/hechos/{id}/reportar", hechosController::reportarHecho);
 
         // Rutas del panel de administración

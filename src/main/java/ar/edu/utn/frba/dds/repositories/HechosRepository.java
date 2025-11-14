@@ -32,6 +32,16 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
   }
 
   @SuppressWarnings("unchecked")
+  public void actualizarHecho(Hecho hecho) {
+    entityManager().merge(hecho);
+  }
+
+  @SuppressWarnings("unchecked")
+  public Hecho buscarPorId(Long id) {
+    return entityManager().find(Hecho.class, id);
+  }
+
+  @SuppressWarnings("unchecked")
   public void limpiar() { //para testear
     this.hechos.clear();
   }
