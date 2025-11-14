@@ -3,10 +3,11 @@ package ar.edu.utn.frba.dds;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.contracts.Criterio;
 import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.EjecutarConsenso;
@@ -118,15 +119,19 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
   @Test
   void seCreaColeccionConAlgoritmoDeConsenso() {
 
+    Fuente fuenteMock = mock(Fuente.class);
+    AlgoritmoDeConsenso consensoAbsoluto = new ConsensoAbsoluto(List.of(fuenteMock));
+    AlgoritmoDeConsenso mayoriaSimple = new MayoriaSimple(List.of(fuenteMock));
+
     Hecho hechoTestDos = new Hecho("incendio forestal", "desc", "INSEGURIDAD",
         -38, -56, LocalDate.of(2025, 3, 10), OrigenHecho.ESTATICO, null, null);
     hechoTestDos.setLocalidad("Avellaneda");
-    hechoTestDos.setAlgoritmos(Set.of(TipoDeConsenso.MAYORIA_SIMPLE));
+    hechoTestDos.setAlgoritmos(Set.of(consensoAbsoluto));
 
     Hecho hechoTestUno = new Hecho("incendio forestal", "desc", "INSEGURIDAD",
         -38, -56, LocalDate.of(2025, 3, 12), OrigenHecho.ESTATICO, null, null);
     hechoTestUno.setLocalidad("Avellaneda");
-    hechoTestUno.setAlgoritmos(Set.of(TipoDeConsenso.MAYORIA_SIMPLE));
+    hechoTestUno.setAlgoritmos(Set.of(mayoriaSimple));
 
     repoHechos.agregarHecho(hechoTestUno);
     repoHechos.agregarHecho(hechoTestDos);
@@ -139,7 +144,6 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     Fuente fuenteMockCuatro = mock(Fuente.class);
     when(fuenteMockCuatro.obtenerHechos()).thenReturn(List.of(hechoTestDos, hechoTestUno));
 
-
     // Crear colección CON algoritmo (no se va a usar en este test)
     Coleccion coleccion = new Coleccion(
         fuenteMockCuatro,
@@ -147,7 +151,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         LocalDate.of(2025, 1, 1),
         LocalDate.of(2025, 12, 31),
         "INSEGURIDAD",
-        TipoDeConsenso.MAYORIA_SIMPLE
+        consensoAbsoluto
     );
 
     Boolean estaCurada = true;
@@ -172,10 +176,6 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     Fuente fuenteMocktres = mock(Fuente.class);
     when(fuenteMocktres.obtenerHechos()).thenReturn(List.of(hechoUno));
 
-    // Act
-    //limpio el repo
-//    HechosRepository.getInstance().limpiar();
-//    var repo = HechosRepository.getInstance();
 
     //se persisten los hechos
     repoHechos.agregarHecho(hechoUno);
@@ -193,6 +193,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     EjecutarConsenso ejecutar = new EjecutarConsenso();
     ejecutar.aplicarConsensovdos(fuentesActivas, algoritmos);
 
+    AlgoritmoDeConsenso multiplesMenciones = new MultiplesMenciones();
 
     Coleccion coleccion = new Coleccion(
         fuenteMockUno, // no importa la fuente
@@ -200,7 +201,7 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
         LocalDate.of(2022, 1, 1),
         LocalDate.of(2022, 12, 31),
         "Incendio Forestal",
-        TipoDeConsenso.MULTIPLES_MENCIONES
+        multiplesMenciones
     );
 
     Boolean estaCurada = true;
@@ -245,13 +246,15 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     EjecutarConsenso ejecutar = new EjecutarConsenso();
     ejecutar.aplicarConsensovdos(fuentesActivas, algoritmos);
 
+    AlgoritmoDeConsenso multiplesMenciones = new MultiplesMenciones();
+
     Coleccion coleccion = new Coleccion(
         fuenteTest, // si importa la fuente
         "esquel",
         LocalDate.of(2022, 1, 1),
         LocalDate.of(2022, 12, 31),
         "Incendio Forestal",
-        TipoDeConsenso.MULTIPLES_MENCIONES
+        multiplesMenciones
     );
 
     List<Criterio> criteriosTest = List.of(lugartest, fechatest);
