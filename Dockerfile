@@ -19,8 +19,11 @@ RUN mvn clean package -DskipTests
 # Etapa de ejecución
 FROM eclipse-temurin:17-jre-alpine
 
-# Instalar herramientas necesarias (gettext para envsubst, unzip para desempaquetar JAR)
-RUN apk add --no-cache gettext unzip
+# Instalar herramientas necesarias
+# - gettext: para envsubst (reemplazo de variables de entorno)
+# - unzip: para desempaquetar JAR
+# - netcat-openbsd: para verificar disponibilidad de MySQL
+RUN apk add --no-cache gettext unzip netcat-openbsd
 
 WORKDIR /app
 

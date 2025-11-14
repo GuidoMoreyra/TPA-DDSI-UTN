@@ -4,6 +4,14 @@ set -e
 # Directorio de recursos dentro del JAR desempaquetado
 RESOURCES_DIR="/tmp/app-resources"
 
+echo "Esperando a que MySQL esté disponible..."
+# Esperar hasta que MySQL acepte conexiones
+until nc -z "${DB_HOST}" "${DB_PORT}"; do
+    echo "MySQL no está listo - esperando..."
+    sleep 2
+done
+echo "MySQL está listo!"
+
 echo "Iniciando aplicación..."
 echo "Configuración de base de datos:"
 echo "  Host: ${DB_HOST}"
@@ -15,9 +23,9 @@ echo "  Usuario: ${DB_USER}"
 mkdir -p "$RESOURCES_DIR"
 cd "$RESOURCES_DIR"
 
-# Desempaquetar el JAR usando unzip
+# Desempaquetar el JAR usando unzip (-o para sobrescribir sin preguntar)
 echo "Desempaquetando JAR..."
-unzip -q /app/server-jar-with-dependencies.jar
+unzip -o -q /app/server-jar-with-dependencies.jar
 
 # Verificar si existe el template, si no, usar el persistence.xml original
 if [ -f "META-INF/persistence.xml.template" ]; then
