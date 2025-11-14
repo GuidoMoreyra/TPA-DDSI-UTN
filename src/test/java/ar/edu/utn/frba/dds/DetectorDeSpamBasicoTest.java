@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-
 class DetectorDeSpamBasicoTest {
   private DetectorDeSpam detector;
 
@@ -40,4 +38,3 @@ class DetectorDeSpamBasicoTest {
     Assertions.assertTrue(detector.esSpam(texto));
   }
 }
-

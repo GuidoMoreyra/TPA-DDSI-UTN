@@ -1,4 +1,3 @@
 package ar.edu.utn.frba.dds.controllers;
 
-public class HomeController {
-}
+public class HomeController {}

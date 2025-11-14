@@ -16,11 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+// Codigo completamente hecho por chatGPT deberiamos revisarlo
 
-//Codigo completamente hecho por chatGPT deberiamos revisarlo
-
-
-//Esta normalizacion deberia ejecutarse a la hora de cargar el archivo.
+// Esta normalizacion deberia ejecutarse a la hora de cargar el archivo.
 // Se lo normaliza a este formato:
 //    Título, Descripción, Categoría, Latitud, Longitud, Fecha del hecho
 
@@ -31,11 +29,11 @@ public final class NormalizadorCsv {
 
     List<HechoCsvDto> hechos;
 
-    try (BufferedReader reader = new BufferedReader(
-        new InputStreamReader(
-            new FileInputStream(csvFile), StandardCharsets.UTF_8
-        ))) {
-      hechos = new CsvToBeanBuilder<HechoCsvDto>(reader)
+    try (BufferedReader reader =
+        new BufferedReader(
+            new InputStreamReader(new FileInputStream(csvFile), StandardCharsets.UTF_8))) {
+      hechos =
+          new CsvToBeanBuilder<HechoCsvDto>(reader)
               .withType(HechoCsvDto.class)
               .withIgnoreLeadingWhiteSpace(true)
               .build()
@@ -43,23 +41,20 @@ public final class NormalizadorCsv {
     }
 
     // 2. Aplicar transformación / limpieza si hiciera falta
-    hechos.forEach(hecho -> {
-      hecho.setDescripcion(
-          hecho.getDescripcion().trim()
-      );
+    hechos.forEach(
+        hecho -> {
+          hecho.setDescripcion(hecho.getDescripcion().trim());
 
-      hecho.setCategoria(
-          hecho.getCategoria().trim().toUpperCase()
-      );
-    });
+          hecho.setCategoria(hecho.getCategoria().trim().toUpperCase());
+        });
 
     // 3. Sobrescribir el archivo original con los datos estandarizados
     File tempFile = File.createTempFile("normalized-", ".csv");
-    try (BufferedWriter writer = new BufferedWriter(
-        new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.UTF_8)
-    );) {
+    try (BufferedWriter writer =
+        new BufferedWriter(
+            new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.UTF_8)); ) {
       StatefulBeanToCsv<HechoCsvDto> beanToCsv =
-              new StatefulBeanToCsvBuilder<HechoCsvDto>(writer).build();
+          new StatefulBeanToCsvBuilder<HechoCsvDto>(writer).build();
       beanToCsv.write(hechos);
     }
 

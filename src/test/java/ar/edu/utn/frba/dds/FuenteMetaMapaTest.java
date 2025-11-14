@@ -1,23 +1,18 @@
 package ar.edu.utn.frba.dds;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.repositories.fuentes.FuenteMetaMapa;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-
 
 public class FuenteMetaMapaTest {
   @Test
@@ -40,7 +35,7 @@ public class FuenteMetaMapaTest {
                 "fechaDelHecho": "2023-10-01",
                 "fechaCreacion": null,
                 "origen": "INTERMEDIO",
-                "algoritmos": ["CONSENSO_ABSOLUTO"]
+                "algoritmos": null
               }
             ]
         """;
@@ -55,8 +50,5 @@ public class FuenteMetaMapaTest {
 
     assertEquals(1, hechos.size());
     assertEquals("Test", hechos.get(0).getTitulo());
-
   }
-
-
 }

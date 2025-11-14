@@ -1,14 +1,12 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.models.Hecho;
-import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.repositories.fuentes.FuenteEstatica;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 public class FuenteEstaticaTest {
 
@@ -16,7 +14,7 @@ public class FuenteEstaticaTest {
   public void fuenteEstaticaDevuelveDiezHechosDesdeArchivo() {
     // se usa un archivo que tiene 10 hechos
 
-    FuenteEstatica fuente = new FuenteEstatica("formatoTP");
+    FuenteEstatica fuente = new FuenteEstatica("formatoTp");
     List<Hecho> hechos = fuente.obtenerHechos();
 
     assertEquals(10, hechos.size());
@@ -25,7 +23,7 @@ public class FuenteEstaticaTest {
   @Test
   public void elPrimerHechoDeLaFuenteEstaticaNoEsNulo() {
 
-    FuenteEstatica fuente = new FuenteEstatica("formatoTP");
+    FuenteEstatica fuente = new FuenteEstatica("formatoTp");
     List<Hecho> hechos = fuente.obtenerHechos();
 
     assertNotNull(hechos.get(0));

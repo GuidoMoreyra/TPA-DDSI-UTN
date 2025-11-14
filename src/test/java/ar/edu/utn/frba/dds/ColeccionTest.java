@@ -1,22 +1,23 @@
 package ar.edu.utn.frba.dds;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import ar.edu.utn.frba.dds.contracts.Criterio;
+import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.criterios.CriterioCategoria;
 import ar.edu.utn.frba.dds.models.criterios.CriterioFecha;
 import ar.edu.utn.frba.dds.models.criterios.CriterioLugar;
-import ar.edu.utn.frba.dds.contracts.Fuente;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ColeccionTest {
   Fuente fuenteMock;
@@ -25,11 +26,10 @@ public class ColeccionTest {
   CriterioCategoria criterioCategoriaMock;
   CriterioFecha criterioFechaMock;
 
-
   @BeforeEach
   public void setup() {
     /// Seteo de mocks
-    //Fuente
+    // Fuente
     fuenteMock = mock(Fuente.class);
     // Criterios de creacion de una coleccion
     criterioLugarMock = mock(CriterioLugar.class);
@@ -49,7 +49,8 @@ public class ColeccionTest {
     // Colección con criterios de creación (fecha, lugar, categoría)
     LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
     LocalDate fechaFin = LocalDate.of(2024, 12, 31);
-    Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación",null);
+    Coleccion coleccion =
+        new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación", null);
 
     Boolean cumple = coleccion.cumpleCriterios(hecho1, List.of(criterioLugarMock));
     assertTrue(cumple);
@@ -76,7 +77,8 @@ public class ColeccionTest {
 
     LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
     LocalDate fechaFin = LocalDate.of(2024, 12, 31);
-    Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación",null);
+    Coleccion coleccion =
+        new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación", null);
 
     Boolean esIrrestricta = false;
     List<Hecho> resultado = coleccion.obtenerColeccionCriteriosCreacional(esIrrestricta);
@@ -122,24 +124,25 @@ public class ColeccionTest {
     // Colección con criterios de creación (fecha, lugar, categoría)
     LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
     LocalDate fechaFin = LocalDate.of(2024, 12, 31);
-    Coleccion coleccion = new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación",null);
+    Coleccion coleccion =
+        new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Educación", null);
 
     // Se setea qué hechos cumplen qué criterios
 
-    //el hecho 1 cumple los 3 criterios
+    // el hecho 1 cumple los 3 criterios
     when(criterioLugarMock.cumple(hecho1)).thenReturn(true);
     when(criterioCategoriaMock.cumple(hecho1)).thenReturn(true);
     when(criterioFechaMock.cumple(hecho1)).thenReturn(true);
 
-    //el hecho 2 no pasa Criterio Categoría
+    // el hecho 2 no pasa Criterio Categoría
     when(criterioLugarMock.cumple(hecho2)).thenReturn(true);
-    when(criterioCategoriaMock.cumple(hecho2)).thenReturn(false);  //no pasa
+    when(criterioCategoriaMock.cumple(hecho2)).thenReturn(false); // no pasa
     when(criterioFechaMock.cumple(hecho2)).thenReturn(true);
 
-    //el hecho 3 no pasa Criterio Fecha
+    // el hecho 3 no pasa Criterio Fecha
     when(criterioLugarMock.cumple(hecho3)).thenReturn(true);
     when(criterioCategoriaMock.cumple(hecho3)).thenReturn(true);
-    when(criterioFechaMock.cumple(hecho3)).thenReturn(false);  //no pasa
+    when(criterioFechaMock.cumple(hecho3)).thenReturn(false); // no pasa
 
     // Ejecutamos el método a testear
     List<Criterio> criteriosAdicionales = new ArrayList<Criterio>();
@@ -149,13 +152,13 @@ public class ColeccionTest {
 
     Boolean esIrrestrica = false;
 
-    List<Hecho> resultado = coleccion.obtenerColeccionConCriteriosExtra(criteriosAdicionales, esIrrestrica);
+    List<Hecho> resultado =
+        coleccion.obtenerColeccionConCriteriosExtra(criteriosAdicionales, esIrrestrica);
 
     // Solo hecho1 cumple todos los criterios
     assertEquals(1, resultado.size());
     assertTrue(resultado.contains(hecho1));
-    assertFalse(resultado.contains(hecho2));//deberia ser false
-    assertFalse(resultado.contains(hecho3));//deberia ser false
+    assertFalse(resultado.contains(hecho2)); // deberia ser false
+    assertFalse(resultado.contains(hecho3)); // deberia ser false
   }
-
 }

@@ -8,8 +8,6 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 
-
-
 @Entity
 @DiscriminatorValue("fecha")
 @AllArgsConstructor
@@ -28,5 +26,4 @@ public class CriterioFecha extends Criterio {
     return (!hecho.getFechaDelHecho().isBefore(fechaInicial)
         && !hecho.getFechaDelHecho().isAfter(fechaFinal));
   }
-
 }

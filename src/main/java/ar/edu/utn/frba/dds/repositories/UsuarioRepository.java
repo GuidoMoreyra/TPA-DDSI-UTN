@@ -14,19 +14,22 @@ public class UsuarioRepository implements WithSimplePersistenceUnit {
         return INSTANCE;
     }
 
-    public void persistUsuario(Usuario usuario) {
-        withTransaction(() -> {
-            entityManager().persist(usuario);
+  public void persistUsuario(Usuario usuario) {
+    withTransaction(
+        () -> {
+          entityManager().persist(usuario);
         });
-    }
+  }
 
-    public Usuario getUsuario(String nombre, String contrasenia) {
-        var resultados = entityManager()
-                .createQuery("from Usuario where nombre = :nombre and hashPassorwd = :hashPassorwd"
-                        , Usuario.class)
-                .setParameter("nombre", nombre)
-                .setParameter("hashPassorwd", DigestUtils.sha256Hex(contrasenia))
-                .getResultList();
+  public Usuario getUsuario(String nombre, String contrasenia) {
+    var resultados =
+        entityManager()
+            .createQuery(
+                "from Usuario where nombre = :nombre and hashPassorwd = :hashPassorwd",
+                Usuario.class)
+            .setParameter("nombre", nombre)
+            .setParameter("hashPassorwd", DigestUtils.sha256Hex(contrasenia))
+            .getResultList();
 
         return resultados.isEmpty() ? null : resultados.get(0);
     }
@@ -39,4 +42,13 @@ public class UsuarioRepository implements WithSimplePersistenceUnit {
         return resultados.isEmpty() ? null : resultados.get(0);
     }
 
+  public Usuario getUsuarioPorNombre(String nombre) {
+    var resultados =
+        entityManager()
+            .createQuery("from Usuario where nombre = :nombre", Usuario.class)
+            .setParameter("nombre", nombre)
+            .getResultList();
+
+    return resultados.isEmpty() ? null : resultados.get(0);
+  }
 }

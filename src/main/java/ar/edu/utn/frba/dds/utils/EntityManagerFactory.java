@@ -5,7 +5,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-
 public class EntityManagerFactory {
 
   public static void main(String[] args) {
@@ -18,10 +17,12 @@ public class EntityManagerFactory {
 
     crearIndicesFullText(emf);
 
-    System.out.println("EntityManagerFactory inicializado. "
-        + "Hibernate debería haber aplicado las migraciones.");
-    System.out.println("EntityManagerFactory inicializado. "
-        + "Hibernate debería haber aplicado las migraciones.");
+    System.out.println(
+        "EntityManagerFactory inicializado. "
+            + "Hibernate debería haber aplicado las migraciones.");
+    System.out.println(
+        "EntityManagerFactory inicializado. "
+            + "Hibernate debería haber aplicado las migraciones.");
 
     emf.close();
     System.out.println("Factory cerrado. Listo.");
@@ -30,10 +31,7 @@ public class EntityManagerFactory {
   private static void crearIndicesFullText(javax.persistence.EntityManagerFactory emf) {
     EntityManager em = emf.createEntityManager();
 
-    List<String> columnasParaFullTextSearch = List.of(
-        "titulo",
-        "descripcion"
-    );
+    List<String> columnasParaFullTextSearch = List.of("titulo", "descripcion");
 
     try {
       em.getTransaction().begin();
@@ -41,8 +39,12 @@ public class EntityManagerFactory {
       System.out.println("Creando índices FULLTEXT...");
 
       if (!existeIndice(em, "hechos", "idx_multiple_fulltext")) {
-        ejecutarSql(em, "ALTER TABLE hechos ADD FULLTEXT idx_multiple_fulltext "
-            + "(" + String.join(", ", columnasParaFullTextSearch) + ")");
+        ejecutarSql(
+            em,
+            "ALTER TABLE hechos ADD FULLTEXT idx_multiple_fulltext "
+                + "("
+                + String.join(", ", columnasParaFullTextSearch)
+                + ")");
         System.out.println("✓ Índice FULLTEXT creado para múltiples columnas");
       } else {
         System.out.println("• Índice múltiple ya existe");
@@ -61,10 +63,10 @@ public class EntityManagerFactory {
 
   private static boolean existeIndice(EntityManager em, String tabla, String nombreIndice) {
     try {
-      Query query = em.createNativeQuery(
-          "SELECT COUNT(*) FROM information_schema.statistics "
-              + "WHERE table_schema = DATABASE() AND table_name = :tabla AND index_name = :indice"
-      );
+      Query query =
+          em.createNativeQuery(
+              "SELECT COUNT(*) FROM information_schema.statistics WHERE table_schema = DATABASE()"
+                  + " AND table_name = :tabla AND index_name = :indice");
       query.setParameter("tabla", tabla);
       query.setParameter("indice", nombreIndice);
 

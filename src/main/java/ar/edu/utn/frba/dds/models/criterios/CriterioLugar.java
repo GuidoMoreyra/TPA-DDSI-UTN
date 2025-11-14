@@ -9,8 +9,7 @@ import lombok.Getter;
 @Entity
 @DiscriminatorValue("lugar")
 public class CriterioLugar extends Criterio {
-  @Getter
-  private String localidad;
+  @Getter private String localidad;
 
   public CriterioLugar(String localidad) {
     this.localidad = localidad;
@@ -23,10 +22,7 @@ public class CriterioLugar extends Criterio {
   /// Ej: Argentina contiene a CABA , La Pampa , Cordoba etc.
   /// Por el momento solo los comparo.
   public Boolean cumple(Hecho hecho) {
-    //se usa localidad para poder testear mientras no tengamos la API
-    return localidad.equals(
-        hecho.getCoordenadas().getLocalidad()
-    );
+    // se usa localidad para poder testear mientras no tengamos la API
+    return localidad.equals(hecho.getCoordenadas().getLocalidad());
   }
-
 }

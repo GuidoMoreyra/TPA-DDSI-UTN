@@ -15,5 +15,4 @@ public class CambiosHechoDto {
   private String contenidoMultimedia;
   private Coordenada coordenadas;
   private OrigenHecho origen;
-
 }

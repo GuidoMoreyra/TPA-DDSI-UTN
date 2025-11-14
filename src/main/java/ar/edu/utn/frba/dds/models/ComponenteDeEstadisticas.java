@@ -8,6 +8,7 @@ import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import ar.edu.utn.frba.dds.utils.ExportadorCsv;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 
 @Getter
@@ -23,16 +24,18 @@ public class ComponenteDeEstadisticas {
   private SolicitudesEliminacionRepository repoSolicitudesEliminacion;
   private HechosRepository repoHechosRepository;
 
+  @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
+  public ComponenteDeEstadisticas(
+      ColeccionRepository repositorioColeccion,
+      SolicitudesEliminacionRepository repoSolicitudesEliminacion,
+      HechosRepository repoHechos,
+      String categoria,
+      Coleccion coleccion) {
 
-  public ComponenteDeEstadisticas(ColeccionRepository repositorioColeccion,
-                                  SolicitudesEliminacionRepository repoSolicitudesEliminacion,
-                                  HechosRepository repoHechos, String categoria,
-                                  Coleccion coleccion) {
     this.repoColeccion = repositorioColeccion;
     this.repoSolicitudesEliminacion = repoSolicitudesEliminacion;
     this.repoHechosRepository = repoHechos;
     this.actualizar(categoria, coleccion);
-
   }
 
   public void actualizar(String categoria, Coleccion coleccion) {
@@ -46,6 +49,15 @@ public class ComponenteDeEstadisticas {
     this.cantidadSolicitudesSpam = this.cantidadDeSolictudesEliminacionSpam();
   }
 
+  /*De una colección, ¿en qué provincia se agrupan la mayor cantidad de hechos reportados?*/
+  public Provincia buscarProvinciaConMasHechosDeUnaColeccion(Coleccion coleccion) {
+    if (coleccion == null) {
+      throw new IllegalArgumentException(
+          "No se puede buscar la provincia con más hechos sin una colección");
+    }
+    return repoColeccion.provinciaConMasHechos(coleccion.getId());
+  }
+
   /*¿Cuál es la categoría con mayor cantidad de hechos reportados?*/
   public String buscarCategoriaConMasHechos() {
     return repoHechosRepository.buscarCategoriaConMasHechos();
@@ -56,16 +68,6 @@ public class ComponenteDeEstadisticas {
     return repoHechosRepository.buscarProvinciaConMasHechosPorCategoria(categoria);
   }
 
-  /*¿en qué provincia se agrupan la mayor cantidad de hechos reportados?*/
-  public Provincia buscarProvinciaConMasHechosDeUnaColeccion(Coleccion coleccion) {
-    if (coleccion == null) {
-      throw new IllegalArgumentException(
-          "No se puede buscar la provincia con más hechos sin una colección");
-    }
-    return repoColeccion.provinciaConMasHechos(coleccion.getId());
-  }
-
-
   /*¿A qué hora del día ocurren la mayor cantidad de hechos de una cierta categoría?*/
   public Integer buscarHoraPicoPorCategoria(String categoria) {
     return repoHechosRepository.buscarHoraPicoDeHechosSegun(categoria);
@@ -75,23 +77,20 @@ public class ComponenteDeEstadisticas {
     return repoSolicitudesEliminacion.cantidadDeSolicitudesSpamDos();
   }
 
-
   public ReporteColeccion generarReporteColeccion() {
-    ReporteColeccion reporteColeccion = new ReporteColeccion(
-        this.categoriaConMasHechos,
-        this.provinciaConMasHechos,
-        this.horaPicoHechosSegunCategoria,
-        this.provinciaConMasHehosSegunCategoria
+    ReporteColeccion reporteColeccion =
+        new ReporteColeccion(
+            this.categoriaConMasHechos,
+            this.provinciaConMasHechos,
+            this.horaPicoHechosSegunCategoria,
+            this.provinciaConMasHehosSegunCategoria);
 
-    );
-    return  reporteColeccion;
+    return reporteColeccion;
   }
 
-
-
   public ReporteSolicitudElim generarReporteSolicitudSpam() {
-    ReporteSolicitudElim reporteSolicitud = new ReporteSolicitudElim(
-        this.cantidadDeSolictudesEliminacionSpam());
+    ReporteSolicitudElim reporteSolicitud =
+        new ReporteSolicitudElim(this.cantidadDeSolictudesEliminacionSpam());
     return reporteSolicitud;
   }
 
@@ -99,9 +98,4 @@ public class ComponenteDeEstadisticas {
     ExportadorCsv exportadorCsv = new ExportadorCsv();
     exportadorCsv.exportarCsvArchivo(rutaReporte, reporte);
   }
-
-
-
 }
-
-

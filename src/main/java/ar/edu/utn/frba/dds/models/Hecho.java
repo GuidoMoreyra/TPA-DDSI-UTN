@@ -1,11 +1,11 @@
 package ar.edu.utn.frba.dds.models;
 
+import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.enums.Provincia;
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -31,10 +31,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-
-
 @SuppressFBWarnings("EI_EXPOSE_REP")
-
 @Getter
 @Entity
 @Table(name = "hechos")
@@ -54,8 +51,7 @@ public class Hecho {
   @Column(name = "contenido_multimedia")
   private String contenidoMultimedia;
 
-  @Embedded
-  private Coordenada coordenadas;
+  @Embedded private Coordenada coordenadas;
 
   @Column(name = "fecha_hecho")
   private LocalDate fechaDelHecho;
@@ -73,8 +69,7 @@ public class Hecho {
   @ElementCollection
   @CollectionTable(joinColumns = @JoinColumn(name = "hecho_id"))
   @Column(name = "algoritmo")
-  private Set<TipoDeConsenso> algoritmos = new HashSet<>();
-  //estose debe cambiar por la clase algoritmo de consenso
+  private Set<AlgoritmoDeConsenso> algoritmos = new HashSet<>();
 
   /*atributo agregado para estadisticas*/
   @Enumerated(EnumType.STRING)
@@ -82,7 +77,6 @@ public class Hecho {
 
   @Column(name = "hora_hecho")
   private LocalTime horaHecho;
-
 
   public Hecho() {}
 
@@ -95,8 +89,7 @@ public class Hecho {
       LocalDate fechaDelHecho,
       OrigenHecho origen,
       String contenidoMultimedia,
-      LocalTime horaDelHecho
-  ) {
+      LocalTime horaDelHecho) {
     this.contenidoMultimedia = contenidoMultimedia;
     this.titulo = titulo;
     this.descripcion = descripcion;
@@ -108,19 +101,16 @@ public class Hecho {
     this.horaHecho = horaDelHecho;
   }
 
-
   public Coordenada getLugar() {
-    return new Coordenada(coordenadas.latitud, coordenadas.longitud);
+    return new Coordenada(coordenadas.getLatitud(), coordenadas.getLongitud());
   }
 
   public String getLocalidad() {
     return this.coordenadas.getLocalidad();
   }
 
-
   public Boolean estaActivo() {
-    return SolicitudesEliminacionRepository
-        .getInstance()
+    return SolicitudesEliminacionRepository.getInstance()
         .obtenerSolicitudesConEstado(EstadoSolicitudEliminacion.APROBADO)
         .stream()
         .noneMatch(solicitud -> solicitud.esParaElHecho(this));
@@ -142,11 +132,15 @@ public class Hecho {
     if (cambios.getOrigen() != null) {
       this.origen = cambios.getOrigen();
     }
+    if (cambios.getCoordenadas() != null) {
+      this.coordenadas = cambios.getCoordenadas();
+      // Recalcular provincia basada en nuevas coordenadas
+      this.provincia = this.establecerProvincia();
+    }
   }
 
   public Boolean tieneSugerencias() {
-    return SolicitudesAgregacionRepository
-        .getInstance()
+    return SolicitudesAgregacionRepository.getInstance()
         .obtenerSolicitudesConEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS)
         .stream()
         .anyMatch(s -> s.getHecho().equals(this));
@@ -158,18 +152,17 @@ public class Hecho {
         && this.getCategoria().equals(hechoCompar.getCategoria())
         && this.getCoordenadas().equals(hechoCompar.getCoordenadas())
         && this.getFechaDelHecho().equals(hechoCompar.getFechaDelHecho());
-
   }
 
   public boolean compararHecho(Hecho h) {
     return this.getTitulo().equals(h.getTitulo());
   }
 
-  public void agregarConsenso(TipoDeConsenso algoritmo) {
+  public void agregarConsenso(AlgoritmoDeConsenso algoritmo) {
     this.algoritmos.add(algoritmo);
   }
 
-  public List<TipoDeConsenso> getConsensos() {
+  public List<AlgoritmoDeConsenso> getConsensos() {
     return new ArrayList<>(algoritmos);
   }
 
@@ -181,10 +174,6 @@ public class Hecho {
     return !algoritmos.isEmpty();
   }
 
-  public boolean cumpleConsenso(TipoDeConsenso consenso) {
-    return algoritmos.contains(consenso);
-  }
-
   /*metodo para estadisticas*/
   public Provincia establecerProvincia() {
 
@@ -194,6 +183,4 @@ public class Hecho {
   public LocalTime horaDelHecho() {
     return this.horaHecho;
   }
-
-
 }

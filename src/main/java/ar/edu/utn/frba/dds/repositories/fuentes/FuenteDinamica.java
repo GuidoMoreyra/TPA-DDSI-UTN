@@ -20,20 +20,13 @@ public final class FuenteDinamica extends Fuente {
     var repo = SolicitudesAgregacionRepository.getInstance();
 
     List<SolicitudAgregacion> aceptadas =
-        repo.obtenerSolicitudesConEstado(
-            EstadoSolicitudAgregacion.ACEPTADO
-        );
+        repo.obtenerSolicitudesConEstado(EstadoSolicitudAgregacion.ACEPTADO);
 
     List<SolicitudAgregacion> aceptadasConSugerencias =
-        repo.obtenerSolicitudesConEstado(
-            EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS
-        );
+        repo.obtenerSolicitudesConEstado(EstadoSolicitudAgregacion.ACEPTADO_CON_SUGERENCIAS);
 
-    return Stream
-        .concat(aceptadas.stream(), aceptadasConSugerencias.stream())
+    return Stream.concat(aceptadas.stream(), aceptadasConSugerencias.stream())
         .map(SolicitudAgregacion::getHecho)
         .collect(Collectors.toList());
   }
-
-
 }

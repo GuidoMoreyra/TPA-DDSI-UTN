@@ -1,21 +1,19 @@
 package ar.edu.utn.frba.dds;
 
-import ar.edu.utn.frba.dds.utils.NormalizadorCsv;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.*;
 
+import ar.edu.utn.frba.dds.utils.NormalizadorCsv;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class NormalizadorTest {
 
-  @TempDir
-  Path tempDir;
+  @TempDir Path tempDir;
 
   @Test
   @DisplayName("Normaliza y reemplaza correctamente un archivo CSV")
@@ -34,11 +32,8 @@ public class NormalizadorTest {
 
     List<String> lineas = Files.readAllLines(csvOriginal.toPath());
 
-
     assertEquals(2, lineas.size()); // encabezado + 1 línea
-
-    }
-
+  }
 
   @Test
   @DisplayName("Lanza una excepción si el archivo no existe")
@@ -46,9 +41,10 @@ public class NormalizadorTest {
     File archivoInexistente = new File("no_existe.csv");
     NormalizadorCsv normalizador = new NormalizadorCsv();
 
-   assertThrows(Exception.class, () -> {
-      normalizador.normalizarCsv(archivoInexistente);
-    });
+    assertThrows(
+        Exception.class,
+        () -> {
+          normalizador.normalizarCsv(archivoInexistente);
+        });
   }
 }
-

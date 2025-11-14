@@ -21,12 +21,8 @@ public final class AdaptadorFuenteDemo {
 
   private List<Hecho> hechosObtenidos = new ArrayList<>();
 
-  public AdaptadorFuenteDemo(
-      Conexion conexion,
-      String url,
-      LocalDateTime ultimaConsulta
+  public AdaptadorFuenteDemo(Conexion conexion, String url, LocalDateTime ultimaConsulta) {
 
-  ) {
     validarUltimaConsulta(ultimaConsulta);
     this.conexion = conexion;
     this.url = validarUrl(url);
@@ -47,15 +43,13 @@ public final class AdaptadorFuenteDemo {
     }
   }
 
-
   public List<Hecho> obtenerHechos() {
 
     return new ArrayList<>(hechosObtenidos);
   }
 
-
   private Hecho construirHechoDesde(Map<String, Object> datos) {
-    //Primera opcion parciando los datos
+    // Primera opcion parciando los datos
     String titulo = (String) datos.get("titulo");
     String descripcion = (String) datos.get("descripcion");
     String categoria = (String) datos.get("categoria");
@@ -74,8 +68,7 @@ public final class AdaptadorFuenteDemo {
         fechaOcurrido,
         origen,
         contenidoMultimedia,
-        null
-    );
+        null);
   }
 
   public void actualizar() {
@@ -88,6 +81,5 @@ public final class AdaptadorFuenteDemo {
     }
 
     this.ultimaConsulta = LocalDateTime.now();
-
   }
 }

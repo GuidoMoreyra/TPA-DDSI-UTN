@@ -1,0 +1,41 @@
+# Directorios de build y dependencias
+target/
+.mvn/
+*.log
+
+# Git
+.git/
+.gitignore
+.github/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentación y otros
+README.md
+consigna/
+*.md
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*~
+
+# Claude
+.claude/
+
+# Scripts
+reset.sh

@@ -26,7 +26,7 @@ public final class SolicitudAgregacion implements Solicitud {
   private EstadoSolicitudAgregacion estado = EstadoSolicitudAgregacion.PENDIENTE;
 
   @ManyToOne
-  Usuario usuario; //Si es null es anonimo
+  private Usuario usuario; //Si es null es anonimo
 
   @OneToOne
   private Hecho hecho;
@@ -48,6 +48,7 @@ public final class SolicitudAgregacion implements Solicitud {
     this.fechaCreacion = fechaCreacion;
   }
 
+  // Estados Solicitudes
   public void aceptarSolicitud() {
     this.estado = EstadoSolicitudAgregacion.ACEPTADO;
   }
@@ -61,9 +62,8 @@ public final class SolicitudAgregacion implements Solicitud {
     this.estado = EstadoSolicitudAgregacion.RECHAZADO;
   }
 
-  //Otros
+  // Otros
   public boolean puedeEditar() {
     return usuario != null && fechaCreacion.isAfter(LocalDate.now().minusDays(7));
   }
-
 }

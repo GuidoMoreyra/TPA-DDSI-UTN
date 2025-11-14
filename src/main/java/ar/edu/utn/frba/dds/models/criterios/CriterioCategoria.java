@@ -7,9 +7,6 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 
-
-
-
 @Entity
 @DiscriminatorValue("categoria")
 @AllArgsConstructor
@@ -21,17 +18,10 @@ public class CriterioCategoria extends Criterio {
 
   @Override
   public Boolean cumple(Hecho hecho) {
-    return this.categoria.equals(
-        hecho.getCategoria()
-    );
+    return this.categoria.equals(hecho.getCategoria());
   }
 
   public Boolean seCumpleCriterio(Map<String, String> unHecho) {
-    return this.categoria.equals(
-        unHecho.get("categoria")
-    );
+    return this.categoria.equals(unHecho.get("categoria"));
   }
-
 }
-
-

@@ -29,8 +29,8 @@ public final class SolicitudEliminacion implements Solicitud {
   @Column(name = "estado")
   private EstadoSolicitudEliminacion estado = EstadoSolicitudEliminacion.PENDIENTE;
 
-  @OneToOne
-  private Hecho hecho;
+  @OneToOne private Hecho hecho;
+
   @Column(length = 2000)
   private String justificacion;
 
@@ -38,20 +38,20 @@ public final class SolicitudEliminacion implements Solicitud {
   @Column(name = "es_spam")
   private boolean esSpam;
 
-  public SolicitudEliminacion(
-       Hecho hecho,
-       String justificacion,
-       DetectorDeSpamBasico detector
-  ) {
+  public SolicitudEliminacion(Hecho hecho, String justificacion, DetectorDeSpamBasico detector) {
     if (justificacion.length() < 500) {
       throw new IllegalArgumentException(
-        "La justificacion de una solicitud de eliminación no puede ser menor a 500 caracteres"
-      );
+          "La justificacion de una solicitud de eliminación no puede ser menor a 500 caracteres");
     }
 
     this.hecho = hecho;
     this.justificacion = justificacion;
     this.esSpam = detector.esSpam(justificacion);
+
+    // Si es spam, rechazar automáticamente
+    if (this.esSpam) {
+      this.estado = EstadoSolicitudEliminacion.RECHAZADO_AUTOMATICAMENTE;
+    }
   }
 
   public SolicitudEliminacion() {}
@@ -71,5 +71,4 @@ public final class SolicitudEliminacion implements Solicitud {
   public boolean esParaElHecho(Hecho hecho) {
     return this.hecho.equals(hecho);
   }
-
 }

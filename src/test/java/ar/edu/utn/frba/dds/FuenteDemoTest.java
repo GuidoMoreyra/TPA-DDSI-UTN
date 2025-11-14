@@ -1,21 +1,21 @@
 package ar.edu.utn.frba.dds;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
+import ar.edu.utn.frba.dds.contracts.Conexion;
 import ar.edu.utn.frba.dds.exceptions.InvalidoUrlExeception;
 import ar.edu.utn.frba.dds.exceptions.UltimaConsultaException;
-import ar.edu.utn.frba.dds.contracts.Conexion;
 import ar.edu.utn.frba.dds.repositories.fuentes.AdaptadorFuenteDemo;
-import org.junit.jupiter.api.Assertions;
-import static org.mockito.Mockito.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class FuenteDemoTest {
 
@@ -45,86 +45,76 @@ public class FuenteDemoTest {
   }
 
   @BeforeEach
-  void conexionMockParaobtenerHechos(){
-
-
-  }
+  void conexionMockParaobtenerHechos() {}
 
   @Test
   @DisplayName("Se puede crear un adapter de fuente demo con todos los parametros correctos")
-  void crearFuenteDemo(){
+  void crearFuenteDemo() {
 
     String url = "http://demotest.org/api";
     LocalDateTime ultimaConsultaTest = LocalDateTime.now().minusHours(1);
-    //Integer intervaloDeEspera = 60;
-    //Duration duracion = Duration.ofSeconds(30);
-    AdaptadorFuenteDemo adaptador = new AdaptadorFuenteDemo(conexionSinResultados, url,
-        ultimaConsultaTest);
+    // Integer intervaloDeEspera = 60;
+    // Duration duracion = Duration.ofSeconds(30);
+    AdaptadorFuenteDemo adaptador =
+        new AdaptadorFuenteDemo(conexionSinResultados, url, ultimaConsultaTest);
 
     assertNotNull(adaptador);
   }
 
   @Test
   @DisplayName("No se puede crear un adapter de fuente demo sin una ultimaConsulta")
-  void crearFuenteDemoSinUnaUltimaConsulta(){
+  void crearFuenteDemoSinUnaUltimaConsulta() {
     String url = "http://demotest.org/api";
-    //Integer intervaloDeEspera = 60;
-    //Duration duracion = Duration.ofSeconds(30);
+    // Integer intervaloDeEspera = 60;
+    // Duration duracion = Duration.ofSeconds(30);
 
-    Assertions.assertThrows(UltimaConsultaException.class, ()->
-        new AdaptadorFuenteDemo(conexionSinResultados, url,
-            null));
-
+    Assertions.assertThrows(
+        UltimaConsultaException.class,
+        () -> new AdaptadorFuenteDemo(conexionSinResultados, url, null));
   }
 
   @Test
   @DisplayName("no se puede crear un adapter de fuente demo sin una url valida")
-  void crearFuenteDemoSinUnaUrlValida(){
+  void crearFuenteDemoSinUnaUrlValida() {
     String url = "";
     LocalDateTime ultimaConsultaTest = LocalDateTime.now().minusHours(1);
-    //Duration duracion = Duration.ofSeconds(30);
-    //Integer intervaloDeEspera = 60;
+    // Duration duracion = Duration.ofSeconds(30);
+    // Integer intervaloDeEspera = 60;
 
-    Assertions.assertThrows(InvalidoUrlExeception.class, ()->
-        new AdaptadorFuenteDemo(conexionSinResultados, url,
-            ultimaConsultaTest));
+    Assertions.assertThrows(
+        InvalidoUrlExeception.class,
+        () -> new AdaptadorFuenteDemo(conexionSinResultados, url, ultimaConsultaTest));
   }
 
   @Test
   @DisplayName("se obtiene un hecho de una fuente demo")
-  void obtenerHechoDeUnaFuenteDemo(){
+  void obtenerHechoDeUnaFuenteDemo() {
     String url = "http://demotest.org/api";
     LocalDateTime ultimaConsultaTest = LocalDateTime.now().minusMinutes(61);
-    //Duration duracion = Duration.ofSeconds(30);
-    //Integer intervaloDeEspera = 60;
+    // Duration duracion = Duration.ofSeconds(30);
+    // Integer intervaloDeEspera = 60;
 
-    AdaptadorFuenteDemo adapterTest = new AdaptadorFuenteDemo(
-        conexionConResultados, url, ultimaConsultaTest);
+    AdaptadorFuenteDemo adapterTest =
+        new AdaptadorFuenteDemo(conexionConResultados, url, ultimaConsultaTest);
 
     adapterTest.actualizar();
 
-    Assertions.assertEquals(1,adapterTest.obtenerHechos().size());
+    Assertions.assertEquals(1, adapterTest.obtenerHechos().size());
   }
 
   @Test
   @DisplayName("No se obtiene hechos de una fuente demo")
-  void noseObtieneHechosDeUnaFuenteDemo(){
+  void noseObtieneHechosDeUnaFuenteDemo() {
     String url = "http://demotest.org/api";
     LocalDateTime ultimaConsultaTest = LocalDateTime.now();
-    //Duration duracion = Duration.ofSeconds(30);
-    //Integer intervaloDeEspera = 60;
+    // Duration duracion = Duration.ofSeconds(30);
+    // Integer intervaloDeEspera = 60;
 
-    AdaptadorFuenteDemo adapterTest = new AdaptadorFuenteDemo(
-      conexionSinResultados, url, ultimaConsultaTest);
+    AdaptadorFuenteDemo adapterTest =
+        new AdaptadorFuenteDemo(conexionSinResultados, url, ultimaConsultaTest);
 
     adapterTest.actualizar();
 
-    Assertions.assertEquals(0,adapterTest.obtenerHechos().size());
+    Assertions.assertEquals(0, adapterTest.obtenerHechos().size());
   }
-
-
-
-
 }
-
-

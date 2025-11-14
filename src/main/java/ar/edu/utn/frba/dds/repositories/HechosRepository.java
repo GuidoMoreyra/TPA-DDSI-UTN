@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.dds.repositories;
 
+import ar.edu.utn.frba.dds.contracts.AlgoritmoDeConsenso;
 import ar.edu.utn.frba.dds.enums.Provincia;
-import ar.edu.utn.frba.dds.enums.TipoDeConsenso;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.Usuario;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
@@ -22,9 +22,7 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
 
   @SuppressWarnings("unchecked")
   public List<Hecho> getHechos() {
-    return entityManager()
-        .createQuery("from Hecho", Hecho.class)
-        .getResultList();
+    return entityManager().createQuery("from Hecho", Hecho.class).getResultList();
   }
 
   @SuppressWarnings("unchecked")
@@ -33,7 +31,17 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
   }
 
   @SuppressWarnings("unchecked")
-  public void limpiar() { //para testear
+  public void actualizarHecho(Hecho hecho) {
+    entityManager().merge(hecho);
+  }
+
+  @SuppressWarnings("unchecked")
+  public Hecho buscarPorId(Long id) {
+    return entityManager().find(Hecho.class, id);
+  }
+
+  @SuppressWarnings("unchecked")
+  public void limpiar() { // para testear
     this.hechos.clear();
   }
 
@@ -41,7 +49,6 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
   public void limpiarBase() {
     entityManager().clear();
   }
-
 
   @SuppressWarnings("unchecked")
   public Hecho getHechoById(Long id) {
@@ -54,13 +61,12 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
   }
 
   public boolean contiene(Hecho hecho) {
-    Hecho hechoEncontrado = entityManager()
-        .find(Hecho.class, hecho.getId());
+    Hecho hechoEncontrado = entityManager().find(Hecho.class, hecho.getId());
 
     return hechoEncontrado != null;
   }
 
-  public Boolean verificaConsenso(Hecho hechoAverificar, TipoDeConsenso consenso) {
+  public Boolean verificaConsenso(Hecho hechoAverificar, AlgoritmoDeConsenso consenso) {
     if (consenso == null) {
       return true;
     }
@@ -80,12 +86,17 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
     }
 
     // Detectar si estamos usando H2 (para tests) o MySQL (para producción)
-    String databaseUrl = entityManager().getEntityManagerFactory()
-        .getProperties().get("hibernate.connection.url").toString();
+    String databaseUrl =
+        entityManager()
+            .getEntityManagerFactory()
+            .getProperties()
+            .get("hibernate.connection.url")
+            .toString();
 
     if (databaseUrl.contains("h2")) {
       // Implementación para H2 (tests) usando LIKE
-      String jpql = """
+      String jpql =
+          """
           SELECT h FROM Hecho h
           WHERE LOWER(h.titulo) LIKE LOWER(:searchTerm)
           OR LOWER(h.descripcion) LIKE LOWER(:searchTerm)
@@ -96,7 +107,8 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
       return query.getResultList();
     } else {
       // Implementación para MySQL (producción) usando MATCH AGAINST
-      String sql = """
+      String sql =
+          """
           SELECT h.*, MATCH(h.titulo, h.descripcion)
           AGAINST(:searchTerm IN NATURAL LANGUAGE MODE) as relevance
           FROM hechos h
@@ -112,7 +124,8 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
 
   public Provincia buscarProvinciaConMasHechosPorCategoria(String categoria) {
 
-    String query = """
+    String query =
+        """
         SELECT h.provincia
                 FROM Hecho h
                 WHERE h.categoria = :categoria
@@ -120,46 +133,54 @@ public final class HechosRepository implements WithSimplePersistenceUnit {
                 ORDER BY COUNT(h) DESC
         """;
 
-    List<Provincia> resultados = entityManager()
-        .createQuery(query, Provincia.class)
-        .setParameter("categoria", categoria)
-        .setMaxResults(1)
-        .getResultList();
+    List<Provincia> resultados =
+        entityManager()
+            .createQuery(query, Provincia.class)
+            .setParameter("categoria", categoria)
+            .setMaxResults(1)
+            .getResultList();
 
-    return  resultados.isEmpty() ? Provincia.PROVINCIA_DESCONOCIDA : resultados.get(0);
-
+    return resultados.isEmpty() ? Provincia.PROVINCIA_DESCONOCIDA : resultados.get(0);
   }
 
   public Integer buscarHoraPicoDeHechosSegun(String categoria) {
+    if (categoria == null) {
+      return null;
+    }
 
-    String query = """
-       SELECT HOUR(h.horaHecho), COUNT(h)
-           FROM Hecho h
-           WHERE h.categoria = :categoria
-           GROUP BY HOUR(h.horaHecho)
-           ORDER BY COUNT(h) DESC
-           """;
-    return (Integer) entityManager()
-        .createQuery(query, Object[].class)
-        .setParameter("categoria", categoria)
-        .setMaxResults(1)
-        .getResultList()
-        .get(0)[0];
+    String query =
+        """
+        SELECT HOUR(h.horaHecho), COUNT(h)
+            FROM Hecho h
+            WHERE h.categoria = :categoria AND h.horaHecho IS NOT NULL
+            GROUP BY HOUR(h.horaHecho)
+            ORDER BY COUNT(h) DESC
+        """;
+    List<Object[]> resultados =
+        entityManager()
+            .createQuery(query, Object[].class)
+            .setParameter("categoria", categoria)
+            .setMaxResults(1)
+            .getResultList();
+
+    return resultados.isEmpty() ? null : (Integer) resultados.get(0)[0];
   }
 
   public String buscarCategoriaConMasHechos() {
-    String query = """
+    String query =
+        """
         Select h.categoria, count(h.categoria)
         from Hecho h
         group by h.categoria
         order by count(h.categoria) desc
         """;
 
-    Object[] result = entityManager()
-        .createQuery(query, Object[].class)
-        .getResultList()
-        .get(0);
+    List<Object[]> resultados = entityManager().createQuery(query, Object[].class).getResultList();
 
-    return (String) result[0];
+    if (resultados.isEmpty()) {
+      return null;
+    }
+
+    return (String) resultados.get(0)[0];
   }
 }

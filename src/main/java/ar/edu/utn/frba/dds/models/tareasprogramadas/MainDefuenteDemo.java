@@ -12,12 +12,11 @@ public class MainDefuenteDemo {
 
   public static void main(String[] args) {
     Conexion conexion = new ConexionFalsa(); // implementación fake
-    AdaptadorFuenteDemo fuente = new AdaptadorFuenteDemo(
-        conexion,
-        "http://fakeurl.com/api",
-        LocalDateTime.now().minusMinutes(1)
-    //deberia ser cada hora en el crontab
-    );
+    AdaptadorFuenteDemo fuente =
+        new AdaptadorFuenteDemo(
+            conexion, "http://fakeurl.com/api", LocalDateTime.now().minusMinutes(1)
+            // deberia ser cada hora en el crontab
+            );
 
     FuenteIntermedia fuentedemo = new FuenteIntermedia();
     fuentedemo.configurarFuenteIntermedia(fuente);
@@ -29,7 +28,5 @@ public class MainDefuenteDemo {
     for (Hecho hecho : hechos) {
       System.out.println("- " + hecho.getTitulo());
     }
-
   }
-
 }
