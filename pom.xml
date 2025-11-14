@@ -293,6 +293,25 @@
             </configuration>
           </execution>
 
+          <execution>
+            <id>server</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <finalName>server</finalName>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                <manifest>
+                  <mainClass>ar.edu.utn.frba.dds.Main</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
         </executions>
       </plugin>
     </plugins>
