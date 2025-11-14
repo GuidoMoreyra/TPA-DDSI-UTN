@@ -15,7 +15,7 @@ public class FuenteEstaticaTest {
   public void fuenteEstaticaDevuelveDiezHechosDesdeArchivo() {
     // se usa un archivo que tiene 10 hechos
 
-    FuenteEstatica fuente = new FuenteEstatica("formatoTP");
+    FuenteEstatica fuente = new FuenteEstatica("formatoTp");
     List<Hecho> hechos = fuente.obtenerHechos();
 
     assertEquals(10, hechos.size());
@@ -24,7 +24,7 @@ public class FuenteEstaticaTest {
   @Test
   public void elPrimerHechoDeLaFuenteEstaticaNoEsNulo() {
 
-    FuenteEstatica fuente = new FuenteEstatica("formatoTP");
+    FuenteEstatica fuente = new FuenteEstatica("formatoTp");
     List<Hecho> hechos = fuente.obtenerHechos();
 
     assertNotNull(hechos.get(0));
