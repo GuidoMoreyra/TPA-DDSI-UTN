@@ -1,15 +1,26 @@
 package ar.edu.utn.frba.dds.controllers;
 
-import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
+import ar.edu.utn.frba.dds.contracts.Solicitud;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
+import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
+import ar.edu.utn.frba.dds.enums.Operacion;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
 import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.Hecho;
+import ar.edu.utn.frba.dds.models.SolicitudAgregacion;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
+import ar.edu.utn.frba.dds.models.Usuario;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
+import ar.edu.utn.frba.dds.repositories.SolicitudesAgregacionRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
+import ar.edu.utn.frba.dds.repositories.UsuarioRepository;
+import ar.edu.utn.frba.dds.utils.ImgManager;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import io.javalin.http.Context;
+import io.javalin.http.UploadedFile;
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -19,27 +30,30 @@ import java.util.stream.Collectors;
 
 public class HechosController implements WithSimplePersistenceUnit {
 
-  public void listarHechos(Context context) {
-    final Map<String, Object> model = new HashMap<>();
+    private ImgManager imgManager;
 
-    // Obtener parámetros de filtro opcionales
-    String categoriaFiltro = context.queryParam("categoria");
-    String provinciaFiltro = context.queryParam("provincia");
-    String busqueda = context.queryParam("busqueda");
 
-    // Obtener todos los hechos activos
-    List<Hecho> hechos =
-        HechosRepository.getInstance().getHechos().stream()
-            .filter(Hecho::estaActivo)
-            .collect(Collectors.toList());
 
-    // Aplicar filtros si existen
-    if (categoriaFiltro != null && !categoriaFiltro.isEmpty() && !categoriaFiltro.equals("todas")) {
-      hechos =
-          hechos.stream()
-              .filter(h -> categoriaFiltro.equalsIgnoreCase(h.getCategoria()))
-              .collect(Collectors.toList());
-    }
+    public void listarHechos(Context context) {
+        Map<String, Object> model = new HashMap<>();
+
+        // Obtener parámetros de filtro opcionales
+        String categoriaFiltro = context.queryParam("categoria");
+        String provinciaFiltro = context.queryParam("provincia");
+        String busqueda = context.queryParam("busqueda");
+
+        // Obtener todos los hechos activos
+        List<Hecho> hechos = HechosRepository.getInstance().getHechos()
+                .stream()
+                .filter(Hecho::estaActivo)
+                .collect(Collectors.toList());
+
+        // Aplicar filtros si existen
+        if (categoriaFiltro != null && !categoriaFiltro.isEmpty() && !categoriaFiltro.equals("todas")) {
+            hechos = hechos.stream()
+                    .filter(h -> categoriaFiltro.equalsIgnoreCase(h.getCategoria()))
+                    .collect(Collectors.toList());
+        }
 
     if (provinciaFiltro != null && !provinciaFiltro.isEmpty() && !provinciaFiltro.equals("todas")) {
       hechos =
