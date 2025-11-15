@@ -41,6 +41,9 @@ public class Router {
     app.get("/admin/colecciones", adminController::listarColecciones);
     app.get("/admin/colecciones/crear", adminController::mostrarFormularioColeccion);
     app.post("/admin/colecciones/crear", adminController::crearColeccion);
+    app.get("/admin/colecciones/{id}", adminController::verDetalleColeccion);
+    app.get("/admin/colecciones/{id}/editar", adminController::mostrarFormularioEditarColeccion);
+    app.post("/admin/colecciones/{id}/editar", adminController::actualizarColeccion);
 
     // Ruta principal
     app.get(

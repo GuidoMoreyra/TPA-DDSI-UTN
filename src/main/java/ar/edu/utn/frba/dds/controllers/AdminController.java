@@ -569,4 +569,200 @@ public class AdminController implements WithSimplePersistenceUnit {
       context.redirect("/admin/colecciones/crear?error=true");
     }
   }
+
+  /** Muestra el detalle de una colección con sus hechos */
+  public void verDetalleColeccion(Context context) {
+    // Verificar permisos de admin
+    if (!esAdmin(context)) {
+      context.redirect("/");
+      return;
+    }
+
+    try {
+      Long id = Long.parseLong(context.pathParam("id"));
+      Coleccion coleccion = new ColeccionRepository().obtener(id);
+
+      if (coleccion == null) {
+        context.redirect("/admin/colecciones?error=coleccion_no_encontrada");
+        return;
+      }
+
+      Map<String, Object> model = new HashMap<>();
+
+      // Información de la colección
+      model.put("id", coleccion.getId());
+      model.put("titulo", coleccion.getTitulo());
+      model.put("descripcion", coleccion.getDescripcion());
+      model.put("categoria", coleccion.getCategoria());
+
+      // Obtener hechos de la colección
+      List<Hecho> hechos = coleccion.obtenerColeccionCriteriosCreacional(false);
+
+      // Preparar hechos para el template
+      List<Map<String, Object>> hechosParaTemplate =
+          hechos.stream()
+              .map(
+                  h -> {
+                    Map<String, Object> hechoMap = new HashMap<>();
+                    hechoMap.put("id", h.getId());
+                    hechoMap.put("titulo", h.getTitulo());
+                    hechoMap.put("descripcion", h.getDescripcion());
+                    hechoMap.put("categoria", h.getCategoria());
+                    hechoMap.put("fecha", h.getFechaDelHecho());
+                    hechoMap.put("provincia", h.getProvincia());
+                    return hechoMap;
+                  })
+              .collect(Collectors.toList());
+
+      model.put("hechos", hechosParaTemplate);
+      model.put("totalHechos", hechos.size());
+
+      // Información de la fuente
+      if (coleccion.getFuente() != null) {
+        String nombreFuente =
+            coleccion.getFuente().getClass().getSimpleName().replace("Fuente", "");
+        model.put("fuenteNombre", "Fuente " + nombreFuente);
+      }
+
+      // Para mensajes de feedback
+      String mensaje = context.queryParam("mensaje");
+      if (mensaje != null) {
+        model.put("mensajeActualizada", mensaje.equals("actualizada"));
+      }
+
+      agregarInfoSesion(context, model);
+      context.render("admin-coleccion-detalle.hbs", model);
+
+    } catch (NumberFormatException e) {
+      context.redirect("/admin/colecciones?error=id_invalido");
+    } catch (Exception e) {
+      e.printStackTrace();
+      context.redirect("/admin/colecciones?error=true");
+    }
+  }
+
+  /** Muestra el formulario para editar una colección */
+  public void mostrarFormularioEditarColeccion(Context context) {
+    // Verificar permisos de admin
+    if (!esAdmin(context)) {
+      context.redirect("/");
+      return;
+    }
+
+    try {
+      Long id = Long.parseLong(context.pathParam("id"));
+      Coleccion coleccion = new ColeccionRepository().obtener(id);
+
+      if (coleccion == null) {
+        context.redirect("/admin/colecciones?error=coleccion_no_encontrada");
+        return;
+      }
+
+      Map<String, Object> model = new HashMap<>();
+
+      // Datos de la colección
+      model.put("id", coleccion.getId());
+      model.put("titulo", coleccion.getTitulo());
+      model.put("descripcion", coleccion.getDescripcion());
+      model.put("categoria", coleccion.getCategoria());
+
+      // Obtener fuentes disponibles
+      List<Fuente> fuentes =
+          entityManager().createQuery("from Fuente", Fuente.class).getResultList();
+
+      List<Map<String, Object>> fuentesParaTemplate =
+          fuentes.stream()
+              .map(
+                  f -> {
+                    Map<String, Object> fuenteMap = new HashMap<>();
+                    fuenteMap.put("id", f.getId());
+                    String nombreFuente = f.getClass().getSimpleName().replace("Fuente", "");
+                    fuenteMap.put("nombre", "Fuente " + nombreFuente + " (ID: " + f.getId() + ")");
+                    fuenteMap.put(
+                        "selected",
+                        coleccion.getFuente() != null
+                            && f.getId().equals(coleccion.getFuente().getId()));
+                    return fuenteMap;
+                  })
+              .collect(Collectors.toList());
+
+      // Obtener categorías únicas
+      List<String> categorias =
+          HechosRepository.getInstance().getHechos().stream()
+              .map(Hecho::getCategoria)
+              .distinct()
+              .sorted()
+              .collect(Collectors.toList());
+
+      model.put("fuentes", fuentesParaTemplate);
+      model.put("categorias", categorias);
+      agregarInfoSesion(context, model);
+      context.render("admin-coleccion-editar.hbs", model);
+
+    } catch (NumberFormatException e) {
+      context.redirect("/admin/colecciones?error=id_invalido");
+    } catch (Exception e) {
+      e.printStackTrace();
+      context.redirect("/admin/colecciones?error=true");
+    }
+  }
+
+  /** Actualiza una colección existente */
+  public void actualizarColeccion(Context context) {
+    // Verificar permisos de admin
+    if (!esAdmin(context)) {
+      context.redirect("/");
+      return;
+    }
+
+    try {
+      Long id = Long.parseLong(context.pathParam("id"));
+
+      // Obtener datos del formulario
+      String titulo = context.formParam("titulo");
+      String descripcion = context.formParam("descripcion");
+
+      // Validar campos obligatorios
+      if (titulo == null || titulo.trim().isEmpty()) {
+        context.redirect("/admin/colecciones/" + id + "/editar?error=campos_requeridos");
+        return;
+      }
+
+      withTransaction(
+          () -> {
+            Coleccion coleccion = entityManager().find(Coleccion.class, id);
+            if (coleccion == null) {
+              throw new RuntimeException("Colección no encontrada");
+            }
+
+            // Actualizar solo título y descripción (los criterios no se modifican)
+            // ya que cambiar los criterios cambiaría fundamentalmente la colección
+            // Se usa reflexión para actualizar campos privados
+            try {
+              var tituloField = Coleccion.class.getDeclaredField("titulo");
+              tituloField.setAccessible(true);
+              tituloField.set(coleccion, titulo.trim());
+
+              var descripcionField = Coleccion.class.getDeclaredField("descripcion");
+              descripcionField.setAccessible(true);
+              descripcionField.set(
+                  coleccion, descripcion != null ? descripcion.trim() : "");
+
+              entityManager().merge(coleccion);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+              throw new RuntimeException("Error al actualizar colección", e);
+            }
+          });
+
+      context.redirect("/admin/colecciones/" + id + "?mensaje=actualizada");
+
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+      context.redirect("/admin/colecciones?error=id_invalido");
+    } catch (Exception e) {
+      e.printStackTrace();
+      Long id = Long.parseLong(context.pathParam("id"));
+      context.redirect("/admin/colecciones/" + id + "/editar?error=true");
+    }
+  }
 }

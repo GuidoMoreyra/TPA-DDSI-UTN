@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles de Colección - {{titulo}}</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">MetaMapa</a>
+      <ul class="navbar-nav">
+        <li><a href="/hechos" class="nav-link">Explorar Hechos</a></li>
+        {{#if user}}
+          <li><a href="#" class="nav-link">{{nombre}}</a></li>
+          {{#if isAdmin}}
+            <li><a href="/admin/solicitudes" class="nav-link active">Panel Admin</a></li>
+          {{/if}}
+          <li><a href="/logout" class="nav-link btn-outline">Cerrar Sesión</a></li>
+        {{else}}
+          <li><a href="/login" class="nav-link">Iniciar Sesión</a></li>
+          <li><a href="/register" class="nav-link btn-primary">Registrarse</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header Section -->
+  <div style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; padding: 2rem 0;">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+        <a href="/admin/colecciones" style="color: white; text-decoration: none; font-size: 1.5rem;">←</a>
+        <div>
+          <h1 style="font-size: 2rem; margin: 0; color: white;">{{titulo}}</h1>
+          <p style="font-size: 1rem; color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">
+            {{descripcion}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container" style="padding: 2rem 0;">
+
+    <!-- Navegación del Panel Admin -->
+    <div style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+      <a href="/admin/solicitudes" class="btn btn-outline">📋 Solicitudes</a>
+      <a href="/admin/estadisticas" class="btn btn-outline">📊 Estadísticas</a>
+      <a href="/admin/colecciones" class="btn btn-outline">📚 Colecciones</a>
+    </div>
+
+    <!-- Mensajes de feedback -->
+    {{#if mensajeActualizada}}
+      <div style="background-color: #d1fae5; border-left: 4px solid #10b981; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;">
+        <p style="color: #065f46; margin: 0; font-weight: 500;">✓ Colección actualizada correctamente.</p>
+      </div>
+    {{/if}}
+
+    <!-- Información de la colección -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+      <div class="card-body">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem;">
+          <h2 style="margin: 0; color: #1f2937;">Información de la Colección</h2>
+          <a href="/admin/colecciones/{{id}}/editar" class="btn btn-outline">✏️ Editar</a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+          <div>
+            <div style="font-weight: 600; color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">Categoría</div>
+            <div style="color: #1f2937;">{{categoria}}</div>
+          </div>
+          <div>
+            <div style="font-weight: 600; color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">Fuente de Datos</div>
+            <div style="color: #1f2937;">{{fuenteNombre}}</div>
+          </div>
+          <div>
+            <div style="font-weight: 600; color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">Total de Hechos</div>
+            <div style="color: #1f2937; font-size: 1.5rem; font-weight: bold;">{{totalHechos}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de hechos -->
+    <div style="margin-bottom: 1.5rem;">
+      <h2 style="margin-bottom: 1rem;">Hechos de esta Colección</h2>
+    </div>
+
+    {{#if hechos}}
+      <div class="grid grid-cols-1" style="gap: 1rem;">
+        {{#each hechos}}
+          <div class="card">
+            <div class="card-body">
+              <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div style="flex: 1;">
+                  <h3 style="margin: 0 0 0.5rem 0; color: #1f2937;">{{titulo}}</h3>
+                  <p style="margin: 0 0 1rem 0; color: #6b7280; font-size: 0.95rem;">{{descripcion}}</p>
+                  <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem;">
+                    <div>
+                      <span style="font-weight: 600; color: #4b5563;">Categoría:</span>
+                      <span style="color: #6b7280;">{{categoria}}</span>
+                    </div>
+                    <div>
+                      <span style="font-weight: 600; color: #4b5563;">Fecha:</span>
+                      <span style="color: #6b7280;">{{fecha}}</span>
+                    </div>
+                    <div>
+                      <span style="font-weight: 600; color: #4b5563;">Provincia:</span>
+                      <span style="color: #6b7280;">{{provincia}}</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="/hechos/{{id}}" class="btn btn-outline" style="white-space: nowrap;">Ver Detalle</a>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="card">
+        <div class="card-body" style="text-align: center; padding: 3rem;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
+          <h3 style="color: #6b7280; margin-bottom: 0.5rem;">No hay hechos en esta colección</h3>
+          <p style="color: #9ca3af;">Los hechos aparecerán aquí cuando se cumplan los criterios definidos</p>
+        </div>
+      </div>
+    {{/if}}
+
+  </div>
+</body>
+</html>

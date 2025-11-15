@@ -22,20 +22,16 @@ public class AuthController {
       String nombre = context.formParam("nombre");
       String password = context.formParam("password");
 
-            if (nombre != null && password != null && !nombre.isEmpty() && !password.isEmpty()) {
-                Usuario usuario = UsuarioRepository.getInstance().getUsuario(nombre, password);
-                if (usuario != null) {
-                    context.sessionAttribute("user_id", usuario.getId());
-                    context.sessionAttribute("nombre", usuario.getNombre());
-                    context.sessionAttribute("nivel_acceso", usuario.getNivelDeAcceso());
-                    context.redirect("/");
-                    return;
-                } else {
-                    model.put("mensaje", "Usuario o contraseña incorrectos");
-                }
-            } else {
-                model.put("mensaje", "Complete todos los campos");
-            }
+      if (nombre != null && password != null && !nombre.isEmpty() && !password.isEmpty()) {
+        Usuario usuario = UsuarioRepository.getInstance().getUsuario(nombre, password);
+        if (usuario != null) {
+          context.sessionAttribute("user_id", usuario.getId());
+          context.sessionAttribute("nombre", usuario.getNombre());
+          context.sessionAttribute("nivel_acceso", usuario.getNivelDeAcceso());
+          context.redirect("/");
+          return;
+        } else {
+          model.put("mensaje", "Usuario o contraseña incorrectos");
         }
       } else {
         model.put("mensaje", "Complete todos los campos");

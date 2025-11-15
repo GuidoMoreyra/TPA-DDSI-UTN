@@ -76,7 +76,11 @@
             <div class="card-body">
               <div style="display: flex; justify-content: space-between; align-items: start;">
                 <div style="flex: 1;">
-                  <h3 style="margin: 0 0 0.5rem 0; color: #1f2937;">{{titulo}}</h3>
+                  <h3 style="margin: 0 0 0.5rem 0; color: #1f2937;">
+                    <a href="/admin/colecciones/{{id}}" style="color: #1f2937; text-decoration: none;">
+                      {{titulo}}
+                    </a>
+                  </h3>
                   <p style="margin: 0 0 1rem 0; color: #6b7280; font-size: 0.95rem;">{{descripcion}}</p>
                   <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
                     <div>
@@ -88,6 +92,10 @@
                       <span style="color: #6b7280;">{{cantidadHechos}}</span>
                     </div>
                   </div>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                  <a href="/admin/colecciones/{{id}}" class="btn btn-outline">Ver Detalles</a>
+                  <a href="/admin/colecciones/{{id}}/editar" class="btn btn-outline">✏️ Editar</a>
                 </div>
               </div>
             </div>
