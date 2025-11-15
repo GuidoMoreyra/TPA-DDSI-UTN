@@ -1,12 +1,18 @@
 package ar.edu.utn.frba.dds.models;
 
-import ar.edu.utn.frba.dds.contracts.Solicitud;
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudAgregacion;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.time.LocalDate;
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,7 +21,7 @@ import lombok.Getter;
 @Entity
 @Table(name = "solicitudes_agregacion")
 @AllArgsConstructor
-public final class SolicitudAgregacion implements Solicitud {
+public final class SolicitudAgregacion {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,26 +31,24 @@ public final class SolicitudAgregacion implements Solicitud {
   @Column(name = "estado")
   private EstadoSolicitudAgregacion estado = EstadoSolicitudAgregacion.PENDIENTE;
 
-  @ManyToOne
-  private Usuario usuario; //Si es null es anonimo
+  @OneToOne private Hecho hecho;
 
-  @OneToOne
-  private Hecho hecho;
-
+  @Column(name = "es_anonimo")
+  private Boolean esAnonimo;
 
   @Column(name = "fecha_creacion")
   private LocalDate fechaCreacion = LocalDate.now();
 
   public SolicitudAgregacion() {}
 
-  public SolicitudAgregacion(Hecho hecho, Usuario usaruio) {
+  public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo) {
     this.hecho = hecho;
-    this.usuario = usuario;
+    this.esAnonimo = esAnonimo;
   }
 
-  public SolicitudAgregacion(Hecho hecho, Usuario usaruio, LocalDate fechaCreacion) {
+  public SolicitudAgregacion(Hecho hecho, Boolean esAnonimo, LocalDate fechaCreacion) {
     this.hecho = hecho;
-    this.usuario = usuario;
+    this.esAnonimo = esAnonimo;
     this.fechaCreacion = fechaCreacion;
   }
 
@@ -64,6 +68,6 @@ public final class SolicitudAgregacion implements Solicitud {
 
   // Otros
   public boolean puedeEditar() {
-    return usuario != null && fechaCreacion.isAfter(LocalDate.now().minusDays(7));
+    return !esAnonimo && fechaCreacion.isAfter(LocalDate.now().minusDays(7));
   }
 }

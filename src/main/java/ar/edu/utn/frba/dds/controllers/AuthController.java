@@ -23,7 +23,7 @@ public class AuthController {
       String password = context.formParam("password");
 
       if (nombre != null && password != null && !nombre.isEmpty() && !password.isEmpty()) {
-        Usuario usuario = UsuarioRepository.getInstance().getUsuario(nombre, password);
+        Usuario usuario = UsuarioRepository.INSTANCE.getUsuario(nombre, password);
         if (usuario != null) {
           context.sessionAttribute("user_id", usuario.getId());
           context.sessionAttribute("nombre", usuario.getNombre());
