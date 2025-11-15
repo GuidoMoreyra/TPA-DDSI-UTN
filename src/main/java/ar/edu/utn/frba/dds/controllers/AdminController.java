@@ -553,7 +553,13 @@ public class AdminController implements WithSimplePersistenceUnit {
       withTransaction(
           () -> {
             new ColeccionRepository().persistir(coleccion);
+            entityManager().flush(); // Asegurar que la colección tenga ID
+
             coleccion.agregarHechos();
+
+            // Hacer merge para persistir la relación con los hechos
+            entityManager().merge(coleccion);
+            entityManager().flush(); // Forzar la persistencia inmediata
           });
 
       context.redirect("/admin/colecciones?mensaje=creada");
@@ -595,8 +601,8 @@ public class AdminController implements WithSimplePersistenceUnit {
       model.put("descripcion", coleccion.getDescripcion());
       model.put("categoria", coleccion.getCategoria());
 
-      // Obtener hechos de la colección
-      List<Hecho> hechos = coleccion.obtenerColeccionCriteriosCreacional(false);
+      // Obtener hechos de la colección desde la relación persistida
+      List<Hecho> hechos = coleccion.getHechos();
 
       // Preparar hechos para el template
       List<Map<String, Object>> hechosParaTemplate =

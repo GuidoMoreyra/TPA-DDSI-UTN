@@ -2,10 +2,12 @@ package ar.edu.utn.frba.dds.controllers;
 
 import ar.edu.utn.frba.dds.dto.CambiosHechoDto;
 import ar.edu.utn.frba.dds.enums.OrigenHecho;
+import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.Coordenada;
 import ar.edu.utn.frba.dds.models.DetectorDeSpamBasico;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
+import ar.edu.utn.frba.dds.repositories.ColeccionRepository;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
@@ -310,10 +312,26 @@ public class HechosController implements WithSimplePersistenceUnit {
               contenidoMultimediaFinal,
               horaHecho);
 
-      // Persistir usando transacción
+      // Persistir en una sola transacción para evitar problemas de sincronización
       withTransaction(
           () -> {
+            // Primero persistir el hecho
             HechosRepository.getInstance().agregarHecho(nuevoHecho);
+            entityManager().flush(); // Asegurar que el hecho tenga ID
+
+            // Luego agregar a las colecciones que cumplan con sus criterios
+            ColeccionRepository coleccionRepo = new ColeccionRepository();
+            // Usar listarSinHechos para evitar problemas con fetch join
+            List<Coleccion> colecciones = coleccionRepo.listarSinHechos();
+
+            for (Coleccion coleccion : colecciones) {
+              // Verificar si el hecho cumple con los criterios de la colección
+              if (coleccion.cumpleCriterios(nuevoHecho, coleccion.getCriteriosDeCreacion())) {
+                coleccion.agregarHecho(nuevoHecho);
+              }
+            }
+
+            entityManager().flush(); // Forzar la persistencia de todas las relaciones
           });
 
       // Redirigir al detalle del hecho creado

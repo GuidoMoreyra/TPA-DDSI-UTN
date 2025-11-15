@@ -9,7 +9,13 @@ import java.util.List;
 public class ColeccionRepository implements WithSimplePersistenceUnit {
 
   public List<Coleccion> listar() {
-    return entityManager().createQuery("from Coleccion", Coleccion.class).getResultList();
+    return entityManager()
+        .createQuery("SELECT DISTINCT c FROM Coleccion c LEFT JOIN FETCH c.hechos", Coleccion.class)
+        .getResultList();
+  }
+
+  public List<Coleccion> listarSinHechos() {
+    return entityManager().createQuery("FROM Coleccion", Coleccion.class).getResultList();
   }
 
   public Collection<Coleccion> deCategoria(String categoria) {
@@ -21,7 +27,14 @@ public class ColeccionRepository implements WithSimplePersistenceUnit {
   }
 
   public Coleccion obtener(Long id) {
-    return entityManager().find(Coleccion.class, id);
+    Coleccion coleccion =
+        entityManager()
+            .createQuery(
+                "SELECT c FROM Coleccion c LEFT JOIN FETCH c.hechos WHERE c.id = :id",
+                Coleccion.class)
+            .setParameter("id", id)
+            .getSingleResult();
+    return coleccion;
   }
 
   public void persistir(Coleccion coleccion) {

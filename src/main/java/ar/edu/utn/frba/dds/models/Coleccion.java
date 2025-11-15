@@ -58,6 +58,10 @@ public final class Coleccion {
 
   @Transient private final HechosRepository repositorio = HechosRepository.getInstance();
 
+  public List<Criterio> getCriteriosDeCreacion() {
+    return new ArrayList<>(criteriosDeCreacion);
+  }
+
   // esto deberia irse porque lops hehcos se obtiene de la lista o cache de
   // la fuente para la comparacion de curado o no
 
@@ -88,7 +92,7 @@ public final class Coleccion {
   private String descripcion;
 
   @Getter
-  @ManyToMany(cascade = CascadeType.PERSIST)
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
       name = "colecciones_hechos",
       joinColumns = @JoinColumn(name = "coleccion_id"),
@@ -113,10 +117,8 @@ public final class Coleccion {
     this.fuente = fuente;
     this.algoritmoDeconsenso = algoritmo;
 
+    // Solo usar criterios de categoría y fecha para la asignación automática
     criteriosDeCreacion.add(new CriterioFecha(fechaInicial, fechaFinal));
-
-    criteriosDeCreacion.add(new CriterioLugar(localidad));
-
     criteriosDeCreacion.add(new CriterioCategoria(categoria));
     this.categoria = categoria;
   }
@@ -125,7 +127,19 @@ public final class Coleccion {
 
   //// METODOS///
   public void agregarHechos() {
-    this.hechos = new ArrayList<>(this.obtenerColeccionCriteriosCreacional(false));
+    // Buscar en todos los hechos del repositorio que cumplan los criterios
+    List<Hecho> hechosQueCoinciden =
+        repositorio.getHechos().stream()
+            .filter(hecho -> hecho.estaActivo() && this.cumpleCriterios(hecho, criteriosDeCreacion))
+            .toList();
+
+    this.hechos = new ArrayList<>(hechosQueCoinciden);
+  }
+
+  public void agregarHecho(Hecho hecho) {
+    if (!this.hechos.contains(hecho)) {
+      this.hechos.add(hecho);
+    }
   }
 
   private void validar(LocalDate fechaInicial, LocalDate fechaFinal) {
