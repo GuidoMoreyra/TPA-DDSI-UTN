@@ -150,6 +150,8 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
 
     Coleccion coleccion =
         new Coleccion(
+            "Coleccion Test",
+            "Descripcion test",
             servicioTest,
             "esquel",
             LocalDate.of(2022, 1, 1),
@@ -169,6 +171,8 @@ public class ServicioAgregacionTest implements SimplePersistenceTest {
 
     Coleccion coleccion =
         new Coleccion(
+            "Coleccion Test",
+            "Descripcion test",
             servicioTest,
             "esquel",
             LocalDate.of(2022, 1, 1),

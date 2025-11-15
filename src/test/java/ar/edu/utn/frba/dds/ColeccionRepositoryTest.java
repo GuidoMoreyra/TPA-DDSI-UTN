@@ -18,6 +18,8 @@ public class ColeccionRepositoryTest implements SimplePersistenceTest {
     entityManager()
         .persist(
             new Coleccion(
+                "Coleccion Test",
+                "Descripcion test",
                 null,
                 null,
                 LocalDate.of(2025, 1, 1),
@@ -27,6 +29,8 @@ public class ColeccionRepositoryTest implements SimplePersistenceTest {
     entityManager()
         .persist(
             new Coleccion(
+                "Coleccion Test",
+                "Descripcion test",
                 null,
                 null,
                 LocalDate.of(2025, 1, 1),

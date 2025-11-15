@@ -166,7 +166,15 @@ public class EstadisticasTest implements SimplePersistenceTest {
     LocalDate fechaFin = LocalDate.of(2024, 12, 31);
 
     Coleccion coleccion =
-        new Coleccion(fuenteMock, "Buenos Aires", fechaInicio, fechaFin, "Inseguridad", null);
+        new Coleccion(
+            "Coleccion Test",
+            "Descripcion test",
+            fuenteMock,
+            "Buenos Aires",
+            fechaInicio,
+            fechaFin,
+            "Inseguridad",
+            null);
 
     Assertions.assertEquals("Inseguridad", coleccion.getCategoria());
   }

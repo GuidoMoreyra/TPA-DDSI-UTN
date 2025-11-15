@@ -331,6 +331,8 @@ public class PersistenceTest implements SimplePersistenceTest {
 
     Coleccion coleccion =
         new Coleccion(
+            "Coleccion Test",
+            "Descripcion test",
             fuenteEstatica,
             "buenos aires",
             LocalDate.of(2024, 1, 1),

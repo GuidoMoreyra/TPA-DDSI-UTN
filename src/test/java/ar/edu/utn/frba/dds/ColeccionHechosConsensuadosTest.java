@@ -112,6 +112,8 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     // Crear colección sin algoritmo de consenso
     Coleccion coleccion =
         new Coleccion(
+            "Coleccion Test",
+            "Descripcion test",
             fuenteMockTres,
             "Quilmes",
             LocalDate.of(2024, 5, 1),
@@ -174,6 +176,8 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
     // Crear colección CON algoritmo (no se va a usar en este test)
     Coleccion coleccion =
         new Coleccion(
+            "Coleccion Test",
+            "Descripcion test",
             fuenteMockCuatro,
             "Avellaneda",
             LocalDate.of(2025, 1, 1),
@@ -222,6 +226,8 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
 
     Coleccion coleccion =
         new Coleccion(
+            "Coleccion Test",
+            "Descripcion test",
             fuenteMockUno, // no importa la fuente
             "esquel",
             LocalDate.of(2022, 1, 1),
@@ -275,6 +281,8 @@ public class ColeccionHechosConsensuadosTest implements SimplePersistenceTest {
 
     Coleccion coleccion =
         new Coleccion(
+            "Coleccion Test",
+            "Descripcion test",
             fuenteTest, // si importa la fuente
             "esquel",
             LocalDate.of(2022, 1, 1),
