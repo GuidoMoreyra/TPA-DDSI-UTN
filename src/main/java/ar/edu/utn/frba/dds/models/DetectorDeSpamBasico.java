@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public final class DetectorDeSpamBasico implements DetectorDeSpam {
   private static final int LIMITE_CORPUS = 50;
-  private static final double UMBRAL_SIMILITUD = 0.08;
+  private static final double UMBRAL_SIMILITUD = 0.05;
 
   @Override
   public boolean esSpam(String texto) {
