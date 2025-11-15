@@ -5,6 +5,7 @@ import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.Usuario;
 import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.UsuarioRepository;
+import ar.edu.utn.frba.dds.repositories.fuentes.FuenteDinamica;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,10 +21,23 @@ public class DatabaseSeeder implements WithSimplePersistenceUnit {
 
     System.out.println("Iniciando seed de la base de datos...");
 
+    crearFuentesDeDatos();
     crearUsuariosDeEjemplo();
     crearHechosDeEjemplo();
 
     System.out.println("Seed completado exitosamente");
+  }
+
+  private void crearFuentesDeDatos() {
+    System.out.println("Creando fuentes de datos de ejemplo...");
+
+    withTransaction(
+        () -> {
+          // Crear fuente dinámica (de hechos contribuidos por usuarios)
+          FuenteDinamica fuenteDinamica = new FuenteDinamica();
+          entityManager().persist(fuenteDinamica);
+          System.out.println("  - Fuente Dinámica creada");
+        });
   }
 
   private void crearUsuariosDeEjemplo() {

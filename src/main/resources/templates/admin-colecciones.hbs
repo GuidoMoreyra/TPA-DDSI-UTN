@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin - Colecciones</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-brand">MetaMapa</a>
+      <ul class="navbar-nav">
+        <li><a href="/hechos" class="nav-link">Explorar Hechos</a></li>
+        {{#if user}}
+          <li><a href="#" class="nav-link">{{nombre}}</a></li>
+          {{#if isAdmin}}
+            <li><a href="/admin/solicitudes" class="nav-link active">Panel Admin</a></li>
+          {{/if}}
+          <li><a href="/logout" class="nav-link btn-outline">Cerrar Sesión</a></li>
+        {{else}}
+          <li><a href="/login" class="nav-link">Iniciar Sesión</a></li>
+          <li><a href="/register" class="nav-link btn-primary">Registrarse</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header Section -->
+  <div style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; padding: 2rem 0;">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+        <span style="font-size: 2.5rem;">📚</span>
+        <h1 style="font-size: 2rem; margin: 0; color: white;">Gestión de Colecciones</h1>
+      </div>
+      <p style="font-size: 1rem; color: rgba(255,255,255,0.9); margin: 0;">
+        Administra las colecciones de hechos del sistema
+      </p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container" style="padding: 2rem 0;">
+
+    <!-- Navegación del Panel Admin -->
+    <div style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+      <a href="/admin/solicitudes" class="btn btn-outline">📋 Solicitudes</a>
+      <a href="/admin/estadisticas" class="btn btn-outline">📊 Estadísticas</a>
+      <a href="/admin/colecciones" class="btn btn-primary" style="pointer-events: none;">📚 Colecciones</a>
+    </div>
+
+    <!-- Mensajes de feedback -->
+    {{#if mensajeCreada}}
+      <div style="background-color: #d1fae5; border-left: 4px solid #10b981; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;">
+        <p style="color: #065f46; margin: 0; font-weight: 500;">✓ Colección creada correctamente.</p>
+      </div>
+    {{/if}}
+    {{#if error}}
+      <div style="background-color: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;">
+        <p style="color: #991b1b; margin: 0; font-weight: 500;">✗ Error al procesar la solicitud. Intente nuevamente.</p>
+      </div>
+    {{/if}}
+
+    <!-- Botón para crear nueva colección -->
+    <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+      <h2 style="margin: 0;">Colecciones ({{totalColecciones}})</h2>
+      <a href="/admin/colecciones/crear" class="btn btn-primary">+ Nueva Colección</a>
+    </div>
+
+    <!-- Lista de colecciones -->
+    {{#if colecciones}}
+      <div class="grid grid-cols-1" style="gap: 1rem;">
+        {{#each colecciones}}
+          <div class="card">
+            <div class="card-body">
+              <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div style="flex: 1;">
+                  <h3 style="margin: 0 0 0.5rem 0; color: #1f2937;">{{titulo}}</h3>
+                  <p style="margin: 0 0 1rem 0; color: #6b7280; font-size: 0.95rem;">{{descripcion}}</p>
+                  <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                    <div>
+                      <span style="font-weight: 600; color: #4b5563;">Categoría:</span>
+                      <span style="color: #6b7280;">{{categoria}}</span>
+                    </div>
+                    <div>
+                      <span style="font-weight: 600; color: #4b5563;">Hechos:</span>
+                      <span style="color: #6b7280;">{{cantidadHechos}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="card">
+        <div class="card-body" style="text-align: center; padding: 3rem;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
+          <h3 style="color: #6b7280; margin-bottom: 0.5rem;">No hay colecciones creadas</h3>
+          <p style="color: #9ca3af; margin-bottom: 1.5rem;">Crea tu primera colección para organizar los hechos</p>
+          <a href="/admin/colecciones/crear" class="btn btn-primary">+ Crear Primera Colección</a>
+        </div>
+      </div>
+    {{/if}}
+
+  </div>
+</body>
+</html>

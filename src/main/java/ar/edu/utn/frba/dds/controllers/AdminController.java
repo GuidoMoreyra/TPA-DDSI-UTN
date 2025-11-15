@@ -1,7 +1,9 @@
 package ar.edu.utn.frba.dds.controllers;
 
+import ar.edu.utn.frba.dds.contracts.Fuente;
 import ar.edu.utn.frba.dds.enums.EstadoSolicitudEliminacion;
 import ar.edu.utn.frba.dds.enums.Provincia;
+import ar.edu.utn.frba.dds.models.Coleccion;
 import ar.edu.utn.frba.dds.models.ComponenteDeEstadisticas;
 import ar.edu.utn.frba.dds.models.Hecho;
 import ar.edu.utn.frba.dds.models.SolicitudEliminacion;
@@ -10,6 +12,8 @@ import ar.edu.utn.frba.dds.repositories.HechosRepository;
 import ar.edu.utn.frba.dds.repositories.SolicitudesEliminacionRepository;
 import io.github.flbulgarelli.jpa.extras.simple.WithSimplePersistenceUnit;
 import io.javalin.http.Context;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -393,6 +397,176 @@ public class AdminController implements WithSimplePersistenceUnit {
       model.put("error", "Error al cargar las estadísticas: " + e.getMessage());
       agregarInfoSesion(context, model);
       context.render("admin-estadisticas.hbs", model);
+    }
+  }
+
+  /** Lista todas las colecciones */
+  public void listarColecciones(Context context) {
+    // Verificar permisos de admin
+    if (!esAdmin(context)) {
+      context.redirect("/");
+      return;
+    }
+
+    Map<String, Object> model = new HashMap<>();
+
+    try {
+      List<Coleccion> colecciones = new ColeccionRepository().listar();
+
+      // Preparar datos para el template
+      List<Map<String, Object>> coleccionesParaTemplate =
+          colecciones.stream()
+              .map(
+                  c -> {
+                    Map<String, Object> coleccionMap = new HashMap<>();
+                    coleccionMap.put("id", c.getId());
+                    coleccionMap.put("titulo", c.getTitulo());
+                    coleccionMap.put("descripcion", c.getDescripcion());
+                    coleccionMap.put("categoria", c.getCategoria());
+                    coleccionMap.put("cantidadHechos", c.getHechos().size());
+                    return coleccionMap;
+                  })
+              .collect(Collectors.toList());
+
+      model.put("colecciones", coleccionesParaTemplate);
+      model.put("totalColecciones", colecciones.size());
+
+      // Para mensajes de feedback
+      String mensaje = context.queryParam("mensaje");
+      if (mensaje != null) {
+        model.put("mensajeCreada", mensaje.equals("creada"));
+      }
+      model.put("error", context.queryParam("error") != null);
+
+      agregarInfoSesion(context, model);
+      context.render("admin-colecciones.hbs", model);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      model.put("error", "Error al cargar colecciones: " + e.getMessage());
+      agregarInfoSesion(context, model);
+      context.render("admin-colecciones.hbs", model);
+    }
+  }
+
+  /** Muestra el formulario para crear una nueva colección */
+  public void mostrarFormularioColeccion(Context context) {
+    // Verificar permisos de admin
+    if (!esAdmin(context)) {
+      context.redirect("/");
+      return;
+    }
+
+    Map<String, Object> model = new HashMap<>();
+
+    try {
+      // Obtener fuentes disponibles
+      List<Fuente> fuentes =
+          entityManager().createQuery("from Fuente", Fuente.class).getResultList();
+
+      List<Map<String, Object>> fuentesParaTemplate =
+          fuentes.stream()
+              .map(
+                  f -> {
+                    Map<String, Object> fuenteMap = new HashMap<>();
+                    fuenteMap.put("id", f.getId());
+                    String nombreFuente = f.getClass().getSimpleName().replace("Fuente", "");
+                    fuenteMap.put("nombre", "Fuente " + nombreFuente + " (ID: " + f.getId() + ")");
+                    return fuenteMap;
+                  })
+              .collect(Collectors.toList());
+
+      // Obtener categorías únicas de los hechos existentes
+      List<String> categorias =
+          HechosRepository.getInstance().getHechos().stream()
+              .map(Hecho::getCategoria)
+              .distinct()
+              .sorted()
+              .collect(Collectors.toList());
+
+      model.put("fuentes", fuentesParaTemplate);
+      model.put("categorias", categorias);
+      agregarInfoSesion(context, model);
+      context.render("admin-coleccion-crear.hbs", model);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      context.redirect("/admin/colecciones?error=true");
+    }
+  }
+
+  /** Crea una nueva colección */
+  public void crearColeccion(Context context) {
+    // Verificar permisos de admin
+    if (!esAdmin(context)) {
+      context.redirect("/");
+      return;
+    }
+
+    try {
+      // Obtener datos del formulario
+      String titulo = context.formParam("titulo");
+      String descripcion = context.formParam("descripcion");
+      Long fuenteId = Long.parseLong(context.formParam("fuenteId"));
+      String localidad = context.formParam("localidad");
+      String fechaInicialStr = context.formParam("fechaInicial");
+      String fechaFinalStr = context.formParam("fechaFinal");
+      String categoria = context.formParam("categoria");
+
+      // Validar campos obligatorios
+      if (titulo == null
+          || titulo.trim().isEmpty()
+          || fuenteId == null
+          || fechaInicialStr == null
+          || fechaFinalStr == null
+          || categoria == null
+          || categoria.trim().isEmpty()) {
+        context.redirect("/admin/colecciones/crear?error=campos_requeridos");
+        return;
+      }
+
+      // Parsear fechas
+      LocalDate fechaInicial = LocalDate.parse(fechaInicialStr);
+      LocalDate fechaFinal = LocalDate.parse(fechaFinalStr);
+
+      // Obtener fuente
+      Fuente fuente = entityManager().find(Fuente.class, fuenteId);
+      if (fuente == null) {
+        context.redirect("/admin/colecciones/crear?error=fuente_no_encontrada");
+        return;
+      }
+
+      // Crear colección
+      Coleccion coleccion =
+          new Coleccion(
+              titulo.trim(),
+              descripcion != null ? descripcion.trim() : "",
+              fuente,
+              localidad != null ? localidad.trim() : "",
+              fechaInicial,
+              fechaFinal,
+              categoria.trim(),
+              null // algoritmo de consenso opcional por ahora
+              );
+
+      // Persistir
+      withTransaction(
+          () -> {
+            new ColeccionRepository().persistir(coleccion);
+            coleccion.agregarHechos();
+          });
+
+      context.redirect("/admin/colecciones?mensaje=creada");
+
+    } catch (DateTimeParseException e) {
+      e.printStackTrace();
+      context.redirect("/admin/colecciones/crear?error=fecha_invalida");
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+      context.redirect("/admin/colecciones/crear?error=datos_invalidos");
+    } catch (Exception e) {
+      e.printStackTrace();
+      context.redirect("/admin/colecciones/crear?error=true");
     }
   }
 }

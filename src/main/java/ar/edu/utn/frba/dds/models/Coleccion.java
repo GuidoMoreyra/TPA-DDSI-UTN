@@ -80,6 +80,14 @@ public final class Coleccion {
   @Getter private String categoria;
 
   @Getter
+  @Column(name = "titulo", nullable = false)
+  private String titulo;
+
+  @Getter
+  @Column(name = "descripcion", columnDefinition = "TEXT")
+  private String descripcion;
+
+  @Getter
   @ManyToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
       name = "colecciones_hechos",
@@ -90,6 +98,8 @@ public final class Coleccion {
   // esto deberia ir en la fuente salvo fuente de cargada por el usuario
 
   public Coleccion(
+      String titulo,
+      String descripcion,
       Fuente fuente,
       String localidad,
       LocalDate fechaInicial,
@@ -98,6 +108,8 @@ public final class Coleccion {
       AlgoritmoDeConsenso algoritmo) {
 
     this.validar(fechaInicial, fechaFinal);
+    this.titulo = titulo;
+    this.descripcion = descripcion;
     this.fuente = fuente;
     this.algoritmoDeconsenso = algoritmo;
 
