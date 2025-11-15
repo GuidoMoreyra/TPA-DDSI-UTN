@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframes - MetaMapa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 4px solid #8b5cf6;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            color: #8b5cf6;
+            margin-top: 60px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            page-break-before: always;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .wireframe {
+            border: 3px solid #333;
+            margin: 30px 0;
+            background: white;
+            page-break-inside: avoid;
+        }
+
+        .wireframe-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 2px solid #333;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .navbar {
+            background: #8b5cf6;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #6d28d9;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-item {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            color: white;
+            padding: 30px 20px;
+            border-bottom: 2px solid #333;
+        }
+
+        .content-section {
+            padding: 30px 20px;
+        }
+
+        .box {
+            border: 2px dashed #999;
+            padding: 20px;
+            margin: 15px 0;
+            background: #f9f9f9;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        .form-group {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            padding: 15px;
+            background: #fafafa;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            background: white;
+            min-height: 40px;
+        }
+
+        .button {
+            background: #8b5cf6;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+
+        .button-outline {
+            background: white;
+            color: #8b5cf6;
+            border: 2px solid #8b5cf6;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card {
+            border: 2px solid #ddd;
+            padding: 20px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .card-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            border: 2px solid #8b5cf6;
+            padding: 20px;
+            text-align: center;
+            background: #f8f5ff;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #8b5cf6;
+        }
+
+        .filters {
+            background: #f0f0f0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            margin: 20px 0;
+        }
+
+        .description {
+            color: #666;
+            font-size: 0.95em;
+            margin-top: 10px;
+            padding: 15px;
+            background: #fff9e6;
+            border-left: 4px solid #ffc107;
+        }
+
+        .section-title {
+            background: #e9ecef;
+            padding: 10px 15px;
+            margin: 20px 0;
+            font-weight: bold;
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            border: 2px solid #8b5cf6;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .tab.active {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            h2 {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📐 Wireframes - Sistema MetaMapa</h1>
+
+        <div class="description">
+            <strong>Proyecto:</strong> MetaMapa - Sistema de Gestión de Hechos Históricos<br>
+            <strong>Tecnologías:</strong> Java + Javalin + Hibernate + MySQL + Handlebars<br>
+            <strong>Fecha:</strong> 2025<br>
+            <strong>Descripción:</strong> Sistema web para la gestión, curación y visualización de hechos históricos con panel administrativo, sistema de colecciones y gestión de solicitudes de eliminación.
+        </div>
+
+        <!-- SECCIÓN 1: AUTENTICACIÓN -->
+        <h2>1. Módulo de Autenticación</h2>
+
+        <h3>1.1 Página de Login</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Login (/login)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Iniciar Sesión</div>
+                    <div class="nav-item">Registrarse</div>
+                </div>
+            </div>
+            <div class="content-section">
+                <div style="text-align: center; padding: 40px 0;">
+                    <h2>🔐 Iniciar Sesión</h2>
+                    <p>Accede a tu cuenta de MetaMapa</p>
+                </div>
+                <div style="max-width: 500px; margin: 0 auto;">
+                    <div class="form-group">
+                        <div class="form-label">Nombre de Usuario</div>
+                        <div class="form-input">[Campo de texto]</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label">Contraseña</div>
+                        <div class="form-input">[Campo de contraseña]</div>
+                    </div>
+                    <div class="box" style="background: #fee2e2; border-color: #ef4444;">
+                        [Mensaje de error si credenciales incorrectas]
+                    </div>
+                    <div style="text-align: center;">
+                        <div class="button">Iniciar Sesión</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>1.2 Página de Registro</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Registro (/register)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Iniciar Sesión</div>
+                    <div class="nav-item">Registrarse</div>
+                </div>
+            </div>
+            <div class="content-section">
+                <div style="text-align: center; padding: 40px 0;">
+                    <h2>📝 Crear Cuenta</h2>
+                    <p>Únete a la comunidad de MetaMapa</p>
+                </div>
+                <div style="max-width: 500px; margin: 0 auto;">
+                    <div class="form-group">
+                        <div class="form-label">Nombre de Usuario *</div>
+                        <div class="form-input">[Campo de texto]</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label">Contraseña * (mínimo 8 caracteres)</div>
+                        <div class="form-input">[Campo de contraseña]</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label">Confirmar Contraseña *</div>
+                        <div class="form-input">[Campo de contraseña]</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div class="button">Registrarse</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: HECHOS PÚBLICOS -->
+        <h2>2. Módulo de Hechos Públicos</h2>
+
+        <h3>2.1 Página Principal / Landing</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Home (/)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Usuario123</div>
+                    <div class="nav-item">Cerrar Sesión</div>
+                </div>
+            </div>
+            <div class="header-section">
+                <div style="text-align: center;">
+                    <h1 style="font-size: 3em; margin-bottom: 15px;">🗺️ MetaMapa</h1>
+                    <p style="font-size: 1.3em;">Tu repositorio de hechos históricos verificados</p>
+                    <div style="margin-top: 30px;">
+                        <div class="button">Explorar Hechos</div>
+                        <div class="button-outline" style="color: white; border-color: white;">Crear Nuevo Hecho</div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-section">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-number">245</div>
+                        <div>Hechos Activos</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">12</div>
+                        <div>Colecciones</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">8</div>
+                        <div>Categorías</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">34</div>
+                        <div>Usuarios</div>
+                    </div>
+                </div>
+                <div class="box" style="min-height: 200px;">
+                    [Descripción del sistema y características principales]
+                </div>
+            </div>
+        </div>
+
+        <h3>2.2 Listado de Hechos</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Explorar Hechos (/hechos)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Usuario123</div>
+                    <div class="nav-item">Panel Admin</div>
+                    <div class="nav-item">Cerrar Sesión</div>
+                </div>
+            </div>
+            <div class="header-section">
+                <h1>📋 Explorar Hechos Históricos</h1>
+                <p>Busca y filtra entre todos los hechos registrados</p>
+            </div>
+            <div class="content-section">
+                <div class="filters">
+                    <div class="section-title">Filtros de Búsqueda</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 2fr 100px; gap: 15px; margin-top: 15px;">
+                        <div class="form-group">
+                            <div class="form-label">Categoría</div>
+                            <div class="form-input">[Select: Todas, Política, Deportes, ...]</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">Provincia</div>
+                            <div class="form-input">[Select: Todas, Buenos Aires, ...]</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">Búsqueda por texto</div>
+                            <div class="form-input">[Campo de búsqueda]</div>
+                        </div>
+                        <div class="button" style="align-self: end;">Filtrar</div>
+                    </div>
+                </div>
+
+                <div class="section-title">Resultados (37 hechos encontrados)</div>
+
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-header">🏛️ Revolución de Mayo</div>
+                        <div style="margin: 10px 0; color: #666;">
+                            <div>📍 Buenos Aires</div>
+                            <div>📅 25/05/1810</div>
+                            <div>🏷️ Política</div>
+                        </div>
+                        <div style="margin: 15px 0; color: #555;">
+                            Los eventos que marcaron el inicio del proceso independentista...
+                        </div>
+                        <div class="button-outline">Ver Detalle</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">⚽ Mundial 1978</div>
+                        <div style="margin: 10px 0; color: #666;">
+                            <div>📍 Buenos Aires</div>
+                            <div>📅 25/06/1978</div>
+                            <div>🏷️ Deportes</div>
+                        </div>
+                        <div style="margin: 15px 0; color: #555;">
+                            Argentina campeón del mundo por primera vez en su historia...
+                        </div>
+                        <div class="button-outline">Ver Detalle</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">📱 [Otro Hecho...]</div>
+                        <div style="margin: 10px 0; color: #666;">
+                            <div>📍 [Provincia]</div>
+                            <div>📅 [Fecha]</div>
+                            <div>🏷️ [Categoría]</div>
+                        </div>
+                        <div style="margin: 15px 0; color: #555;">
+                            [Descripción truncada del hecho...]
+                        </div>
+                        <div class="button-outline">Ver Detalle</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>2.3 Detalle de Hecho</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Detalle de Hecho (/hechos/:id)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Usuario123</div>
+                    <div class="nav-item">Panel Admin</div>
+                    <div class="nav-item">Cerrar Sesión</div>
+                </div>
+            </div>
+            <div class="header-section">
+                <div style="display: flex; gap: 20px; align-items: center;">
+                    <div style="font-size: 2em;">←</div>
+                    <div>
+                        <h1>Revolución de Mayo</h1>
+                        <p>Hecho registrado el 15/03/2024</p>
+                    </div>
+                </div>
+            </div>
+            <div class="content-section">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                    <div>
+                        <div class="section-title">Información del Hecho</div>
+                        <div class="card">
+                            <div style="margin-bottom: 20px;">
+                                <strong>Descripción:</strong>
+                                <div style="margin-top: 10px; color: #555;">
+                                    Los eventos de la Revolución de Mayo marcaron el inicio del proceso independentista argentino. El 25 de mayo de 1810, un grupo de patriotas depuso al virrey español y formó la Primera Junta de Gobierno...
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                                <div>
+                                    <strong>📅 Fecha del Hecho:</strong>
+                                    <div>25/05/1810</div>
+                                </div>
+                                <div>
+                                    <strong>🕐 Hora:</strong>
+                                    <div>14:30</div>
+                                </div>
+                                <div>
+                                    <strong>🏷️ Categoría:</strong>
+                                    <div>Política</div>
+                                </div>
+                                <div>
+                                    <strong>📍 Provincia:</strong>
+                                    <div>Buenos Aires</div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 20px;">
+                                <strong>📍 Coordenadas:</strong>
+                                <div>Latitud: -34.6037, Longitud: -58.3816</div>
+                            </div>
+
+                            <div class="box" style="margin-top: 20px; min-height: 200px;">
+                                [Mapa interactivo mostrando ubicación]
+                            </div>
+
+                            <div style="margin-top: 20px;">
+                                <strong>🖼️ Contenido Multimedia:</strong>
+                                <div class="box" style="min-height: 150px;">
+                                    [Imagen/Video del hecho si está disponible]
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-title" style="margin-top: 30px;">Reportar Hecho</div>
+                        <div class="card">
+                            <p style="color: #666; margin-bottom: 15px;">
+                                Si consideras que este hecho contiene información incorrecta o inapropiada, puedes reportarlo.
+                            </p>
+                            <div class="form-group">
+                                <div class="form-label">Justificación * (mínimo 500 caracteres)</div>
+                                <div class="form-input" style="min-height: 150px;">[Textarea para justificación]</div>
+                            </div>
+                            <div class="button">Enviar Reporte</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="section-title">Acciones [Solo Admin]</div>
+                        <div class="card">
+                            <div class="button" style="width: 100%; margin: 5px 0;">✏️ Editar Hecho</div>
+                            <div class="button-outline" style="width: 100%; margin: 5px 0;">🗑️ Eliminar</div>
+                        </div>
+
+                        <div class="section-title" style="margin-top: 20px;">Metadatos</div>
+                        <div class="card">
+                            <div style="margin-bottom: 10px;">
+                                <strong>Origen:</strong>
+                                <div>Dinámico (usuario)</div>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>Estado:</strong>
+                                <div>✅ Activo</div>
+                            </div>
+                            <div>
+                                <strong>Consenso:</strong>
+                                <div>No verificado</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>2.4 Crear Nuevo Hecho</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Crear Hecho (/hechos/crear)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Usuario123</div>
+                    <div class="nav-item">Cerrar Sesión</div>
+                </div>
+            </div>
+            <div class="header-section">
+                <h1>➕ Crear Nuevo Hecho Histórico</h1>
+                <p>Comparte un nuevo hecho con la comunidad</p>
+            </div>
+            <div class="content-section">
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div class="form-group">
+                        <div class="form-label">Título del Hecho *</div>
+                        <div class="form-input">[Campo de texto]</div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label">Descripción *</div>
+                        <div class="form-input" style="min-height: 120px;">[Textarea]</div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <div class="form-label">Categoría *</div>
+                            <div class="form-input">[Select: Política, Deportes, Cultural, ...]</div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-label">Fecha del Hecho *</div>
+                            <div class="form-input">[Date picker]</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label">Hora del Hecho (opcional)</div>
+                        <div class="form-input">[Time picker]</div>
+                    </div>
+
+                    <div class="section-title">Ubicación</div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <div class="form-label">Latitud *</div>
+                            <div class="form-input">[Número: -34.6037]</div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-label">Longitud *</div>
+                            <div class="form-input">[Número: -58.3816]</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label">URL Contenido Multimedia (opcional)</div>
+                        <div class="form-input">[URL de imagen/video]</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px;">
+                        <div class="button-outline">Cancelar</div>
+                        <div class="button">Crear Hecho</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: PANEL ADMINISTRATIVO -->
+        <h2>3. Panel Administrativo</h2>
+
+        <h3>3.1 Gestión de Solicitudes</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Admin - Solicitudes (/admin/solicitudes)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Admin123</div>
+                    <div class="nav-item">Panel Admin</div>
+                    <div class="nav-item">Cerrar Sesión</div>
+                </div>
+            </div>
+            <div class="header-section">
+                <h1>📋 Panel de Administración</h1>
+                <p>Gestión de solicitudes de eliminación</p>
+            </div>
+            <div class="content-section">
+                <div class="admin-tabs">
+                    <div class="tab active">📋 Solicitudes</div>
+                    <div class="tab">📊 Estadísticas</div>
+                    <div class="tab">📚 Colecciones</div>
+                </div>
+
+                <div class="filters">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <div class="form-label">Estado</div>
+                            <div class="form-input">[Select: Todas, Pendientes, Aprobadas, Rechazadas]</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">Ordenar por</div>
+                            <div class="form-input">[Select: Fecha, Estado]</div>
+                        </div>
+                        <div class="button" style="align-self: end;">Aplicar Filtros</div>
+                    </div>
+                </div>
+
+                <div class="section-title">Solicitudes de Eliminación (8 pendientes)</div>
+
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="card" style="border-left: 4px solid #ffc107;">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: bold; margin-bottom: 10px;">
+                                    Solicitud #123 - ⏳ PENDIENTE
+                                </div>
+                                <div style="color: #666; margin-bottom: 5px;">
+                                    <strong>Hecho:</strong> Mundial 1978
+                                </div>
+                                <div style="color: #666; margin-bottom: 5px;">
+                                    <strong>Fecha solicitud:</strong> 20/03/2024 14:30
+                                </div>
+                                <div style="color: #666;">
+                                    <strong>Justificación:</strong> La información presentada contiene datos incorrectos sobre las fechas...
+                                </div>
+                            </div>
+                            <div>
+                                <div class="button-outline">Ver Detalle</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-left: 4px solid #10b981;">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: bold; margin-bottom: 10px;">
+                                    Solicitud #122 - ✅ APROBADA
+                                </div>
+                                <div style="color: #666; margin-bottom: 5px;">
+                                    <strong>Hecho:</strong> Declaración de Independencia
+                                </div>
+                                <div style="color: #666; margin-bottom: 5px;">
+                                    <strong>Fecha solicitud:</strong> 19/03/2024 10:15
+                                </div>
+                                <div style="color: #666;">
+                                    <strong>Justificación:</strong> Datos históricos verificados como incorrectos...
+                                </div>
+                            </div>
+                            <div>
+                                <div class="button-outline">Ver Detalle</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-left: 4px solid #ef4444;">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: bold; margin-bottom: 10px;">
+                                    Solicitud #121 - ❌ RECHAZADA
+                                </div>
+                                <div style="color: #666; margin-bottom: 5px;">
+                                    <strong>Hecho:</strong> Revolución de Mayo
+                                </div>
+                                <div style="color: #666; margin-bottom: 5px;">
+                                    <strong>Fecha solicitud:</strong> 18/03/2024 16:45
+                                </div>
+                                <div style="color: #666;">
+                                    <strong>Motivo rechazo:</strong> La justificación no cumple con los requisitos mínimos...
+                                </div>
+                            </div>
+                            <div>
+                                <div class="button-outline">Ver Detalle</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>3.2 Detalle de Solicitud</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Detalle Solicitud (/admin/solicitudes/:id)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Admin123</div>
+                    <div class="nav-item">Panel Admin</div>
+                    <div class="nav-item">Cerrar Sesión</div>
+                </div>
+            </div>
+            <div class="header-section">
+                <div style="display: flex; gap: 20px; align-items: center;">
+                    <div style="font-size: 2em;">←</div>
+                    <div>
+                        <h1>Solicitud de Eliminación #123</h1>
+                        <p>Estado: ⏳ Pendiente de revisión</p>
+                    </div>
+                </div>
+            </div>
+            <div class="content-section">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                    <div>
+                        <div class="section-title">Información de la Solicitud</div>
+                        <div class="card">
+                            <div style="margin-bottom: 20px;">
+                                <strong>Fecha de Solicitud:</strong>
+                                <div>20/03/2024 14:30:15</div>
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <strong>Justificación:</strong>
+                                <div class="box" style="min-height: 150px; text-align: left;">
+                                    La información presentada en este hecho contiene múltiples inexactitudes sobre las fechas y eventos relacionados con el Mundial de 1978. Después de investigar en fuentes oficiales de FIFA y archivos históricos, he encontrado que las fechas mencionadas no coinciden con los registros oficiales. Además, hay datos sobre jugadores y resultados que son completamente erróneos...
+                                </div>
+                            </div>
+
+                            <div>
+                                <strong>Estado de Análisis Anti-Spam:</strong>
+                                <div style="margin-top: 10px; padding: 15px; background: #d1fae5; border-left: 4px solid #10b981;">
+                                    ✅ La solicitud pasó el análisis anti-spam
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-title" style="margin-top: 30px;">Hecho Reportado</div>
+                        <div class="card">
+                            <div style="font-weight: bold; font-size: 1.2em; margin-bottom: 15px;">
+                                Mundial 1978
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>Categoría:</strong> Deportes
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>Fecha:</strong> 25/06/1978
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>Provincia:</strong> Buenos Aires
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <div class="button-outline">Ver Hecho Completo</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="section-title">Acciones</div>
+                        <div class="card">
+                            <div class="button" style="width: 100%; margin: 5px 0; background: #10b981;">
+                                ✅ Aprobar Solicitud
+                            </div>
+                            <div class="button" style="width: 100%; margin: 5px 0; background: #ef4444;">
+                                ❌ Rechazar Solicitud
+                            </div>
+                            <div class="button-outline" style="width: 100%; margin: 5px 0;">
+                                ← Volver al Listado
+                            </div>
+                        </div>
+
+                        <div class="box" style="margin-top: 20px; background: #fff9e6;">
+                            <div style="text-align: left;">
+                                <strong>Nota:</strong><br>
+                                Al aprobar, el hecho será marcado como inactivo y no se mostrará públicamente.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>3.3 Estadísticas</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Admin - Estadísticas (/admin/estadisticas)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Admin123</div>
+                    <div class="nav-item">Panel Admin</div>
+                    <div class="nav-item">Cerrar Sesión</div>
+                </div>
+            </div>
+            <div class="header-section">
+                <h1>📊 Estadísticas del Sistema</h1>
+                <p>Métricas y análisis de hechos históricos</p>
+            </div>
+            <div class="content-section">
+                <div class="admin-tabs">
+                    <div class="tab">📋 Solicitudes</div>
+                    <div class="tab active">📊 Estadísticas</div>
+                    <div class="tab">📚 Colecciones</div>
+                </div>
+
+                <div class="section-title">Resumen General</div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-number">245</div>
+                        <div>Total Hechos</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">238</div>
+                        <div>Hechos Activos</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">7</div>
+                        <div>Hechos Inactivos</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">45</div>
+                        <div>Solicitudes</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+                    <div>
+                        <div class="section-title">Distribución por Categoría</div>
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                <div><strong>Política</strong></div>
+                                <div>89 hechos (37%)</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                <div><strong>Deportes</strong></div>
+                                <div>54 hechos (23%)</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                <div><strong>Cultural</strong></div>
+                                <div>45 hechos (19%)</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                <div><strong>Económico</strong></div>
+                                <div>32 hechos (13%)</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                                <div><strong>Social</strong></div>
+                                <div>18 hechos (8%)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="section-title">Distribución por Provincia</div>
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                <div><strong>Buenos Aires</strong></div>
+                                <div>112 hechos</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                <div><strong>Córdoba</strong></div>
+                                <div>45 hechos</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                <div><strong>Santa Fe</strong></div>
+                                <div>34 hechos</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                <div><strong>Mendoza</strong></div>
+                                <div>28 hechos</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                                <div><strong>Tucumán</strong></div>
+                                <div>19 hechos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title" style="margin-top: 30px;">Estado de Solicitudes</div>
+                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="stat-box" style="border-color: #ffc107;">
+                        <div class="stat-number" style="color: #ffc107;">8</div>
+                        <div>Pendientes</div>
+                    </div>
+                    <div class="stat-box" style="border-color: #10b981;">
+                        <div class="stat-number" style="color: #10b981;">23</div>
+                        <div>Aprobadas</div>
+                    </div>
+                    <div class="stat-box" style="border-color: #ef4444;">
+                        <div class="stat-number" style="color: #ef4444;">14</div>
+                        <div>Rechazadas</div>
+                    </div>
+                </div>
+
+                <div class="section-title" style="margin-top: 30px;">Métricas Destacadas</div>
+                <div class="card">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <strong>Categoría con más hechos:</strong>
+                            <div style="font-size: 1.5em; color: #8b5cf6;">Política</div>
+                        </div>
+                        <div>
+                            <strong>Provincia con más hechos:</strong>
+                            <div style="font-size: 1.5em; color: #8b5cf6;">Buenos Aires</div>
+                        </div>
+                        <div>
+                            <strong>Solicitudes marcadas como spam:</strong>
+                            <div style="font-size: 1.5em; color: #ef4444;">3</div>
+                        </div>
+                        <div>
+                            <strong>Total de colecciones:</strong>
+                            <div style="font-size: 1.5em; color: #8b5cf6;">12</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>3.4 Gestión de Colecciones</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Admin - Colecciones (/admin/colecciones)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Admin123</div>
+                    <div class="nav-item">Panel Admin</div>
+                    <div class="nav-item">Cerrar Sesión</div>
+                </div>
+            </div>
+            <div class="header-section">
+                <h1>📚 Gestión de Colecciones</h1>
+                <p>Administra las colecciones de hechos del sistema</p>
+            </div>
+            <div class="content-section">
+                <div class="admin-tabs">
+                    <div class="tab">📋 Solicitudes</div>
+                    <div class="tab">📊 Estadísticas</div>
+                    <div class="tab active">📚 Colecciones</div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+                    <div class="section-title" style="margin: 0;">Colecciones (12)</div>
+                    <div class="button">+ Nueva Colección</div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="card">
+                        <div style="display: flex; justify-content: between; align-items: start;">
+                            <div style="flex: 1;">
+                                <h3 style="margin-bottom: 10px;">Historia Política Argentina</h3>
+                                <p style="color: #666; margin-bottom: 15px;">
+                                    Colección de eventos políticos relevantes en la historia argentina
+                                </p>
+                                <div style="display: flex; gap: 30px;">
+                                    <div>
+                                        <strong>Categoría:</strong> Política
+                                    </div>
+                                    <div>
+                                        <strong>Hechos:</strong> 23
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <div class="button-outline">Ver Detalles</div>
+                                <div class="button-outline">✏️ Editar</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <h3 style="margin-bottom: 10px;">Grandes Eventos Deportivos</h3>
+                                <p style="color: #666; margin-bottom: 15px;">
+                                    Mundiales, olimpiadas y otros eventos deportivos destacados
+                                </p>
+                                <div style="display: flex; gap: 30px;">
+                                    <div>
+                                        <strong>Categoría:</strong> Deportes
+                                    </div>
+                                    <div>
+                                        <strong>Hechos:</strong> 15
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <div class="button-outline">Ver Detalles</div>
+                                <div class="button-outline">✏️ Editar</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <h3 style="margin-bottom: 10px;">[Otra Colección...]</h3>
+                                <p style="color: #666; margin-bottom: 15px;">
+                                    [Descripción de la colección...]
+                                </p>
+                                <div style="display: flex; gap: 30px;">
+                                    <div>
+                                        <strong>Categoría:</strong> [Categoría]
+                                    </div>
+                                    <div>
+                                        <strong>Hechos:</strong> X
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <div class="button-outline">Ver Detalles</div>
+                                <div class="button-outline">✏️ Editar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>3.5 Crear Colección</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Crear Colección (/admin/colecciones/crear)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Admin123</div>
+                    <div class="nav-item">Panel Admin</div>
+                    <div class="nav-item">Cerrar Sesión</div>
+                </div>
+            </div>
+            <div class="header-section">
+                <div style="display: flex; gap: 20px; align-items: center;">
+                    <div style="font-size: 2em;">←</div>
+                    <div>
+                        <h1>Crear Nueva Colección</h1>
+                        <p>Define los criterios para agrupar hechos históricos</p>
+                    </div>
+                </div>
+            </div>
+            <div class="content-section">
+                <div style="max-width: 900px; margin: 0 auto;">
+                    <div class="section-title">📌 Información Básica</div>
+
+                    <div class="form-group">
+                        <div class="form-label">Título de la Colección *</div>
+                        <div class="form-input">[Ej: Historia Política Argentina]</div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label">Descripción</div>
+                        <div class="form-input" style="min-height: 80px;">[Textarea]</div>
+                    </div>
+
+                    <div class="section-title" style="margin-top: 30px;">🎯 Criterios de Pertenencia</div>
+
+                    <div class="box" style="background: #fff9e6; border-color: #ffc107; text-align: left;">
+                        <strong>Nota:</strong> Los hechos se agregarán automáticamente a esta colección si cumplen con los criterios de categoría y rango de fechas definidos.
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label">Categoría *</div>
+                        <div class="form-input">[Select: Política, Deportes, Cultural, ...]</div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <div class="form-label">Fecha Inicial *</div>
+                            <div class="form-input">[Date: 01/01/1800]</div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-label">Fecha Final *</div>
+                            <div class="form-input">[Date: 31/12/2024]</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label">Fuente de Datos *</div>
+                        <div class="form-input">[Select: Fuente Dinámica (ID: 1), ...]</div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label">Localidad (opcional)</div>
+                        <div class="form-input">[Texto: Buenos Aires]</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+                        <div class="button-outline">Cancelar</div>
+                        <div class="button">Crear Colección</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>3.6 Detalle de Colección</h3>
+        <div class="wireframe">
+            <div class="wireframe-header">Detalle Colección (/admin/colecciones/:id)</div>
+            <div class="navbar">
+                <div class="navbar-brand">MetaMapa</div>
+                <div class="navbar-menu">
+                    <div class="nav-item">Explorar Hechos</div>
+                    <div class="nav-item">Admin123</div>
+                    <div class="nav-item">Panel Admin</div>
+                    <div class="nav-item">Cerrar Sesión</div>
+                </div>
+            </div>
+            <div class="header-section">
+                <div style="display: flex; gap: 20px; align-items: center;">
+                    <div style="font-size: 2em;">←</div>
+                    <div>
+                        <h1>Historia Política Argentina</h1>
+                        <p>Colección de eventos políticos relevantes en la historia argentina</p>
+                    </div>
+                </div>
+            </div>
+            <div class="content-section">
+                <div class="admin-tabs">
+                    <div class="tab">📋 Solicitudes</div>
+                    <div class="tab">📊 Estadísticas</div>
+                    <div class="tab active">📚 Colecciones</div>
+                </div>
+
+                <div class="card" style="margin-bottom: 30px;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+                        <h2 style="margin: 0;">Información de la Colección</h2>
+                        <div class="button-outline">✏️ Editar</div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <div>
+                            <strong style="color: #666; font-size: 0.9em;">Categoría</strong>
+                            <div style="margin-top: 5px;">Política</div>
+                        </div>
+                        <div>
+                            <strong style="color: #666; font-size: 0.9em;">Fuente de Datos</strong>
+                            <div style="margin-top: 5px;">Fuente Dinámica</div>
+                        </div>
+                        <div>
+                            <strong style="color: #666; font-size: 0.9em;">Total de Hechos</strong>
+                            <div style="margin-top: 5px; font-size: 1.8em; font-weight: bold; color: #8b5cf6;">23</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Hechos de esta Colección</div>
+
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <h3 style="margin-bottom: 10px;">Revolución de Mayo</h3>
+                                <p style="color: #666; margin-bottom: 15px;">
+                                    Los eventos que marcaron el inicio del proceso independentista argentino...
+                                </p>
+                                <div style="display: flex; gap: 30px; font-size: 0.9em;">
+                                    <div>
+                                        <strong>Categoría:</strong> Política
+                                    </div>
+                                    <div>
+                                        <strong>Fecha:</strong> 25/05/1810
+                                    </div>
+                                    <div>
+                                        <strong>Provincia:</strong> Buenos Aires
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="button-outline">Ver Detalle</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <h3 style="margin-bottom: 10px;">Declaración de la Independencia</h3>
+                                <p style="color: #666; margin-bottom: 15px;">
+                                    El Congreso de Tucumán declaró la independencia de las Provincias Unidas...
+                                </p>
+                                <div style="display: flex; gap: 30px; font-size: 0.9em;">
+                                    <div>
+                                        <strong>Categoría:</strong> Política
+                                    </div>
+                                    <div>
+                                        <strong>Fecha:</strong> 09/07/1816
+                                    </div>
+                                    <div>
+                                        <strong>Provincia:</strong> Tucumán
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="button-outline">Ver Detalle</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <h3 style="margin-bottom: 10px;">[Otro hecho político...]</h3>
+                                <p style="color: #666; margin-bottom: 15px;">
+                                    [Descripción del hecho...]
+                                </p>
+                                <div style="display: flex; gap: 30px; font-size: 0.9em;">
+                                    <div>
+                                        <strong>Categoría:</strong> Política
+                                    </div>
+                                    <div>
+                                        <strong>Fecha:</strong> [Fecha]
+                                    </div>
+                                    <div>
+                                        <strong>Provincia:</strong> [Provincia]
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="button-outline">Ver Detalle</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div style="margin-top: 80px; padding-top: 40px; border-top: 3px solid #8b5cf6; text-align: center; color: #666;">
+            <p><strong>MetaMapa - Sistema de Gestión de Hechos Históricos</strong></p>
+            <p>Wireframes - Versión 1.0 - 2025</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">
+                Este documento describe la estructura visual y funcional del sistema.<br>
+                Tecnologías: Java 17 + Javalin + Hibernate + MySQL + Handlebars
+            </p>
+        </div>
+    </div>
+</body>
+</html>
