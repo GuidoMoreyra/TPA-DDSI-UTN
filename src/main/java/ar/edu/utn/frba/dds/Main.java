@@ -9,16 +9,20 @@ import java.util.Map;
 
 public class Main {
   public static void main(String[] args) {
-    
-    Map<String, String> env = System.getenv();
 
-    // Seteamos las propiedades del sistema para que Hibernate las encuentre
-    if (env.containsKey("MYSQL_URL")) {
-      System.setProperty("javax.persistence.jdbc.url", env.get("MYSQL_URL"));
+    Map<String, String> env = System.getenv();
+    String rawUrl = env.get("MYSQL_URL");
+
+    if (rawUrl != null) {
+      // Si la URL no empieza con jdbc: lo agregamos
+      String jdbcUrl = rawUrl.startsWith("jdbc:") ? rawUrl : "jdbc:" + rawUrl;
+
+      System.setProperty("javax.persistence.jdbc.url", jdbcUrl);
       System.setProperty("javax.persistence.jdbc.user", env.get("MYSQLUSER"));
       System.setProperty("javax.persistence.jdbc.password", env.get("MYSQLPASSWORD"));
-      // Forzamos el driver moderno para evitar errores
       System.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
+
+      System.out.println("Conectando a: " + jdbcUrl);
     }
 
     System.out.println("Configuración cargada. Conectando a: " + System.getProperty("javax.persistence.jdbc.url"));
