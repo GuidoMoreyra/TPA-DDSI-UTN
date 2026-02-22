@@ -5,8 +5,23 @@ import ar.edu.utn.frba.dds.repositories.UsuarioRepository;
 import ar.edu.utn.frba.dds.seeders.DatabaseSeeder;
 import ar.edu.utn.frba.dds.server.Server;
 
+import java.util.Map;
+
 public class Main {
   public static void main(String[] args) {
+    
+    Map<String, String> env = System.getenv();
+
+    // Seteamos las propiedades del sistema para que Hibernate las encuentre
+    if (env.containsKey("MYSQL_URL")) {
+      System.setProperty("javax.persistence.jdbc.url", env.get("MYSQL_URL"));
+      System.setProperty("javax.persistence.jdbc.user", env.get("MYSQLUSER"));
+      System.setProperty("javax.persistence.jdbc.password", env.get("MYSQLPASSWORD"));
+      // Forzamos el driver moderno para evitar errores
+      System.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
+    }
+
+    System.out.println("Configuración cargada. Conectando a: " + System.getProperty("javax.persistence.jdbc.url"));
     // Crear usuario admin por defecto si no existe
     crearAdminPorDefecto();
 
