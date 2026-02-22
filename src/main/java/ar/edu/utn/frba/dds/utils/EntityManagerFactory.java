@@ -1,6 +1,8 @@
 package ar.edu.utn.frba.dds.utils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -8,22 +10,37 @@ import javax.persistence.Query;
 public class EntityManagerFactory {
 
   public static void main(String[] args) {
-    // El nombre debe coincidir con el persistence-unit del persistence.xml
     String persistenceUnitName = "simple-persistence-unit";
 
-    System.out.println("Inicializando EntityManagerFactory...");
+    // 1. Capturamos las variables de entorno de Railway
+    Map<String, String> env = System.getenv();
+    Map<String, Object> configOverrides = new HashMap<>();
+
+    // 2. Si existen las variables de Railway, las usamos.
+    // Si no (en tu PC), usamos los valores por defecto que ya conocés.
+    String jdbcUrl = env.getOrDefault("MYSQL_URL", "jdbc:mysql://localhost:3306/tp-ddsi");
+    String jdbcUser = env.getOrDefault("MYSQLUSER", "root");
+    String jdbcPassword = env.getOrDefault("MYSQLPASSWORD", "hola");
+
+    configOverrides.put("javax.persistence.jdbc.url", jdbcUrl);
+    configOverrides.put("javax.persistence.jdbc.user", jdbcUser);
+    configOverrides.put("javax.persistence.jdbc.password", jdbcPassword);
+
+    // Opcional: Forzar el driver moderno si el XML tiene el viejo
+    configOverrides.put("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
+
+    System.out.println("Inicializando EntityManagerFactory conectando a: " + jdbcUrl);
+
+    // 3. Pasamos el mapa como segundo argumento
     javax.persistence.EntityManagerFactory emf =
-        Persistence.createEntityManagerFactory(persistenceUnitName);
+            Persistence.createEntityManagerFactory(persistenceUnitName, configOverrides);
 
     crearIndicesFullText(emf);
 
-    System.out.println(
-        "EntityManagerFactory inicializado. "
-            + "Hibernate debería haber aplicado las migraciones.");
-    System.out.println(
-        "EntityManagerFactory inicializado. "
-            + "Hibernate debería haber aplicado las migraciones.");
+    System.out.println("EntityManagerFactory inicializado correctamente.");
 
+    // OJO: Si este es un servidor Web, NO deberías cerrar el emf acá.
+    // Pero si es solo una tarea de migración, está bien.
     emf.close();
     System.out.println("Factory cerrado. Listo.");
   }
