@@ -13,7 +13,21 @@ import java.util.stream.Collectors;
 
 public final class DetectorDeSpamBasico implements DetectorDeSpam {
   private static final int LIMITE_CORPUS = 50;
-  private static final double UMBRAL_SIMILITUD = 0.05;
+
+  // valor por defecto utilizado si no se especifica uno diferente
+  private static double defaultUmbralSimilitud = 0.05;
+
+  private final double umbralSimilitud;
+
+  /** Constructor por defecto que usa el umbral estándar. */
+  public DetectorDeSpamBasico() {
+    this(defaultUmbralSimilitud);
+  }
+
+  /** Permite crear un detector con umbral personalizado. */
+  public DetectorDeSpamBasico(double umbralSimilitud) {
+    this.umbralSimilitud = umbralSimilitud;
+  }
 
   @Override
   public boolean esSpam(String texto) {
@@ -58,7 +72,19 @@ public final class DetectorDeSpamBasico implements DetectorDeSpam {
     }
 
     // si el texto es MUY distinto del corpus "válido", lo marcamos como spam
-    return promedio < UMBRAL_SIMILITUD;
+    return promedio < umbralSimilitud;
+  }
+
+  // configuración dinámica --------------------------------------------------
+
+  /** Ajusta el umbral por defecto que usarán las nuevas instancias. */
+  public static void setDefaultUmbralSimilitud(double nuevoUmbral) {
+    defaultUmbralSimilitud = nuevoUmbral;
+  }
+
+  /** Devuelve el umbral que utiliza este detector (para pruebas/depuración). */
+  public double getUmbralSimilitud() {
+    return umbralSimilitud;
   }
 
   private boolean tieneRepeticiones(List<String> tokens) {

@@ -37,4 +37,23 @@ class DetectorDeSpamBasicoTest {
     String texto = "ok";
     Assertions.assertTrue(detector.esSpam(texto));
   }
+
+  @Test
+  void umbralPersonalizadoSePuedeCambiar() {
+    DetectorDeSpamBasico menosEstricto = new DetectorDeSpamBasico(0.01);
+    DetectorDeSpamBasico muyEstricto = new DetectorDeSpamBasico(0.5);
+    String borderline =
+        "Este es un mensaje lo suficientemente largo pero poco relacionado con el corpus por defecto";
+
+    // con umbral alto es spam, con umbral bajo no necesariamente
+    Assertions.assertTrue(muyEstricto.esSpam(borderline));
+    Assertions.assertFalse(menosEstricto.esSpam(borderline));
+  }
+
+  @Test
+  void cambiarUmbralPorDefectoAfectaNuevasInstancias() {
+    DetectorDeSpamBasico.setDefaultUmbralSimilitud(0.01);
+    DetectorDeSpamBasico otro = new DetectorDeSpamBasico();
+    Assertions.assertEquals(0.01, otro.getUmbralSimilitud());
+  }
 }
